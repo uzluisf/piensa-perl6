@@ -1,170 +1,161 @@
 \chapter{The Way of the Program}
 
-The goal of this book is to teach you to think like a computer
-scientist.  This way of thinking combines some of the best features of
-mathematics, engineering, and natural science.  Like mathematicians,
-computer scientists use formal languages to denote ideas (specifically
-computations).  Like engineers, they design things, assembling
-components into systems and evaluating tradeoffs among alternatives.
-Like scientists, they observe the behavior of complex systems, form
-hypotheses, and test predictions.  
+La meta de este libro es enseñarte a pensar como un científico de la 
+computación. Esta manera de pensar combina algunas de las mejores características
+de las matemáticas, la ingeniería, y las ciencias naturales. Al igual que los
+matemáticos, los científicos de la computación usan lenguajes formales para denotar
+ideas (específicamente computaciones). Al igual que los ingenieros, ellos diseñan cosas,
+ensamblan componentes en sistemas y evalúan las compensaciones entre las alternativas.
+Al igual que los científicos, ellos observan el comportamiento de sistemas complejos, 
+formulan hipótesis, y prueban las predicciones. 
 \index{problem solving}
 \index{formal language}
 
-The single most important skill for a computer scientist is {\bf
-problem solving}.  Problem solving means the ability to formulate
-problems, think creatively about solutions, and express a solution
-clearly and accurately.  As it turns out, the process of learning to
-program is an excellent opportunity to practice problem-solving
-skills.  That's why this chapter is called, ``The Way of the
-Program.''
+La habilidad más importante de un científico de la computación
+es la {\bf resolución de problemas}. La resolución de problemas se refiere
+a la habilidad de formular problemas, pensar creativamente sobre las
+soluciones, y expresar una solución clara y precisamente. Como sucede, 
+el proceso de aprender a programar es una oportunidad excelente para practicar 
+las habilidades de resolución de problemas. Por esta razón, este capítulo se titula,
+ ``La Manera del Programa.``
 
-On one level, you will be learning to program, a useful skill by
-itself.  On another level, you will use programming as a means to an
-end.  As we go along, that end will become clearer.
+En un nivel, aprenderás a programar, la cual es una habilidad útil por sí misma.
+En otro nivel, aprenderás a usar la programación como un medio para un fin. 
+A medida que avancemos, este fin se volverá más claro.
 \index{programming}
 
 
-\section{What is a Program?}
+\section{¿Qué es un Programa?}
 
-A {\bf program} is a sequence of instructions that specifies how to
-perform a computation.  The computation might be something
-mathematical, such as solving a system of equations or finding the
-roots of a polynomial, but it can also be a symbolic computation, such
-as searching and replacing text in a document, or something
-graphical, like processing an image or playing a video.
+Un {\bf programa} es una secuencia de instrucciones que especifica
+como realizar una computación. La computación podría involucrar 
+algo matemático, tal como resolver un sistema de ecuaciones o 
+encontrar las raíces de un polinomio, pero también puede ser algo
+simbólico, tal como buscar y reemplazar texto en un documento, o 
+algo gráfico, como el procesamiento de una imagen o la reproducción 
+de un video.
 \index{program}
 
-The details look different in different languages, but a few basic
-instructions appear in just about every language:
+Los detalles lucen diferentes en lenguajes distintos, pero hay algunas
+instrucciones básicas que aparecen en casi todos los lenguajes:
 
 \begin{description}
 
-\item[Input] Get data from the keyboard, a file, the network, 
-a sensor, a GPS chip or some other device.
+\item[Entrada] Obtener datos desde el teclado, un archivo, la red, 
+un sensor, un chip de GPS o algún otro dispositico.
 \index{input}
 
-\item[Output] Display data on the screen, save it in a
-file, send it over the network, act on a mechanical device,  etc.
+\item[Salida] Mostrar información en la pantalla, guardarla en un archivo,
+ enviarla a través de la red, actuar en un dispositico mecánico,  etc.
 \index{output}
 
-\item[Math] Perform basic mathematical operations like addition and
-multiplication.
+\item[Matemática] Realizar operaciones matemáticas básicas tales como la adición y
+la multiplicación.
 
-\item[Conditional execution] Check for certain conditions and
-run the appropriate code.
+\item[Ejecución condicional] Revisar ciertas condiciones y ejecutar el código 
+apropiadamente.
 \index{conditional!execution}
 
-\item[Repetition] Perform some action repeatedly, usually with
-some variation.
+\item[Repetición] Realizar alguna acción repetidamente, usualmente con alguna
+forma de variación.
 \index{repetition}
 
 \end{description}
 
-Believe it or not, that's pretty much all there is to it.  Every
-program you've ever used, no matter how complicated, is made up of
-instructions that look pretty much like these.  So you can think of
-programming as the process of breaking a large, complex task
-into smaller and smaller subtasks until the subtasks are
-simple enough to be performed with one of these basic instructions.
+Lo creas o no, eso es todo. Cada programa que has usado, sin importar
+que tan complicado sea, está compuesto de instrucciones que lucen exactamente
+como estas. Por lo tanto, puedes imaginarte la programación como el 
+proceso de fragmentar una tarea grande y compleja en piezas más pequeñas
+las cuales se pueden ejecutar con una de estas operaciones básicas.
 \index{instruction}
 
 \index{abstraction}
 \index{subtask}
-Using or calling these subtasks makes it possible to create 
-various levels of \emph{abstraction}. You have probably 
-been told that computers only use 0's and 1's at the 
-lowest level; but we usually don't have to worry about that. 
-When we use a word processor to write a letter or a report, 
-we are interested in files containing text and some 
-formatting instructions, and with commands to change the 
-file or to print it; fortunately, we don't have to care 
-about the underlying 0's and 1's; the word-processing 
-program offers us a much higher view (files, 
-commands, etc.) that hides the gory underlying details.
+Al usar o llamar estas piezas, es posible crear varios niveles
+de \emph{abstración}. Probablemente te han dicho que las computadoras
+solamente usan 0s y 1s al nivel más fundamental; pero usualmente no 
+nos preocupamos acerca de esto. Cuando usamos un procesador de texto para
+escribir una carta o un reporte, estamos interesados en archivos con textos
+y algunas instrucciones de formato, y con comandos para cambiar el archivo o
+imprimirlo; afortunadamente, no tenemos que preocuparnos sobre los 0s y 1s; el
+procesador de texto nos ofrecemos una vista más general (archivos, comandos, etc,)
+que oculta todos los detalles insignificantes para el usuario. 
 
-Similarly, when we write a program, 
-we usually use and/or create several layers of abstraction, 
-so that, for example, once we have created a subtask that 
-queries a database and stores the relevant data in 
-memory, we no longer have to worry about the technical 
-details of the subtask. We can use it as a sort of black 
-box that will perform the desired operation for us. 
-The essence of programming is to a very large extent this 
-art of creating these successive layers of abstraction 
-so that performing the higher level tasks becomes 
-relatively easy.
+
+Similarmente, cuando escribimos un programa, 
+usualmente usamos y/o creamos varias capas de abstracción, 
+para que, por ejemplo, una vez que hayamos creado una tarea pequeña 
+que consulta una base de datos y guarda la información relevante
+en la memoria, no tenemos que preocuparnos sobre los detalles técnicos
+de la tarea. Podemos usarla como una caja negra la cual realizará 
+la operación deseada para nosotros. La esencia de la programación es 
+en gran parte este arte de crear estas capas succesivas de abstracción 
+de tal manera que realizar tareas de niveles más altos se vuelva 
+relativamente más fácil.
 \index{subtask}
 \index{black box}
 
 
-\section{Running Perl~6}
+\section{Ejecutando Perl~6}
 \label{running_perl_6}
 
-One of the challenges of getting started with Perl~6 is that you
-might have to install Perl~6 and related software on your computer. 
-If you are familiar with your operating system, and especially
-if you are comfortable with the shell or command-line interface, 
-you will have no trouble installing Perl~6.  But for beginners, 
-it can be painful to learn about system administration and 
-programming at the same time.
+Uno de los retos de comenzar con Perl~6 es que podrías tener que instalar
+Perl~6 y cualquier software relacionado en tu computadora. Si estás familiarizado
+con tu sistema operativo, y especialmente te sientes cómodo con shell o
+intérprete de comandos, no tendrás problemas instalando Perl~6. Para los 
+principiantes, pueden ser un poco difícil aprender sobre la
+administración de sistema y programación al mismo tiempo.
 
-To avoid that problem, you can start out running Perl~6 
-in a web browser. You might want to use a search engine 
-to find such a site. Currently, the easiest is probably 
-to connect to the \url{https://glot.io/new/perl6} site, 
-where you can type some Perl~6 code in the main window, run 
-it, and see the result in the output window below.
+Para evitar ese problema, podrías comenzar ejecutando Perl~6 en
+el navegador. Podrías usar un motor de búsquedas para encontrar tal
+sitio. Por el momento, la forma más fácil es probablemente conectarse
+al sitio \url{https://glot.io/new/perl6}, donde puedes escribir código
+de Perl~6 en la ventana principal, ejecutarlo, y observar el resultado 
+en la ventana de salida más abajo.
 \index{Perl~6 in a browser}
 
-Sooner or later, however, you will really need to install 
-Perl~6 on your computer.
+Tarde o temprano, sin embargo, tendrás que instalar Perl~6 en tu computadora.
 
-The easiest way to install Perl~6 on your system is to 
-download Rakudo Star (a distribution of Perl~6 that contains 
-the Rakudo Perl~6 {\bf compiler}, documentation and useful modules): 
-follow the instructions for your operating system at 
-\url{http://rakudo.org/how-to-get-rakudo/} and at 
+La manera más fácil de instalar Perl~6 en tu sistema es descargar 
+Rakudo Star (una distribución de Perl~6 que contiene el {\bf compilador}
+Rakudo de Perl~6, documentación y módulos útiles): sigue las instrucciones 
+para tu sistema operativo en
+\url{http://rakudo.org/how-to-get-rakudo/} y en 
 \url{https://perl6.org/downloads/}. 
 
 \index{Perl 6 version}
-As of this writing, the most recent specification of 
-the language is Perl~6 version 6c (v6.c), and the most 
-recent release available for download is Rakudo Star 2016.07; 
-the examples in this book should 
-all run with this version. You can find out the installed 
-version by issuing the following command at the operating 
-system prompt:
+Al momento de escribir este libro, la especificación más reciente del 
+lenguaje es Perl~6 version 6c (v6.c), y el lanzamiento más reciente disponible
+para la descarga es Rakudo Star 2016.07; los ejemplos en este libro deberían
+funcionar con esta versión. Puedes encontrar la versión instalada al ejecutar
+el siguiente comando en el intérprete de comandos de tu sistema operativo:
 \begin{verbatim}
 $ perl6 -v
 This is Rakudo version 2016.07.1 built on MoarVM version 2016.07
 implementing Perl 6.c.
 \end{verbatim}
 
-However, you should probably download and install the most recent 
-version you can find. The output (warnings, error messages, 
-etc.) you'll get from your version of Perl might in some 
-cases slightly differ from what is printed in this book, 
-but these possible differences should essentially be 
-only cosmetic. 
+No obstante, deberías descargar e instalar las versión más reciente que puedas
+encontrar. La salida (advertencias, mensages de errores, etc.) que obtendrás de tu versión de Perl
+podría en algunos casos diferir de la que se encuentra en este libro, pero estas diferencias
+deberían ser esencialmente cosméticas.
 
-Compared to Perl~5, Perl~6 is not just a new version of Perl. 
-It is more like the new little sister of Perl~5. It does not 
-aim at replacing Perl~5. Perl~6 is really a new programming language, 
-with a syntax that is similar to earlier versions of 
-Perl (such as Perl~5), but still markedly different. Unless 
-stated otherwise, this book is about Perl~6 only, not about Perl~5 
-and preceding versions of the Perl programming language. From now on, 
-whenever we speak about \emph{Perl} with no further qualification, 
-we mean Perl~6.
+Comparado con Perl~5, Perl~6 no es sólo una nueva versión de Perl.
+Es como la nueva pequeña hermana de Perl~5. Su objectivo no es reemplazar
+al Perl~5. Perl~6 es realmente un nuevo lenguaje de programación, con una sintaxis
+que es similar a las versiones anteriores de Perl (tal como Perl~5), pero considerablemente
+diferente. Al menos que se indique lo contrario, este libro es sobre Perl~6 solamente, no
+acerca de Perl~5 y versiones anteriores del lenguaje de programación Perl. Desde aquí adelante,
+cuando hablemos de \emph{Perl} sin ninguna cualificación, nos referimos a Perl~6.
 
-The Perl~6 {\bf interpreter} is a program that reads and 
-executes Perl~6 code. It is sometimes called REPL (for ``read, 
-evaluate, print, loop''). Depending on your environment, you 
-might start the interpreter by clicking on an icon, or by 
-typing {\tt perl6} on a command line.
 
-When it starts, you should see output like this:
+El {\bf interpretador} de Perl~6 es un programa que lee y  
+ejecuta código de Perl~6. Algunas veces se le llama REPL (por ``read, 
+evaluate, print, loop''). Dependiendo de tu entorno, 
+podría iniciar el interpretador al cliquear un ícono, o al 
+escribir {\tt perl6} en el intérprete de comandos.
+
+Cuando comience, deberías ver algo similar a esto:
 \index{interpreter}
 \index{REPL}
 
@@ -175,10 +166,9 @@ To exit type 'exit' or '^D'
 \end{verbatim}
 %
 
-The last line with {\tt >} is a {\bf prompt} that indicates 
-that the REPL is ready for you to enter code. If you type a 
-line of code and hit Enter, the interpreter displays the
-result: 
+La última línea con {\tt >} es un {\bf prompt} que indica 
+que el REPL está listo para que entres código. Si escribes un 
+línea de código y presiona Enter, el interpretador muestra el resultado: 
 \index{prompt}
 
 \begin{verbatim}
@@ -187,20 +177,20 @@ result:
 >
 \end{verbatim}
 %
-You can type exit at the REPL prompt to exit the REPL.
+Puedes escribir {\tt exit} en el prompt de REPL para salir del REPL.
 
-Now you're ready to get started.
-From here on, we assume that you know how to start the Perl~6
-REPL and run code.
+Ahora estás listo para comenzar.
+De aquí en adelante, asumimos que sabes como iniciar el REPL de Perl~6 y 
+ejecutar código.
 
 
-\section{The First Program}
+\section{El Primer Programa}
 \label{hello}
 \index{Hello, World}
 
-Traditionally, the first program you write in a new language
-is called ``Hello, World'' because all it does is display the
-words ``Hello, World.''  In Perl~6, it looks like this:
+Tradicionalmente, el primer programa que escribes en un nuevo lenguaje
+se llama ``Hello, World'' porque todo lo que hace es mostrar las palabras
+``Hello, World.''  En Perl~6, luce de la siguiente manera:
 
 \begin{verbatim}
 > say "Hello, World";
@@ -210,36 +200,37 @@ Hello, World
 %
 \index{say function or method}
 \index{function!say}
-This is an example of what is usually called a {\bf print statement}, although it
-doesn't actually print anything on paper and doesn't even 
-use the {\tt print} keyword \footnote{Perl also has a {\tt print} 
-function, but the {\tt say} built-in function is used here 
-because it adds a new line character to the output.} (keywords are 
-words which have a special meaning to the language and are 
-used by the interpreter to recognize the structure of the program).  
-The print statement displays a result on the screen.  In this case, 
-the result is the words {\tt Hello, World}.
+Este es un ejemplo de lo que usualmente se conoce como una {\bf sentencia de impresión},
+aunque actualmente no imprime nada sobre el papel y ni siquiera usa la palabra clave
+{\tt print} 
+\footnote{Perl también tiene una función {\tt print},
+pero la función integrada {\tt say} es usada aquí 
+porque agrega un carácter de nueva línea a la salida.}
+(palabras claves son palabras que tienen un significado especial
+en el lenguaje y son usadas por el interpretador para reconocer la
+estructura del programa).
+La sentencia print muestra un resultado en la pantalla. En este caso, 
+el resultado son las palabra {\tt Hello World}.
 %
-The quotation marks in the program indicate the beginning and end
-of the text to be displayed; they don't appear in the result.
+Las comillas inglesas en el programa indican el comienzo y final
+del texto a ser mostrado; ellas no aparecen en el resultado.
 \index{quotation mark}
 \index{print statement}
 \index{statement!print}
 
-The semi-colon ``{\tt ;}'' at the end of the line indicates 
-that this is the end of the current statement. Although a 
-semi-colon is technically not needed when running 
-simple code directly under the REPL, it is usually 
-necessary when writing a program with several lines of code, 
-so you might as well just get into the habit of ending code 
-instructions with a semi-colon.
+El punto y medio ``{\tt ;}'' al final de la línea indica
+que este es el final de la sentencia actual. Aunque un punto y medio
+no es técnicamente necesario al ejecutar código simple en el REPL, 
+es usualmente necesario cuando se escribe un programa con varias líneas
+de código, así que prodrías ir acostumbrándote a finalizar instrucciones
+de código con un punto y medio.   
 \index{semi-colon}
 
-Many other programming languages would require parentheses 
-around the sentence to be displayed, but this is usually 
-not necessary in Perl~6.
+Otros lenguajes de programación podrían requerir paréntesis
+alrededor de la oración que se quiere mostrar, pero esto es usualmente 
+no necesario en Perl~6.
 
-\section{Arithmetic Operators}
+\section{Operadores Aritméticos}
 \index{operator!arithmetic}
 \index{arithmetic operator}
 
