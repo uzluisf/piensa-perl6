@@ -1,0 +1,410 @@
+\babel@toc {english}{}
+\contentsline {chapter}{Preface}{v}{chapter*.1}
+\contentsline {part}{I\hspace {1em}Starting with the Basics}{1}{part.1}
+\contentsline {chapter}{\numberline {1}The Way of the Program}{5}{chapter.1}
+\contentsline {section}{\numberline {1.1}What is a Program?}{5}{section.1.1}
+\contentsline {section}{\numberline {1.2}Running Perl~6}{6}{section.1.2}
+\contentsline {section}{\numberline {1.3}The First Program}{7}{section.1.3}
+\contentsline {section}{\numberline {1.4}Arithmetic Operators}{8}{section.1.4}
+\contentsline {section}{\numberline {1.5}Values and Types}{8}{section.1.5}
+\contentsline {section}{\numberline {1.6}Formal and Natural Languages}{11}{section.1.6}
+\contentsline {section}{\numberline {1.7}Debugging}{12}{section.1.7}
+\contentsline {section}{\numberline {1.8}Glossary}{12}{section.1.8}
+\contentsline {section}{\numberline {1.9}Exercises}{13}{section.1.9}
+\contentsline {chapter}{\numberline {2}Variables, Expressions and Statements}{15}{chapter.2}
+\contentsline {section}{\numberline {2.1}Assignment Statements}{15}{section.2.1}
+\contentsline {section}{\numberline {2.2}Variable Names}{16}{section.2.2}
+\contentsline {section}{\numberline {2.3}Expressions and Statements}{18}{section.2.3}
+\contentsline {section}{\numberline {2.4}Script Mode}{20}{section.2.4}
+\contentsline {section}{\numberline {2.5}One-Liner Mode}{21}{section.2.5}
+\contentsline {section}{\numberline {2.6}Order of Operations}{22}{section.2.6}
+\contentsline {section}{\numberline {2.7}String Operations}{23}{section.2.7}
+\contentsline {section}{\numberline {2.8}Comments}{24}{section.2.8}
+\contentsline {section}{\numberline {2.9}Debugging}{24}{section.2.9}
+\contentsline {section}{\numberline {2.10}Glossary}{25}{section.2.10}
+\contentsline {section}{\numberline {2.11}Exercises}{26}{section.2.11}
+\contentsline {chapter}{\numberline {3}Functions}{27}{chapter.3}
+\contentsline {section}{\numberline {3.1}Function Calls}{27}{section.3.1}
+\contentsline {section}{\numberline {3.2}Functions and Methods}{30}{section.3.2}
+\contentsline {section}{\numberline {3.3}Math functions}{30}{section.3.3}
+\contentsline {section}{\numberline {3.4}Composition}{32}{section.3.4}
+\contentsline {section}{\numberline {3.5}Adding New Functions (a.k.a. Subroutines)}{32}{section.3.5}
+\contentsline {section}{\numberline {3.6}Definitions and Uses}{34}{section.3.6}
+\contentsline {section}{\numberline {3.7}Flow of Execution}{35}{section.3.7}
+\contentsline {section}{\numberline {3.8}Parameters and Arguments}{35}{section.3.8}
+\contentsline {section}{\numberline {3.9}Variables and Parameters Are Local}{37}{section.3.9}
+\contentsline {section}{\numberline {3.10}Stack Diagrams}{37}{section.3.10}
+\contentsline {section}{\numberline {3.11}Fruitful Functions and Void Functions}{38}{section.3.11}
+\contentsline {section}{\numberline {3.12}Function Signatures}{40}{section.3.12}
+\contentsline {section}{\numberline {3.13}Immutable and Mutable Parameters}{41}{section.3.13}
+\contentsline {section}{\numberline {3.14}Functions and Subroutines as First-Class Citizens}{42}{section.3.14}
+\contentsline {section}{\numberline {3.15}Why Functions and Subroutines?}{44}{section.3.15}
+\contentsline {section}{\numberline {3.16}Debugging}{44}{section.3.16}
+\contentsline {section}{\numberline {3.17}Glossary}{45}{section.3.17}
+\contentsline {section}{\numberline {3.18}Exercises}{46}{section.3.18}
+\contentsline {chapter}{\numberline {4}Loops, Conditionals, and Recursion}{49}{chapter.4}
+\contentsline {section}{\numberline {4.1}Integer Division and Modulo}{49}{section.4.1}
+\contentsline {section}{\numberline {4.2}Boolean Expressions}{50}{section.4.2}
+\contentsline {section}{\numberline {4.3}Logical Operators}{52}{section.4.3}
+\contentsline {section}{\numberline {4.4}Conditional Execution}{54}{section.4.4}
+\contentsline {section}{\numberline {4.5}Alternative Execution}{54}{section.4.5}
+\contentsline {section}{\numberline {4.6}Chained Conditionals}{55}{section.4.6}
+\contentsline {section}{\numberline {4.7}Nested Conditionals}{55}{section.4.7}
+\contentsline {section}{\numberline {4.8}If Conditionals as Statement Modifiers}{56}{section.4.8}
+\contentsline {section}{\numberline {4.9}Unless Conditional Statement}{57}{section.4.9}
+\contentsline {section}{\numberline {4.10}For Loops}{57}{section.4.10}
+\contentsline {section}{\numberline {4.11}Recursion}{59}{section.4.11}
+\contentsline {section}{\numberline {4.12}Stack Diagrams for Recursive Subroutines}{61}{section.4.12}
+\contentsline {section}{\numberline {4.13}Infinite Recursion}{61}{section.4.13}
+\contentsline {section}{\numberline {4.14}Keyboard Input}{62}{section.4.14}
+\contentsline {section}{\numberline {4.15}Program Arguments and the MAIN Subroutine}{62}{section.4.15}
+\contentsline {section}{\numberline {4.16}Debugging}{63}{section.4.16}
+\contentsline {section}{\numberline {4.17}Glossary}{64}{section.4.17}
+\contentsline {section}{\numberline {4.18}Exercises}{65}{section.4.18}
+\contentsline {chapter}{\numberline {5}Fruitful Subroutines}{69}{chapter.5}
+\contentsline {section}{\numberline {5.1}Return Values}{69}{section.5.1}
+\contentsline {section}{\numberline {5.2}Incremental Development}{71}{section.5.2}
+\contentsline {section}{\numberline {5.3}Composition}{73}{section.5.3}
+\contentsline {section}{\numberline {5.4}Boolean Functions}{73}{section.5.4}
+\contentsline {section}{\numberline {5.5}A Complete Programming Language}{75}{section.5.5}
+\contentsline {section}{\numberline {5.6}More Recursion}{75}{section.5.6}
+\contentsline {section}{\numberline {5.7}Leap of Faith}{77}{section.5.7}
+\contentsline {section}{\numberline {5.8}One More Example}{78}{section.5.8}
+\contentsline {section}{\numberline {5.9}Checking Types}{79}{section.5.9}
+\contentsline {section}{\numberline {5.10}Multi Subroutines}{80}{section.5.10}
+\contentsline {section}{\numberline {5.11}Debugging}{81}{section.5.11}
+\contentsline {section}{\numberline {5.12}Glossary}{82}{section.5.12}
+\contentsline {section}{\numberline {5.13}Exercises}{83}{section.5.13}
+\contentsline {chapter}{\numberline {6}Iteration}{85}{chapter.6}
+\contentsline {section}{\numberline {6.1}Assignment Versus Equality}{85}{section.6.1}
+\contentsline {section}{\numberline {6.2}Reassignment}{86}{section.6.2}
+\contentsline {section}{\numberline {6.3}Updating Variables}{86}{section.6.3}
+\contentsline {section}{\numberline {6.4}The {\tt while} Statement}{87}{section.6.4}
+\contentsline {section}{\numberline {6.5}Local Variables and Variable Scoping}{89}{section.6.5}
+\contentsline {section}{\numberline {6.6}Control Flow Statements ({\tt last}, {\tt next}, etc.)}{91}{section.6.6}
+\contentsline {section}{\numberline {6.7}Square Roots}{93}{section.6.7}
+\contentsline {section}{\numberline {6.8}Algorithms}{95}{section.6.8}
+\contentsline {section}{\numberline {6.9}Debugging}{95}{section.6.9}
+\contentsline {section}{\numberline {6.10}Glossary}{96}{section.6.10}
+\contentsline {section}{\numberline {6.11}Exercises}{96}{section.6.11}
+\contentsline {chapter}{\numberline {7}Strings}{99}{chapter.7}
+\contentsline {section}{\numberline {7.1}A String is a Sequence}{99}{section.7.1}
+\contentsline {section}{\numberline {7.2}Common String Operators}{100}{section.7.2}
+\contentsline {subsection}{\numberline {7.2.1}String Length}{100}{subsection.7.2.1}
+\contentsline {subsection}{\numberline {7.2.2}Searching For a Substring Within the String}{100}{subsection.7.2.2}
+\contentsline {subsection}{\numberline {7.2.3}Extracting a Substring from a String}{101}{subsection.7.2.3}
+\contentsline {subsection}{\numberline {7.2.4}A Few Other Useful String Functions or Methods}{102}{subsection.7.2.4}
+\contentsline {subsubsection}{\numberline {7.2.4.1}flip}{102}{subsubsection.7.2.4.1}
+\contentsline {subsubsection}{\numberline {7.2.4.2}split}{102}{subsubsection.7.2.4.2}
+\contentsline {subsubsection}{\numberline {7.2.4.3}String Concatenation}{103}{subsubsection.7.2.4.3}
+\contentsline {subsubsection}{\numberline {7.2.4.4}Splitting on Words}{103}{subsubsection.7.2.4.4}
+\contentsline {subsubsection}{\numberline {7.2.4.5}join}{104}{subsubsection.7.2.4.5}
+\contentsline {subsubsection}{\numberline {7.2.4.6}Changing the Case}{104}{subsubsection.7.2.4.6}
+\contentsline {section}{\numberline {7.3}String Traversal With a {\tt while} or {\tt for} Loop}{104}{section.7.3}
+\contentsline {section}{\numberline {7.4}Looping and Counting}{106}{section.7.4}
+\contentsline {section}{\numberline {7.5}Regular Expressions (Regexes)}{106}{section.7.5}
+\contentsline {section}{\numberline {7.6}Using Regexes}{107}{section.7.6}
+\contentsline {section}{\numberline {7.7}Building your Regex Patterns}{109}{section.7.7}
+\contentsline {subsection}{\numberline {7.7.1}Literal Matching}{109}{subsection.7.7.1}
+\contentsline {subsection}{\numberline {7.7.2}Wildcards and Character Classes}{109}{subsection.7.7.2}
+\contentsline {subsection}{\numberline {7.7.3}Quantifiers}{110}{subsection.7.7.3}
+\contentsline {subsection}{\numberline {7.7.4}Anchors and Assertions}{111}{subsection.7.7.4}
+\contentsline {subsubsection}{\numberline {7.7.4.1}Anchors}{111}{subsubsection.7.7.4.1}
+\contentsline {subsubsection}{\numberline {7.7.4.2}Look-Around Assertions}{112}{subsubsection.7.7.4.2}
+\contentsline {subsubsection}{\numberline {7.7.4.3}Code Assertions}{112}{subsubsection.7.7.4.3}
+\contentsline {subsection}{\numberline {7.7.5}Alternation}{113}{subsection.7.7.5}
+\contentsline {subsection}{\numberline {7.7.6}Grouping and Capturing}{114}{subsection.7.7.6}
+\contentsline {subsection}{\numberline {7.7.7}Adverbs (a.k.a. Modifiers)}{114}{subsection.7.7.7}
+\contentsline {subsection}{\numberline {7.7.8}Exercises on Regexes}{115}{subsection.7.7.8}
+\contentsline {section}{\numberline {7.8}Putting It All Together}{116}{section.7.8}
+\contentsline {subsection}{\numberline {7.8.1}Extracting Dates}{116}{subsection.7.8.1}
+\contentsline {subsection}{\numberline {7.8.2}Extracting an IP Address}{117}{subsection.7.8.2}
+\contentsline {section}{\numberline {7.9}Substitutions}{118}{section.7.9}
+\contentsline {subsection}{\numberline {7.9.1}The {\tt subst} Method}{119}{subsection.7.9.1}
+\contentsline {subsection}{\numberline {7.9.2}The {\tt s/search/replace/} Construct}{119}{subsection.7.9.2}
+\contentsline {subsection}{\numberline {7.9.3}Using Captures}{120}{subsection.7.9.3}
+\contentsline {subsection}{\numberline {7.9.4}Adverbs}{120}{subsection.7.9.4}
+\contentsline {section}{\numberline {7.10}Debugging}{120}{section.7.10}
+\contentsline {section}{\numberline {7.11}Glossary}{122}{section.7.11}
+\contentsline {section}{\numberline {7.12}Exercises}{123}{section.7.12}
+\contentsline {chapter}{\numberline {8}Case Study: Word Play}{127}{chapter.8}
+\contentsline {section}{\numberline {8.1}Reading from and Writing to Files}{127}{section.8.1}
+\contentsline {section}{\numberline {8.2}Reading Word Lists}{129}{section.8.2}
+\contentsline {section}{\numberline {8.3}Exercises}{130}{section.8.3}
+\contentsline {section}{\numberline {8.4}Search}{130}{section.8.4}
+\contentsline {subsection}{\numberline {8.4.1}Words Longer Than 20 Characters (Solution)}{130}{subsection.8.4.1}
+\contentsline {subsection}{\numberline {8.4.2}Words with No ``e'' (Solution)}{131}{subsection.8.4.2}
+\contentsline {subsection}{\numberline {8.4.3}Avoiding Other Letters (Solution)}{132}{subsection.8.4.3}
+\contentsline {subsection}{\numberline {8.4.4}Using Only Some Letters (Solution)}{133}{subsection.8.4.4}
+\contentsline {subsection}{\numberline {8.4.5}Using All Letters of a List (Solution)}{134}{subsection.8.4.5}
+\contentsline {subsection}{\numberline {8.4.6}Alphabetic Order (Solution)}{134}{subsection.8.4.6}
+\contentsline {subsection}{\numberline {8.4.7}Another Example of Reduction to a Previously Solved Problem}{135}{subsection.8.4.7}
+\contentsline {section}{\numberline {8.5}Debugging}{136}{section.8.5}
+\contentsline {section}{\numberline {8.6}Glossary}{136}{section.8.6}
+\contentsline {section}{\numberline {8.7}Exercises}{136}{section.8.7}
+\contentsline {chapter}{\numberline {9}Arrays and Lists}{139}{chapter.9}
+\contentsline {section}{\numberline {9.1}Lists and Arrays Are Sequences}{139}{section.9.1}
+\contentsline {section}{\numberline {9.2}Arrays Are Mutable}{141}{section.9.2}
+\contentsline {section}{\numberline {9.3}Adding New Elements to an Array or Removing Some}{143}{section.9.3}
+\contentsline {section}{\numberline {9.4}Stacks and Queues}{145}{section.9.4}
+\contentsline {section}{\numberline {9.5}Other Ways to Modify an Array}{146}{section.9.5}
+\contentsline {section}{\numberline {9.6}Traversing a List}{148}{section.9.6}
+\contentsline {section}{\numberline {9.7}New Looping Constructs}{149}{section.9.7}
+\contentsline {section}{\numberline {9.8}Map, Filter and Reduce}{151}{section.9.8}
+\contentsline {subsection}{\numberline {9.8.1}Reducing a List to a Value}{151}{subsection.9.8.1}
+\contentsline {subsection}{\numberline {9.8.2}The Reduction Metaoperator}{152}{subsection.9.8.2}
+\contentsline {subsection}{\numberline {9.8.3}Mapping a List to Another List}{152}{subsection.9.8.3}
+\contentsline {subsection}{\numberline {9.8.4}Filtering the Elements of a List}{153}{subsection.9.8.4}
+\contentsline {subsection}{\numberline {9.8.5}Higher Order Functions and Functional Programming}{154}{subsection.9.8.5}
+\contentsline {section}{\numberline {9.9}Fixed-Size, Typed and Shaped Arrays}{155}{section.9.9}
+\contentsline {section}{\numberline {9.10}Multidimensional Arrays}{156}{section.9.10}
+\contentsline {section}{\numberline {9.11}Sorting Arrays or Lists}{157}{section.9.11}
+\contentsline {section}{\numberline {9.12}More Advanced Sorting Techniques}{158}{section.9.12}
+\contentsline {section}{\numberline {9.13}Debugging}{161}{section.9.13}
+\contentsline {section}{\numberline {9.14}Glossary}{162}{section.9.14}
+\contentsline {section}{\numberline {9.15}Exercises}{162}{section.9.15}
+\contentsline {chapter}{\numberline {10}Hashes}{165}{chapter.10}
+\contentsline {section}{\numberline {10.1}A Hash is a Mapping}{165}{section.10.1}
+\contentsline {section}{\numberline {10.2}Common Operations on Hashes}{168}{section.10.2}
+\contentsline {section}{\numberline {10.3}Hash as a Collection of Counters}{169}{section.10.3}
+\contentsline {section}{\numberline {10.4}Looping and Hashes}{170}{section.10.4}
+\contentsline {section}{\numberline {10.5}Reverse Lookup}{171}{section.10.5}
+\contentsline {section}{\numberline {10.6}Testing for Existence}{172}{section.10.6}
+\contentsline {section}{\numberline {10.7}Hash Keys Are Unique}{173}{section.10.7}
+\contentsline {section}{\numberline {10.8}Hashes and Arrays}{174}{section.10.8}
+\contentsline {section}{\numberline {10.9}Memos}{176}{section.10.9}
+\contentsline {section}{\numberline {10.10}Hashes as Dispatch Tables}{178}{section.10.10}
+\contentsline {section}{\numberline {10.11}Global Variables}{179}{section.10.11}
+\contentsline {section}{\numberline {10.12}Debugging}{180}{section.10.12}
+\contentsline {section}{\numberline {10.13}Glossary}{180}{section.10.13}
+\contentsline {section}{\numberline {10.14}Exercises}{181}{section.10.14}
+\contentsline {chapter}{\numberline {11}Case Study: Data Structure Selection}{183}{chapter.11}
+\contentsline {section}{\numberline {11.1}The Ternary Conditional Operator}{183}{section.11.1}
+\contentsline {section}{\numberline {11.2}The {\tt given ... when} ``Switch'' Statement}{184}{section.11.2}
+\contentsline {section}{\numberline {11.3}Subroutine Named and Optional Parameters}{185}{section.11.3}
+\contentsline {subsection}{\numberline {11.3.1}Named Parameters}{186}{subsection.11.3.1}
+\contentsline {subsection}{\numberline {11.3.2}Optional Parameters}{186}{subsection.11.3.2}
+\contentsline {section}{\numberline {11.4}Word Frequency Analysis}{187}{section.11.4}
+\contentsline {section}{\numberline {11.5}Random Numbers}{188}{section.11.5}
+\contentsline {section}{\numberline {11.6}Word Histogram}{189}{section.11.6}
+\contentsline {section}{\numberline {11.7}Most Common Words}{191}{section.11.7}
+\contentsline {section}{\numberline {11.8}Optional Parameters}{192}{section.11.8}
+\contentsline {section}{\numberline {11.9}Hash Subtraction}{193}{section.11.9}
+\contentsline {section}{\numberline {11.10}Constructing New Operators}{194}{section.11.10}
+\contentsline {section}{\numberline {11.11}Sets, Bags and Mixes}{194}{section.11.11}
+\contentsline {section}{\numberline {11.12}Random Words}{196}{section.11.12}
+\contentsline {section}{\numberline {11.13}Markov Analysis}{197}{section.11.13}
+\contentsline {section}{\numberline {11.14}Data Structures}{199}{section.11.14}
+\contentsline {section}{\numberline {11.15}Building Your Own Data Structures}{200}{section.11.15}
+\contentsline {subsection}{\numberline {11.15.1}Linked Lists}{201}{subsection.11.15.1}
+\contentsline {subsection}{\numberline {11.15.2}Trees}{202}{subsection.11.15.2}
+\contentsline {subsection}{\numberline {11.15.3}Binary Heaps}{202}{subsection.11.15.3}
+\contentsline {section}{\numberline {11.16}Debugging}{206}{section.11.16}
+\contentsline {section}{\numberline {11.17}Glossary}{207}{section.11.17}
+\contentsline {section}{\numberline {11.18}Exercises: Huffman Coding}{207}{section.11.18}
+\contentsline {subsection}{\numberline {11.18.1}Variable-Length Codes}{207}{subsection.11.18.1}
+\contentsline {subsection}{\numberline {11.18.2}The Frequency Table}{208}{subsection.11.18.2}
+\contentsline {subsection}{\numberline {11.18.3}Building the Huffman Code}{209}{subsection.11.18.3}
+\contentsline {part}{II\hspace {1em}Moving Forward}{213}{part.2}
+\contentsline {chapter}{\numberline {12}Classes and Objects}{217}{chapter.12}
+\contentsline {section}{\numberline {12.1}Objects, Methods and Object-Oriented Programming}{217}{section.12.1}
+\contentsline {section}{\numberline {12.2}Programmer-Defined Types}{219}{section.12.2}
+\contentsline {section}{\numberline {12.3}Attributes}{220}{section.12.3}
+\contentsline {section}{\numberline {12.4}Creating Methods}{222}{section.12.4}
+\contentsline {section}{\numberline {12.5}Rectangles and Object Composition}{224}{section.12.5}
+\contentsline {section}{\numberline {12.6}Instances as Return Values}{226}{section.12.6}
+\contentsline {section}{\numberline {12.7}Inheritance}{226}{section.12.7}
+\contentsline {subsection}{\numberline {12.7.1}The Pixel Class}{227}{subsection.12.7.1}
+\contentsline {subsection}{\numberline {12.7.2}The MovablePoint Class}{228}{subsection.12.7.2}
+\contentsline {subsection}{\numberline {12.7.3}Multiple Inheritance: Attractive, but Is It Wise?}{230}{subsection.12.7.3}
+\contentsline {section}{\numberline {12.8}Roles and Composition}{230}{section.12.8}
+\contentsline {subsection}{\numberline {12.8.1}Classes and Roles: An Example}{231}{subsection.12.8.1}
+\contentsline {subsection}{\numberline {12.8.2}Role Composition and Code Reuse}{233}{subsection.12.8.2}
+\contentsline {subsection}{\numberline {12.8.3}Roles, Classes, Objects, and Types}{234}{subsection.12.8.3}
+\contentsline {section}{\numberline {12.9}Method Delegation}{235}{section.12.9}
+\contentsline {section}{\numberline {12.10}Polymorphism}{236}{section.12.10}
+\contentsline {section}{\numberline {12.11}Encapsulation}{237}{section.12.11}
+\contentsline {subsection}{\numberline {12.11.1}Private Methods}{238}{subsection.12.11.1}
+\contentsline {subsection}{\numberline {12.11.2}Constructing Objects with Private Attributes}{239}{subsection.12.11.2}
+\contentsline {section}{\numberline {12.12}Interface and Implementation}{241}{section.12.12}
+\contentsline {section}{\numberline {12.13}Object-Oriented Programming: A Tale}{242}{section.12.13}
+\contentsline {subsection}{\numberline {12.13.1}The Fable of the Shepherd}{242}{subsection.12.13.1}
+\contentsline {subsection}{\numberline {12.13.2}The Moral}{243}{subsection.12.13.2}
+\contentsline {subsubsection}{\numberline {12.13.2.1}Delegation}{243}{subsubsection.12.13.2.1}
+\contentsline {subsubsection}{\numberline {12.13.2.2}Encapsulation}{243}{subsubsection.12.13.2.2}
+\contentsline {subsubsection}{\numberline {12.13.2.3}Polymorphism}{243}{subsubsection.12.13.2.3}
+\contentsline {section}{\numberline {12.14}Debugging}{244}{section.12.14}
+\contentsline {subsection}{\numberline {12.14.1}The Perl~6 Debugger}{244}{subsection.12.14.1}
+\contentsline {subsection}{\numberline {12.14.2}Getting Some Help}{244}{subsection.12.14.2}
+\contentsline {subsection}{\numberline {12.14.3}Stepping Through the Code}{245}{subsection.12.14.3}
+\contentsline {subsection}{\numberline {12.14.4}Stopping at the Right Place with Breakpoints}{245}{subsection.12.14.4}
+\contentsline {subsubsection}{\numberline {12.14.4.1}You're all set to start using the debugger}{245}{subsubsection.12.14.4.1}
+\contentsline {subsection}{\numberline {12.14.5}Logging Information with Trace Points}{246}{subsection.12.14.5}
+\contentsline {subsection}{\numberline {12.14.6}Stepping Through a Regex Match}{246}{subsection.12.14.6}
+\contentsline {section}{\numberline {12.15}Glossary}{247}{section.12.15}
+\contentsline {chapter}{\numberline {13}Regexes and Grammars}{249}{chapter.13}
+\contentsline {section}{\numberline {13.1}A Brief Refresher}{249}{section.13.1}
+\contentsline {section}{\numberline {13.2}Declarative Programming}{250}{section.13.2}
+\contentsline {section}{\numberline {13.3}Captures}{251}{section.13.3}
+\contentsline {section}{\numberline {13.4}Named Rules (a.k.a. Subrules)}{252}{section.13.4}
+\contentsline {section}{\numberline {13.5}Grammars}{254}{section.13.5}
+\contentsline {section}{\numberline {13.6}Grammar Inheritance}{256}{section.13.6}
+\contentsline {section}{\numberline {13.7}Actions Objects}{257}{section.13.7}
+\contentsline {section}{\numberline {13.8}A grammar for Parsing JSON}{259}{section.13.8}
+\contentsline {subsection}{\numberline {13.8.1}The JSON Format}{259}{subsection.13.8.1}
+\contentsline {subsection}{\numberline {13.8.2}Our JSON Sample}{259}{subsection.13.8.2}
+\contentsline {subsection}{\numberline {13.8.3}Writing the JSON Grammar Step by Step}{260}{subsection.13.8.3}
+\contentsline {subsubsection}{\numberline {13.8.3.1}Numbers}{260}{subsubsection.13.8.3.1}
+\contentsline {subsubsection}{\numberline {13.8.3.2}JSON Strings}{260}{subsubsection.13.8.3.2}
+\contentsline {subsubsection}{\numberline {13.8.3.3}JSON Objects}{261}{subsubsection.13.8.3.3}
+\contentsline {subsubsection}{\numberline {13.8.3.4}JSON Arrays}{261}{subsubsection.13.8.3.4}
+\contentsline {subsubsection}{\numberline {13.8.3.5}JSON Values}{261}{subsubsection.13.8.3.5}
+\contentsline {subsection}{\numberline {13.8.4}The JSON Grammar}{262}{subsection.13.8.4}
+\contentsline {subsection}{\numberline {13.8.5}Adding Actions}{263}{subsection.13.8.5}
+\contentsline {section}{\numberline {13.9}Inheritance and Mutable Grammars}{265}{section.13.9}
+\contentsline {section}{\numberline {13.10}Debugging}{266}{section.13.10}
+\contentsline {section}{\numberline {13.11}Glossary}{268}{section.13.11}
+\contentsline {section}{\numberline {13.12}Exercise: A Grammar for an Arithmetic Calculator}{269}{section.13.12}
+\contentsline {chapter}{\numberline {14}Functional Programming in Perl}{271}{chapter.14}
+\contentsline {section}{\numberline {14.1}Higher-Order Functions}{271}{section.14.1}
+\contentsline {subsection}{\numberline {14.1.1}A Refresher on Functions as First-Class Objects}{271}{subsection.14.1.1}
+\contentsline {subsection}{\numberline {14.1.2}Anonymous Subroutines and Lambdas}{273}{subsection.14.1.2}
+\contentsline {subsection}{\numberline {14.1.3}Closures}{274}{subsection.14.1.3}
+\contentsline {section}{\numberline {14.2}List Processing and Pipeline Programming}{276}{section.14.2}
+\contentsline {subsection}{\numberline {14.2.1}Feed and Backward Feed Operators}{277}{subsection.14.2.1}
+\contentsline {subsection}{\numberline {14.2.2}The Reduction Metaoperator}{278}{subsection.14.2.2}
+\contentsline {subsection}{\numberline {14.2.3}The Hyperoperator}{278}{subsection.14.2.3}
+\contentsline {subsection}{\numberline {14.2.4}The Cross (X) and Zip (Z) Operators}{279}{subsection.14.2.4}
+\contentsline {subsection}{\numberline {14.2.5}List Operators, a Summary}{279}{subsection.14.2.5}
+\contentsline {subsection}{\numberline {14.2.6}Creating New Operators}{280}{subsection.14.2.6}
+\contentsline {section}{\numberline {14.3}Creating Your Own Map-Like Functions}{283}{section.14.3}
+\contentsline {subsection}{\numberline {14.3.1}Custom Versions of map, grep, etc.}{283}{subsection.14.3.1}
+\contentsline {subsubsection}{\numberline {14.3.1.1}my-map, a pure Perl version of map}{284}{subsubsection.14.3.1.1}
+\contentsline {subsubsection}{\numberline {14.3.1.2}my-grep}{284}{subsubsection.14.3.1.2}
+\contentsline {subsection}{\numberline {14.3.2}Our Own Version of a Sort Function}{284}{subsection.14.3.2}
+\contentsline {subsection}{\numberline {14.3.3}An Iterator Version of map}{286}{subsection.14.3.3}
+\contentsline {subsection}{\numberline {14.3.4}An Iterator Version of grep}{287}{subsection.14.3.4}
+\contentsline {section}{\numberline {14.4}The gather and take Construct}{289}{section.14.4}
+\contentsline {section}{\numberline {14.5}Lazy Lists and the Sequence Operator}{291}{section.14.5}
+\contentsline {subsection}{\numberline {14.5.1}The Sequence Operator}{291}{subsection.14.5.1}
+\contentsline {subsection}{\numberline {14.5.2}Infinite Lists}{293}{subsection.14.5.2}
+\contentsline {subsection}{\numberline {14.5.3}Using an Explicit Generator}{293}{subsection.14.5.3}
+\contentsline {section}{\numberline {14.6}Currying and the Whatever Operator}{295}{section.14.6}
+\contentsline {subsection}{\numberline {14.6.1}Creating a Curried Subroutine}{295}{subsection.14.6.1}
+\contentsline {subsection}{\numberline {14.6.2}Currying an Existing Subroutine with the {\tt assuming} Method}{296}{subsection.14.6.2}
+\contentsline {subsection}{\numberline {14.6.3}Currying with the Whatever Star Parameter}{297}{subsection.14.6.3}
+\contentsline {section}{\numberline {14.7}Using a Functional Programming Style}{298}{section.14.7}
+\contentsline {subsection}{\numberline {14.7.1}The Merge Sort Algorithm}{298}{subsection.14.7.1}
+\contentsline {subsection}{\numberline {14.7.2}A Non-Functional Implementation of Merge Sort}{298}{subsection.14.7.2}
+\contentsline {subsection}{\numberline {14.7.3}A Functional Implementation of Merge Sort}{300}{subsection.14.7.3}
+\contentsline {section}{\numberline {14.8}Debugging}{301}{section.14.8}
+\contentsline {section}{\numberline {14.9}Glossary}{304}{section.14.9}
+\contentsline {section}{\numberline {14.10}Exercise: Quick Sort}{305}{section.14.10}
+\contentsline {chapter}{\numberline {15}Some Final Advice}{307}{chapter.15}
+\contentsline {section}{\numberline {15.1}Make it Clear, Keep it Simple}{307}{section.15.1}
+\contentsline {section}{\numberline {15.2}Dos and Don'ts}{308}{section.15.2}
+\contentsline {section}{\numberline {15.3}Use Idioms}{310}{section.15.3}
+\contentsline {section}{\numberline {15.4}What's Next?}{312}{section.15.4}
+\contentsline {chapter}{\numberline {A}Solutions to the Exercises}{315}{appendix.A}
+\contentsline {section}{\numberline {A.1}Exercises of Chapter~\ref {funcchap}: Functions and Subroutines}{315}{section.A.1}
+\contentsline {subsection}{\numberline {A.1.1}Exercise~\ref {right_justify}: Subroutine right-justify (p.~\pageref {right_justify})}{315}{subsection.A.1.1}
+\contentsline {subsection}{\numberline {A.1.2}Exercise~\ref {do_it_twice}: Subroutine do-twice (p.~\pageref {do_it_twice})}{316}{subsection.A.1.2}
+\contentsline {subsection}{\numberline {A.1.3}Exercise~\ref {draw_a_grid}: Subroutine print-grid (p.~\pageref {draw_a_grid})}{318}{subsection.A.1.3}
+\contentsline {section}{\numberline {A.2}Exercises of Chapter~\ref {conditionals}: Conditionals and Recursion}{320}{section.A.2}
+\contentsline {subsection}{\numberline {A.2.1}Subroutine do-n-times, Exercise Suggested in Section~\ref {do_n_times} (p.~\pageref {do_n_times})}{320}{subsection.A.2.1}
+\contentsline {subsection}{\numberline {A.2.2}Exercise~\ref {int_div_modulo}: Days, Hours, Minutes, and Seconds (p.~\pageref {int_div_modulo})}{320}{subsection.A.2.2}
+\contentsline {subsection}{\numberline {A.2.3}Exercise~\ref {fermat_ex}: Fermat's Theorem (p.~\pageref {fermat_ex})}{321}{subsection.A.2.3}
+\contentsline {subsection}{\numberline {A.2.4}Exercise~\ref {triangle}: Is it a Triangle? (p.~\pageref {triangle})}{322}{subsection.A.2.4}
+\contentsline {subsection}{\numberline {A.2.5}Exercise~\ref {fibonacci}: The Fibonacci Numbers (p.~\pageref {fibonacci})}{323}{subsection.A.2.5}
+\contentsline {subsection}{\numberline {A.2.6}Exercise~\ref {sub_recurse}: The {\tt recurse} Subroutine (p.~\pageref {sub_recurse})}{323}{subsection.A.2.6}
+\contentsline {section}{\numberline {A.3}Exercises of Chapter~\ref {fruitchap}: Fruitful Functions}{325}{section.A.3}
+\contentsline {subsection}{\numberline {A.3.1}Compare, exercise at the end of Section~\ref {compare} (p.~\pageref {compare})}{325}{subsection.A.3.1}
+\contentsline {subsection}{\numberline {A.3.2}Hypotenuse, exercise at the end of Section~\ref {hypotenuse} (p.~\pageref {hypotenuse})}{326}{subsection.A.3.2}
+\contentsline {subsection}{\numberline {A.3.3}Chained Relational Operators(in Section~\ref {isbetween})}{327}{subsection.A.3.3}
+\contentsline {subsection}{\numberline {A.3.4}The Ackermann Function (Exercise~\ref {ackermann})}{327}{subsection.A.3.4}
+\contentsline {subsection}{\numberline {A.3.5}Palindromes (Exercise~\ref {palindrome})}{328}{subsection.A.3.5}
+\contentsline {subsection}{\numberline {A.3.6}Powers (Exercise~\ref {power})}{329}{subsection.A.3.6}
+\contentsline {subsection}{\numberline {A.3.7}Finding the GCD of Two Numbers, Exercise~\ref {gcd} (p.~\pageref {gcd})}{330}{subsection.A.3.7}
+\contentsline {section}{\numberline {A.4}Exercises of Chapter~\ref {iteration} (Iteration)}{332}{section.A.4}
+\contentsline {subsection}{\numberline {A.4.1}Exercise~\ref {test_sqrt}: Square Root (p.~\pageref {test_sqrt})}{332}{subsection.A.4.1}
+\contentsline {subsection}{\numberline {A.4.2}Exercise~\ref {pi_estimate}: Pi Estimate (p.~\pageref {pi_estimate})}{333}{subsection.A.4.2}
+\contentsline {section}{\numberline {A.5}Exercises of Chapter~\ref {strings} (Strings)}{334}{section.A.5}
+\contentsline {subsection}{\numberline {A.5.1}Exercise in Section~\ref {stringtraversal}: String Traversal (p.~\pageref {stringtraversal})}{334}{subsection.A.5.1}
+\contentsline {subsection}{\numberline {A.5.2}Exercise in Section~\ref {stringtraversal}: The Ducklings (p.~\pageref {stringtraversal})}{335}{subsection.A.5.2}
+\contentsline {subsection}{\numberline {A.5.3}Exercise in Section~\ref {stringtraversal}: Counting the Letters of a String (p.~\pageref {stringtraversal})}{336}{subsection.A.5.3}
+\contentsline {subsection}{\numberline {A.5.4}Section~\ref {regex_loop}: Simulating a Regex with a Loop (p.~\pageref {regex_loop})}{336}{subsection.A.5.4}
+\contentsline {subsection}{\numberline {A.5.5}Exercises in Subsection~\ref {regex_exercises}: Regex Exercises (p.~\pageref {regex_exercises})}{338}{subsection.A.5.5}
+\contentsline {subsubsection}{\numberline {A.5.5.1}Ten digits in a row}{339}{subsubsection.A.5.5.1}
+\contentsline {subsubsection}{\numberline {A.5.5.2}An octal number}{339}{subsubsection.A.5.5.2}
+\contentsline {subsubsection}{\numberline {A.5.5.3}First word at the start of the string}{340}{subsubsection.A.5.5.3}
+\contentsline {subsubsection}{\numberline {A.5.5.4}First word starting with an ``a''}{340}{subsubsection.A.5.5.4}
+\contentsline {subsubsection}{\numberline {A.5.5.5}First word starting with a lowercase vowel}{340}{subsubsection.A.5.5.5}
+\contentsline {subsubsection}{\numberline {A.5.5.6}A mobile number}{340}{subsubsection.A.5.5.6}
+\contentsline {subsubsection}{\numberline {A.5.5.7}First word starting with a vowel (lower- or uppercase)}{340}{subsubsection.A.5.5.7}
+\contentsline {subsubsection}{\numberline {A.5.5.8}Repeated letters}{341}{subsubsection.A.5.5.8}
+\contentsline {subsection}{\numberline {A.5.6}Exercise in Section~\ref {isreverse}: {\tt is-reverse} Subroutine (p.~\pageref {isreverse})}{341}{subsection.A.5.6}
+\contentsline {subsection}{\numberline {A.5.7}Exercise~\ref {count_a}: Counting Letters (p.~\pageref {count_a})}{341}{subsection.A.5.7}
+\contentsline {subsection}{\numberline {A.5.8}Exercise~\ref {islower}: Lowercase Letters (p.~\pageref {islower})}{342}{subsection.A.5.8}
+\contentsline {subsection}{\numberline {A.5.9}Exercise~\ref {rotate}: Caesar's Cipher (p.~\pageref {rotate})}{344}{subsection.A.5.9}
+\contentsline {section}{\numberline {A.6}Exercises of Chapter~\ref {wordplay} (Word Play)}{345}{section.A.6}
+\contentsline {subsection}{\numberline {A.6.1}Exercise~\ref {cartalk}: Consecutive Double Letters (p.~\pageref {cartalk})}{345}{subsection.A.6.1}
+\contentsline {subsection}{\numberline {A.6.2}Exercise~\ref {cartalk2}: Palindromes in Odometers (p.~\pageref {cartalk2})}{346}{subsection.A.6.2}
+\contentsline {subsection}{\numberline {A.6.3}Exercise~\ref {cartalk3}: Palindromes in Ages (p.~\pageref {cartalk3})}{347}{subsection.A.6.3}
+\contentsline {section}{\numberline {A.7}Exercises of Chapter~\ref {arrays} (Arrays and Lists)}{348}{section.A.7}
+\contentsline {subsection}{\numberline {A.7.1}Exercise of Section~\ref {stacks_queues}: Implementing a Queue (p.~\pageref {exercise_queue})}{348}{subsection.A.7.1}
+\contentsline {subsubsection}{\numberline {A.7.1.1}Improving the Queue with Subroutine Signatures}{348}{subsubsection.A.7.1.1}
+\contentsline {subsubsection}{\numberline {A.7.1.2}Slurpy (or variadic) parameters}{349}{subsubsection.A.7.1.2}
+\contentsline {subsubsection}{\numberline {A.7.1.3}A queue using {\tt shift} and {\tt append}}{349}{subsubsection.A.7.1.3}
+\contentsline {subsubsection}{\numberline {A.7.1.4}Exceptions}{350}{subsubsection.A.7.1.4}
+\contentsline {subsubsection}{\numberline {A.7.1.5}Encapsulating the data}{351}{subsubsection.A.7.1.5}
+\contentsline {subsection}{\numberline {A.7.2}Exercise of Section~\ref {modify_array}: Other Ways to Modify an Array (p.~\pageref {splice_exercise})}{352}{subsection.A.7.2}
+\contentsline {subsubsection}{\numberline {A.7.2.1}Simulating the {\tt pop} function}{352}{subsubsection.A.7.2.1}
+\contentsline {subsubsection}{\numberline {A.7.2.2}Simulating the {\tt push} function}{353}{subsubsection.A.7.2.2}
+\contentsline {subsubsection}{\numberline {A.7.2.3}Simulating the {\tt unshift} function}{353}{subsubsection.A.7.2.3}
+\contentsline {subsubsection}{\numberline {A.7.2.4}Simulating the {\tt delete} subscript adverb}{353}{subsubsection.A.7.2.4}
+\contentsline {subsection}{\numberline {A.7.3}Exercise of Section~\ref {map_filter}: Mapping and Filtering the Elements of a List (p.~\pageref {exercise_squares})}{354}{subsection.A.7.3}
+\contentsline {subsection}{\numberline {A.7.4}Exercise of Section~\ref {advanced_sort}: Advanced Sorting Techniques (p.~\pageref {sort_exercise})}{354}{subsection.A.7.4}
+\contentsline {subsection}{\numberline {A.7.5}Exercise~\ref {nested_sum}: Nested Sum (p.~\pageref {nested_sum})}{355}{subsection.A.7.5}
+\contentsline {subsection}{\numberline {A.7.6}Exercise~\ref {cumsum}: Cumulative Sum (p.~\pageref {cumsum})}{356}{subsection.A.7.6}
+\contentsline {subsection}{\numberline {A.7.7}Exercise~\ref {middle}: Middle (p.~\pageref {middle})}{357}{subsection.A.7.7}
+\contentsline {subsection}{\numberline {A.7.8}Exercise~\ref {chop}: Chop (p.~\pageref {chop})}{357}{subsection.A.7.8}
+\contentsline {subsection}{\numberline {A.7.9}Exercise~\ref {is_sorted}: Subroutine {\tt is-sorted} (p.~\pageref {is_sorted})}{358}{subsection.A.7.9}
+\contentsline {subsection}{\numberline {A.7.10}Exercise~\ref {is_anagram}: Subroutine {\tt is-anagram} (p.~\pageref {is_anagram})}{358}{subsection.A.7.10}
+\contentsline {subsection}{\numberline {A.7.11}Exercise~\ref {has_duplicates}: Subroutine {\tt has-duplicates} (p.~\pageref {has_duplicates})}{359}{subsection.A.7.11}
+\contentsline {subsection}{\numberline {A.7.12}Exercise~\ref {birthdays}: Simulating the Birthday Paradox (p.~\pageref {birthdays})}{361}{subsection.A.7.12}
+\contentsline {subsection}{\numberline {A.7.13}Exercise~\ref {push_unshift}: Comparing {\tt push} and {\tt unshift} (p.~\pageref {push_unshift})}{362}{subsection.A.7.13}
+\contentsline {subsection}{\numberline {A.7.14}Exercise~\ref {bisection}: Bisection Search in a List (p.~\pageref {bisection})}{363}{subsection.A.7.14}
+\contentsline {subsection}{\numberline {A.7.15}Exercise~\ref {reverse_pair}: Reverse Pairs (p.~\pageref {reverse_pair})}{365}{subsection.A.7.15}
+\contentsline {subsubsection}{\numberline {A.7.15.1}Comparing bisection search with hash lookup}{365}{subsubsection.A.7.15.1}
+\contentsline {subsubsection}{\numberline {A.7.15.2}Creating and using a module}{366}{subsubsection.A.7.15.2}
+\contentsline {subsection}{\numberline {A.7.16}Exercise~\ref {interlock}: Interlocking Words (p.~\pageref {interlock})}{367}{subsection.A.7.16}
+\contentsline {section}{\numberline {A.8}Exercises of Chapter~\ref {hashes} (Hashes)}{368}{section.A.8}
+\contentsline {subsection}{\numberline {A.8.1}Exercise at the end of Section~\ref {hash_descr}: A hash Is a Mapping (p.~\pageref {ex_employees})}{368}{subsection.A.8.1}
+\contentsline {subsection}{\numberline {A.8.2}Exercise~\ref {wordlist2}: Storing the Word List into a Hash (p.~\pageref {wordlist2})}{369}{subsection.A.8.2}
+\contentsline {subsection}{\numberline {A.8.3}Exercise~\ref {mem_ackerman}: Memoizing the Ackermann Function (p.~\pageref {mem_ackerman})}{369}{subsection.A.8.3}
+\contentsline {subsection}{\numberline {A.8.4}Exercise~\ref {has_duplicates_hash}: Finding Duplicates with a Hash (p.~\pageref {has_duplicates_hash})}{371}{subsection.A.8.4}
+\contentsline {subsection}{\numberline {A.8.5}Exercise~\ref {exrotatepairs}: Rotate Pairs (p.~\pageref {exrotatepairs})}{371}{subsection.A.8.5}
+\contentsline {subsection}{\numberline {A.8.6}Exercise~\ref {homophones}: Homophones (p.~\pageref {homophones})}{372}{subsection.A.8.6}
+\contentsline {section}{\numberline {A.9}Exercises of Chapter~\ref {data_struct_sel}}{374}{section.A.9}
+\contentsline {subsection}{\numberline {A.9.1}Exercise in Section~\ref {given_when}: the {\tt given ... when} Switch Statement (p.~\pageref {proceed_ex})}{374}{subsection.A.9.1}
+\contentsline {subsection}{\numberline {A.9.2}Exercise in Section~\ref {operator_construction}: Constructing New Operators (p.~\pageref {fact_operator})}{375}{subsection.A.9.2}
+\contentsline {subsection}{\numberline {A.9.3}Exercise in Section~\ref {sets_and_bags}: Sets, Bags and Mixes (p.~\pageref {diff_with_set})}{377}{subsection.A.9.3}
+\contentsline {subsection}{\numberline {A.9.4}Exercise in Section~\ref {randomwords}: Random Words (p.~\pageref {randhist})}{378}{subsection.A.9.4}
+\contentsline {subsection}{\numberline {A.9.5}Exercise in Section~\ref {markov}: Markov Analysis (p.~\pageref {markov_analysis})}{379}{subsection.A.9.5}
+\contentsline {subsubsection}{\numberline {A.9.5.1}The {\tt MAIN} subroutine}{379}{subsubsection.A.9.5.1}
+\contentsline {subsubsection}{\numberline {A.9.5.2}Solution to the Markov analysis exercise}{380}{subsubsection.A.9.5.2}
+\contentsline {subsection}{\numberline {A.9.6}Exercises on the Huffman Code in Section~\ref {huffman_exercise} (p.~\pageref {huffman_exercise})}{381}{subsection.A.9.6}
+\contentsline {subsubsection}{\numberline {A.9.6.1}The Frequency Table (Section~\ref {letter_frequency})}{381}{subsubsection.A.9.6.1}
+\contentsline {subsubsection}{\numberline {A.9.6.2}Huffman Coding of a DNA Strand (Section~\ref {huffman_code_2})}{382}{subsubsection.A.9.6.2}
+\contentsline {subsubsection}{\numberline {A.9.6.3}Huffman Coding of a More Complex String (Section~\ref {huffman_code_2})}{383}{subsubsection.A.9.6.3}
+\contentsline {subsubsection}{\numberline {A.9.6.4}Encoding the Input String (Section~\ref {huffman_code_2})}{384}{subsubsection.A.9.6.4}
+\contentsline {subsubsection}{\numberline {A.9.6.5}Decoding the Pseudo-Morse String (Section~\ref {huffman_code_2})}{386}{subsubsection.A.9.6.5}
+\contentsline {section}{\numberline {A.10}Exercises of Chapter~\ref {regex_grammars}: Regexes and Grammars}{388}{section.A.10}
+\contentsline {subsection}{\numberline {A.10.1}Exercise in Section~\ref {february_rule}: Getting the February Dates Right (p.~\pageref {february_rule})}{388}{subsection.A.10.1}
+\contentsline {subsubsection}{\numberline {A.10.1.1}Recognizing a leap year}{388}{subsubsection.A.10.1.1}
+\contentsline {subsubsection}{\numberline {A.10.1.2}Back to the February date validation}{390}{subsubsection.A.10.1.2}
+\contentsline {subsection}{\numberline {A.10.2}Exercise~\ref {calculator} (p.~\pageref {calculator}): A Grammar for an Arithmetic Calculator}{390}{subsection.A.10.2}
+\contentsline {subsubsection}{\numberline {A.10.2.1}The Grammar}{390}{subsubsection.A.10.2.1}
+\contentsline {subsubsection}{\numberline {A.10.2.2}The actions}{391}{subsubsection.A.10.2.2}
+\contentsline {section}{\numberline {A.11}Exercises of Chapter~\ref {functional programming}: Functional Programming}{393}{section.A.11}
+\contentsline {subsection}{\numberline {A.11.1}Exercise~\ref {quicksort}: Making a Functional Implementation of Quick Sort)}{393}{subsection.A.11.1}
