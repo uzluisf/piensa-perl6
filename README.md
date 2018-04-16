@@ -1,1 +1,1 @@
-# piensa-perl6
+# thinkperl6
