@@ -273,26 +273,25 @@ En otros lenguages, el signo de intercalación (``\verb"^"'') o el acento circun
 \index{operator!set}
 
 
-\section{Values and Types}
+\section{Valores y Tipos}
 \label{values_and_types}
 \index{value}
 \index{type}
 \index{string}
 
-A {\bf value} is one of the basic things a program works with, like a
-letter or a number.  Some values we have seen so far are {\tt 2},
-{\tt 42}, and \verb'"Hello, World"'.
+Un {\bf valor} es una de las cosas básicas con la cual un programa funciona,
+como una letra o un número. Entre algunos de los valores que hemos visto hasta ahora
+están {\tt 2}, {\tt 42}, y \verb'"Hello, World"'.
 
-These values belong to different {\bf types}:
-{\tt 2} is an {\bf integer}, {\tt 40 + 2} is also an integer, 
-{\tt 84/2} is a {\bf rational number},
-and \verb"'Hello, World'" is a {\bf string}, so called 
-because the characters it contains are strung together.
+Estos valores pertenecen a diferentes {\bf tipos}: 
+{\tt 2} es un número {\bf entero}, {\tt 40 + 2} es también un entero, 
+{\tt 84/2} es un número {\bf racional}, y  \verb"'Hello, World'" es una
+{\bf cadena de texto}, llamada así porque los carácteres que contiene están
+unidos juntos.
 \index{integer}
 \index{floating-point}
 
-If you are not sure what type a value has, Perl can
-tell you:
+Si no estás seguro del tipo que un valor tiene, Perl puede decirte:
 
 \begin{verbatim}
 > say 42.WHAT;
@@ -308,14 +307,12 @@ tell you:
 >
 \end{verbatim}
 %
-In these instructions, {\tt .WHAT} is known as an 
-introspection method, that is a kind of method which 
-will tell you \emph{what} (of  which type) the preceding 
-expression is. {\tt 42.WHAT} is an example of the dot 
-syntax used for method invocation: it calls the {\tt .WHAT} 
-built-in on the ``42'' expression (the invocant) and provides 
-to the {\tt say} function the result of this invocation, 
-which in this case is the type of the expression.
+En estas instrucciones, a {\tt .WHAT} se le conoce como un método 
+de introspección, el cual es un tipo de método que te dice de \emph{que}
+tipo la expresión precedente es. {\tt 42.WHAT} es un ejemplo de la sintaxis 
+del punto usada para la invocación de método: invoca el método integrado
+{\tt .WHAT} sobre la expresión ``42'' (el invocante) y provee la función {\tt say}
+con el resultado de esta invocación, que en este caso es el tipo de la expresión.
 \index{WHAT}
 \index{introspection}
 \index{string!type}
@@ -327,33 +324,30 @@ which in this case is the type of the expression.
 \index{invocant}
 \index{invocation}
 
-Not surprisingly, integers belong to the type {\tt Int},
-strings belong to {\tt Str} and rational 
-numbers belong to {\tt Rat}.  
+No resulta sorprendente que los números enteros pertenecen al tipo
+{\tt Int}, las cadenas de texto pertenecen a {\tt Str}, y los números racionales
+pertenecen a {\tt Rat}. 
 
-Although {\tt 40 + 2} and {\tt 84 / 2} seem to yield the 
-same result (42), the first expression returns an integer 
-({\tt Int}) and the second a rational number ({\tt Rat}). 
-The number 42.0 is also a rational.
+Aunque {\tt 40 + 2} y {\tt 84 / 2} parecen arrojar el mismo resultado (42),
+la primera expresión devuelve un entero ({\bf Int}), y la segunda devuelve
+un número racional ({\bf Rat}). El número 42.0 es también un número racional.
 
-The rational type is somewhat uncommon in most programming 
-languages. Internally, these numbers are stored as two 
-integers representing the numerator and the denominator 
-(in their simplest terms). For example, the number 17.3 
-might be stored as two integers, 173 and 10, meaning that 
-Perl is really storing something meaning the $\frac{173}{10}$ 
-fraction. Although this is usually not needed (except 
-for introspection or debugging), you might access these 
-two integers with the following methods:
+El tipo racional no es algo muy común en la mayoría de lenguajes de programación.
+Internamente, estos números se almacenan como dos enteros los cuales representan
+el numerador y el denominador (en sus términos más simples). Por ejemplo, el número
+17.3 podría ser almacenado como dos enteros, 173 y 10, lo cual significa que
+Perl está realmente almacenando la fracción $\frac{173}{10}$. Aunque esto no es 
+usualmente soportado (excepto para introspección o depuración), puedes accesar estos
+dos enteros con los métodos siguientes:
 
 \begin{verbatim}
 > my $num = 17.3;
 17.3
 > say $num.WHAT;
 (Rat)
-> say $num.numerator, " ", $num.denominator; # say can print a list
+> say $num.numerator, " ", $num.denominator; # say puede imprimir una lista
 173 10
-> say $num.nude;      # "nude" stands for numerator-denominator
+> say $num.nude;      # "nude" significa (nu)merator-(de)nominator
 (173 10) 
 \end{verbatim}
 \index{numerator method}
@@ -363,43 +357,42 @@ two integers with the following methods:
 \index{nude method}
 \index{method!nude}
 %
-This may seem anecdotal, but, for reasons which are 
-beyond the scope of this book, this makes it possible for Perl~6 
-to perform arithmetical operations on rational numbers with 
-a much higher accuracy than most common programming languages. 
-For example, if you try to perform the arithmetical operation
-\verb'0.3 - 0.2 - 0.1', with most general purpose programming languages 
-(and depending on your machine architecture), you 
-might obtain a result such as -2.77555756156289e-17 (in Perl~5), 
--2.775558e-17 (in C under gcc), or -2.7755575615628914e-17 
-(Java, Python~3, Ruby, TCL). Don't worry about these values if you 
-don't understand them, let us just say that they  are 
-extremely small, but they are not 0, whereas,  
-obviously, the result should really be zero. In Perl~6, 
-the result is 0 (even to the fiftieth decimal digit):
+Esto puede parecer anecdótico, pero por razones más allá del
+ámbito de este libro, esto permite que Perl~6 pueda llevar a cabo 
+operaciones aritméticas sobre números racionales con un nivel 
+de precisión mucho mayor que en los lenguajes de programación más comunes.
+Por ejemplo, si intentas llevar a cabo la siguiente operación aritmética 
+\verb'0.3 - 0.2 - 0.1', con los lenguajes de programación más generales 
+(y dependiendo en la arquitectura de tu máquina), podrías obtener un resultado
+tal como -2.77555756156289e-17 (en Perl~5), 
+-2.775558e-17 (en C con gcc), o -2.7755575615628914e-17 
+(Java, Python~3, Ruby, TCL). No te preocupe acerca de estos valores si no
+los entiendes, digamos que son extremadamente pequeños, pero no son 0,
+mientras que, obviamente, el resultado debería ser realmente cero. En 
+Perl~6, el resultado es 0 (hasta el quinceavo dígito decimal):
 \begin{verbatim}
 > my $result-should-be-zero = 0.3 - 0.2 - 0.1;
 0
-> printf "%.50f", $result-should-be-zero; # prints 50 decimal digits
+> printf "%.50f", $result-should-be-zero; # imprime 50 dígitos decimales
 0.00000000000000000000000000000000000000000000000000
 \end{verbatim}
 %
-In Perl~6, you might even compare the result of the operation with 0:
+En Perl~6, podrías hasta comparar el resultado de la operación con 0:
 \begin{verbatim}
 > say $result-should-be-zero == 0;
 True
 \end{verbatim}
 %
-Don't do such a comparison with most common programming 
-languages; you're very likely to get a wrong result.
+No hagas tal comparación con los lenguajes de programación más comunes;
+es posible que obtengas un resultado erróneo.
 
-What about values like \verb'"2"' and \verb'"42.0"'?
-They look like numbers, but they are in quotation marks like
-strings.
+¿Qué acerca de valores como \verb'"2"' y \verb'"42.0"'?
+Ellos parecen números, pero están en comillas inglesas como las 
+cadenas de texto.
 \index{quotation mark}
 
 \begin{verbatim}
-> say '2'.perl; # perl returns a Perlish representation of the invocant
+> say '2'.perl; # perl devuelve una representación de Perl del invocante
 "2"
 > say "2".WHAT;
 (Str)
@@ -409,14 +402,14 @@ strings.
 %
 \index{invocant}
 
-They're strings because they are defined within quotes. Although 
-Perl will often perform the necessary conversions for you, it 
-is generally a good practice not to use quotation marks if your value 
-is intended to be a number.
+Ellos son cadenas de texto porque están definidos dentro de comillas inglesas.
+Aunque Perl usualmente realizará las conversiones necesarias para ti, es generalmente
+buena práctica no usar comillas inglesas si tu valor está supuesto a ser un
+número.
 
-When you type a large integer, you might be tempted to use commas
-between groups of digits, as in {\tt 1,234,567}.  This is not a
-legal {\em integer} in Perl~6, but it is a legal expression:
+Cuando escribes un número entero largo, podrías estar tentado a usar comas
+entre grupos de dígitos, como en {\tt 1,234,567}. Esto no es un {\em entero}
+legal en Perl~6, pero sí es una expresión legal:
 
 \begin{verbatim}
 > 1,234,567
@@ -424,21 +417,21 @@ legal {\em integer} in Perl~6, but it is a legal expression:
 >
 \end{verbatim}
 %
-That's actually a list of three different integer numbers, and 
-not what we expected at all! 
+¡Eso es actualmente una lista de tres números enteros diferentes, 
+y no lo que esperábamos! 
 
 \begin{verbatim}
 > say (1,234,567).WHAT
 (List)
 \end{verbatim}
 
-Perl~6 interprets {\tt 1,234,567} as a comma-separated 
-sequence of three integers.  As we will see later, 
-the comma is a separator used for constructing lists.
+Perl~6 interpreta {\tt 1,234,567} como una secuencia de tres números enteros
+separados por coma. Como veremos más adelante, la coma es un separador usado
+para construir listas.
 \index{comma}
 
-You can, however, separate groups of digits with the underscore character ``\verb"_"'' for better legibility and obtain a 
-proper integer:
+No obstante, puedes separar grupos de dígitos con una barra baja ``\verb"_"''
+para mejorar la legibilidad y para obtener un entero propio:
 \index{underscore character}
 
 \begin{verbatim}
