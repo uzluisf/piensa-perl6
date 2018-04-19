@@ -1,4 +1,4 @@
-\chapter{The Way of the Program}
+\chapter{La Forma del Programa}
 
 La meta de este libro es enseñarte a pensar como un científico de la 
 computación. Esta manera de pensar combina algunas de las mejores características
@@ -17,7 +17,7 @@ a la habilidad de formular problemas, pensar creativamente sobre las
 soluciones, y expresar una solución clara y precisamente. Como sucede, 
 el proceso de aprender a programar es una oportunidad excelente para practicar 
 las habilidades de resolución de problemas. Por esta razón, este capítulo se titula,
- ``La Manera del Programa.``
+ ``La Forma del Programa.``
 
 En un nivel, aprenderás a programar, la cual es una habilidad útil por sí misma.
 En otro nivel, aprenderás a usar la programación como un medio para un fin. 
@@ -42,11 +42,11 @@ instrucciones básicas que aparecen en casi todos los lenguajes:
 \begin{description}
 
 \item[Entrada] Obtener datos desde el teclado, un archivo, la red, 
-un sensor, un chip de GPS o algún otro dispositico.
+un sensor, un chip de GPS o algún otro dispositivo.
 \index{input}
 
 \item[Salida] Mostrar información en la pantalla, guardarla en un archivo,
- enviarla a través de la red, actuar en un dispositico mecánico,  etc.
+ enviarla a través de la red, actuar en un dispositivo mecánico,  etc.
 \index{output}
 
 \item[Matemática] Realizar operaciones matemáticas básicas tales como la adición y
@@ -72,7 +72,7 @@ las cuales se pueden ejecutar con una de estas operaciones básicas.
 \index{abstraction}
 \index{subtask}
 Al usar o llamar estas piezas, es posible crear varios niveles
-de \emph{abstración}. Probablemente te han dicho que las computadoras
+de \emph{abstracción}. Probablemente te han dicho que las computadoras
 solamente usan 0s y 1s al nivel más fundamental; pero usualmente no 
 nos preocupamos acerca de esto. Cuando usamos un procesador de texto para
 escribir una carta o un reporte, estamos interesados en archivos con textos
@@ -89,7 +89,7 @@ que consulta una base de datos y guarda la información relevante
 en la memoria, no tenemos que preocuparnos sobre los detalles técnicos
 de la tarea. Podemos usarla como una caja negra la cual realizará 
 la operación deseada para nosotros. La esencia de la programación es 
-en gran parte este arte de crear estas capas succesivas de abstracción 
+en gran parte este arte de crear estas capas sucesivas de abstracción 
 de tal manera que realizar tareas de niveles más altos se vuelva 
 relativamente más fácil.
 \index{subtask}
@@ -103,7 +103,7 @@ Uno de los retos de comenzar con Perl~6 es que podrías tener que instalar
 Perl~6 y cualquier software relacionado en tu computadora. Si estás familiarizado
 con tu sistema operativo, y especialmente te sientes cómodo con shell o
 intérprete de comandos, no tendrás problemas instalando Perl~6. Para los 
-principiantes, pueden ser un poco difícil aprender sobre la
+principiantes, puede ser un poco difícil aprender sobre la
 administración de sistema y programación al mismo tiempo.
 
 Para evitar ese problema, podrías comenzar ejecutando Perl~6 en
@@ -136,13 +136,13 @@ implementing Perl 6.c.
 \end{verbatim}
 
 No obstante, deberías descargar e instalar las versión más reciente que puedas
-encontrar. La salida (advertencias, mensages de errores, etc.) que obtendrás de tu versión de Perl
+encontrar. La salida (advertencias, mensajes de errores, etc.) que obtendrás de tu versión de Perl
 podría en algunos casos diferir de la que se encuentra en este libro, pero estas diferencias
 deberían ser esencialmente cosméticas.
 
 Comparado con Perl~5, Perl~6 no es sólo una nueva versión de Perl.
-Es como la nueva pequeña hermana de Perl~5. Su objectivo no es reemplazar
-al Perl~5. Perl~6 es realmente un nuevo lenguaje de programación, con una sintaxis
+Es como la nueva hermana menor de Perl~5. Su objetivo no es reemplazar
+a Perl~5. Perl~6 es realmente un nuevo lenguaje de programación, con una sintaxis
 que es similar a las versiones anteriores de Perl (tal como Perl~5), pero considerablemente
 diferente. Al menos que se indique lo contrario, este libro es sobre Perl~6 solamente, no
 acerca de Perl~5 y versiones anteriores del lenguaje de programación Perl. Desde aquí adelante,
@@ -222,7 +222,7 @@ El punto y medio ``{\tt ;}'' al final de la línea indica
 que este es el final de la sentencia actual. Aunque un punto y medio
 no es técnicamente necesario al ejecutar código simple en el REPL, 
 es usualmente necesario cuando se escribe un programa con varias líneas
-de código, así que prodrías ir acostumbrándote a finalizar instrucciones
+de código, así que podrías ir acostumbrándote a finalizar instrucciones
 de código con un punto y medio.   
 \index{semi-colon}
 
@@ -236,7 +236,7 @@ no necesario en Perl~6.
 
 Después de ``Hello, World,'' el siguiente paso es aritmética. Perl~6 provee {\bf operadores}, los cuales son símbolos especiales que representan computaciones tales como adición y multiplicación.
 
-Los operadores {\tt +}, {\tt -}, {\tt *}, y {\tt /} realizan adición,, sustracción, multiplicaión y división, como en los siguientes ejemplos en el REPL:
+Los operadores {\tt +}, {\tt -}, {\tt *}, y {\tt /} realizan adición,, sustracción, multiplicación y división, como en los siguientes ejemplos en el REPL:
 
 \begin{verbatim}
 > 40 + 2
@@ -286,7 +286,7 @@ están {\tt 2}, {\tt 42}, y \verb'"Hello, World"'.
 Estos valores pertenecen a diferentes {\bf tipos}: 
 {\tt 2} es un número {\bf entero}, {\tt 40 + 2} es también un entero, 
 {\tt 84/2} es un número {\bf racional}, y  \verb"'Hello, World'" es una
-{\bf cadena de texto}, llamada así porque los carácteres que contiene están
+{\bf cadena de texto}, llamada así porque los caracteres que contiene están
 unidos juntos.
 \index{integer}
 \index{floating-point}
@@ -447,290 +447,292 @@ para mejorar la legibilidad y para obtener un entero propio:
 
 
 
-\section{Formal and Natural Languages}
+\section{Lenguajes Formales y Naturales}
 \index{formal language}
 \index{natural language}
 \index{language!formal}
 \index{language!natural}
 
-{\bf Natural languages} are the languages people speak,
-such as English, Spanish, and French.  They were not designed
-by people (although people try to impose some order on them);
-they evolved naturally.
+Los {\bf lenguajes naturales} son los lenguajes que las personas hablan,
+como el inglés, el español y el francés.  Ellos no fueron diseñados por personas
+(aunque la gente trata de imponer cierto orden sobre ellos); ellos evolucionaron
+naturalmente.
 
-{\bf Formal languages} are languages that are designed by people for
-specific applications.  For example, the notation that mathematicians
-use is a formal language that is particularly good at denoting
-relationships among numbers and symbols.  Chemists use a formal
-language to represent the chemical structure of molecules.  And
-most importantly:
+Los {\bf lenguajes formales} son lenguajes que son diseñados por personas
+para aplicaciones específicas. Por ejemplo, la notación que los matemáticos 
+utilizan es un lenguaje formal que es particularmente buena para denotar relaciones
+entre números y símbolos. Los químicos usan un lenguaje formal para representar
+la estructura química de las moléculas. Y más importante:
 
 \begin{quote}
-{\bf Programming languages are formal languages that have been
-designed to express computations.}
+{\bf Los lenguajes de programación son lenguajes formales que han sido diseñados
+para expresar computaciones.}
 \end{quote}
 
-Formal languages tend to have strict {\bf syntax} rules that
-govern the structure of statements.
-For example, in mathematics the statement
-$3 + 3 = 6$ has correct syntax, but
-not $3 + = 3 \$ 6$.  In chemistry
-$H_2O$ is a syntactically correct formula, but $_2Zz$ is not.
+Los lenguajes formales tienen usualmente {\bf reglas sintácticas} estrictas
+que gobiernan la estructura de las sentencias. Por ejemplo, en matemáticas la
+sentencia $3 + 3 = 6$ es sintácticamente correcta pero $3 + = 3 \$ 6$ no lo es.
+En química  $H_2O$ es una fórmula sintácticamente correcta, pero $_2Zz$ no lo es.
 \index{syntax}
 
-Syntax rules come in two flavors, pertaining to {\bf tokens} and
-{\bf structure}.  Tokens are the basic elements of the language, such as
-words, numbers, and chemical elements.  One of the problems with
-$3 += 3 \$ 6$ is that \( \$ \) is not a legal token in mathematics
-(at least as far as I know).  Similarly, $_2Zz$ is not legal because
-there is no chemical element with the abbreviation $Zz$.
+Las reglas sintácticas vienen en dos formas, pertenecientes a los {\bf tókenes} 
+y la {\bf estructura}. Los tókenes son los elementos básicos del lenguaje, 
+tales como las palabras, números, y elementos químicos. Uno de los problemas
+con $3 += 3 \$ 6$ es que \( \$ \) no es un token legal en matemáticas (
+al menos eso es lo que sé).  Similarmente, $_2Zz$ no es legal porque
+no hay elemento químico con la abreviación $Zz$.
 \index{token}
 \index{structure}
 
-The second type of syntax rule, structure, pertains to the way tokens are
-combined.  The equation $3 += 3$ is illegal in mathematics 
-because even though $+$ and $=$ are legal tokens, you can't 
-have one right after the other. Similarly, in a chemical formula, 
-the subscript representing the number of atoms in a 
-chemical compound comes after the element name, not before.
+La estructura es el segundo tipo de la regla sintáctica, la cual
+se concierne con la forma en que los tókenes son combinados. La ecuación
+$3 += 3$  es ilegal en matemáticas porque, aunque $+$ y $=$ son 
+tókenes legales, no puedes tenerlos uno detrás del otro. De manera similar,
+en una fórmula química, el subíndice que representa el número de átomos en un
+compuesto químico viene después del nombre del elemento, no antes.
 
-This is @ well-structured Engli\$h
-sentence with invalid t*kens in it.  This sentence all valid 
-tokens has, but invalid structure with.
+% Instead of using the original sentence in English,
+% I translated it to Spanish (using Spanish as the base language) so that the speaker has a better
+% understanding of the difference between tokens and structure.
+Esto es un@ oración en español bien e\$tructurada con t*kenes
+inválidos. En esta oración todos tókenes los válidos son, pero la
+inválida estructura es.
 
-When you read a sentence in English or a statement in a formal
-language, you have to figure out the structure
-(although in a natural language you do this subconsciously).  This
-process is called {\bf parsing}.
+Cuando lees una oración en español o una sentencia en un lenguaje
+formal, debes descifrar la estructura (aunque en en un lenguaje natural
+lo haces inconscientemente). Este proceso es conocido como {\bf análisis 
+sintáctico} ({\em parsing} en inglés).
 \index{parse}
 
-Although formal and natural languages have many features in
-common---tokens, structure, and syntax---there are some
-differences:
+Aunque los lenguajes formales y naturales comparten muchas características en común
+---tókenes, estructura, y sintaxis---también hay algunas diferencias:
 \index{ambiguity}
 \index{redundancy}
 \index{literalness}
 
 \begin{description}
 
-\item[Ambiguity] Natural languages are full of ambiguity, which
-people deal with by using contextual clues and other information.
-Formal languages are designed to be nearly or completely unambiguous,
-which means that any statement has exactly one meaning. 
+\item[Ambigüedad] Los lenguajes naturales están llenos de ambigüedades,
+y las personas lidian con ellas a través del uso de contexto y cualquier
+información adicional. Los lenguajes formales son diseñados para no tener
+ambigüedades, de tal manera que cualquier oración tiene exactamente un solo
+significado.
 
-\item[Redundancy] In order to make up for ambiguity and reduce
-misunderstandings, natural languages employ lots of
-redundancy.  As a result, they are often verbose.  Formal languages
-are less redundant and more concise.
+\item[Redundancia] Para compensar por las ambigüedades y reducir los malentendidos
+, los lenguajes naturales hacen uso de muchas redundancias. Como resultado,
+ellos tienden a ser verbosos. En cambio, los lenguajes formales son menos
+redundantes y más concisos.
 
-\item[Literalness] Natural languages are full of idiom and metaphor.
-If we say, ``The penny dropped,'' there is probably no penny and
-nothing dropping (this idiom means that someone understood something
-after a period of confusion).  Formal languages
-mean exactly what they say.
+\item[Literalidad] Los lenguajes naturales están llenos de modismos
+y metáforas. Si decimos, ``Hablar por los codos,`` es probable que nadie
+está hablando por los codos literalmente (este modismo significa que una persona
+habla demasiado). Los lenguajes formales hacen referencias exactas a lo que quieren
+decir.
 
 \end{description}
 
-Because we all grow up speaking natural languages, it is sometimes
-hard to adjust to formal languages.  The difference between formal and
-natural language is like the difference between poetry and prose, but
-more so: \index{poetry} \index{prose}
+Debido a que todos crecemos hablando lenguajes naturales, es un poco 
+difícil ajustarse a los lenguajes formales. La diferencia entre un lenguaje formal
+y un lenguaje natural es como la diferencia entre la poesía y la prosa, pero
+más definida: \index{poetry} \index{prose}
 
 \begin{description}
 
-\item[Poetry] Words are used for their sounds as well as for
-their meaning, and the whole poem together creates an effect or
-emotional response.  Ambiguity is not only common but often
-deliberate.
+\item[Poesía] La palabras son usadas tanto pos sus sonidos como
+sus significados, y el poema completo crea un efecto o respuesta
+emocional. En este caso, la ambigüedad no es solo común sino usualmente
+deliberada. 
 
-\item[Prose] The literal meaning of words is more important,
-and the structure contributes more meaning.  Prose is more amenable to
-analysis than poetry but still often ambiguous.
+\item[Prosa] El significado literal de las palabras es más importante, y la estructura
+contribuye más al significado. La prosa es más amena para el análisis que la poesía
+aunque es muchas veces aún ambigua.
 
-\item[Programs] The meaning of a computer program is unambiguous
-and literal, and can be understood entirely by analysis of the
-tokens and structure.
+\item[Programas] El significado de un programa de computadora es literal y 
+no tiene ambigüedades. Dicho programa puede ser comprendido enteramente a través
+del análisis de los tókenes y la estructura.
 
 \end{description}
 
-Formal languages are more dense
-than natural languages, so it takes longer to read them.  Also, the
-structure is important, so it is not always best to read
-from top to bottom, left to right.  Instead, learn to parse the
-program in your head, identifying the tokens and interpreting the
-structure.  Finally, the details matter.  Small errors in
-spelling and punctuation, which you can get away
-with in natural languages, can make a big difference in a formal
-language.
+Los lenguajes formales son mucho más densos que los lenguajes naturales,
+y por lo tanto se tarda más en leerlos. De igual manera, la estructura
+es importante y algunas veces, no siempre es eficiente leerlos de arriba
+hacia abajo o de izquierda a derecha. Por lo contrario, mejor aprende
+a parsear el programa en tu cabeza, identificando los tókenes e interpretando
+la estructura. Finalmente, los detalles importan. Pequeños errores en 
+la ortografía y la puntuación que no son de mucha importancia en los 
+lenguajes naturales, pueden hacer una gran diferencia en un lenguaje formal.
 
 
-\section{Debugging}
+\section{Depuración de programas}
 \index{debugging}
 
-Programmers make mistakes.  Programming errors are usually 
-called {\bf bugs} and the process of tracking them down is called
-{\bf debugging}.
+Los programadores cometen errores. A los errores de programación 
+se les conoce usualmente como {\bf bichos} ({\em bugs}) y el proceso 
+de eliminación de estos errores se llama {\bf depuración de programas} 
+({\em debugging}).
 \index{debugging}
 \index{bug}
 
-Programming, and especially debugging, sometimes brings out strong
-emotions.  If you are struggling with a difficult bug, you might 
-feel angry, despondent, or embarrassed.
+La programación, y especialmente la depuración de programas, algunas veces
+puede aflorar emociones fuertes. Si estás batallando con un error difícil, podrías
+sentirte enojada/o, avergonzada/o o desanimada/o.
 
-There is evidence that people naturally respond to computers as if
-they were people.  When they work well, we think
-of them as teammates, and when they are obstinate or rude, we
-respond to them the same way we respond to rude,
-obstinate people\footnote{Reeves and Nass, {\it The Media
+Existe evidencia que sugiere que las personas responden naturalmente
+a las computadoras como si fueran personas. Cuando funcionan adecuadamente,
+las consideramos nuestras compañeras, y cuando son obstinadas y groseras, 
+nosotros nos dirigimos hacia ellas de la misma manera que lo 
+haríamos con personas obstinadas y groseras\footnote{Reeves and Nass, {\it The Media
     Equation: How People Treat Computers, Television, and New Media
     Like Real People and Places}, (Center for the Study of Language and Information, 2003).)}.
 \index{debugging!emotional response}
 \index{emotional debugging}
 
-Preparing for these reactions might help you deal with them.
-One approach is to think of the computer as an employee with
-certain strengths, like speed and precision, and
-particular weaknesses, like lack of empathy and inability
-to grasp the big picture.
+Prepararse de antemanos para lidiar con estas reacciones
+puede ser beneficioso. Una estrategia es tratar de pensar acerca
+de la computadora como si fuera un empleado con ciertas fortalezas,
+como la velocidad y la precisión, y con debilidades particulares 
+tales como la falta de empatía y la inhabilidad para comprender
+la perspectiva general.
 
-Your job is to be a good manager: find ways to take advantage
-of the strengths and mitigate the weaknesses.  And find ways
-to use your emotions to engage with the problem,
-without letting your reactions interfere with your ability
-to work effectively.
+Tu trabajo es ser un buen gerente: encuentra maneras de tomar
+ventaja de las fortalezas y mitigar las debilidades. Y encontrar maneras
+de usar tus emociones para familiarizarte y envolverte con el problema
+sin dejar que tus reacciones interfieran con tu habilidad de trabajar 
+efectivamente. 
 
-Learning to debug can be frustrating, but it is a valuable skill
-that is useful for many activities beyond programming.  At the
-end of each chapter there is a section, like this one,
-with our suggestions for debugging.  I hope they help!
+Aprender a depurar puede ser frustrante, pero es una habilidad valiosa
+que será muy útil para muchas actividades más allá de la programación. 
+Al final de cada capítulo hay una sección, como esta, con sugerencias para la
+depuración. ¡Espero que sean útiles!
 
 
-\section{Glossary}
+\section{Glosario}
 
 \begin{description}
 
-\item[Problem solving]  The process of formulating a problem, finding
-a solution, and expressing it.
+\item[Resolución de problemas]  El proceso de formular un problema, 
+encontrar una solución y expresarla adecuadamente.
 \index{problem solving}
 
-\item[Abstraction] A way of providing a high-level view 
-of a task and hiding the underlying technical details so 
-that this task becomes easy.
+\item[Abstracción] Una manera de proveer una perspectiva de alto nivel
+de una tarea y ocultar los detalles técnicos con el propósito de hacer 
+la tarea más simple.
 
-\item[Interpreter]  A program that reads another program and executes it
+\item[Interpretador]  Un programa que lee otro programa y lo ejecuta.
 \index{interpret}
 
-\item[Compiler]  A program that reads another program and 
-transforms it into executable computer code; there used to be 
-a strong difference between interpreted and compiled languages, 
-but this distinction has become blurred over the last 
-two decades or so.
+\item[Compilador]  Un programa que lee otro programa y lo transforma en código ejecutable
+de computadora; solía ser que había una gran diferencia entre lenguajes
+interpretados y lenguajes compilados, sin embargo esta distinción se ha vuelto
+más difusa en las últimas dos décadas.
 \index{compiler}
 
-\item[Prompt] Characters displayed by the interpreter to indicate
-that it is ready to take input from the user.
+\item[Prompt] El interpretador muestra caracteres en la pantalla para indicar 
+que está listo para recibir entrada de texto por el usuario.
 \index{prompt}
 
-\item[Program] A set of instructions that specifies a computation.
+\item[Program] Un conjunto de instrucciones que especifica una computación.
 \index{program}
 
-\item[Print statement]  An instruction that causes the Perl~6
-interpreter to display a value on the screen.
+\item[Sentencia print]  Una instrucción que causa que el interpretador de Perl~6
+muestre un valor en la pantalla. 
 \index{print statement}
 \index{statement!print}
 
-\item[Operator]  A special symbol that represents a simple computation like
-addition, multiplication, or string concatenation.
+\item[Operador]  Un símbolo especial que representa una simple computación como
+adición, multiplicación, o la concatenación de una cadena de texto.
 \index{operator}
 
-\item[Value]  One of the basic units of data, like a number or string, 
-that a program manipulates.
+\item[Valor]  Una de las unidades básicas de dato, como un número o una
+cadena de texto, que un programa manipula.
 \index{value}
 
-\item[Type] A category of values.  The types we have seen so far
-are integers (type {\tt Int}), rational numbers (type {\tt
-Rat}), and strings (type {\tt Str}).
+\item[Tipo] Una categoría de valores. Los tipos que hemos visto hasta
+ahora son números enteros (tipo {\tt Int}), números racionales (tipo {\tt Rat}),
+y cadenas de texto (tipo {\tt Str}).
 \index{type}
 
-\item[Integer] A type that represents whole numbers.
+\item[Entero] Un tipo que representa valores enteros.
 \index{integer}
 
-\item[Rational] A type that represents numbers with fractional
-parts. Internally, Perl stores a rational as two integers 
-representing respectively the numerator and the denominator 
-of the fractional number.
+\item[Racional] Un tipo que representa números con partes fraccionales. 
+Internamente, Perl almacena un racional como dos números enteros
+que representan respectivamente el numerador y denominador de una 
+fracción.
 \index{rational}
 
-\item[String] A type that represents sequences of characters.
+\item[Cadena de texto] Un tipo que representa secuencias de caracteres.
 \index{string}
 
-\item[Natural language]  Any one of the languages that people speak that
-evolved naturally.
+\item[Lenguaje natural]  Cualquiera de los lenguajes que las 
+personas hablan y que han evolucionado naturalmente.
 \index{natural language}
 
-\item[Formal language]  Any one of the languages that people have designed
-for specific purposes, such as representing mathematical ideas or
-computer programs; all programming languages are formal languages.
+\item[Lenguaje formal]  Cualquiera de los lenguajes que las personas
+han diseñado para propósitos específicos tales como la representación de 
+ideas matemáticas o programas de computadoras; todos los lenguajes de programación
+son lenguajes formales.
 \index{formal language}
 
-\item[Token]  One of the basic elements of the syntactic structure of
-a program, analogous to a word in a natural language.
+\item[Token]  Uno de los elementos básicos de la estructura sintáctica de 
+un programa. El concepto es análogo a una palabra en un lenguaje natural.
 \index{token}
 
-\item[Syntax] The rules that govern the structure of a program.
+\item[Sintaxis] Las reglas que dictan la estructura de un programa.
 \index{syntax}
 
-\item[Parse] To examine a program and analyze the syntactic structure.
+\item[Análisis sintáctico] Examinar un programa y analizar su estructura sintáctica.
 \index{parse}
 
-\item[Bug] An error in a program.
+\item[Bicho] Un error en un programa.
 \index{bug}
 
-\item[Debugging] The process of finding and correcting bugs.
+\item[Depuración] El proceso por el cual se encuentran y corrigen errores de programación.
 \index{debugging}
 
 \end{description}
 
 
-\section{Exercises}
+\section{Ejercicios}
 
 \begin{exercise}
 
-It is a good idea to read this book in front of a computer so you 
-can try out the examples as you go.
+Es una buena idea que lea este libro al frente de una computadora
+para que puedas intentar los ejemplos según avanzas. 
 
-Whenever you are experimenting with a new feature, you should try
-to make mistakes.  For example, in the ``Hello, world!'' program,
-what happens if you leave out one of the quotation marks?  What
-if you leave out both?  What if you spell {\tt say} wrong?
+Cuando experimentes con una característica nueva, 
+trata de cometer errores. Por ejemplo, en el programa ``Hello, world!'',
+qué pasa si no incluye una de las comillas inglesas? ¿Qué pasa si no
+deletreas {\tt say} correctamente?
 \index{error message}
 
-This kind of experiment helps you remember what you read; it also
-helps when you are programming, because you get to know what the error
-messages mean.  It is better to make mistakes now and on purpose than
-later and accidentally.
+Este tipo de experimento te ayuda a recordar lo que lees; además
+te ayuda cuando está programando porque te acostumbras y aprendes
+lo que significan los mensajes de error. Es mejor cometer errores
+ahora a propósito que cometerlos después por accidente.
 
-Please note that most exercises in this book are provided with 
-a solution in the appendix. However, the exercises in this chapter   
-and in the next chapter are not intended to let you solve an 
-actual problem but are designed to simply let you experiment 
-with the Perl interpreter; there is no good solution, just try 
-out what is proposed to get a feeling on how it works.
+Ten pendiente que la mayoría de los ejercicios en este libro
+tienen soluciones que se encuentran en el apéndice. No obstante, 
+la intención de los ejercicios en este capítulo y en el siguiente 
+no es para resolver un problema actual. Están diseñados para que 
+experimentes con el interpretador de Perl; no hay una solución correcta, 
+solo intenta lo que se propone en los ejercicios para 
+obtener un sentido de cómo funciona.
 
 \begin{enumerate}
 
-\item If you are trying to print a string, what happens if you
-leave out one of the quotation marks, or both?
+\item Si intentas imprimir una cadena de texto, qué pasa si no incluye 
+una de las comillas inglesas, o ambas?
 
-\item You can use a minus sign to make a negative number like
-{\tt -2}.  What happens if you put a plus sign before a number?
-What about {\tt 2++2}?
+\item Puedes usar el signo de menos para hacer números negativos como 
+{\tt -2}. ¿Qué pasa si pones un signo de adición frente al número?
+¿Qué acerca de {\tt 2++2}?
 
-\item In math notation, leading zeros are OK, as in {\tt 02}.
-What happens if you try this in Perl?
+\item En notación matemática, ceros al principio son aceptables, como en 
+{\tt 02}. ¿Qué pasa si intentas esto en Perl?
 
-\item What happens if you have two values with no operator
-between them, such as {\tt say 2 2;}?
+\item ¿Qué pasa si tienes dos valores sin ningún operador entre ellos,
+como en {\tt say 2 2;}?
 
 \end{enumerate}
 
@@ -740,18 +742,18 @@ between them, such as {\tt say 2 2;}?
 
 \begin{exercise}
 
-Start the Perl~6 REPL interpreter and use it as a calculator.
+Comienza con el interpretador REPL de Perl~6 y úsalo como una calculadora.
 
 \begin{enumerate}
 
-\item How many seconds are there in 42 minutes, 42 seconds?
+\item ¿Cuántos segundos hay en 42 minutos, 42 segundos?
 
-\item How many miles are there in 10 kilometers?  Hint: there are 1.61
-  kilometers in a mile.
+\item ¿Cuántas millas hay en 10  kilómetros? Pista: Hay 1.61
+  kilómetros en una millas.
 
-\item If you run a 10 kilometer race in 42 minutes, 42 seconds, what is
-  your average pace (time per mile in minutes and seconds)?  What is
-  your average speed in miles per hour?
+\item Si haces una corrida de 10 kilómetros en 42 minutos, 42 segundos,
+ cuál es tu rapidez promedia (tiempo por milla en minutos y segundos)? 
+ ¿Cuál es tu rapidez promedia en millas por horas?
 
 \index{calculator}
 \index{running pace}
