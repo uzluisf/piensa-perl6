@@ -766,154 +766,156 @@ de leer, por lo tanto debe existir un balance.
 \index{bug}
 
 Tres tipos de errores pueden ocurrir en un programa: errores
-de sintaxis, errores al tiempo de ejecución, y  errores semánticos.
+sintácticos, errores al tiempo de ejecución, y  errores semánticos.
 Es muy útil saber distinguirlos para ratrearlos más rápido.
 
 \begin{description}
 
-\item[Syntax error] ``Syntax'' refers to the structure of a program
-  and the rules about that structure.  For example, parentheses have
-  to come in matching pairs, so {\tt (1 + 2)} is legal, but 
-{\tt 8)} is a \emph{syntax error}. \footnote{We are using 
-``syntax error'' here as a quasi-synonym for ``compile-time error''; 
-they are not exactly the same thing (you may in theory have 
-syntax errors that are not compile-time errors and the other way 
-around), but they can be deemed to be the same for 
-practical purposes here. In Perl~6, compile-time errors 
-have the ``===SORRY!==='' string at the beginning of 
-the error message.}
+\item[Error sintáctico] La ``sintaxis'' se refiere a la estructura de un 
+programa. Por ejemplo, los paréntesis deben estar en parejas, así que 
+{\tt (1 + 2)} es legal mientras {\tt 8)} es un \emph{error sintáctico}.
+\footnote{Aquí estamos usando ``error sintáctico'' como un cuasi-sinónimo
+para ``error al tiempo de compilación``; ellos no son exactamente la misma cosa
+(en teoría, puedes tener errores sintácticos que no son errores al tiempo
+de compilación y viceversa), pero se pueden considerar aquí lo mismo por razones
+prácticas. En Perl~6, errores al tiempo de compilación tienen la cuerda de texto
+``===SORRY!==='' al inicio del mensaje de error.}
 
 \index{error!syntax}
 \index{error message}
 \index{syntax} 
 \index{syntax!error}
 
-If there is a syntax error
-anywhere in your program, Perl displays an error message and quits 
-without even starting to run your program, and you will 
-obviously not be able to run the program.  During the first few
-weeks of your programming career, you might spend a lot of
-time tracking down syntax errors.  As you gain experience, you will
-make fewer errors and find them faster.
+Si en tu programa hay un error sintáctico, Perl muestra 
+un mensaje de error y abandona la ejecución sin siquiera 
+comenzar a ejecutar el programa. Durante las primeras semanas de 
+tu carrera de programación, podrías invertir mucho tiempo rastreando
+errores sintácticos. A medida que ganas experiencia, cometerás menos errores
+y lo encontraras más rápido.
 
 
-\item[Runtime error] The second type of error is a runtime error, so
-  called because the error does not appear until after the program has
-  started running.  These errors are also called \emph{exceptions}
-  because they usually indicate that something exceptional (and bad)
-  has happened.  \index{runtime error} \index{error!runtime}
-  \index{exception} \index{safe language} \index{language!safe}
+\item[Error al tiempo de ejecución] El segundo tipo de error es un 
+error al tiempo de ejecución, llamado así porque el error no aparece hasta que 
+el programa ha comenzado a ejecutarse. Estos errores también son conocidos
+como \emph{excepciones} porque ellos usualmente indican que algo excepcional (y malo)
+ha ocurrido. 
+\index{runtime error}
+\index{error!runtime}
+\index{exception} 
+\index{safe language} 
+\index{language!safe}
 
-Runtime errors are rare in the simple programs you will see in the
-first few chapters, so it might be a while before you encounter one. 
-We have seen one example of such errors, though, at the beginning 
-of Section~\ref{string_operations} (p.~\pageref{string_operations}), 
-when we tried to subtract \verb"'2'-'1a'". 
+Los errores al tiempo de ejecución son raros en programas simples 
+que verás en los primeros capítulos, así que podría pasar un rato antes
+que encuentres uno. Ya hemos visto un ejemplo de tales errores, aunque, 
+al inicio de la Sección~\ref{string_operations} (p.~\pageref{string_operations}), 
+cuando intentamos sustraer \verb"'2'-'1a'".
 
 
-\item[Semantic error] The third type of error is \emph{semantic}, which
-  means related to meaning.  If there is a semantic error in your
-  program, it will run without generating error messages, but it will
-  not do the right thing.  It will do something else.  Specifically,
-  it will do what you \emph{told} it to do, but not what you 
-  \emph{intended} it to do.
-  \index{semantic error}
-  \index{error!semantic} \index{error message}
+\item[Error semántico] El tercer tipo de error es \emph{semántico}, lo que
+significa que está relacionado con el significado. Si en tu programa hay un error
+semántico, el programa se ejecutará sin generar mensajes de error. Específicamente,
+hará lo que \emph{dijiste} que hiciera, pero no lo que habías \emph{previsto}.
+\index{semantic error}
+\index{error!semantic}
+\index{error message}
 
-Identifying semantic errors can be tricky because it requires you to work
-backward by looking at the output of the program and trying to figure
-out what it is doing.
+La identificación de errores semánticos pueden ser complicada porque requiere
+que trabajes de atrás hacia adelante mediante la observación de la salida
+del programa y tratando de descifrar lo que el programa esta haciendo.
 
 \end{description}
 
 
-\section{Glossary}
+\section{Glosario}
 
 \begin{description}
 
-\item[Variable]  Informally, a name that refers to a value. More 
-accurately, a variable is a container that has a name and holds a value.
+\item[Variable]  Informalmente, un nombre que hace referencia a un valor. En términos
+precisos, una variable es un contenedor que tiene un nombre y almacena un valor.
 \index{variable}
 
-\item[Assignment]  A statement that assigns a value to a variable.
+\item[Asignación]  Un sentencia que asigna un valor a una variable.
 \index{assignment}
 
-\item[State diagram]  A graphical representation of a set of variables and the
-values they refer to.
+\item[Diagrama de estado]  Una representación gráfica de un conjunto de variables
+y los valores a los que hacen referencia.
 \index{state diagram}
 
-\item[Keyword]  A reserved word that is used to parse a
-program; in many languages, you cannot use keywords like 
-{\tt if}, {\tt  for}, and {\tt while} as variable names. 
-This problem usually does not occur in Perl because variable
-names begin with a \emph{sigil}.
+\item[Palabra clave]  Una palabra reservada que es usada para parsear
+un programa; en muchos lenguajes, no puedes usar palabras claves tales como
+{\tt if}, {\tt  for}, y {\tt while} como nombres de variables.
+Este problema usualmente no ocurre en Perl porque los nombres de variables
+comienzan con un \emph{sigilo}.
 \index{keyword}
 \index{sigil}
 
-\item[Operand] A value or term next to an operator that 
-is used in its evaluation.
+\item[Operando] Un valor o término al lado de un operador que es usado
+en su evaluación.
 \index{operand}
 
-\item[Term]  A variable or a literal value.
+\item[Término]  Una variable or valor literal.
 \index{term}
 
-\item[Expression]  A combination of operators and terms that
-represents a single result.
+\item[Expresión]  Una combinación de operadores y términos que 
+representan un valor único.
 \index{expression}
 
-\item[Evaluate]  To simplify an expression by performing the operations
-in order to yield a single value.
+\item[Evaluar]  Simplificar una expresión al realizar las operaciones 
+para obtener un valor único.
 \index{evaluate}
 
-\item[Statement]  A section of code that represents a command or action.  So
-far, the statements we have seen are assignments and print statements. Statements usually end with a semi-colon.
+\item[Sentencia]  Una sección de código que representa un comando o una acción. Hasta ahora,
+las sentencias que hemos visto son las asignaciones y las sentencias de impresión. Las sentencias
+usualmente terminan con un punto y coma.
 \index{statement}
 
-\item[Execute]  To run a statement and do what it says.
+\item[Ejecutar]  Poner una sentencia en acción y hacer lo que dice.
 \index{execute}
 
-\item[interactive mode (or interpreter mode):] A way of using the Perl 
-interpreter by typing code at the prompt.
+\item[Modo interactivo (o modo interpretador):] Una manera de usar el interpretador 
+de Perl al escribir código en el prompt.
 \index{interactive mode}
 
-\item[Script mode] A way of using the Perl interpreter to read
-code from a script and run it.
+\item[Modo script] Una manera de usar el interpretador 
+de Perl para leer código desde un script y ejecutarlo.
 \index{script mode}
 
-\item[one-liner mode:] A way of using the Perl interpreter to read
-code passed at the operating system prompt and run it.
+\item[Modo de una sola línea (one-liner)] Una manera de usar el interpretador 
+de Perl para leer código pasado al prompt del sistema operativo 
+y ejecutarlo.
 \index{one-liner mode}
 
-\item[Script] A program stored in a file.
+\item[Script] Un programa almacenado en un archivo de texto.
 \index{script}
 
-\item[Order of operations]  Rules governing the order in which
-expressions involving multiple operators and operands are evaluated.
-It is also called operator precedence.
+\item[Order de operaciones]  Reglas que dictan el orden en el que las expresiones
+que contienen varios operadores y operandos son evaluadas.
+También se conoce como precedencia de operadores.
 \index{order of operations}
 \index{operator precedence}
 \index{precedence!operator}
 
-\item[Concatenate]  To join two string operands end-to-end.
+\item[Concatenar]  Unir dos cadenas de texto de extremo a extremo.
 \index{concatenation}
 
-\item[Comment]  Information in a program that is meant for other
-programmers (or anyone reading the source code) and has no effect on the
-execution of the program.
+\item[Comentario]  Información en una programa que está dirigida a otros programadores
+(o cualquier persona leyendo el código fuente) y que no tiene ningún efecto en 
+la ejecución del programa.
 \index{comment}
 
-\item[Syntax error]  An error in a program that makes it impossible
-to parse (and therefore impossible to compile and to run).
+\item[Error sintáctico]  Un error en un programa que lo hace imposible
+parsear (y por lo tanto imposible de compilar y ejecutar).
 \index{syntax!error}
 
-\item[Exception]  An error that is detected while the program is running.
+\item[Excepción]  Un error que es detectado mientra que el programa se ejecuta.
 \index{exception}
 
-\item[Semantics]  The meaning of a program.
+\item[Semántica]  El significado de un programa.
 \index{semantics}
 
-\item[Semantic error]   An error in a program that makes it do something
-other than what the programmer intended.
+\item[Error semántico] Un error en un programa que causa que haga algo 
+diferente a lo que programador pretendía hacer.
 \index{semantic error}
 
 \end{description}
