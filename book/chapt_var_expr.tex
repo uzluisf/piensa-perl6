@@ -259,12 +259,14 @@ sintácticamente identificadores válidos de variables en Perl
 \index{reserved word}
 
 
-\section{Expressions and Statements}
+\section{Expresiones y Sentencias}
 \label{expr_and_statements}
 
-An {\bf expression} is a combination of terms and operators.
-Terms may be variables or literals, i.e., constant values such as a number or a string. A value all by itself is considered an expression, and so is
-a variable, so the following are all legal expressions:
+Una {\bf expresión} es una combinación de términos y operadores.
+Los términos pueden ser variables o literales, i.e., valores constantes tales
+como un número o una cadena de texto. Al igual que un valor, una variable
+es también considerada una expresión. Así que todo lo siguiente
+son expresiones legales:
 \index{expression}
 \index{term}
 \index{literal}
@@ -281,17 +283,16 @@ a variable, so the following are all legal expressions:
 >
 \end{verbatim}
 %
-When you type an expression at the prompt, the interpreter
-{\bf evaluates} it, which means that it finds the value of
-the expression.
-In this example, {\tt \$n} has the value 17 and
-{\tt \$n + 25} has the value 42.
+Cuando escribes una expresión en el prompt, el interpretador
+la {\bf evalúa}, lo que significa que encuentra el valor de la expresión.
+En esre ejemplo, {\tt \$n} tiene el valor 17 y {\tt \$n + 25} tiene
+el valor 42.
 \index{evaluate}
 
-A {\bf statement} is a unit of code that has an effect, like
-creating a variable or displaying a value, and usually needs to end 
-with a semi-colon {\tt ;} (but the semi-colon can sometimes be omitted 
-as we will see later):
+Una {\bf sentencia} es unidad de código que tiene un efecto, 
+tal como crear una variable or mostrar un valor, y usualmente
+necesita terminar con un punto y coma {\tt ;} (aunque el punto y coma
+puede algunas veces ser omitido como veremos más adelante):
 \index{statement}
 \index{semi-colon}
 
@@ -303,85 +304,83 @@ as we will see later):
 \end{verbatim}
 %
 
-The first line is an assignment statement that gives a value to
-{\tt \$n}.  The second line is a print statement that displays the
-value of {\tt \$n}.
+La primera línea es una sentencia de asignación que asigna un 
+valor a {\tt \$n}. La segunda línea es una sentencia de impresión 
+que muestra el valor de {\tt \$n}.
 
-When you type a statement and then press {\tt Enter}, the 
-interpreter {\bf executes} it, which means that it does 
-whatever the statement says.
+Cuando escribes una sentencia y después presiona {\tt Enter},
+el interpretador la {\bf ejecuta}, lo que significa que hace 
+lo que la sentencia dicta.
 \index{execute}
 
-An assignment can be combined with expressions using arithmetic 
-operators. For example, you might write:
+Una sentencia puede ser combinada con expresiones usando los operadores
+aritméticos. Por ejemplo, podrías escribir:
 \index{operator}
 
 \begin{verbatim}
-> my $answer = 17 + 25;
+> my $respuesta = 17 + 25;
 42
-> say $answer;
+> say $respuesta;
 42
 \end{verbatim}
 %
 
-The \verb'+' symbol is obviously the addition operator 
-and, after the assignment statement, the \verb'$answer' 
-variable contains the result 
-of the addition. The terms on each side of the operator 
-(here 17 and 25) are sometimes called the \emph{operands} 
-of the operation (an addition in this case).
+El símbolo \verb'+' es obviamente el operador de adición y,
+después de la sentencia de asignación, la variable \verb'$respuesta'
+contiene el resultado de la adición. Los términos en cada lado del operador
+(aquí 17 y 25) son usualmente llamados los \emph{operadores}
+de la operación (una adición en este caso).
 \index{operand}
 \index{addition operator}
 \index{assignment}
 
-Note that the REPL actually displays the result of the 
-assignment (the first line with ``42''), so that the 
-print statement was not really necessary in this 
-example \emph{under the REPL}; from now on, for the sake of 
-brevity, we will generally omit the print statements in the 
-examples where the REPL displays the result.
+Nota que el REPL actualmente muestra el resultado de la asignación
+(la primera línea con ``42``), así que la sentencia de impresión 
+no era realmente necesaria en este ejemplo \emph{en el REPL};
+desde aquí en adelante, para ser breve, generalmente omitiremos las sentencias
+de impresión en los ejemplos donde el REPL muestra los resultados.
 \index{REPL}
 
-In some cases, you want to add something to a variable 
-and assign the result to that same variable. This could 
-be written:
+En algunos casos, puedes querer añadir algo a una variable y 
+asignar el resultado a la misma variable. Esto se puede escribir
+así:
 
 \begin{verbatim}
-> my $answer = 17;
+> my $respuesta = 17;
 17
-> $answer = $answer + 25;
+> $respuesta = $respuesta + 25;
 42
 \end{verbatim}
 %
 
-Here, \verb"$answer" is first declared with a value of 17. The next 
-statement assigns to \verb"$answer" the current value of 
-\verb"$answer" (i.e., 17) + 25. This is such a common operation 
-that Perl, like many other programming languages, has a 
-shortcut for this:
+Aquí, \verb"$respuesta" es primero declarada con un valor de 17. La siguiente sentencia
+asigna a  \verb"$respuesta" el valor actual de  \verb"$respuesta" (i.e., 17) + 25.
+Esta operación es tan común en Perl, como en otro lenguajes de programación, que tiene
+un atajo:
 
 \begin{verbatim}
-> my $answer = 17;
+> my $respuesta = 17;
 17
-> $answer += 25;
+> $respuesta += 25;
 42
 \end{verbatim}
 %
 
 \index{$+=$ augmented assignment operator}
-The \verb"+=" operator combines the arithmetic addition operator 
-and the assignment operator to modify a value and apply the result 
-to a variable in one go, so that \verb"$n += 2" means: take 
-the current value of \verb"$n", add 2, and assign the result to 
-\verb"$n". This syntax works with all other arithmetic operators. 
-For example, \verb"-=" similarly performs a subtraction and an 
-assignment, \verb"*=" a multiplication and an assignment, etc. It 
-can even be used with operators other than arithmetic operators, 
-such as the string concatenation operator that we will see later.
+El operador \verb"+=" combina el operador de la adición aritmética 
+y el operador de asignación para modificar un valor y aplicar 
+el resultado a una variable en un solo paso, así que 
+\verb"$n += 2" quiere decir: toma el valor actual de \verb|$n|, agrega
+2, y asigna el resultado a \verb|$n|. Esta sintaxis funciona con todos
+los operadores aritméticos. Por ejemplo, \verb|-=| realiza una
+sustracción y una asignación, \verb|*=| una multiplicación y una asignación, etc.
+Además de los operadores aritméticos, también puede ser usado con otros operadores 
+tal como el operador de la concatenación de cadena de texto que veremos
+más adelante.
 
-Adding 1 to a variable is a very common version of this, so that 
-there is a shortcut to the shortcut, the \emph{increment} operator, 
-which increments its argument by one, and returns the incremented value:
+Agregar 1 a una variable es una versión muy común de esto, 
+y como resultado, existe un atajo, el operador de \emph{incremento},
+el cual incrementa su argumento por uno, y devuelve el valor incrementado: 
 \index{increment operator}
 \index{++ increment operator}
 \index{operator!++ (increment)}
@@ -395,49 +394,44 @@ which increments its argument by one, and returns the incremented value:
 18
 \end{verbatim}
 %
-This is called the prefix increment operator, because the \verb"++" 
-operator is placed before the variable to be incremented. There is 
-also a postfix version, \verb"$n++", which first returns the current 
-value and then increments the variable by one. It would not make 
-a difference in the code snippet above, but the result can be very different 
-in slightly more complex expressions. 
+Esto se conoce como el operador de incremento prefijo, porque el operador \verb|++|
+se coloca antes que la variable a ser incrementada. También hay una versión sufijo (posfijo),
+\verb|$n++|, la cual devuelve el valor actual y después incrementa la variable por uno. 
+No haría ninguna diferencia en el fragmento de código más arriba, pero el resultado puede
+ser diferente en expresiones un poco más complejas.
 
-There is also a decrement operator \verb"--", which decrements its 
-argument by one and also exists in a prefix and a postfix form. 
+También hay un operador de decremento \verb|--|, el cual disminuye 
+su argumento por uno y existe en la forma prefijo y posfijo. 
 \index{decrement operator}
 \index{\verb'--' decrement operator}
 \index{operator!$--$ (decrement)}
 
 
 
-\section{Script Mode}
+\section{Modo Script}
 
-So far we have run Perl in {\bf interactive mode}, which
-means that you interact directly with the interpreter (the 
-REPL). Interactive mode is a good way to get started,
-but if you are working with more than a few lines of code, 
-it can be clumsy and even tedious.
+Hasta ahora hemos ejecutado Perl  en el {\bf modo interactivo}, lo que 
+significa que tu interactúas directamente con el interpretador (el REPL).
+El modo interactivo es una buena manera de comenzar, si estás trabajando 
+con más de varias líneas de código, puede ser un poco torpe y hasta tedioso.
 \index{interactive mode}
 
-The alternative is to use a text editor and save code in a file 
-called a {\bf script} and then run the interpreter in {\bf script mode} 
-to execute the script.  By convention, Perl~6 scripts have names that 
-end with {\tt .pl}, {\tt .p6} or {\tt .pl6}.
+La alternativa es usar un editor de texto y guardar el código en un archivo de 
+texto conocido como un {\bf script} y después ejecutar el interpretador en el 
+{\bf modo script} para ejecutar el script. Por convención, los scripts de Perl~6 
+tienen nombres que terminan con {\tt .pl}, {\tt .p6} o {\tt .pl6}.
 \index{script}
 \index{script mode}
 
-Please make sure that you're really using a \emph{text editor} 
-and not a \emph{word-processing program} (such as MS Word, 
-OpenOffice or LibreOffice Writer). There is a very large 
-number of text editors available for free. On Linux, you might use 
-\emph{vi} (or \emph{vim}), \emph{emacs}, \emph{gEdit}, or 
-\emph{nano}. On Windows, you may use \emph{notepad} (very limited) 
-or \emph{notepad++}. There are also many cross-platform editors  
-or integrated development environments (IDEs) providing a 
-text editor functionality, including \emph{padre}, \emph{eclipse}, 
-or \emph{atom}. Many of these provide various syntax highlighting 
-capabilities, which might help you use correct syntax (and 
-find some syntax errors).
+Aseguráte de usar un \emph{editor de texto} y no un \emph{programa de procesamiento de texto}
+(como MS Word, OpenOffice o LibreOffice Writer). Hay un gran número de editores
+de texto disponible gratis. En Linux, podrías usar \emph{vi} (o \emph{vim}), 
+\emph{emacs}, \emph{gEdit}, o \emph{nano}. En Windows, puedes usar \emph{notepad} (muy limitado),
+o \emph{notepad++}. También hay editores multiplataforma o entorno de desarrollo integrado
+(IDES por su siglas en inglés) los cuales proveen la funcionalidad de un editor de texto. 
+Entre ellos están \emph{padre}, \emph{eclipse}, o \emph{atom}. Muchos de estos proveen 
+varias funcionalidades de resaltado de sintaxis, que puede ayudarte a usar 
+la sintaxis correcta (y encontrar algunos errores sintácticos).
 \index{syntax!highlighting}
 \index{text editor!emacs}
 \index{text editor!vi}
@@ -449,53 +443,53 @@ find some syntax errors).
 \index{text editor!notepad++}
 \index{text editor!atom}
 
-Once you've saved your code into a file (say, for example, 
-\verb'my_script.pl6'), you can run the program by issuing 
-the following command at the operating system prompt (for example 
-in a Linux console or in a \verb'cmd' window under Windows):
+Una vez que has guardado tu código en un archivo de texto (por ejemplo,
+\verb|mi_script.pl6|), puedes ejecutar el programa mediante el siguiente
+comando en el prompt del sistema operativo (por ejemplo en una consola de 
+Linux or en una ventana \verb|cmd| en Windows):
 \begin{verbatim}
-perl6 my_script.pl6
+perl6 mi_script.pl6
 \end{verbatim}
 
-Because Perl provides both modes,
-you can test bits of code in interactive mode before you put them
-in a script.  But there are differences between interactive mode
-and script mode that can be confusing.
+Dado que Perl provee ambos modos, 
+puedes ejecutar piezas de código en el modo interactivo 
+antes que las pongas en un script. Pero existen diferencias entre 
+el modo interactivo y el modo script que pueden confundir.
 \index{interactive mode}
 \index{script mode}
 
-For example, if you are using the Perl~6 interpreter as a 
-calculator, you might type:
+Por ejemplo, si estás usando el interpretador de Perl~6 como una
+calculadora, podrías escribir:
 
 \begin{verbatim}
-> my $miles = 26.2;
+> my $millas = 26.2;
 26.2
-> $miles * 1.61;
+> $millas * 1.61;
 42.182
 \end{verbatim}
 
-The first line assigns a value to {\tt \$miles} and displays that value.  
-The second line is an expression, so the
-interpreter evaluates it and displays the result.  It turns out that a
-marathon is about 42~kilometers.
+La primera línea asigna un valor a {\tt \$millas} y muestra ese valor.
+La segunda línea es una expresión, así que el interpretador la evalúa
+y muestra el resultado. Resulta que un maratón es alrededor de 42~kilómetros.
 
-But if you type the same code into a script and run it, you get no
-output at all.  In script mode, an expression, all by itself, has no
-visible effect.  Perl actually evaluates the expression, but it doesn't
-display the value unless you tell it to:
+Pero si escribe el mismo código en un script y lo ejecuta, no obtienes
+ningún resultado. En el modo script, una expresión por sí misma no tiene
+ningún efecto visible. Perl actualmente evalúa la expresión, pero no muestra
+el valor a menos que se lo indiques:
 
 \begin{verbatim}
-my $miles = 26.2;
-say $miles * 1.61;
+my $millas = 26.2;
+say $millas * 1.61;
 \end{verbatim}
 
-This behavior can be confusing at first. Let's examine why.
+Este comportamiento puede ser confuso al principio. Examinemos
+el por qué.
 
-A script usually contains a sequence of statements.  If there
-is more than one statement, the results appear one at a time
-as the print statements execute.
+Un script usualmente contiene una secuencia de sentencias. Si hay más 
+de una sentencia, los resultados aparecen uno por uno al 
+tiempo que las sentencias de impresión se ejecutan.
 
-For example, consider the following script:
+Por ejemplo, considera el siguiente script:
 
 \begin{verbatim}
 say 1;
@@ -503,17 +497,17 @@ my $x = 2;
 say $x;
 \end{verbatim}
 %
-It produces the following output:
+Produce el siguiente resultado:
 
 \begin{verbatim}
 1
 2
 \end{verbatim}
 %
-The assignment statement produces no output.
+La sentencia de asignación no produce ningún resultado.
 
-To check your understanding, type the following statements in the
-Perl interpreter and see what they do:
+Para comprobar tu entendimiento, escribe las siguientes sentencias
+en el interpretador de Perl y observa lo que hacen:
 
 \begin{verbatim}
 5;
@@ -521,101 +515,102 @@ my $x = 5;
 $x + 1;
 \end{verbatim}
 
-Now put the same statements in a script and run it.  What
-is the output?  Modify the script by transforming each
-expression into a print statement and then run it again.
+Ahora pon la mismas sentencias en un script y ejecútalo. 
+Cuál es el resultado? Transformar cada expresión en una sentencia 
+de impresión y después ejecuta el script modificado otra vez.
 
-\section{One-Liner Mode}
+\section{Modo de una sola línea}
 
-Perl also has a \emph{one-liner mode}, which enables you 
-to type directly a very short script at the operating 
-system prompt. Under Windows, it might look like this:
+Perl también tiene un \emph{modo de una sola línea} (modo one-liner), el cual te permite 
+escribir un script bien corto directamente en el prompt del sistema
+operativo. Debido a esto, dicho scripts son conocidos como one-liners.
+ En Windows, podría lucir de la siguiente manera:
 \index{one-liner mode}
 \label{one-liner mode}
 
 \begin{verbatim}
-C:\Users\Laurent>perl6 -e "my $value = 42; say 'The answer is ', $value;"
-The answer is 42
+C:\Users\Laurent>perl6 -e "my $valor = 42; say 'La respuesta es ', $valor;"
+La respuesta es 42
 
 \end{verbatim}
 
-The {\tt -e} option tells the compiler that the script to 
-be run is not saved in a file but instead typed at the 
-prompt between quotation marks immediately after 
-this option.
+La opción {\tt -e} le dice al compilador que el script
+a ser ejecutado no está guardado en un archivo de texto sino
+que en cambio está escrito en el prompt entre comillas inglesas
+inmediatamente después de dicha opción.
 
-Under Unix and Linux, you would replace double quotation 
-marks with apostrophes (or single quotes) 
-and apostrophes with double quotation marks:
+En Unix y Linux, reemplazarías las comillas inglesas con apóstrofos
+(o comillas simples)  y los apóstrofos con comillas inglesas:
 \index{apostrophe}
 \index{quote mark}
 
 \begin{verbatim}
-$  perl6 -e 'my $value = 42; say "The answer is $value";'
-The answer is 42
+$  perl6 -e 'my $valor = 42; say "La respuesta es $value";'
+La respuesta es 42
 
 \end{verbatim}
 
-The one-liner above may not seem to be very useful, but 
-throwaway one-liners can be very practical to perform 
-simple one-off operations, such as quickly modifying 
-a file not properly formatted, without having to save a script 
-in a separate file before running it.
+El one-liner más arriba puede no parecer útil, pero 
+one-liners desechables pueden ser muy prácticos para realizar
+operaciones simples, tal como modificar un archivo que no
+está formateado apropiadamente, sin tener que guardar un script
+en archivo separado antes de ejecutarlo.  
 
-We will not give any additional details about the one-liner 
-mode here, but will give some more useful examples 
-later in this book; for example, 
-Subsection~\ref{one-liner-example},
-Subsection~\ref{rot13_oneliner} (solving the ``rot-13'' exercise), or
-Subsection~\ref{sol_cartalk} (solving the exercise on 
-consecutive double letters). 
+No daremos ningunos detalles adicionales sobre el modo 
+de una sola línea, pero daremos más ejemplos útiles más
+adelante en este libro; por ejemplo,
+Subsección~\ref{one-liner-example},
+Subsección~\ref{rot13_oneliner} (resolviendo el ejercicio ``rot-13''), o
+Subsección~\ref{sol_cartalk} (resolviendo el ejercicio sobre 
+letras dobles consecutivas). 
 
 
 
-\section{Order of Operations}
+\section{Orden de Operaciones}
 \index{order of operations}
 \index{PEMDAS}
 \index{operator precedence}
 \index{precedence!operator}
 
-When an expression contains more than one operator, the order of
-evaluation depends on the {\bf order of operations} or \emph{operator precedence}. 
-For mathematical operators, Perl follows mathematical convention.
-The acronym {\bf PEMDAS}\footnote{US students are sometimes taught 
-to use the "Please Excuse My Dear Aunt Sally" mnemonics to remember 
-the right order of the letters in the acronym.} is a useful 
-way to remember the rules:
-
+Cuando una expresión contiene más de un operador, el orden 
+de evaluación depende en el {\bf orden de operaciones} o 
+la \emph{precedencia de operadores}. Para los operadores matemáticos,
+Perl sigue la convención matemática. El acrónimo {\bf PEMDAS}\footnote{Los estudiantes 
+estadounidenses se les enseña a usar el mnemónico 
+"Please Excuse My Dear Aunt Sally" para recordar el orden 
+correcto de las letras en el acrónimo.} es una manera muy útil de recordar
+las reglas\footnote{En español, podrías utilizar "Por Favor Excusa Mi Dragón Azul Sancho" para
+recordar el orden correcto.}:
+ 
 \begin{itemize}
 
-\item {\bf P}arentheses have the highest (or tightest) precedence and can be used 
-to force an expression to evaluate in the order you want. Since
-expressions in parentheses are evaluated first, {\tt 2 * (3-1)} is 4,
-and {\tt (1+1)**(5-2)} is 8. You can also use parentheses to make an
-expression easier to read, as in {\tt (\$minute * 100) / 60}, even
-if it doesn't change the result.
+\item {\bf P}aréntesis tienen la mayor precedencia y pueden ser 
+usado para forzar una expresión a evaluar en el orden que deseas.
+Dado que las expresiones en paréntesis son evaluadas primero, 
+{\tt 2 * (3-1)} es 4, y {\tt (1+1)**(5-2)} es 8.  También puedes usar 
+paréntesis para hacer una expresión más legible, como en {\tt (\$minuto * 100) / 60},
+aunque no cambia el resultado.
 \index{$()$ parenthesis operator}
 
-\item {\bf E}xponentiation has the next highest precedence, so
-{\tt 1 + 2**3} is 9 (1 + 8), not 27, and {\tt 2 * 3**2} is 18, not 36.
+\item {\bf E}xponente (potenciación) es la siguiente en el nivel de precedencia, así
+que {\tt 1 + 2**3} es 9 (1 + 8), no 27, y {\tt 2 * 3**2} es 18, no 36.
 \index{$**$ exponentiation operator}
 \index{operator!$**$ (exponentiation)}
 
-\item {\bf M}ultiplication and {\bf D}ivision have higher precedence
-  than {\bf A}ddition and {\bf S}ubtraction.  So {\tt 2*3-1} is 5, not
-  4, and {\tt 6+4/2} is 8, not 5.
+\item {\bf M}ultiplicación y {\bf D}ivisión tiene mayor precedencia
+  que {\bf A}dición y {\bf S}ustracción.  Por lo tanto, {\tt 2*3-1} es 5, no
+  4, y {\tt 6+4/2} es 8, no 5.
 \index{$*$ multiplication operator}
 \index{operator!$*$ (multiplication)}
 \index{$/$ division operator}
 \index{operator!$/$ (division)}
 
-\item Operators with the same precedence are usually evaluated 
-from left to right (except exponentiation).  So in the expression 
-{\tt \$degrees / 2 * pi}, the division happens first and the 
-result is multiplied by {\tt pi}, which is not the expected 
-result. (Note that {\tt pi} is not a variable, but a predefined 
-constant in Perl~6, and therefore does not require a sigil.)  To 
-divide by $2 \pi$, you can use parentheses:
+\item Operadores con la misma precedencia son usualmente evaluados
+de izquierda a derecha (excepto la potenciación). Así que en la expresión
+{\tt \$grados / 2 * pi}, la división ocurre primero y el resultado 
+es multiplicado por {\tt pi}, el cual no es el resultado esperado. (Nota que 
+{\tt pi} no es una variable, pero una constante predefinida en Perl~6, y por lo tanto
+no requiere un sigilo.) Para dividir por $2 \pi$, puedes usar paréntesis: 
 \index{sigil}
 \index{pi}
   
@@ -623,19 +618,18 @@ divide by $2 \pi$, you can use parentheses:
 my $result = $degrees / (2 * pi);  
 \end{verbatim}  
  
-or write
-  {\tt \$degrees / 2 / pi} or {\tt \$degrees / 2 / $\pi$}, which
-  will divide \verb'$degrees' by 2, and then divide the result of 
-  that operation by $\pi$ (which is equivalent to \verb'$degrees'
-  divided by $2 \pi$).
+o escribir 
+  {\tt \$grados / 2 / pi} o {\tt \$grados / 2 / $\pi$}, lo cual
+  divide \verb'$grados' por 2, y después divide el resultado de esa
+  operación por $\pi$ (el cual es equivalente a \verb'$grados'
+  dividido por $2 \pi$).
 
 \end{itemize}
 
-I don't work very hard to remember the precedence of
-operators.  If I can't tell by looking at the expression, I use
-parentheses to make it obvious. If I don't know for sure which of two operators 
-has the higher precedence, then the next person reading or maintaining 
-my code may also not know.
+Yo no trato de recordar la precedencia de los operadores. Si no puedo 
+determinar la precedencia al mirar la expresión, uso paréntesis para
+hacerlo obvio. Si no sé cuál de dos operadores tiene la mayor precedencia, entonces 
+la siguiente persona manteniendo mi código podría tampoco saberlo.
 \index{precedence}
 \index{parentheses}
 
