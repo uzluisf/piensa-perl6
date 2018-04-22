@@ -626,7 +626,7 @@ o escribir
 
 \end{itemize}
 
-Yo no trato de recordar la precedencia de los operadores. Si no puedo 
+Yo trato de no recordar la precedencia de los operadores. Si no puedo 
 determinar la precedencia al mirar la expresión, uso paréntesis para
 hacerlo obvio. Si no sé cuál de dos operadores tiene la mayor precedencia, entonces 
 la siguiente persona manteniendo mi código podría tampoco saberlo.
@@ -634,23 +634,24 @@ la siguiente persona manteniendo mi código podría tampoco saberlo.
 \index{parentheses}
 
 
-\section{String Operations}
+\section{Operaciones de Cadena de Texto}
 \label{string_operations}
 \index{string!operation}
 \index{operator!string}
 \index{coercion}
 \index{type!coercion}
 
-In general, you can't perform mathematical operations on strings, unless
-the strings look so much like numbers that Perl can transform or \emph{coerce} them into numbers and still make sense, so the 
-following are illegal:
+En general, no puedes realizar operaciones matemáticas con cadenas de texto,
+a menos que las cadenas de texto se parezcan tanto a los números que 
+Perl las transforma o \emph{coacciona} en números y todavía hace sentido.
+Así que los siguientes casos son ilegales:
 
 \begin{verbatim}
 '2'-'1a'    'eggs'/'easy'    'third'*'a charm'
 \end{verbatim}
 %
 
-For example, this produces an error:
+Por ejemplo, esto produce un error:
 
 \begin{verbatim}
 > '2'-'1a'
@@ -659,9 +660,9 @@ in '1?a' (indicated by ?)
   in block <unit> at <unknown file>:1
 \end{verbatim}
 %
-  
-But the following expressions are valid because these strings 
-can be coerced to numbers without any ambiguity:
+
+Pero la siguiente expresiones son válidas porque estas cadenas de texto
+pueden ser coaccionadas en números sin ninguna ambigüedad:
 \begin{verbatim}
 > '2'-'1'
 1
@@ -670,22 +671,23 @@ can be coerced to numbers without any ambiguity:
 \end{verbatim}
 %
 
-The \verb'~' operator performs {\bf string concatenation}, which means
-it joins the strings by linking them end-to-end.  For example:
+El operador \verb'~' realiza la {\bf concatenación de cadenas de texto}, 
+lo cual quiere decir que une las cadenas de texto al enlazarlas de
+extremo a extremo. Por ejemplo:
 \index{string concatenation}
 \index{string!concatenation}
 
 \begin{verbatim}
-> my $first = 'throat'
+> my $primera = 'hidro'
 throat
-> my $second = 'warbler'
+> my $segunda = 'avión'
 warbler
-> $first ~ $second
-throatwarbler
+> $primera ~ $segunda
+hidroavión
 \end{verbatim}
 %
-The {\tt x} operator also works on strings; it performs repetition.
-For example:
+El operador {\tt x} también funciona con cadenas de texto; básicamente
+realiza repeticiones. Por ejemplo:
 \index{string repetition}
 
 \begin{verbatim}
@@ -697,14 +699,14 @@ ababab
 333333333333333333333333333333333333333333
 \end{verbatim}
 
-Notice that, although the {\tt x} operator somewhat looks like 
-the multiplication operator when we write it by hand, {\tt x} 
-is obviously not commutative, contrary to the {\tt *} 
-multiplication operator. The first operator is a string or is 
-\emph{coerced} to a string (i.e., transformed into a string: 
-{\tt 42} is coerced to {\tt '42'}), and the second operator 
-has to be a number or something that can be transformed 
-into a number.
+Nota que, aunque el operador {\tt x} se parece al operador
+de multiplicación que escribimos a mano, {\tt x} obviamente 
+no es conmutativo, contrario al operador de multiplicación 
+{\tt *}. El primer operando es una cadena de texto o es coaccionado
+en una (i.e., transformado en una cadena de texto:
+{\tt 42} es coaccionado en {\tt '42'})  , y el segundo operando
+tiene que ser un número o algo que pueda ser transformado en 
+un número.
 \index{commutativity}
 \index{coercion}
 
