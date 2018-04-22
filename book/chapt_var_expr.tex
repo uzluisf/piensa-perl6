@@ -711,62 +711,63 @@ un número.
 \index{coercion}
 
 
-\section{Comments}
+\section{Comentarios}
 \index{comment}
 
-As programs get bigger and more complicated, they get more difficult
-to read.  Formal languages are dense, and it is often difficult to
-look at a piece of code and figure out what it is doing, or why.
+A medida que los programas crecen y se vuelven más complicados,
+ellos se vuelven menos legible. Los lenguajes formales son denso, y es usualmente
+difícil mirar a un fragmento de código y descifrar lo que está haciendo,
+o por qué lo está haciendo.
 
-For this reason, it is a good idea to add notes to your programs to explain
-in natural language what the program is doing.  These notes are called
-{\bf comments}, and they start with the \verb"#" symbol:
-
-\begin{verbatim}
-# compute the percentage of the hour that has elapsed
-my $percentage = ($minute * 100) / 60;
-\end{verbatim}
-%
-In this case, the comment appears on a line by itself.  You can also put
-comments at the end of a line:
+Por esta razón, es muy buena idea agregar notas a tus programas que expliquen en un
+lenguaje natural lo que el programa hace. Estas notas son conocidas como {\bf comentarios},
+y comienzan con el símbolo \verb|#|:
 
 \begin{verbatim}
-$percentage = ($minute * 100) / 60;     # percentage of an hour
+# computar el porcentaje de la hora que ha pasado
+my $porcentaje = ($minuto * 100) / 60;
 \end{verbatim}
 %
-Everything from the {\tt \#} to the end of the line is ignored---it
-has no effect on the execution of the program.
-
-Comments are most useful when they document nonobvious features of
-the code.  It is reasonable to assume that the reader can figure out
-{\em what} the code does; it is more useful to explain {\em why}.
-
-This comment is redundant with the code and useless:
+En este caso, el comentario aparece en una línea por sí mismo. También puedes
+colocar comentarios al final de una línea:
 
 \begin{verbatim}
-my $value = 5;        # assign 5 to $value
+$porcentaje = ($minuto * 100) / 60;     # porcentaje de una hora
 \end{verbatim}
 %
-This comment, by contrast, contains useful information that 
-is not in the code:
+Todo desde el inicio de {\tt \#} al final de la línea es ignorado---lo que significa
+que no tiene un efecto en el ejecución del programa.
+
+Los comentarios son más útiles cuando documentan características del código
+que no obvias. Es razonable asumir que el lector puede descifrar lo que 
+hace el código; es más útil explicar explicar el {\em por qué}.
+
+Este comentario es redundante con el código e inservible:
 
 \begin{verbatim}
-my $velocity = 5;     # velocity in meters/second. 
+my $valor = 5;        # asignar 5 a $valor
 \end{verbatim}
 %
-Good variable names can reduce the need for comments, but
-long names can make complex expressions hard to read, so there is
-a tradeoff.
+Por el contrario, este comentario contiene información útil que no está
+presente en el código:
+
+\begin{verbatim}
+my $velocidad = 5;     # la velocidad es en metros/segundos. 
+\end{verbatim}
+%
+Nombres de variables que son buenos y adecuados pueden reducir la necesidad 
+de comentario, pero nombres muy largos pueden hacer expresiones sean difíciles
+de leer, por lo tanto debe existir un balance.
 \index{variable name}
 
 
-\section{Debugging}
+\section{Depuración de Programas}
 \index{debugging}
 \index{bug}
 
-Three kinds of errors can occur in a program: syntax errors, runtime 
-errors, and semantic errors.  It is useful
-to distinguish between them in order to track them down more quickly.
+Tres tipos de errores pueden ocurrir en un programa: errores
+de sintaxis, errores al tiempo de ejecución, y  errores semánticos.
+Es muy útil saber distinguirlos para ratrearlos más rápido.
 
 \begin{description}
 
