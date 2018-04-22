@@ -1,33 +1,32 @@
-\chapter{Variables, Expressions and Statements}
+\chapter{Variables, Expresiones y Sentencias}
 
-One of the most powerful features of a programming language 
-is the ability to manipulate {\bf variables}.  Broadly 
-speaking, a variable is a name that refers to a value. It 
-might be more accurate to say that a variable is a container 
-that has a name and holds a value.
+Una de las más poderosas características de un lenguaje de programación
+es la habilidad para manipular {\bf variables}. En términos generales, 
+una variable es el nombre que hace referencia a un valor. Podría ser 
+más preciso decir que una variable es un contenedor  
+que tiene un nombre y que almacena un valor.
 \index{variable}
 
 
-\section{Assignment Statements}
+\section{Sentencias de Asignación}
 \label{variables}
 \index{assignment!statement}
 \index{statement!assignment}
 \index{$=$ assignment operator}
 \index{operator!assignment}
 
-An {\bf assignment statement} uses the equals sign {\tt =} 
-and  gives a value to a variable, but, before you can assign 
-a value to a variable, you first need to create the 
-variable by declaring it (if it does not already 
-exist):
 
+Una {\bf sentencia de asignación} usa el signo de igualdad {\tt =}
+y le da un valor a una variable, pero, antes de que asignes un valor 
+a una variable, debes primero crear la variable a través de una
+declaración (si todavía no existe):
 \begin{verbatim}
-> my $message;          # variable declaration, no value yet
-> $message = 'And now for something completely different';
+> my $mensaje;          # declración de una variable, aún sin valor
+> $mensaje = 'And now for something completely different';
 And now for something completely different
-> my $number = 42;      # variable declaration and assignment
+> my $número = 42;      # declaracion de una variable y asignación
 42
-> $number = 17;         # new assignment
+> $número = 17;         # nueva asignación
 17
 > my $phi = 1.618033988;
 1.618033988
@@ -39,121 +38,118 @@ And now for something completely different
 \index{declaration!variable}
 \index{variable!declaration}
 
-This example makes four assignment statements.  The first 
-assigns a string to a new variable named {\tt \$message}, 
-the second assigns the integer {\tt 42} to {\tt \$number}, the 
-third reassigns the integer 17 to {\tt \$number}, and the fourth 
-assigns the (approximate) value of the golden ratio to {\tt \$phi}.
+Este ejemplos hace cuatros asignaciones. La primera asigna una cadena de texto
+a una nueva variable llamada {\tt \$mensaje}, la segunda asigna 
+el número entero {\tt 42} a {\tt \$número}, el tercero reasigna el entero {\tt 17} a
+{\tt \$número}, y el cuarto asigna el valor aproximado del número áureo a {\tt \$phi}.
 
-There are two important syntax features to understand here.
+Aquí hay dos características sintácticas importantes que debes entender.
 
-First, in Perl, variable names start with a so-called 
-\emph{sigil}, i.e., a special non-alphanumeric character such 
-as \verb'$', \verb'@', \verb'%', \verb'&', and some others. 
-This special character 
-tells us and the Perl compiler (the program that reads 
-the code of our program and transforms it into computer 
-instructions) which kind of variable it is. For example, the 
-\$ character indicates that the variables above are all 
-\emph{scalar variables}, which means that they can contain 
-only one value at any given time. We'll see later other 
-types of variables that may contain more than one value.
+Primero, en Perl, los nombres de las variables comienzan un 
+símbolo conocido como un {\emph sigilo}, i.e., un carácter no alfanumérico
+como \verb'$', \verb'@', \verb'%', \verb'&', y otros más. Este carácter
+especial nos dice y al compilador de Perl (el programa que lee
+el código de nuestro programa y lo transfoma en instrucciones 
+de computadoras) el tipo de variable que es. Por ejemplo, el 
+carácter \$ indica que las variables más arriba son todas variables
+escalares, lo cual significa que ellas pueden almacenar un solo valor
+en cualquier momento. Veremos más adelante otros tipos de variables las
+cuales pueden contener más de un solo valor.
 \index{sigil}
 \index{scalar}
 \index{variable!scalar}
 \index{scalar}
 
-Second, notice that all three variables above are first 
-introduced by the keyword {\tt my}, which is a way of 
-declaring a new variable. Whenever you create a new 
-variable in Perl, you need to \emph{declare} it, 
-i.e., tell Perl that you're going to use that new 
-variable; this is most commonly done with the 
-{\tt my} keyword, which declares a \emph{lexical} variable. 
-We will explain later what a lexical variable is; let's 
-just say for the time being that it enables you to 
-make your variable local to a limited part of your code. 
-One of the good consequences of the requirement to declare 
-variables before you use them is that, if you accidentally 
-make a typo when writing a variable name, the compiler 
-will usually be able to tell you that you are using a 
-variable that has not been declared previously and 
-thus help you find your error. This has other far-reaching 
-implications which we will examine later.
+Segundo, nota como las tres variables más arriba son 
+introducidas con la palabra clave {\tt my}, que es una manera
+de declarar una variable nueva. Cuando tu creas una variable nueva
+en Perl, necesitas \emph{declararla}, i.e., le deja saber a Perl
+que vas a usar una variable nueva; esto se hace comúnmente con la
+palabra clave {\tt my}, la cual declara una variable \emph{lexical}.
+Explicaremos luego lo que es una variable lexical pero por ahora,
+digamos que te permite crear una variable local a una parte 
+limitada de tu código. Una de las buenas consecuencias del requerimiento
+de declarar variables antes de que las uses es que, si tu cometes
+un error al escribir el nombre de una variable, el compilador 
+usualmente será capaz de decirte que estás usando una variable que
+no ha sido declarada y como resultado te ayudará a encontrar tu error. 
+Esto tiene grandes complicaciones las cuales examinaremos más tarde.
 \index{my}
 \index{declaring variables}
 \index{variable!declaration}
 \index{lexical}
 \index{variable!lexical}
 
-When we wrote at the beginning of this section that a variable has 
-to be declared before it is used (or just when it is used), it plainly 
-means that the declaration has to be before (or at the point of) the 
-variable's first use in the text file containing the program. We will see later that 
-programs don't necessarily run from top to bottom in the order in which 
-the lines or code appear in the program file; still, the variable 
-declaration must be before its use in the text file containing the program.
+Cuando escribimos al inicio de esta sección que una variable debe
+ser declarada antes de ser usada (o solo cuando se usa), esto
+significa que la declaración tiene que ser antes (o al punto de) 
+del primer uso de la variable en el archivo de texto que contiene el 
+programa. Veremos más adelante que los programas no son ejecutados
+necesariamente de arriba hacia abajo en el orden en el que las líneas
+o código aparecen en el programa; aún así, la declaración de la variable
+debe ser antes de su uso en el archivo de texto que contiene el programa.
 
-If you neglect to declare a variable, you get a syntax error:
+Si olvidas declara una variable, obtienes un erro sintáctico:
 \index{syntax error}
 
 \begin{verbatim}
-> $number = 5;
+> $número = 5;
 ===SORRY!=== Error while compiling <unknown file>
-Variable '$number' is not declared
+Variable '$número' is not declared
 at <unknown file>:1
-------> <BOL><HERE>$number = 5;
+------> <BOL><HERE>$número = 5;
 >
 \end{verbatim}
 %
-Please remember that you may obtain slightly different 
-error messages depending on the version of Rakudo you 
-run. The above message was obtained in February 2016; 
-with a newer version (October 2016), the same error 
-is now displayed somewhat more cleanly as:
+Ten presente que podrías obtener diferentes mensajes de
+error dependiendo de la versión de Rakudo que ejecutes.
+El mensaje arriba se obtuvo en Febrero 2016;
+con una versión más nueva (Octubre 2016), el mismo error
+se muestra en una forma algo más organizada:
 \begin{verbatim}
 >
-> $number = 5;
+> $número = 5;
 ===SORRY!=== Error while compiling:
-Variable '$number' is not declared
+Variable '$número' is not declared
 at line 2
-------> <BOL><HERE>$number = 5;
+------> <BOL><HERE>$número = 5;
 >
 \end{verbatim}
 
 \index{state diagram}
 \index{diagram!state}
 
-A common way to represent variables on paper is to write the name with
-an arrow pointing to its value.  This kind of figure is
-called a {\bf state diagram} because it shows what state each of the
-variables is in (think of it as the variable's state of mind).
-Figure~\ref{fig.state2} shows the result of the previous example.
+Una manera común de representar variables en papel es escribir el 
+nombre con una flecha apuntando a su valor. Este tipo de dibujo se le conoce
+como un {\bf diagrama de estado} porque muestra en qué estado cada una de las variables
+se encuentra (imagínalo como el estado mental de la variable).
+La figura\ref{fig.state2} muestra el resultado del ejemplo anterior.
 
 \begin{figure}
 \centerline
 {\includegraphics[scale=0.6]{figs/test_5.png}}
-\caption{State diagram.}
+\caption{Diagrama de estado.}
 \label{fig.state2}
 \end{figure}
 
 
 
-\section{Variable Names}
+\section{Nombres de las Variables}
 \index{variable}
 
-Programmers generally choose names for their variables that
-are meaningful---they document what the variable is used for.
+Los programadores generalmente eligen nombres significativos
+para sus variables---ellos documentan el uso de la variable.
 
-Variable names can be as long as you like.  They can contain
-both letters and numbers, but user-defined variable names 
-can't begin with a number. Variable names are case-sensitive, 
-i.e., {\tt \$message} is not the same variable as {\tt \$Message} 
-or {\tt \$MESSAGE}. It is legal to use uppercase letters, but 
-it is conventional to use only lower case for most variables 
-names. Some people nonetheless like to use {\tt \$TitleCase} 
-for their variables or even pure {\tt \$UPPERCASE} for 
-some special variables.
+Los nombres de las variables pueden ser tan largos como tu desees.
+Ellos pueden contener letras y números, pero las variables
+definidas por el usuario no pueden comenzar con un número. Los nombres de las
+variables son sensibles al uso de mayúsculas y minúsculas, 
+i.e., {\tt \$mensaje} no es la misma variable que {\tt \$Mensaje} 
+o {\tt \$MENSAJE}. Es legal usar letras mayúsculas, pero es convencional
+usar solo letras minúsculas para la mayoría de los nombres de las
+variables. No obstante, algunas personas prefieren usar {\tt \$TipoTítulo}
+para los nombres de sus variables o hasta {\tt \$MAYÚSCULAS} 
+para algunas variables especiales.
 \index{lower case}
 \index{upper case}
 \index{title case}
@@ -164,54 +160,53 @@ some special variables.
 
 \index{Unicode}
 \index{ASCII}
-Unlike most other programming languages, Perl~6 does not require 
-the letters and digits used in variable names to be plain ASCII. 
-You can use all kinds of Unicode letters, i.e., 
-letters from almost any language in the world, so that, for example,  
-{\tt \$brücke}, {\tt \$payé} or {\tt \$niño} are 
-valid variable names, which can be useful for non-English 
-programmers (provided that these Unicode characters are 
-handled correctly by your text editor and your 
-screen configuration). Similarly, instead of using 
-\verb"$phi" for the name of the golden ratio variable, 
-we might have used the \emph{Greek small letter phi}, \verb'φ' 
-(Unicode code point U+03C6), just as we could have used 
-the \emph{Greek small letter pi}, $\pi$,  for the well-known 
-circle circumference to diameter ratio:
+A diferencia de muchos otros lenguajes de programación, Perl~6 
+no requiere que las letras y dígitos en los nombres de las variables
+sean únicamente ASCII. Puedes usar cualquier tipo de letras Unicode, i.e.
+letras de cualquier otro lenguaje en el mundo, así que, por ejemplo,
+{\tt \$brücke}, {\tt \$payé} or {\tt \$niño} son nombres de variables
+válidos, los cuales pueden ser usados por programadores que hablan 
+otros idiomas diferentes al inglés (siempre y cuando estos caracteres
+Unicode sean correctamente manipulados por tu editor de texto y tu
+configuración de pantalla). De la misma manera, en vez de usar 
+\verb"$phi" para el nombre de la variable del número aúreo,
+podríamos haber usado la \emph{letra griega minúscula phi},
+\verb'φ' (Unicode code point U+03C6). Igualmente, podríamos
+haber usado la \emph{letra griega minúscula pi}, $\pi$, 
+para la muy conocida razoń de la circunferencia del círculo
+al diámetro:
 \index{golden ratio}
 \index{Unicode}
 \index{phi}
 \index{pi}
 
 \begin{verbatim}
-> my $φ = (5 ** .5 + 1)/2;       # golden ratio
+> my $φ = (5 ** .5 + 1)/2;       # número aúreo
 1.61803398874989
 > say 'Variable $φ = ', $φ;
 Variable $φ = 1.61803398874989
 > my $π = 4 * atan 1; 
 3.14159265358979
-> # you could also use the pi or π built-in constant:
+> # podrías también las constante integrada pi o π:
 > say pi
 3.14159265358979
 \end{verbatim}
 
-The underscore character, \verb"_", can appear anywhere in a variable name.
-It is often used in names with multiple words, such as 
-\verb"$your_name" or \verb"$airspeed_of_unladen_swallow". 
+El carácter de barra baja, \verb"_", puede aparecer en cualquier
+parte del nombre de una variable. Usualmente se usa en nombres con
+múltiples palabras, tal como \verb"$tu_nombre" o \verb"$airspeed_of_unladen_swallow". 
 \index{underscore character}
 
-You may even use dashes to create so-called 
-``kebab case''\footnote{Because the 
-words appear to be skewered like pieces of food prepared for 
-a barbecue.} and name those variables 
-\verb"$your-name" or \verb"$airspeed-of-unladen-swallow", and this 
-might make them slightly easier to read: a dash \verb'-' is 
-valid in variable names provided it is immediately followed by an 
-alphabetical character and preceded by an alphanumerical character. 
-For example, \verb"$double-click" or \verb"$la-niña" are legitimate 
-variable names. Similarly, you can use an apostrophe \verb"'" 
-(a.k.a. single quote) between letters, so \verb"$isn't" or 
-\verb"$o'brien's-age" are valid identifiers.
+Hasta puedes usar guiones para crear lo que se conoce como
+``kebab case''\footnote{Porque las variables aparecen estar
+atravesadas como las piezas de comida preparadas para un barbacoa.}
+y nombrar esas variables \verb"$tu-nombre" or \verb"$airspeed-of-unladen-swallow",
+y esto las puede hacer más legibles: un guión \verb'-' es válido en una variable
+siempre y cuando sea inmediatamente seguido por un carácter alfanumérico.
+Por ejemplo, \verb"$doble-clic" or \verb"$la-niña" son nombres legítimos
+de variables. Análogamente, puedes usar un apóstrofo \verb"'" 
+(también conocido como comilla simple) entre las letras, así que 
+\verb"$isn't" o \verb"$o'brien's-age" son identificadores válidos. 
 \index{dash}
 \index{apostrophe}
 \index{single quote}
@@ -220,7 +215,8 @@ variable names. Similarly, you can use an apostrophe \verb"'"
 \index{case!kebab}
 
 
-If you give a variable an illegal name, you get a syntax error:
+Si les da un nombre ilegal a una variable, consigues 
+un error sintáctico:
 \index{syntax error}
 
 \begin{verbatim}
@@ -238,30 +234,29 @@ at <unknown file>:1
 (...)
 \end{verbatim}
 %
-{\tt \$76trombones} is illegal because it begins with a number.
-{\tt \$more§} is illegal because it contains an illegal character, {\tt
+{\tt \$76trombones} es ilegal porque comienza con un número.
+{\tt \$more§} es ilegal porque contiene un carácter ilegal, {\tt
 §}. 
 
-If you've ever used another programming language and stumbled 
-across a terse message such as {\tt"SyntaxError: invalid syntax"}, 
-you will notice that the Perl designers have made quite a bit 
-of effort to provide detailed, useful, and meaningful error 
-messages. 
+Si alguna vez has usado otro lenguaje de programación y 
+te has tropezado con un mensaje terso tal como {\tt"SyntaxError: invalid syntax"},
+notarás que los diseñadores de Perl han hecho un gran esfuerzo
+para proveerte con mensajes de error que sean detallados, útiles
+y significativos.
 \index{error message}
 
-Many programming languages have \emph{keywords} or \emph{reserved 
-words} that are part of the syntax, such as {\tt if}, {\tt while}, 
-or {\tt for}, and thus cannot be used for identifying variables 
-because this would create ambiguity. There is no such problem 
-in Perl: since variable names start with a sigil, the compiler 
-is always able to tell the difference between a keyword and a 
-variable. Names such as {\tt \$if} or {\tt \$while} are 
-syntactically valid variable identifiers in Perl (whether 
-such names make sense is a different matter).
+Muchos lenguajes de programación tienen \emph{palabras claves} o
+\emph{palabras reservadas} que son parte de la sintaxis, tales como
+{\tt if}, {\tt while}, o {\tt for}, y por lo tanto no pueden ser usadas
+para identificar variables porque eso crearía ambigüedad. Dicho problema
+no existe en Perl: dado que los nombres de las variables comienzan un sigilo,
+el compilador es siempre capaz de diferenciar entre una palabra clave
+y una variable. Nombres tales como {\tt \$if} o {\tt \$while} son
+sintácticamente identificadores válidos de variables en Perl 
+(si estos nombres hacen sentido es un asunto diferente).
 \index{sigil}
 \index{keyword}
 \index{reserved word}
-
 
 
 \section{Expressions and Statements}
