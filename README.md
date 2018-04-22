@@ -22,5 +22,10 @@ ser encontrada en [Think Perl 6](http://greenteapress.com/wp/think-perl-6/).
 - [ ] Capítulo 09: Arrays y Listas
 - [ ] Capítulo 10: Hashes
 - [ ] Capítulo 11: Caso Práctico: Selección de Estructura de Dato
+- [ ] Capítulo 12: Clases y Objetos
+- [ ] Capítulo 13: Regexes y Grammars
+- [ ] Capítulo 14: Programación Funcional en Perl
+- [ ] Capítulo 15: Algunos Últimos Consejos
+- [ ] Apéndice A:  Soluciones a los Ejercicios
 
 * **Revisado y Corregido**
