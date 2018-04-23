@@ -11,6 +11,7 @@ ser encontrada en [Think Perl 6](http://greenteapress.com/wp/think-perl-6/).
 ### Progreso
 
 * **Traducido**
+- [x] Preface
 - [x] Capítulo 01: La Forma del Programa
 - [ ] Capítulo 02: Variables, Expresiones y Sentencias
 - [ ] Capítulo 03: Funciones
