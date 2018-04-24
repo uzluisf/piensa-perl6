@@ -13,7 +13,7 @@ ser encontrada en [Think Perl 6](http://greenteapress.com/wp/think-perl-6/).
 * **Traducido**
 - [x] Preface
 - [x] Capítulo 01: La Forma del Programa
-- [ ] Capítulo 02: Variables, Expresiones y Sentencias
+- [x] Capítulo 02: Variables, Expresiones y Sentencias
 - [ ] Capítulo 03: Funciones
 - [ ] Capítulo 04: Bucles, Condicionales y Recursión
 - [ ] Capítulo 05: Subrutinas Fructuosas
