@@ -369,32 +369,34 @@ al compararlo con la raíz cuadrada de 2 dividida por 2:
 \end{verbatim}
 %
 
-\section{Composition}
+\section{Composición}
 \index{composition}
 
-So far, we have looked at the elements of a program---variables,
-expressions, and statements---in isolation, without talking about how to combine them.
+Hasta ahora, hemos discutidos los elementos de un programa---variables,
+expresiones, y sentencias---aisladamente, sin discutir sobre
+cómo combinarlos.
 
-One of the most useful features of programming languages is their
-ability to take small building blocks and {\bf compose} them, i.e., 
-to combine them in such a way that the result of one is the 
-input of another one.  For example, the argument of a function 
-can be any kind of expression, including arithmetic operators:
+Una de las características más útiles de los lenguajes de programación
+es su habilidad de tomar pequeños componentes y {\bf componer} estos
+componentes, i.e.,
+combinarlos de tal manera que el resultado de uno es la entrada
+de otro. Por ejemplo, el argumento de una función  puede ser cualquier
+tipo de expresión, incluyendo operadores aritméticos:
 
 \begin{verbatim}
-> my $degrees = 45;
+> my $grados = 45;
 45
-> my $height = sin($degrees / 360.0 * 2 * pi);
+> my $altura = sin($grados / 360.0 * 2 * pi);
 0.707106781186547
 \end{verbatim}
 %
-Here, we have used parentheses for the argument to the {\tt sin} 
-function to clarify that all the arithmetic operations 
-within the parentheses are completed before the {\tt sin} function 
-is actually called, so that it will use the result of these operations 
-as its argument. 
+Aquí, hemos usados paréntesis para el argumento de la función
+{\tt sin} para clarificar que todas las operaciones aritméticas
+sean completadas antes que la función {\tt sin} sea actualmente
+llamada, para que así use el resultado de estas operaciones 
+como su argumento.
 
-You can also compose function calls:
+Puedes componer llamadas de funciones:
 
 \begin{verbatim}
 > my $x = 10;
@@ -403,21 +405,22 @@ You can also compose function calls:
 11
 \end{verbatim}
 %
-Almost anywhere you can put a value, you can put an arbitrary
-expression, with one exception: the left side of an assignment
-statement has to be a variable name, possibly along with its
-declaration.  Almost any other expression on the left
-side is a syntax error \footnote{We will see rare exceptions to this rule
-later}:
+Casi en cualquier lado que puedes poner un valor, puedes poner
+una expresión arbitraria, con una excepción: el lado izquierdo 
+de la sentencia de asignación tiene que ser el nombre de una
+variable, posiblemente con su declaración. Casi cualquier otra expresión
+en el lado izquierdo es un error sintáctico \footnote{Veremos esta rara
+excepción a esta regla más tarde}:
+
 
 \begin{verbatim}
-> my $hours = 1;
+> my $horas = 1;
 1
-> my $minutes = 0;
+> my $minutos = 0;
 0
-> $minutes = $hours * 60;        # right 
+> $minutos = $horas * 60;        # correcto 
 60
-> $hours * 60 = $minutes;        # wrong !!
+> $horas * 60 = $minutos;        # incorrecto!!
 Cannot modify an immutable Int
   in block <unit> at <unknown file> line 1
 \end{verbatim}
