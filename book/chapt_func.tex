@@ -260,72 +260,77 @@ Depende de ti cuál de las formas prefieres usar, pero
 usaremos ambas formas, aún solo sea para acostumbrarnos
 a ambas.
 
-\section{Math functions}
+\section{Funciones Matemáticas}
 \index{math function}
 \index{function!math}
 
-Perl provides most of the familiar mathematical functions.
+Perl provee muchas de las funciones matemáticas familiares.
 
-For some less common functions, you might need to use a 
-specialized module such as \verb'Math::Matrix' or 
-\verb'Math::Trig'.  A {\bf module} is a file that contains a
-collection of related functions.
+Para algunas funcionesno tan comunes, podría necesitar un
+módulo especializado tal com \verb'Math::Matrix' o
+\verb'Math::Trig'. Un {\bf módulo} es un archivo de texto 
+que contiene una colección de funciones que están relacionadas.
 \index{module}
 
-Before we can use the functions in a module, we have to import it with
-a {\bf use statement}:
+Antes de que usemos las funciones en un módulo, tenemos que importarlo
+la sentencia {\bf use}:
 
 \begin{verbatim}
 use Math::Trig;
 \end{verbatim}
 %
-This statement will import a number of functions that you will then be able to use as if you had defined them in your main source file, for example \verb'deg2rad' to perform conversion of angular values from degrees to radians, or \verb'rad2deg' to perform the opposite conversion.
+Esta sentencia importará un número de funciones que serás capaz de usar
+como si tu las hubieses definido en el archivo de código principal,
+por ejemplo \verb|grad2rad| convierte un valor angular desde grados
+a radianes o \verb|rad2grad| que hace la conversión opuesta.
 
-For most common mathematical functions, however, you don't need any \verb'math' module, as they are included in the core of the language:
+Para la mayoría de funciones matemáticas comunes, sin embargo, no necesitas
+tener ningún módulo \verb|matemático|, dado que dichas funciones
+ya están incluidas en núcleo del lenguaje:
 
 \begin{verbatim}
-> my $noise-power = 5.5;
+> my $nivel-ruido = 5.5;
 5.5
-> my $signal-power = 125.6;
+> my $nivel-señal = 125.6;
 125.6
-> my $decibels = 10 * log10 $signal-power / $noise-power;
+> my $decibelios = 10 * log10 $nivel-señal / $nivel-ruido;
 13.5862694990693
 \end{verbatim}
 %
 \index{log10 function}
 \index{function!log10}
-This first example uses \verb"log10" (common logarithm) 
-to compute a signal-to-noise ratio in decibels 
-(assuming that \verb"signal-power" and
-\verb"noise-power" are defined in the proper units).  Perl 
-also provides a {\tt log} function which, when receiving 
-one argument, computes logarithm base {\tt e} of the argument, 
-and, when receiving two arguments, computes the logarithm 
-of the first argument to the base of the second argument:
+El primer ejemplo usa \verb"log10" (logaritmo común)
+para computar la razón de señal y ruido en decibelios
+(asumiendo que \verb|nivel-señal| y \verb|nivel-ruido| sean 
+definidos en las propias unidades). Perl también provee una 
+función {\tt log}, la cual, cuando recibe un argumento,
+computa el logaritmo en base {\tt e} del argumento y,
+cuando recibe dos argumentos, computa el logaritmo del primer
+argumento en base del segundo argumento:
 
 \begin{verbatim}
-> say e;                 # e is predefined as Euler's constant
+> say e;                 # e es predefinada como la constante de Euler
 2.71828182845905
 > my $val = e ** e;
 15.1542622414793
-> say log $val;          # natural logarithm
+> say log $val;          # logaritmo natural
 2.71828182845905
-> say log $val, e;       # logarithm base e or natural logarithm
+> say log $val, e;       # logaritmo en base e o logaritmo natural
 2.71828182845905
-> say log 1024, 2;       # binary logarithm or logarithm base 2
+> say log 1024, 2;       # logaritmo binario o logaritmo en base 2
 10
 \end{verbatim}
 %
 \index{log function}
 \index{function!log}
 
-
-Perl also provides most common trigonometric functions:
+Perl también provee muchas de las funciones trigonométricas
+comunes:
 
 \begin{verbatim}
-> my $radians = 0.7;
+> my $radianes = 0.7;
 0.7
-> my $height = sin $radians;
+> my $altura = sin $radianes;
 0.644217687237691
 \end{verbatim}
 
@@ -333,30 +338,28 @@ Perl also provides most common trigonometric functions:
 \index{radian}
 \index{trigonometric function}
 \index{function!trigonometric}
-This example finds the sine of \verb'$radians'.  The name of the
-variable is a hint that {\tt sin} and the other trigonometric
-functions ({\tt cos}, {\tt tan}, etc.)  take arguments 
-in radians. To convert from degrees to radians, you may 
-use the  \verb'deg2rad' function of the 
-\verb'Math::Trig module', or simply divide by 180 
-and multiply by $\pi$:
+Este ejemplo encuentra el seno de \verb|$radianes|. El 
+nombre de la variable es una pista a que el {\tt sin} y 
+otras funciones trigonométricas ({\tt cos}, {\tt tan}, etc.) toman
+argumentos en radianes. Para convertir de grados a radianes, puedes
+usar la función \verb'deg2rad' del  módulo \verb|Math::Trig|, o
+simplemente divide por 180 y multiplica por $\pi$:
 
 \begin{verbatim}
-> my $degrees = 45;
+> my $grados = 45;
 45
-> my $radians = $degrees / 180.0 * pi;    # pi, predefined constant
+> my $radianes = $grados / 180.0 * pi;    # pi, constante predefinida 
 0.785398163397448
-> say sin $radians;       # should be square root of 2 divided by 2
+> say sin $radianes;       # debería ser la raíz cuadrada de 2 divida por 2
 0.707106781186547
 \end{verbatim}
 %
-The expression {\tt pi} is a predefined constant for an
-approximation of $\pi$, accurate to about 14 digits.
+La expresión {\tt pi} es una constante predefinida de una
+aproximación de $\pi$, precisa alrededor de 14 dígitos:
 \index{pi}
 
-If you know
-trigonometry, you can check the previous result by comparing it to
-the square root of two divided by two:
+Si sabes trigonometría, puedes verificar el resultado anterior
+al compararlo con la raíz cuadrada de 2 dividida por 2:
 \index{sqrt function}
 \index{function!sqrt}
 
