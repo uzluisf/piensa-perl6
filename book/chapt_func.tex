@@ -18,11 +18,11 @@ integrada, y veremos más en el curso de este libro. Y si Perl no tiene
 una función que hace lo que deseas hacer, tu puedes construirla. Esto
 te enseña lo básico de las funciones y cómo construir una.
 
-\section{Invocaciones de Funciones}
+\section{Llamadas de Funciones}
 \label{functionchap}
 \index{function!call}
 
-Ya hemos visto algunos ejemplos de {\bf invocaciones de funciones}:
+Ya hemos visto algunos ejemplos de {\bf llamadas de funciones}:
 
 \begin{verbatim}
 > say 42;
@@ -66,7 +66,7 @@ Puedes invocarla en cualquiera de las siguientes formas:
 Los programadores de Perl con experiencia prefieren omitir los 
 paréntesis cuando ellos pueden. Esto hace posible encadenar varias 
 funciones con una sintaxis más limpia. Considera por ejemplo
-la diferencia entre estas dos invocaciones:
+la diferencia entre estas dos llamadas:
 
 \begin{verbatim}
 > say round 42.45, 1;
@@ -109,15 +109,15 @@ digits or '.' in '<HERE>yes' (indicated by <HERE>)
 
 %
 Nota que, en Perl~6, muchas funciones integradas pueden también
-usar la sintaxis de la \emph{invocación de método} con la así 
+usar la sintaxis de la \emph{llamada de método} con la así 
 llamada notación de punto. Las siguientes sentencias muestran el 
 mismo resultado:
 \index{invocation!method}
 \index{method invocation}
 \begin{verbatim}
-> round 42.7;    # Sintaxis de la invocación de función
+> round 42.7;    # Sintaxis de la llamada de función
 43
-> 42.7.round;    # Sintaxis de la invocación de método
+> 42.7.round;    # Sintaxis de la llamada de método
 43
 \end{verbatim}
 %
@@ -207,55 +207,58 @@ si necesario:
 (Int)
 \end{verbatim}
 
-\section{Functions and Methods}
+\section{Funciones y Métodos}
 \index{function}
 \index{method}
 
-A method is similar to a function---it takes arguments and
-returns a value---but the calling syntax is different. With 
-a function, you specify the name of the function followed 
-by its arguments. A method, by contrast, uses the dot 
-notation: you specify the name of the object on which 
-the method is called, followed by a dot and the name of 
-the method (and possibly additional arguments).
+Un método es similar a una función---toma argumentos y 
+devuelve un valor---pero la sintaxis de llamada es
+diferente. Con una función, especificas el nombre de la función
+seguido de sus argumentos. Un método, por el contrario, usa 
+la notación de punto: tu especificas el nombre del objecto
+sobre el cual el método es invocado, seguido por un punto y
+el nombre del método (y posiblemente argumentos adicionales).
 
-A method call is often called an {\bf invocation}
-\index{invocation}. The deeper differences between functions and
-methods will become apparent much later, when studying 
-object-oriented programming (in Chapter~\ref{objects}).
+% 
+Una llamada de método es usualmente conocida como una 
+{\bf invocación} \index{invocation}. Las diferencias más
+profundas entre funciones y métodos se volverá aparente 
+más adelante, cuando estudiemos la programación orientada
+a objetos (en el Capítulo~\ref{objects}).
 \index{invocation!method}
 \index{method invocation}
 
-For the time being, we can consider that the difference is 
-essentially a matter of a different calling syntax when using Perl's 
-built-ins. Most of Perl built-ins accept both a function 
-call syntax and a method invocation syntax. For example, 
-the following statements are equivalent:
+Por el tiempo presente, podemos consider que la diferencia
+es esencialmente un asunto de una sintaxis diferente de 
+llamada cuando se usan las funciones integradas de Perl. La mayoría
+de las funciones integradas en Perl aceptan la sintaxis de la llamada
+de función y la sintaxis de la invocación de método. Por ejemplo,
+las siguientes sentencias son equivalentes:
 
 \begin{verbatim}
-> say 42;              # function call syntax
+> say 42;              # sintaxis de la llamada de función
 42
-> 42.say;              # method invocation syntax
+> 42.say;              # sintaxis de la invocación de método
 42
 \end{verbatim}
 %
 
-You can also chain built-in routines with both syntactic 
-forms:
+También puedes encadenar subrutinas con ambas formas
+sintácticas:
 
 \begin{verbatim}
-> 42.WHAT.say;         # method syntax
+> 42.WHAT.say;         # sintaxis de método
 (Int)
-> say WHAT 42;         # function syntax
+> say WHAT 42;         # sintaxis de función
 (Int)
-> say 42.WHAT;         # mixed syntax
+> say 42.WHAT;         # sintaxis mixta
 (Int)
 \end{verbatim}
 %
 
-It is up to you to decide whether you prefer one form or the 
-other, but we will use both forms, if only to get you used to 
-both of them.
+Depende de ti cuál de las formas prefieres usar, pero
+usaremos ambas formas, aún solo sea para acostumbrarnos
+a ambas.
 
 \section{Math functions}
 \index{math function}
