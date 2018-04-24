@@ -1,72 +1,72 @@
-\chapter{Functions}
+\chapter{Funciones}
 \label{funcchap}
 
-In the context of programming, a {\bf function} 
-is usually a named sequence of statements 
-that performs a computation.  In Perl, functions are often 
-also called {\bf subroutines} and the two terms can (for now) 
-be considered as more or less equivalent. When you define 
-a function, you specify the name and the sequence of statements.  
-Later, when you want to perform a computation, you can ``call'' 
-the function by name and this will run the sequence of statements 
-contained in the function definition.
+En el contexto de la programación, una {\bf función}
+es usualmente una secuencia de sentencias con nombre
+que realizan una computación. En Perl, las funciones
+son usualmente llamadas {\bf subrutinas} y los dos términos
+(por ahora) pueden considerarse  más o menos equivalente. Cuando defines
+una función, especificas el nombre y la secuencia de sentencias.
+Después, cuando quieras realizar la computación, puedes 
+``invocar`` la función por el nombre y esto ejecutará la secuencia
+de sentencias dentro de la definición de la función.
 \index{function}
 
-Perl comes with many built-in functions that are quite handy.  
-You've already seen some of them: for example, {\tt say} is a 
-built-in function, and we will see many more in the course of 
-this book. And if Perl doesn't already have a function that does 
-what you want, you can build your own. This teaches you the basics 
-of functions and how to build new ones.
+Perl viene como muchas funciones integradas que son muy útiles.
+Ya has visto algunas de ellas: por ejemplo, {\tt say} es una función 
+integrada, y veremos más en el curso de este libro. Y si Perl no tiene
+una función que hace lo que deseas hacer, tu puedes construirla. Esto
+te enseña lo básico de las funciones y cómo construir una.
 
-\section{Function Calls}
+\section{Invocaciones de Funciones}
 \label{functionchap}
 \index{function!call}
 
-We have already seen examples of {\bf function calls}:
+Ya hemos visto algunos ejemplos de {\bf invocaciones de funciones}:
 
 \begin{verbatim}
 > say 42;
 42
 \end{verbatim}
 %
-The name of the function is {\tt say}.  The expression following 
-the function name is called the {\bf argument} of the function. 
-The {\tt say} function causes the argument to be displayed 
-on the screen. If you need to pass several values to a function, 
-then just separate the arguments with commas:
+El nombre de la función es {\tt say}. La expresión que sigue el
+nombre de la función se llama el {\bf argumento} de la función.
+La función {\tt say} causa que el argumento se ha mostrado en 
+la pantalla. Si necesitas pasar varios argumentos a la función, 
+solo separa los argumentos con comas:
+
 \begin{verbatim}
-> say "The answer to the ultimate question is ", 42;
-The answer to the ultimate question is 42
+> say "La respuesta a la pregunta absoluta es ", 42;
+La respuesta a la pregunta absoluta es 42
 \end{verbatim}
 %
 
-Many programming languages require the arguments of a function to 
-be inserted between parentheses. This is not required (and 
-usually not recommended) in Perl~6 for most built-in functions 
-(except when needed for precedence), but if you do use 
-parentheses, you should make sure to avoid inserting spaces 
-between the function name and the opening parenthesis. 
-For example, the {\tt round} function usually takes two 
-arguments: the value to be rounded and the unit or scale. 
-You may call it in any of the following ways:
+Muchos lenguajes de programación requieren que los argumentos de
+la función se encuentren dentro de paréntesis. Esto no es requerido
+(y usualmente no recomendado) en Perl~6 para la mayoría de 
+las funciones integradas (excepto cuando se necesita para 
+precedencia), pero si usas paréntesis, deberías evitar insertar 
+espacios entre el nombre de la función y el paréntesis izquierdo,
+Por ejemplo, la función {\tt round} usualmente toma dos argumentos:
+el valor a ser redondeado y la unidad o escala.
+Puedes invocarla en cualquiera de las siguientes formas:
 
 \begin{verbatim}
 > round 42.45, 1;
 42
 > round 42.45, .1;
 42.5
-> round(42.45, .1);      # But not: round (42.45, .1);
+> round(42.45, .1);      # Pero no: round (42.45, .1);
 42.5
-> round( 42.45, .1);     # Space is OK *after* the opening paren
+> round( 42.45, .1);     # Espacio *después* del paréntesis izq. es OK 
 42.5
 \end{verbatim}
 \index{parentheses!argument in}
 
-Experienced Perl programmers usually prefer to omit the parentheses 
-when they can. Doing so makes it possible to chain several functions 
-with a visually cleaner syntax. Consider for example the differences 
-between these two calls:
+Los programadores de Perl con experiencia prefieren omitir los 
+paréntesis cuando ellos pueden. Esto hace posible encadenar varias 
+funciones con una sintaxis más limpia. Considera por ejemplo
+la diferencia entre estas dos invocaciones:
 
 \begin{verbatim}
 > say round 42.45, 1;
@@ -75,24 +75,24 @@ between these two calls:
 42
 \end{verbatim}
 
-The second statement is explicitly saying what is going on, but 
-the accumulation of parentheses actually makes things 
-not very clear. By contrast, the first statement can be seen 
-as a pipeline to be read from right to left: the last function 
-on the right, {\tt round}, is taking two arguments, 
-{\tt 42.45, 1}, and the value produced by {\tt round} is 
-passed as an argument to {\tt say}.
+La segunda sentencia dice explícitamente lo que está pasando,
+pero la acumulación de paréntesis actualmente no hace las cosas
+muy claras. Por el contrario, la primera sentencia puede ser
+considerada como una línea de tuberías que se puede leer de derecha 
+a izquierda: la última función a la derecha, {\tt round}, toma dos
+argumentos, {\tt 42.45, 1}, y el valor producido por {\tt round}
+es pasado como un argumento a {\tt say}.
 
-It is common to say that a function ``takes'' one or 
-several arguments and ``returns'' a result.  The result is 
-also called the {\bf return value}.
+Es muy común decir que una función ``toma`` uno o varios
+argumentos y ``devuelve`` un resultado. El resultado es también
+llamado el {\bf valor de retorno}.
 \index{argument}
 \index{return!value}
 
-Perl provides functions that convert values from one type 
-to another.  When called with only one argument, the 
-{\tt round} function takes any value and converts it to an 
-integer, if it can, or complains otherwise:
+Perl provee varias funciones que convierten valores de un
+tipo a otro. Cuando se invocan con un solo argumento,
+la función {\tt round} toma cualquier valor y lo convierte
+en un número entero, o por el contrario se queja:
 \index{conversion!type}
 \index{type!conversion}
 \index{round function}
@@ -108,23 +108,23 @@ digits or '.' in '<HERE>yes' (indicated by <HERE>)
 \end{verbatim}
 
 %
-Note that, in Perl~6, many built-in functions can also 
-use a \emph{method invocation} syntax with the so-called 
-dot notation. The following statements display the same result:
+Nota que, en Perl~6, muchas funciones integradas pueden también
+usar la sintaxis de la \emph{invocación de método} con la así 
+llamada notación de punto. Las siguientes sentencias muestran el 
+mismo resultado:
 \index{invocation!method}
 \index{method invocation}
 \begin{verbatim}
-> round 42.7;    # Function call syntax
+> round 42.7;    # Sintaxis de la invocación de función
 43
-> 42.7.round;    # Method invocation syntax
+> 42.7.round;    # Sintaxis de la invocación de método
 43
 \end{verbatim}
 %
-The {\tt round} function can round off rational and 
-floating-point values to integers. There is an {\tt Int} 
-method that can also convert noninteger numerical values 
-into integers, but it doesn't round off; it chops off the 
-fraction part:
+La función {\tt round} puede redondear valores racionales
+y valores coma flotante. Hay un método {\tt Int} que también
+convierte valores numéricos no enteros en enteros, pero
+no redondea; corta la parte fraccional:
 \index{Int method}
 \index{method!Int}
 
@@ -135,10 +135,10 @@ fraction part:
 42
 \end{verbatim}
 
-We'll come back to methods in the next section.
+Volveremos a los métodos en la siguiente sección.
 
-The {\tt Rat} built-in function converts integers and 
-strings to rational numbers (if possible):
+La función integrada {\tt Rat} convierte números
+enteros y cadenas de texto en números racionales (si es posible):
 \index{Rat function}
 \index{function!Rat}
 
@@ -157,11 +157,11 @@ strings to rational numbers (if possible):
 (314159 100000)
 \end{verbatim}
 %
-(As you might remember from Section~\ref{values_and_types}, 
-the \verb'nude' method displays the \emph{nu}merator and 
-\emph{de}nominator of a rational number.)
+(Como podrás recordar de la Sección~\ref{values_and_types}, 
+el método \verb'nude' muestra el \emph{nu}merador y  
+\emph{de}nominador de un número racional.)
 
-Finally, {\tt Str} converts its argument to a string:
+Finalmente, {\tt Str} convierte su argumento a una cadena de texto:
 \index{Str function}
 \index{function!Str}
 
@@ -174,20 +174,21 @@ Finally, {\tt Str} converts its argument to a string:
 
 \index{coercion}
 \index{type!coercion}
-Note that these type conversion functions often don't need 
-to be called explicitly, as Perl will in many cases try to do the 
-right thing for you. For example, if you have a string 
-that looks like an integer number, Perl will \emph{coerce} 
-the string to an integer for you if you try to apply 
-an arithmetic operation on it:
+Nota que estas funciones de conversión de tipo no necesitan ser
+invocadas explícitamente, dado que Perl intentará hacer lo correcto
+en muchos de los casos. Por ejemplo, si tienes una cadena de texto
+que se parece a un número entero, Perl \emph{coaccionará} la cadena 
+de texto en un entero para ti si tratas de aplicarle una operación 
+aritmética:
 
 \begin{verbatim}
 > say "21" * "2";
 42
 \end{verbatim}
 
-Similarly, integers will be coerced to strings if you 
-apply the string concatenation operator to them:
+Igualmente, los enteros serán coaccionados en cadenas de texto
+si aplicas el operador de la concatenación de cadena de texto
+sobre ellos:
 
 \begin{verbatim}
 > say 4 ~ 2;
@@ -196,8 +197,8 @@ apply the string concatenation operator to them:
 (Str)
 \end{verbatim}
 
-The coercion can even happen twice within the same expression 
-if needed:
+La coacción puede hasta pasar dos veces dentro de la misma expresión
+si necesario:
 
 \begin{verbatim}
 > say (4 ~ 1) + 1;
