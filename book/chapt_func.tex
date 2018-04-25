@@ -637,129 +637,127 @@ sub imprimir-discurso() {
 \end{verbatim}
 
 
-\section{Flow of Execution}
+\section{Flujo de Ejecución}
 \index{flow of execution}
 
-To ensure, for example, that a variable is defined (i.e., populated) 
-before its first use, you have to know the order statements run in, 
-which is called the {\bf flow of execution}.
+Para asegura, por ejemplo, que una variable está definida (i.e. poblada)
+antes de sus uso, necesitas saber el orden en el que las sentencias se
+ejecutan. Dicho orden es conocido como el {\bf flujo de ejecución}.
 
-Execution always begins at the first statement of the program 
-(well, really \emph{almost} always, but let's say always 
-for the time being). Statements are run one at a time, 
-in order from top to bottom.
+La ejecución siempre con la primera sentencia del programa (bueno, {\bf casi}
+siempre, pero digamos siempre por el tiempo presente). Las sentencias se
+ejecutan una por una, de arriba hacia abajo.
 
-Subroutine definitions do not alter the flow of execution of the
-program, but remember that statements inside a function don't
-run until the function is called.
+Las definiciones de subrutinas no cambian el flujo de ejecución del 
+programa, pero debes recordar que las sentencias dentro de una función
+no son ejecutadas hasta que la función es llamada.
 
-A function call is like a detour in the flow of execution. Instead of
-going to the next statement, the flow jumps to the body of
-the function, runs the statements there, and then comes back
-to pick up where it left off.
+Una llamada de función es como un desvío en el flujo de ejecución. En vez
+de continuar con la siguiente sentencia, el flujo salta al cuerpo de la función,
+ejecuta las sentencias ahí dentro, y regresa para continuar donde se
+quedó.
 
-That sounds simple enough, until you remember that one function can
-call another.  While in the middle of one function, the program might
-have to run the statements in another function.  Then, while
-running that new function, the program might have to run yet
-another function!
+Esto suena simple hasta que recuerdas que una función puede llamar otra función.
+Mientra se encuentra dentro de una función, el programa podría ejecutar las
+sentencias en otra función. ¡Después, mientra se encuentra en dicha función,
+el programa podría aún ejecutar otra función!
 
-Fortunately, Perl is good at keeping track of where it is, so each
-time a function completes, the program picks up where it left off in
-the code that called it.  When it gets to the end of the program,
-it terminates.
+Afortunadamente, Perl es lo suficientemente bueno para rastrear dónde 
+se encuentra, así que cada vez una función se completa, el programa continúa 
+donde se quedó en el programa que lo llamó. Cuando llega al final del programa,
+entonces termina.
 
-In summary, when you read a program, you
-don't always want to read from top to bottom.  Sometimes it makes
-more sense if you follow the flow of execution.
+En resumen, cuando leas un programa, no siempre quieras leerlo de 
+arriba hacia abajo. Algunas hace más sentido si sigues el flujo de
+ejecución.
 
-
-\section{Parameters and Arguments}
+\section{Parámetros y Argumentos}
 \label{parameters}
 \index{parameter}
 \index{function!parameter}
 \index{argument}
 \index{function!argument}
 
-Some of the functions we have seen require arguments.  For
-example, when you call {\tt sin} you pass a number
-as an argument.  Some functions take more than one argument:
-for example the {\tt round} function seen at the beginning 
-of this chapter took two, the number to be rounded and 
-the scale (although the {\tt round} function may accept a single argument, in which case the scale is defaulted to 1).
-
-Inside the subroutine, the arguments are assigned to
-variables called {\bf parameters}.  Here is a definition for
-a subroutine that takes a single argument:
+Algunas de la funciones que hemos requieren argumentos. Por ejemplo,
+cuando llamas a {\tt sin} tu le pasas un número como argumento. Algunas
+funciones toman más de un argumento: por ejemplo, la función {\tt round}
+que vimos al principio de este capítulo tomó dos, el número a ser redondeado
+y la escala (aunque la función {\tt round} puede aceptar un solo 
+argumento. En dicho caso, el valor de la escala por defecto es 1).
+ 
+Dentro de la subrutina, los argumentos son asignados a variables llamadas 
+{\bf parámetros}. Aquí está la definición de una subrutina que toma un 
+solo argumento:
 \index{parentheses!parameters in}
 
 \begin{verbatim}
-sub print-twice($value) {
-    say $value;
-    say $value
+sub doble-impresión($valor) {
+    say $valor;
+    say $valor
 }
 \end{verbatim}
 %
-This subroutine assigns the argument to a parameter
-named \verb"$value". Another common way to say it is 
-that the subroutine binds the parameter defined in its 
-header to the argument with which it was called. When the 
-above subroutine is called, it prints the content of the 
-parameter (whatever it is) twice.
+Esta subrutina asigna el argumento al parámetro llamado
+\verb|$valor|. Otra manera común de interpretarlo es decir que
+la subrutina ata el parámetro definido en su cabecera al argumento
+con el cual es llamada. Cuando la subrutina anterior es llamada, 
+imprimer el contenido del parámetro (cualquier cosa que sea) dos
+veces.
 
-This function works with any argument value that can be printed:
+Esta función funciona con cualquier argumento que pueda ser
+imprimido:
 
 \begin{verbatim}
-> print-twice("Let freedom ring")
+> doble-impresión("Let freedom ring")
 Let freedom ring
 Let freedom ring
-> print-twice(42)
+> doble-impresión(42)
 42
 42
-> print-twice(pi)
+> doble-impresión(pi)
 3.14159265358979
 3.14159265358979
 \end{verbatim}
 %
-The same rules of composition that apply to built-in functions also
-apply to programmer-defined subroutines, so we can use any kind of expression
-as an argument for \verb"print-twice":
+Las mismas reglas de composición que aplican a la funciones integradas 
+también aplican a las funciones definidas por el programador, así que podemos
+cualquier tipo de expresión como un argumento para \verb|doble-impresión|:
 \index{composition}
 \index{programmer-defined function}
 \index{function!programmer defined}
 
 \begin{verbatim}
-> print-twice('Let freedom ring! ' x 2)
+> doble-impresión('Let freedom ring! ' x 2)
 Let freedom ring! Let freedom ring! 
 Let freedom ring! Let freedom ring! 
-> print-twice(cos pi)
+> doble-impresión(cos pi)
 -1
 -1
 \end{verbatim}
 %
-The argument is evaluated before the function is called, so
-in the examples the expressions \verb"'Let freedom ring! ' x 2" 
-and {\tt cos pi} are only evaluated once.
+El argumento es evaluado antes que la función sea llamada, 
+así que en los ejemplos las expresiones \verb"'Let freedom ring! ' x 2" 
+y {\tt cos pi} son evaluadas una sola vez.
 \index{argument}
 
-You can also use a variable as an argument:
+También puedes usar una variable como argumento:
 
 \begin{verbatim}
-> my $declaration = 'When in the Course of human events, ...'
-> print-twice($declaration)
+> my $declaración = 'When in the Course of human events, ...'
+> doble-impresión($declaración)
 When in the Course of human events, ...
 When in the Course of human events, ...
 \end{verbatim}
 %
-The name of the variable we pass as an argument (\verb"$declaration") 
-has nothing to do with the name of the parameter (\verb"$value"). It
-doesn't matter what the variable was called back home (in the caller);
-here, within \verb"print-twice", we call the parameter \verb"$value", 
-irrespective of the name or content of the argument passed to the 
-subroutine.
+El nombre de la variable que pasamos como un argumento (\verb|$declaración|)
+no tiene nada que ver con el nombre del parámetro (\verb|$valor|). No
+importa cual sea el nombre de la variable cuando fue llamada;
+aquí, dentro de \verb|doble-impresión|, llamamos al parámetro 
+\verb|$valor| sin importar el nombre o contenido del argumento que se
+pasó a la subrutina.
 
 
-\section{Variables and Parameters Are Local}
+\section{Las Variables y los Parámetros Son Locales}
 \index{local variable}
 \index{variable!local}
 \index{scope}
@@ -767,68 +765,69 @@ subroutine.
 \index{lexical scope}
 \label{localvar}
 
-When you create a variable inside a subroutine with the 
-{\tt my} keyword, it is {\bf local}, or, more accurately, 
-\emph{lexically scoped}, to the function block, which means 
-that it only exists inside the function.  For example:
+Cuando creas una variable dentro de una subrutina con 
+la palabra clave {\tt my}, dicha variable es entonces 
+local, o más precisamente, la variable está en un {\tt ámbito
+lexical} con respecto al bloque de la función. Esto significa
+que la variable solo existe dentro de la función. Por ejemplo:
 \index{parentheses!parameters in}
 
 \begin{verbatim}
-sub concat_twice($part1, $part2) {
-    my $concatenation = $part1 ~ $part2;
-    print-twice($concatenation)
+sub doble_concat($parte1, $parte2) {
+    my $concatenación = $parte1 ~ $parte2;
+    doble-impresión($concatenación)
 }
 \end{verbatim}
 %
-This function takes two arguments, concatenates them, and prints
-the result twice.  Here is an example that uses it:
+Esta función toma dos argumetos, los concatena, e imprime
+el resultado dos veces. Este es un ejemplo que la usa:
 \index{concatenation}
 
 \begin{verbatim}
-> my $start = 'Let freedom ring from ';
-> my $end = 'the mighty mountains of New York.';
-> concat_twice($start, $end);
+> my $inicio = 'Let freedom ring from ';
+> my $final = 'the mighty mountains of New York.';
+> doble_concat($inicio, $final);
 Let freedom ring from the mighty mountains of New York.
 Let freedom ring from the mighty mountains of New York.
 \end{verbatim}
 %
-When \verb"concat_twice" terminates, the variable \verb"$concatenation" 
-is destroyed.  If we try to print it, we get an exception:
+Cuando \verb|doble-concat| terminar, la variable \verb|$concatenación|
+es destruida. Si intentamos imprimirla, obtenemos una excepción:
 \index{Variable ... is not declared}
 \index{exception!not declared}
 
 \begin{verbatim}
-> say $concatenation;
+> say $concatenación;
 ===SORRY!=== Error while compiling <unknown file>
-Variable '$concatenation' is not declared
+Variable '$concatenación' is not declared
 at <unknown file>:1
-------> say <HERE>$concatenation;
+------> say <HERE>$concatenación;
 \end{verbatim}
 %
-Parameters are also scoped to the subroutine.
-For example, outside \verb"print-twice", there is no
-such thing as \verb"$value".
+Los parámetros también están en un ámbito lexical
+en la subrutina. Por ejemplo, fuera de \verb|doble-impresión|, 
+no existe tal como \verb|$valor|.
 \index{parameter}
 \index{scope}
 
 
-\section{Stack Diagrams}
+\section{Diagramas de Pila}
 \label{stackdiagram}
 \index{stack diagram}
 \index{function!frame}
 \index{frame}
 
-To keep track of which variables can be used where, it is sometimes
-useful to draw a {\bf stack diagram}.  Like state diagrams, stack
-diagrams show the value of each variable, but they also show the
-function each variable belongs to.
+Para rastrear cual de las variables puede ser usada, es algunas veces
+muy útil dibujar un {\bf diagrama de pila}. Al igual que los diagramas de
+estado, los diagramas de pila muestran el valor de cada variable, pero
+también muestran la función a la cual cada variable pertenece.
 \index{stack diagram}
 \index{diagram!stack}
 
-Each function is represented graphically by a {\bf frame}.  A frame 
-is a box with the name of a function beside it and the parameters 
-and variables of the function inside it.  The stack diagram for 
-the previous example is shown in Figure~\ref{fig.stack}.
+Cada función se representa gráficamente por un {\bf marco}. Un marco
+es una cuadro con el nombre de la función al lado y los parámetros y
+las variables de la función dentro. El diagrama de pila 
+para el ejemplo anterior se muestra en la Figura~\ref{fig.stack}.
 
 \begin{figure}
 \centerline
@@ -838,18 +837,18 @@ the previous example is shown in Figure~\ref{fig.stack}.
 \label{fig.stack}
 \end{figure}
 
+Los marcos están organizados en la pila para indicar cual función
+llama a cual. En este ejemplo, \verb|doble-impresión| fue llamada
+por \verb|doble_concat|, y \verb|doble_concat| fue llamada por 
+\verb|main|, el cual es un nombre especial para el marco superior.
+Cuando creas una variable fuera de cualquier función, dicha variable
+le pertenece a \verb|main|.
 
-The frames are arranged in a stack that indicates which function
-called which, and so on.  In this example, \verb"print-twice"
-was called by \verb"concat_twice", and \verb"concat_twice" was called by 
-\verb"main", which is a special name for the topmost frame.  When
-you create a variable outside of any function, it belongs to 
-\verb"main".
+Cada parámetro hace referencia al mismo valor que su argumento correspondiente.
+Así que, {\tt \$parte1} tiene el mismo valor que {\tt \$inicio},
+{\tt \$parte2} tiene el mismo valor que {\tt \$final} y {\tt \$valor}
+tiene el mismo valor que {\tt \$concatenación}.
 
-Each parameter refers to the same value as its corresponding
-argument.  So, {\tt \$part1} has the same value as
-{\tt start}, {\tt \$part2} has the same value as {\tt \$end},
-and {\tt \$value} has the same value as {\tt \$cat}.
 
 
 \section{Fruitful Functions and Void Functions}
