@@ -15,7 +15,7 @@ de sentencias dentro de la definición de la función.
 Perl viene como muchas funciones integradas que son muy útiles.
 Ya has visto algunas de ellas: por ejemplo, {\tt say} es una función 
 integrada, y veremos más en el curso de este libro. Y si Perl no tiene
-una función que hace lo que deseas hacer, tu puedes construirla. Esto
+una función que hace lo que deseas hacer, tú puedes construirla. Esto
 te enseña lo básico de las funciones y cómo construir una.
 
 \section{Llamadas de Funciones}
@@ -851,177 +851,179 @@ tiene el mismo valor que {\tt \$concatenación}.
 
 
 
-\section{Fruitful Functions and Void Functions}
+\section{Funciones Fructuosas y Funciones Voids}
 \index{fruitful function}
 \index{void function}
 \index{function, fruitful}
 \index{function, void} 
 
-Some of the functions we have used, such as the 
-math functions, return results and are useful only insofar 
-we use that return value; for lack of a better name, we 
-may call them {\bf fruitful functions}.  Other functions, 
-like \verb"print-twice", perform an action but don't appear 
-to return a value (it does in fact return a value, {\tt True}, 
-but we don't care about it).  They are sometimes called empty or 
-{\bf void functions} in some other programming languages.
+Algunas de las funciones que hemos usados, tal como las 
+funciones matemáticas, devuelven resultados y son útiles
+en cuanto podamos usar el valor devuelto; por falta de un 
+mejor nombre, las podamos llamar {\bf funciones fructuosas}.
+Otras funciones, tal como \verb|doble-impresión|, realizan una
+acción pero no parecen devolver un valor (aunque en verdad devuelve
+un valor, {\tt True}, pero no estamos interesados en este valor).
+Estas funciones son algunas veces llamadas funciones vacías o funciones
+void en otros lenguajes de programación.
 
-In some programming languages, such as Pascal or Ada, there 
-is a strong distinction between a \emph{function} (which 
-returns a value) and a \emph{procedure} (which doesn't); 
-they are even defined with different keywords. This 
-distinction does not apply to Perl and to most modern 
-programming languages.
+En algunos lenguajes de programación, tales como Pascal o Ada,
+existe una gran distinción entre una \emph{función} (la cual
+devuelve un valor) y un \emph{procedimiento} (el cual no devuelve
+ningún valor); ellas son definidas con diferentes palabras claves.
+Dicha distinción no aplica en Perl y en la mayoría de los 
+lenguajes de programación modernos.
 
-In fact, from a pure syntactic standpoint, Perl functions 
-always return a result. So the distinction between 
-``fruitful'' and ``void'' functions does not really exist 
-syntactically, but only semantically, i.e., from the 
-standpoint of the meaning of the program: maybe we need to 
-use the return value, or maybe we don't.
+De hecho, desde un punto de vista sintáctico, las funciones de Perl
+siempre devuelven un valor. Así que la distinción entre una función
+``fructuosa`` y ``void`` no existe sintáctica, solo semánticamente, i.e.,
+desde el punto de vista del significado del programa: tal vez necesitamos
+usar el valor devuelto, o tal vez no.
 
-Another distinction commonly made is between functions and 
-mutators: functions do not change the initial state of the 
-arguments they were called on, and mutators do modify it. We 
-will not use this distinction here, but it is useful to 
-keep it in mind.
+Otra distinción que se hace comúnmente entre funciones y mutadores es
+que las funciones no cambian el estado inicial de los argumentos 
+que se les pasa mientras que los mutadores modifican los argumentos. 
+No usaremos esta distinción aquí, pero es útil mantenerla presente.
 
-When you call a fruitful function, you almost always
-want to do something with the result; for example, you might
-assign it to a variable or use it as part of an expression:
-
+Cuando llamas una función fructuosa, es muy común que quieras
+hacer algo con el resultado; por ejemplo, podrías asignarlo a una
+variable o usarlo como parte de una expresión:
+ 
 \begin{verbatim}
-my $height = sin $radians;
-my $golden = (sqrt(5) + 1) / 2;
+my $altura = sin $radianes;
+my $aúreo = (sqrt(5) + 1) / 2;
 \end{verbatim}
 %
-When you call a function in interactive mode (under the 
-REPL), Perl usually displays the result:
+Cuando llamas una función en el modo interactivo (en
+el REPL), Perl usualmente muestra el resultado inmediatamente:
 
 \begin{verbatim}
 > sqrt 5;
 2.23606797749979
 \end{verbatim}
 %
-But in a script, if you call a fruitful function all by 
-itself, the return value is lost forever! In some cases, the 
-compiler will be able to warn you, but not always. For example, 
-consider the following program:
+¡Pero en un script, si llamas una función fructuosa por sí misma,
+el valor de retorno se pierde para siempre! En algunos casos, el 
+compilador será capaz de advertirte, pero no siempre. Por ejemplo,
+considera el siguiente programa:
 
 \begin{verbatim}
-my $five = 5;
-sqrt $five;
-say $five;
+my $cinco = 5;
+sqrt $cinco;
+say $cinco;
 \end{verbatim}
 
-It produces the following warning:
+Este ejemplo produce la siguiente advertencia:
 
 \begin{verbatim}
 WARNINGS for /home/Laurent/perl6_tests/sqrt.pl6:
-Useless use of "sqrt $five" in expression "sqrt $five" in sink context (line 2)
+Useless use of "sqrt $cinco" in expression "sqrt $cinco" in sink context (line 2)
 5
 \end{verbatim}
 %
-This script computes the square root of 5, but since 
-it doesn't store or display the result, it is not very useful.
+El script computa la raíz cuadrada de 5, pero 
+dado que no almacena o muestra el resultado, no es muy útil.
 \index{interactive mode}
 \index{script mode}
 
-Void functions might display something on the screen, 
-save some data to a file, modify a variable or an object, 
-or have some other effect, but they generally don't have 
-a return value, or at least not a useful one.  If you assign 
-the result to a variable, you may get the return value of 
-the subroutine, the value of the last expression which was 
-evaluated in the function, or a special value such as 
-{\tt Any}, which essentially means something that has not 
-been defined, or {\tt Nil}.
+Funciones void muestran algo en la pantalla, guardan algún dato
+en un archivo, modifican una variable o un objeto, o tienen
+algún otro efecto, pero generalmente no tienen un valor de
+retorno, o por lo menos algo no muy útil. Si asignas el resultado
+a una variable, puedes conseguir el valor de retorno de la subrutina,
+el valor de la última expresión que fue evaluada en la función,
+o un valor especial tal como {\tt Any}, el cual esencialmente se
+refiere a algo que no ha sido definido, o {\tt Nil}.
 \index{Any special value}
 \index{special value!Any}
 %
 
-The subroutines we have written so far were essentially 
-printing things to the screen. In that case, they 
-usually return {\tt True}, at least when the printing 
-was successful. Although they return a true value, what they 
-return isn't very useful and we can consider them all void 
-for our practical purposes.  
+Las subrutinas que hemos escrito hasta ahora esencialmente muestran cosas
+en la pantalla. En ese caso, ellas devuelven {\tt True}, por lo
+menos cuando la impresión fue exitoso. Aunque ellas devuelven un 
+valor verdadero, lo que ellas devuelven no es muy útil y podemos
+considerarlas funciones void para nuestro propósitos.
 
-The following is an example of a very simple fruitful subroutine:
+El siguiente es un ejemplo de una subrutina fructuosa bien simple:
 \index{return}
 
 \begin{verbatim}
-> sub square($number) { return $number ** 2 }
-sub square ($number) { #`(Sub|118134416) ... }
-> say square 5;
+> sub cuadrado($número) { return $número ** 2 }
+sub cuadrado ($número) { #`(Sub|118134416) ... }
+> say cuadrado 5;
 25
 \end{verbatim}
 
-The \verb'Sub|118134416' message displayed by the REPL is 
-just an internal identifier for the subroutine we've just 
-defined.
+El mensaje \verb'Sub|118134416' mostrado por el REPL
+es solo un identificador interno de la subrutina que hemos
+definido.
 
-The {\tt return} statement instructs the function to terminate 
-the execution of the function at this statement and to return 
-the value of the following expression to the caller. In such a simple 
-case where the program is in fact running the last statement 
-of a function, the return keyword can be omitted since the function 
-will return the value of the last evaluated statement, so that the 
-{\tt square} subroutine could be written this way:
+La sentencia {\tt return} le indica a la función que termine
+la ejecución de la función en esta sentencia y devuelva el valor 
+de la siguiente expresión a donde fue llamada. En tal caso 
+donde el programa está ejecutando la última sentencia de una 
+función, la palabra clave return puede ser omitida dado que la
+función devolverá el valor de la última sentencia evaluada,
+así que la subrutina {\tt cuadrado} podría ser escrita de 
+la siguiente manera:
 \begin{verbatim}
-sub square($number) { 
-    $number ** 2 
+sub cuadrado($número) { 
+    $número ** 2 
 }
 \end{verbatim}
 
-We will be using fruitful functions more intensively in a 
-few chapters.
+Usaremos funciones fructuosas más extensivamente en los 
+siguientes capítulos.
 
-\section{Function Signatures}
+\section{Signaturas de Funciones}
 \index{function!signature}
 \index{signature}
 
-When a function receives arguments, which are stored into 
-parameters, the part of the function 
-definition describing the parameters between parentheses 
-is called the {\bf function signature}. The function signatures 
-we have seen so far are very simple and consist only of one 
-parameter or possibly a parameter list.
+Cuando una función recibe argumentos, los cuales son
+almacenados en los parámetros, la parte de la definición
+de función que describe los parámetros entre los 
+paréntesis se llama la {\bf signatura de la función}. Las 
+signaturas de funciones que hemos visto hasta ahora son bien 
+simple y consisten de un solo parámetro o posiblemente
+una lista de parámetros.
 
-Signatures can provide a lot more information about the 
-parameters used by a function. First, you may define the 
-type of the parameters. Some functions make sense only if their 
-parameters are numeric and should probably raise an error if 
-they get a string that cannot be converted to a numeric value. 
-For example, if you define a function {\tt half} that computes 
-a value equal to its argument divided by 2, it does not make 
-sense to try to compute half of a string that is not numeric. 
-It could be written as follows:
+Las signaturas pueden proveer una plétora de información
+sobre los parámetros usados por la función. Primero, puedes
+definir el tipo de los parámetros. Algunas funciones hacen 
+sentido solo si sus parámetros son numéricos y deberían
+probablemente levantar un error si ellas reciben una
+cadena de texto que no pueden ser convertida a un valor
+numérico. Por ejemplo, si defines una función {\tt mitad}
+que computa el valor igual a su argumento divido por 2,
+no hace sentido tratar de computar la mitad de una
+cadena de texto que no es numérica. Dicha función
+podría escribirse así:
 \index{type!parameter}
 \index{parameter type}
 
 \begin{verbatim}
-sub half(Int $number) { 
-    return $number / 2 
+sub mitad(Int $número) { 
+    return $número / 2 
 }
-say half 84; # -> 42
+say mitad 84; # -> 42
 \end{verbatim}
 
-If this function is called with a string, we get the 
-following error:
+Si está función es llamada con una cadena de texto,
+conseguimos el siguiente error:
 \index{type!String}
 
 \begin{verbatim}
-> say half "Douglas Adams"
+> say mitad "Douglas Adams"
 ===SORRY!=== Error while compiling <unknown file>
-Calling half(Str) will never work with declared signature (Int $number)
+Calling mitad(Str) will never work with declared signature (Int $number)
 at <unknown file>:1
-------> say <HERE>half "Douglas Adams"
+------> say <HERE>mitad "Douglas Adams"
 \end{verbatim}
 
-The {\tt Int} type included in the function signature is a type 
-constraint that can help prevent subtle bugs. In some cases, 
-it can also be an annoyance. Consider this code snippet:
+El tipo {\tt Int} incluido en la signatura de la función es
+una restricción de tipo que puede ayudar a prevenir errores
+sutiles. En algunos casos, también pueden ser una molestia.
+Considera el fragmento de código:
 \index{constraint!type}
 \index{type!constraint}
 \index{type!Int}
@@ -1029,44 +1031,47 @@ it can also be an annoyance. Consider this code snippet:
 
 
 \begin{verbatim}
-sub half(Int $number) {  $number / 2 }
-say half "84"; # -> ERROR
+sub mitad(Int $número) {  $número / 2 }
+say mitad "84"; # -> ERROR
 \end{verbatim}
 
-Because the argument to the {\tt half} subroutine is {\tt "84"}, 
-i.e., a string, this code will fail with a type error. If we had 
-not included the {\tt Int} type in the signature, the script 
-would have converted (or \emph{coerced}) the "84" string to 
-a number, divided it by two, and printed out the expected result:
+Dado que el argumento de la subrutina {\tt mitad} es {\tt "84"},
+i.e., una cadena de texto, este código fallará con un error de 
+tipo. Si no hubiésemos incluidos el tipo {\tt Int} en la signatura,
+el script habría convertido (o \emph{coaccionado}) la cadena de
+texto "84" en un número, dividido por 2, y mostrado el
+resultado esperado:
 \index{type!String}
 \index{type!coercion}
 \index{coercion!type}
 
 \begin{verbatim}
-sub half($number) { $number / 2 }
-say half "84"; # -> 42
+sub mitad($número) { $número / 2 }
+say mitad "84"; # -> 42
 \end{verbatim}
 
-In some cases, you want this conversion to occur, in others 
-you don't. It is up to you to decide whether you want 
-strict typing or not, depending on the specific situation and
-needs. It is probably helpful to use parameter typing in many 
-cases, but it can also become a straitjacket in some situations. 
-Perl~6 lets you decide how strict you want to be about these things.
+En algunos casos, tu quieres que esta conversión ocurra,
+en otras, no quieres. Es tu deber decidir si quieres
+tipado estricto o no, dependiendo en la
+situación específica y necesidad. Es probablemente útil usar 
+tipos en los parámetros en muchos casos, pero puede 
+volverse un obstáculo en algunas situaciones. Perl~6 te deja 
+decidir qué tan estricto deseas ser sobre estas cosas.
 
-Our original {\tt half} subroutine has another limitation: it
-can work only on integers. But a function halving its argument 
-should presumably be useful for rational or even other numbers. 
-You can use the {\tt Real} or {\tt Numeric} types to make 
-the function more general (the difference between the two 
-types is that the {\tt Numeric} type will accept not only 
-{\tt Real} but also {\tt Complex} numbers\footnote{~Complex 
-numbers are a powerful concept of mathematics. They are numbers 
-of the form $a + bi$, where $a$ and $b$ are usual real number and 
-$i$ an imaginary number such that $i^2$ equals $-1$.}). As it turns out 
-that this {\tt half} function will also work correctly 
-with complex numbers, choosing a {\tt Numeric} 
-type opens more possibilities:
+Nuestra subrutina original {\tt mitad} tiene otra limitación: 
+solo funciona con números enteros. Pero una función que 
+devuelve la mitad de su argumento debería supuestamente
+ser útil para números racionales o hasta otros números. 
+Puedes usar los tipos {\tt Real}  o {\tt Numeric} para
+hacer la función más general (la diferencia entre los
+tipos  es que el tipo {Numeric} aceptará no solo números
+{\tt Real}es pero también números complejos ({\tt Complex})
+\footnote{~Los números complejos son un concepto matemático
+poderoso. Ellos son números de la forma $a + bi$, donde 
+$a$ y $b$ son un números reales y $i$ es un número imaginario
+de tal modo que $i²$ es igual a $-1$.}). Como sucede con
+números complejos, el elegir un tipo {\tt Numeric} abre más 
+posibilidades:
 \index{Numeric type}
 \index{type!Numeric}
 \index{Real type}
@@ -1076,18 +1081,18 @@ type opens more possibilities:
 \index{type!Int}
 
 \begin{verbatim}
-sub half(Numeric $number) { $number / 2 }
-say half(3+4i); # -> 1.5+2i
+sub mitad(Numeric $número) { $número / 2 }
+say mitad(3+4i); # -> 1.5+2i
 \end{verbatim}
 
-The following table sums up and illustrates some of the 
-various types we have seen so far.
+La siguiente tabla resume e ilustra  algunos de los varios
+tipos que hemos visto hasta ahora.
 
 \begin{center}
 \begin{tabular}{|l|c|}  \hline
 \label{types}
-\emph{Type} & \emph{Example}   \\ \hline
-String      & \verb'"A string"', \verb"'Another string'", \verb'"42"' \\ \hline
+\emph{Tipo} & \emph{Ejemplo}   \\ \hline
+String      & \verb'"Una cadena de texto (string)"', \verb"'Hola'", \verb'"42"' \\ \hline
 Integer     & \verb' -3, -2, 0, 2, 42' \\ \hline
 Rational    & \verb' 1/2, 0.5, 3,14159, 22/7, 42.0' \\ \hline
 Real        & $\pi$, pi, $\surd{2}$, \emph{e}, $\log 42$, $\sin 0.7$\\ \hline
@@ -1098,78 +1103,78 @@ Complex     & $5.4 + 3i$ \\ \hline
 \index{type!String}
 
 
-\section{Immutable and Mutable Parameters}
+\section{Parámetros Inmutables y Mutables}
 
 \index{immutable parameter}
 \index{mutable parameter}
 \index{parameter!mutable}
 \index{parameter!immutable}
-By default, subroutine parameters are {\bf immutable} aliases for 
-the arguments passed to the subroutine. In other words, they 
-cannot be changed within the function and you cannot 
-accidentally modify the argument in the caller:
+Por defecto, los parámetros de una subrutina son apodos {\bf inmutables}
+para los argumentos pasados a la subrutina. En otras palabras,
+ellos no pueden ser cambiados dentro de la función y tú no puedes
+modificar el argumento accidentalmente donde la función es llamada:
 
 \begin{verbatim}
-sub plus-three(Int $number) { $number += 3}
-my $value = 5;
-say plus-three $value; # ERROR: Cannot assign to an immutable value
+sub más-tres(Int $número) { $número += 3}
+my $valor = 5;
+say más-tres $valor; # ERROR: Cannot assign to an immutable value
 \end{verbatim}
 
-In some other languages, this behavior is named a ``call 
-by value'' semantic: loosely speaking, the subroutine 
-receives (by default) a value rather than a variable, and 
-the parameter therefore cannot be modified.
+En algunos otros lenguajes, este comportamiento es conocido
+como una ``llamada por valor``: en términos generales, 
+la subrutina recibe (por defecto) un valor y no una variable, y 
+el parámetro por lo tanto no puede ser modificado.
 \index{call by reference}
 
-If you want to change the value of the parameter within the 
-subroutine (but without changing the argument in the caller) 
-you can add the {\tt is copy} \emph{trait} to the signature:
+Si quieres cambiar el valor del parámetro dentro de la subrutina
+(pero sin cambiar el argumento), tú puedes agregar el \emph{trait} 
+{\tt is copy} a la signatura:
 \index{signature}
 \index{trait}
 \index{is copy trait}
 \index{trait!is copy}
 
 \begin{verbatim}
-sub plus-three(Int $number is copy) { $number += 3}
-my $value = 5;
-say plus-three $value;  # 8
-say $value;             # 5 (unchanged)
+sub más-tres(Int $número is copy) { $número += 3}
+my $valor = 5;
+say más-tres $valor;  # 8
+say $valor;             # 5 (valor de la variable intacto)
 \end{verbatim}
 %
-A {\bf trait} is a property of the parameter defined at compile time. 
-Here, the {\tt \$number} parameter is modified within the 
-subroutine and the incremented value is returned to the caller 
-and printed as 8, but, within the caller, the variable used
-as an argument to the function, {\tt \$value}, is not 
-modified (it is still 5).
+Un {\bf trait} (rasgo) es una propiedad del parámetro definida
+al tiempo de compilación. Aquí, el parámetro {\tt \$número} es
+modificado dentro de la subrutina y el valor incrementado es devuelto e 
+imprimido como 8, pero, dentro de la función que hace la llamada,
+la variable usada como un argumento para la función, {\tt \$valor},
+no es modificada (es todavía 5).
 
-Although this can sometimes be dangerous, you may also want 
-to write a subroutine that modifies its argument at the caller 
-side. For this, you can use the {\tt is rw} \emph{trait} 
-in the signature:
+Aunque esto puede ser algunas veces peligroso, tú puedes 
+también querer escribir una subrutina que modifica su argumento
+en el lugar donde la función es llamada. Para esto, puedes usar
+el \emph{trait} {\tt is rw} en la signatura:
 \index{is rw trait}
 \index{trait!is rw}
 
 \begin{verbatim}
-sub plus-three(Int $number is rw) { $number += 3}
-my $value = 5;
-say plus-three $value;  # 8
-say $value;             # 8 ($value modified)
+sub más-tres(Int $número is rw) { $número += 3}
+my $valor = 5;
+say más-tres $valor;  # 8
+say $valor;             # 8 ($valor es modificada)
 \end{verbatim}
 %
-With the {\tt is rw} trait, the {\tt \$number} parameter is 
-now  \emph{bound} to the {\tt \$value} argument, so that any change 
-made using {\tt \$number} within the subroutine will immediately 
-be applied to {\tt \$value} at the caller side, because {\tt \$number} 
-and {\tt \$value} are just different names for the same thing (they 
-both refer to the same memory location). The argument is now 
-fully \emph{mutable}.
+Con el trait {\tt is rw}, el parámetro {\tt \$número} está ahora
+\emph{vinculado} al argumento {\tt \$valor}, así que cualquier
+cambio hecho al usar {\tt \$número} dentro de la subrutina será 
+inmediatamente aplicado a {\tt \$valor} en lugar donde la función
+es llamada,porque {\tt \$número} y {\tt \$valor} son solo nombres
+diferentes para la misma cosa (ambos hacen referencia a la misma
+dirección de memoria). El argumento es ahora totalmente \emph{mutable}.
 
-In some other languages, this is named a ``call by reference'' 
-parameter passing mechanism, because, in those languages, if you 
-pass to a function  a reference (or a pointer) to a variable, then 
-it is possible for the function to modify the variable referred 
-to by the reference.
+En algunos otros lenguajes de programación, esto se conoce como
+``llamada por referencia``, porque, en aquellos lenguajes, 
+si tu pasas una referencia (o un puntero) de una variable a una
+función, entonces es posible que la función pueda modificar la
+variable referida por la referencia.
 \index{call by reference}
 
 
