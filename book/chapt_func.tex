@@ -1178,380 +1178,409 @@ variable referida por la referencia.
 \index{call by reference}
 
 
-\section{Functions and Subroutines as First-Class Citizens}
+\section{Funciones y Subrutinas: Ciudadanos de Primera Clase}
 \index{first-class object}
 \index{object, first-class}
 \index{function!higher-order}
 \label{first_class}
 
-Subroutines and other code objects can be passed around as values, 
-just like any variable, literal, or object. Functions are said 
-to be {\bf first-class objects} or sometimes first-class 
-citizens or higher-order functions. This means that a Perl 
-function (its code, not the value returned by it) is a value 
-you can assign to a variable or pass around as an argument. 
-For example, \verb"do-twice" is a subroutine that takes a 
-function as an argument and calls it twice:
+Las subrutinas y otros objetos de código se pueden pasar como 
+los valores, como cualquier variable, literal u objeto. Entonces
+se dice que las funciones son {\bf objetos de primera clase} o algunas
+veces, ciudadanos de primera clase o funciones de orden superior. 
+Esto significa que una función de Perl (no el valor que devuelve sino
+su código) es un valor que puedes asignar a una variable o pasarlo como
+un argumento. Por ejemplo, \verb|do-twice| es una subrutina que toma
+una función como argumento y la llama dos veces:
 
 \begin{verbatim}
-sub do-twice($code) {
-    $code(); 
-    $code();
+sub do-twice($código) {
+    $código(); 
+    $código();
 }
 \end{verbatim}
 
-Here, the \verb"$code" parameter refers to a function or some
-other callable code object. This is an example that uses
-\verb"do-twice" to call a function named \verb"greet" twice:
+Aquí, el parámetro \verb|$código| se refiere a una función o cualquier
+otro objeto que se pueda llamar. Esto es un ejemplo que usa \verb|do-twice|
+para llamar una función llamada \verb|saludar| dos veces:
 
 \begin{verbatim}
-sub greet {
-    say "Hello World!";
+sub saludar {
+    say "¡Hola Mundo!";
 }
-do-twice &greet;
+do-twice &saludar;
 \end{verbatim}
 
-This will print:
+Esto imprimirá:
 \begin{verbatim}
-Hello World!
-Hello World!
+¡Hola Mundo!
+¡Hola Mundo!
 \end{verbatim}
 
-The \verb"&" sigil placed before the subroutine name in the 
-argument list tells Perl that you are passing around a 
-subroutine or some other callable code object (and not 
-calling the subroutine at the moment).
+El sigilo \verb|&| se coloca antes del nombre de la subrutina 
+en la lista de argumentos para dejarle saber a Perl que estás
+pasando una subrutina o cualquier objeto de código 
+que se puede llamar (y no estás llamando la
+subrutina en el momento).
 \index{sigil}
 \index{ampersand sigil}
 %\index{$&$ sigil}
 %\index{sigil!$&$}
 
-In fact, it would be more idiomatic to also use the \verb"&" 
-sigil in the \verb"do-twice" subroutine definition, to better 
-specify that the parameter is a callable code object:
+De hecho, sería más idiomático usar también el sigilo \verb|&|
+en la definición de la subrutina \verb|do-twice| para especificar
+que el parámetro es un objeto de código que se puede llamar:
 \index{idiomatic}
 
 \begin{verbatim}
-sub do-twice(&code) {
-    &code(); 
-    &code();
+sub do-twice(&código) {
+    &código(); 
+    &código();
 }
 \end{verbatim}
 
-or even:
+De igual manera:
 \begin{verbatim}
-sub do-twice(&code) {
-    code(); 
-    code();
+sub do-twice(&código) {
+    código(); 
+    código();
 }
 \end{verbatim}
 
-The syntax with the \verb"&" sigil has the benefit that 
-it will provide a better error message if you make a mistake 
-and pass something noncallable to \verb"do-twice". 
+La sintaxis con el sigilo \verb|&| tiene el beneficio de
+proveer un mejor mensaje de error si cometes un error y le pasas
+a \verb|do-twice| algo que no se puede llamar. 
 
-All the functions we have seen so far had a name, but a 
-function does not need to have a name and can be \emph{anonymous}. 
-For example, it may be stored directly in a scalar variable:
+Todas las funciones que hemos vistos hasta ahora han tenido nombre,
+pero no es necesario que una función tenga un nombre y por lo tanto,
+puede ser una función {\bf anónima}. Por ejemplo, 
+se puede almacenar directamente en una variable escalar:
 \index{anonymous function}
 \index{function!anonymous}
 
 \begin{verbatim}
-my $greet = sub {
-    say "Hello World!";
+my $saludar = sub {
+    say "¡Hola Mundo!";
 };
-$greet();               # prints "Hello World"
-do-twice $greet;        # prints "Hello World" twice
+$saludar();               # imprime "¡Hola Mundo!"
+do-twice $saludar;        # imprime "¡Hola Mundo!" dos veces
 \end{verbatim}
 
-It could be argued that the above \verb"$greet" subroutine  
-is not really anonymous, since it is stored into a scalar 
-variable that could in a certain way be considered as its name. 
-But the subroutine really has no name; it just happens to be 
-assigned to a scalar variable. Just to show that the subroutine 
-can really have no name at all, consider this:
+Se podría argumentar que la subrutina \verb|$saludar| no es realmente
+anónima, debido a que está almacenada en una variable escalar 
+que podría de alguna manera ser considerada su nombre. Pero realmente
+la subrutina no posee un nombre; solo sucede que está asignada a una
+variable escalar. Para demostrar que la subrutina no tiene nombre 
+alguno, considera lo siguiente:
 
 \begin{verbatim}
-do-twice(sub {say "Hello World!"} );
+do-twice(sub {say "¡Hola Mundo!"} );
 \end{verbatim}
 
-It will happily print "Hello World" twice. If the \verb"$do-twice"
-function was declared earlier, you can even simplify the syntax 
-and omit the parentheses:
+Esto imprimirá "¡Hola Mundo!" sin ningún problema. Si la función
+\verb|do-twice| se ha declarado posteriormente, puedes hasta 
+simplificar la sintaxis y omitir los paréntesis:
 
 \begin{verbatim}
-do-twice sub {say "Hello World!"};
+do-twice sub {say "¡Hola Mundo!"};
 \end{verbatim}
 
-For such a simple case where there is no need to pass an 
-argument or return a value, you can even omit the 
-\verb"sub" keyword and pass a code block directly to the function:
+Para casos simples donde no hay necesidad de pasar un argumento
+o devolver un valor, puedes omitir la palabra clave \verb|sub|
+y pasar un bloque de código directamente a la función:
 \index{code block}
 
 \begin{verbatim}
-do-twice {say "Hello World!"};
-do-twice {say "what's up doc"};
+do-twice {say "¡Hola Mundo!"};
+do-twice {say "¡Buen día!"};
 \end{verbatim}
 
-As you can see, \verb"do-twice" is a \emph{generic} subroutine in 
-charge of just performing twice any function or code 
-block passed to it, without any knowledge about what 
-this function or code block is doing. This is a powerful 
-concept for some relatively advanced programming techniques 
-that we will cover later in this book.
+Como puedes observar, \verb|do-twice| es una subrutina \emph{genérica}
+cuyo trabajo es ejecutar dos veces cualquier función o bloque
+de código que se le pasa, sin ningún conocimiento sobre lo que la 
+función o el bloque de código hace. Este es un concepto poderoso
+usado en algunas técnicas de programación avanzadas que discutiremos
+más adelante.
 \index{generic subroutine}
 
-Subroutines may also be passed as return values from other 
-subroutines:
+Las subrutinas se pueden también pasar como valores de
+retorno desde otras subrutinas:
 \index{factory, function}
 \index{function!factory}
 
 \begin{verbatim}
-> sub create-func ($person) { return sub { say "Hello $person!"}}
-# Creating two greeting functions
-sub create-func ($person) { #`(Sub|176738440) ... }
-> my $greet_world = create-func "World";
+> sub crear-función ($persona) { return sub { say "¡Hola $persona!"}}
+# Crear dos funciones de saludos
+sub crear-función ($persona) { #`(Sub|176738440) ... }
+> my $saludar_mundo = crear-función "Mundo";
 sub () { #`(Sub|176738592) ... }
-> my $greet_friend = create-func "dear friend";
+> my $saludar_amigo = crear-función "querido amigo";
 sub () { #`(Sub|176739048) ... }
-# Using the greet functions
-> $greet_world();
-Hello World!
-> $greet_friend();
-Hello dear friend!
+# Usar las funciones de saludos
+> $saludar_mundo();
+¡Hola Mundo!
+> $saludar_amigo();
+¡Hola querido amigo!
 \end{verbatim} 
 
-Here, \verb"create-func" returns a subroutine greeting someone. 
-It is called twice with two different arguments in order to 
-create two different functions at runtime, \verb"$greet_world" and 
-\verb"$greet_friend". A function such as \verb"create-func" 
-is sometimes a \emph{function factory} because you may create as many 
-functions as you like by just calling \verb"create-func". This 
-example may seem to be a slightly complicated way of doing 
-something quite simple. At this point, it is 
-just a bit too early to give really useful examples, but 
-this is also a very powerful programming technique.  
+Aquí, la función \verb|crear-función| devuelve una subrutina que saluda
+a alguien. Se llama dos veces con dos argumentos diferentes para crear
+dos funciones diferentes al tiempo de ejecución, \verb|$saludar_mundo|
+y \verb|$saludar_amigo|. Una función como \verb|crear-función| es algunas
+veces conocida como una \emph{factoría de funciones} porque puedes crear 
+un número determinado de funciones con solo llamar a \verb|crear-función|. Este 
+ejemplo puede parecer una manera complicada de hacer algo tan simple. 
+Lo que pasa es que en este momento es muy prematuro dar ejemplos útiles,
+no obstante esta es una técnica de programación muy poderosa.
 
-We'll come back to these techniques in various places in this 
-book and even devote an entire chapter (chapter~\ref{functional 
-programming}) to this subject and related topics.
+Regresaremos a estas técnicas a lo largo de este libro y hasta dedicaremos
+un capítulo entero (capítulo~\ref{functional programming}) 
+para este asunto y otros temas relacionados.
 
 
-\section{Why Functions and Subroutines?}
+\section{¿Por qué Funciones y Subrutinas?}
 \index{function, reasons for}
 
-It may not be clear why it is worth the trouble to divide
-a program into functions or subroutines.  There are 
-several reasons:
+Debido a que no está claro el por qué de dividir un programa
+en funciones o subrutinas, aquí discutimos varias razones:
 
 \begin{itemize}
 
-\item Creating a new subroutine gives you an opportunity to 
-name a group of statements, which makes your program easier 
-to read and debug. Subroutines also help making the flow of 
-execution clearer to the reader.
+\item La creación de una subrutina nueva te da la oportunidad
+de nombrar un grupo de sentencias, lo cual hace tu programa más
+fácil de leer y depurar. Las subrutinas también ayudan a hacer el 
+flujo de ejecución más claro para el lector.
 
-\item Subroutines can make a program smaller by eliminating 
-repetitive code.  Later, if you make a change, you only have
-to make it in one place.
+\item Las subrutinas pueden reducir el tamaño de un programa
+al eliminar código repetitivo. Más adelante, si haces un cambio,
+solamente tienes que hacerlo en un solo lugar.
 \index{code repetition}
 
-\item Dividing a long program into subroutines allows you 
-to debug the parts one at a time and then assemble them 
-into a working whole.
+\item La división de un programa largo en subrutinas te permite
+depurar las partes una a una y después ensamblarlas en un todo
+que funciona.
 
-\item Well-designed subroutines are often useful for many programs.
-Once you write and debug one, you can reuse it.
+\item Las subrutinas que son bien diseñadas usualmente son 
+útiles para muchos programas. Una vez que escribes y depuras una,
+la puedes reusar.
 \index{code reuse}
-
 \index{abstraction}
-\item Creating subroutines is one of the major ways to 
-break up a difficult problem into smaller easier subtasks 
-and to create successive layers of abstraction, which are 
-the key to solve complex problems.
+
+\item La creación de subrutinas es una de las maneras más
+útiles de descomponer un problema difícil en tareas pequeñas 
+más fáciles y de crear capas sucesivas de abstracción, las cuales
+son las llaves para resolver problemas complejos.
 \index{abstraction}
 
 \index{black box}
-\item Writing good subroutines lets you create black boxes, with 
-a known input and a known output. So you don't have to think 
-about them anymore when you're working on something else.  
-They've become a tool.  Once you've assembled an electric 
-screwdriver, you don't need to think about how it works internally 
-when you use it to build or repair something.
+\item Escribir buenas subrutinas te permite crear cajas negras,
+con una entrada y una salida conocida. Así que no tienes que pensar
+sobre ellas cuando trabajas en algo más. Se han convertido en
+herramientas. Una vez que ensamblas un taladro, no necesitas 
+pensar sobre cómo trabaja internamente cuando lo usas para construir
+o reparar algo.
 \index{black box}
 
-\item In the current open source world, chances are that your 
-code will have to be understood, maintained, or enhanced by 
-people other than you. Coding has become much more of a social 
-activity than before. Breaking up your code into small subroutines 
-whose purpose is easy to understand will make their work easier. 
-And you'll be even more delighted when the person 
-having to maintain or refactor your code is... you.
+\item En el mundo actual de código abierto, existe la oportunidad
+que tu código tendrá que ser comprendido, mantenido or mejorado por 
+otras personas. La programación se ha vuelto más y más una actividad
+social y la descomposición de tu código en pequeñas subrutinas cuyo
+propósito es fácil de entender hará el trabajo de las otras personas
+más fácil. Y tú estarás más deleitado cuando la persona que tenga
+que mantener o refactorizar tu código sea... tú.  
 \index{open source code}
 
 \end{itemize}
 
 
-\section{Debugging}
+\section{Depuración de Programas}
 
-One of the most important programming skills you will 
-acquire is debugging. Although it can sometimes be 
-frustrating, debugging is one of the most intellectually 
-rich, challenging, and interesting parts of programming.
+Una de las más importantes habilidades de programación 
+que tú adquirirás es la depuración. Aunque algunas veces 
+puede ser frustrante, la depuración es una de las partes más
+intelectualmente rica, estimulante e interesante de la
+programación.  
 \index{experimental debugging}
 \index{debugging!experimental}
 
-In some ways debugging is like detective work.  You are confronted
-with clues and you have to infer the processes and events that led
-to the results you see.
+En alguna forma, la depuración se parece al trabajo detectivesco.
+Eres confrontado con pistas y debes inferir los procesos y eventos
+que conllevaron a los resultados que ves.
+
+La depuración es como una ciencia experimental. Una vez que tienes
+una idea de lo que no funciona, modificas el programa e intentas 
+nuevamente. Si la hipótesis era correcta, puedes predecir el resultado
+de la modificación, y te acercas más a un programa que funciona. Si la
+hipótesis era incorrecta, tienes que producir una nueva hipótesis. 
+Como Sherlock Holmes señaló, 
+
 
 Debugging is also like an experimental science.  Once you have an idea
 about what is going wrong, you modify your program and try again.  If
 your hypothesis was correct, you can predict the result of the
 modification, and you take a step closer to a working program.  If
 your hypothesis was wrong, you have to come up with a new one.  As
-Sherlock Holmes pointed out, ``When you have eliminated the
-impossible, whatever remains, however improbable, must be the truth''
-(A. Conan Doyle, {\em The Sign of Four}).
+Sherlock Holmes pointed out, ``Cuando todo aquello que es imposible 
+ha sido eliminado, lo que quede, por muy improbable que parezca, 
+es la verdad``
+(A. Conan Doyle, {\em El signo de los cuatro}).
 \index{Holmes, Sherlock}
 \index{Conan Doyle, Arthur}
 
-In cases where you are not able to come up with a hypothesis 
-on what's wrong, you can try to introduce code that you expect 
-to create a certain type of error, a ``negative hypothesis'' 
-if you will.  Sometimes you can learn a lot from the fact that 
-it didn't create the error that was expected. Making a hypothesis 
-does not necessarily mean you have an idea about how to make it 
-work, it could also be a hypothesis on how it should break.
+En los casos donde no eres capaz de producir una hipótesis
+sobre lo que no funciona, puedes intentar introducir
+código del cual espera un determinado tipo de error, 
+una ``hipótesis negativa``. Algunas veces puedes aprender 
+mucho del hecho de que no creó el error que se esperaba. 
+Crear una hipótesis no significa necesariamente que tienes 
+una idea sobre cómo hacerlo funcionar, también podría ser
+una hipótesis sobre cómo hacerlo fallar.
 
-For some people, programming and debugging are the same thing.  That
-is, programming is the process of gradually debugging a program until
-it does what you want.  The idea is that you should start with a
-working program and make small modifications,
-debugging them as you go.
+Para algunas personas, la programación y la depuración son
+la misma cosa. Es decir, la programación es el proceso de 
+depurar gradualmente un programa hasta que hace lo que quieres.
+La idea es que tú deberías comenzar con un programa que funciona y 
+hacer pequeñas modificaciones, y depurarlas según avanzas.
 
-For example, Linux is an operating system that contains millions of
-lines of code, but it started out as a simple program Linus Torvalds
-used to explore the Intel 80386 chip.  According to Larry Greenfield,
-``One of Linus's earlier projects was a program that would switch
-between printing \verb"AAAA" and \verb"BBBB".  This later evolved 
-to Linux.'' ({\em The Linux Users' Guide} Beta Version 1).
+Por ejemplo, Linux es un sistema operativo que contiene millones 
+de líneas de código. Sin embargo, todo comenzó con un simple programa
+que Linus Torvalds usó para explorar el chip Intel 80386. De acuerdo
+a Larry Greenfield, "Uno de los proyectos iniciales de Linus fue un 
+programa que cambiaba entre la impresión de \verb|AAAA| y \verb|BBBB|.
+Luego éste evolucionó en Linux.``
+({\em The Linux Users' Guide} Beta Version 1).
 \index{Linux}
 
 
-\section{Glossary}
+\section{Glosario}
 
 \begin{description}
 
-\item[Function] A named sequence of statements that performs 
-some useful operation. Functions may or may not take arguments 
-and may or may not produce a result. Perl comes with many 
-built-in functions, and you can also create your own. In Perl, 
-user-defined functions are often called subroutines.
+\item[Función] Una secuencia de sentencias que realiza 
+una función útil. Las funciones pueden cero o más argumentos
+y pueden producir o no producir un resultado. Perl viene con 
+muchas funciones integradas, y tú puedes crear tus propias
+funciones. En Perl, las funciones definidas por el usuario son
+usualmente conocidas como subrutinas.
 \index{function}
 
-\item[Function definition]  A statement that creates a new function,
-specifying its name, parameters, and the statements it contains.
+\item[Definición de una función]  Una sentencia que crea una función
+nueva, especifica su nombre, sus parámetros, y las sentencias
+que contiene.
 \index{function!definition}
 
-\item[Header] The first line of a function definition.
+\item[Cabecera] La primera línea de la definición de la 
+función.
 \index{header}
 
-\item[Body] The sequence of statements inside a function 
-definition, usually in a code block delimited by braces.
+\item[Cuerpo] La secuencia de sentencias dentro de la definición
+de la función, usualmente en un bloque de código delimitado por
+llaves.
 \index{body}
 
-\item[Parameter] A name used inside a subroutine to refer to 
-the value passed as an argument.
+\item[Parámetro] Un nombre que usa dentro de la subrutina
+para referirse al valor que se pasa como un argumento.
 \index{parameter}
 
-\item[Function call] A statement that runs a function. It
-consists of the function name followed by an argument list, 
-which may or may not be enclosed within parentheses.
+\item[Llamada de función] Una sentencia que ejecuta la función.
+Consiste del nombre de la función seguido por una lista de 
+argumentos, la cual puede o no puede estar encerrada por
+paréntesis.
 \index{function!call}
 
-\item[Argument]  A value provided to a function when the function is called.
-This value is assigned to the corresponding parameter in the function.
+\item[Argumento] Una valor que se provee a la función cuando
+ésta se llama. Este valor es asignado al parámetro 
+correspondiente en la función.
 \index{argument}
 
-\item[Lexical variable]  A variable defined inside a subroutine 
-or a code block.  A lexical variable defined within a function can 
-only be used inside that function.
+\item[Variable lexical] Una variable definida dentro de una
+subrutina o un bloque de código. Una variable lexical definida
+dentro de una función se puede usar solo dentro de la función.
 \index{local variable}
 
-\item[Return value]  The result of a function.  If a function call
-is used as an expression, the return value is the value of
-the expression.
+\item[Valor de retorno]  El resultado de una función. Si una llamada
+de función se usa como una expresión, el valor de retorno es el valor 
+de la expresión.
 \index{return!value}
 
-\item[Any]  A special value typically found in variables that 
-haven't been assigned a value. It is also a special value 
-returned by some functions that we have called ``void'' (because 
-they return something generally useless such as ``Any'').
+\item[Any]  Una valor especial típicamente encontrado en 
+las variables a las cuales no se le ha asignado un valor. Es 
+también un valor especial devuelto por algunas funciones que 
+llamamos ``void`` (porque ellas devuelven algo que no es
+generalmente útil tal como ``Any``).
 \index{Any special value}
 \index{special value!Any}
 
-\item[Nil] Also a special value sometimes returned by some 
-``void'' subroutines.
+\item[Nil] Tambié un valor especial devuelto algunas veces
+ por las subrutinas ``void``.
 
-\item[Module] A file that contains a
-collection of related functions and other definitions.
+\item[Módulo] Una archivo que contiene una colección
+de funciones relacionadas y otras definiciones.
 \index{module}
 
-\item[Use statement] A statement that reads a module file and usually imports some functions.
+\item[Sentencia use] Una sentencia que lee un módulo y 
+usualmente exporta algunas funciones.
 \index{use statement}
 \index{statement!use}
 
-\item[Composition] Using an expression as part of a larger expression,
-or a statement as part of a larger statement.
+\item[Composición] Usar una expresión como parte de
+una expresión más compleja o una sentencia como parte
+de una sentencia más larga.
 \index{composition}
 
-\item[Flow of execution]  The order in which statements run.
+\item[Flujo de ejecución]  El orden en cual las sentencias
+son ejecutadas.
 \index{flow of execution}
 
-\item[Stack diagram]  A graphical representation of a stack of subroutines,
-their variables, and the values they refer to.
+\item[Diagrama de pila]  Una representación gráfica de una
+pila de subrutinas, sus variables, y los valores a los cuales
+hacen referencia.
 \index{stack diagram}
 
-\item[Frame]  A box in a stack diagram that represents a subroutine call.
-It contains the local variables and parameters of the subroutine.
+\item[Marco]  Una caja en un diagrama de pila que representa una
+llamada de subrutina. Contiene las variables locales y los 
+parámetros de la subrutina.
 \index{function!frame}
 \index{frame}
 
-\item[Fruitful function] A function or subroutine that returns a useful value.
+\item[Función fructuosa] Una functión que devuelve un valor
+útil.
 \index{fruitful function}
 
-\item[Void function] A function or subroutine that does not 
-return a useful value.
+\item[Funcción void] Una función o subrutina que no devuelve
+un valor útil.
 \index{void function}
 
-\item[Function signature] The part of the definition of a 
-function (usually between parentheses) that defines its 
-parameters and possibly their types and other properties.
+\item[Signatura de una función] La parte de la definición de 
+una función (usualmente entre paréntesis) que define 
+sus parámetros y posiblemente sus tipos y otras propiedades.
 \index{function!signature}
 \index{signature}
 
-\item[Immutable parameter] A function or subroutine parameter 
-that cannot be changed within the function body. By default, 
-subroutine parameters are immutable.
+\item[Parámetros inmutables] Una parámetro de una función
+o subrutina que no se puede cambiar dentro del cuerpo de
+la función. Por defecto, los parámetros de una
+subrutinas son inmutables.
 \index{immutable parameter}
 
-\item[Trait] A property of a function or subroutine parameter 
-that is defined at compile time.
+\item[Trait] Una propiedad de un parámetro de una función
+o subrutina que es definido al tiempo de compilación.
 \index{trait}
 
-\item[First class object] Perl's subroutines are said to be
-higher order objects or first-class objects, because they can 
-be passed around as other subroutines' arguments or return values, 
-just as any other objects.
+\item[Objeto de primera clase] Las subrutinas de Perl se
+dice que son objetos de orden superior o objetos de primera 
+clase porque ellas se pueden pasar como argumentos a 
+otras subrutinas o como valores de retorno, como cualquier
+otro objeto.
 \index{first-class object}
 \index{object, first-class}
 
-\item[Anonymous function] A function that has no name.
+\item[Función anónima] Una función que no tiene nombre.
 \index{anonymous function}
 \index{function!anonymous}
 
-\item[Function factory] A function that produces other functions as return values.
+\item[Factoría de funciones] Una función de produce otras 
+funciones como valores de retorno.
 \index{factory, function}
 \index{function!factory}
 
