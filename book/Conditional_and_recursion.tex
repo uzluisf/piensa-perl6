@@ -1,52 +1,52 @@
-\chapter{Loops, Conditionals, and Recursion}
+\chapter{Bucles, Condicionales, y Recursión}
 \label{conditionals}
 
-The main topic of this chapter is the {\tt if} statement, which
-executes different code depending on the state of the program.
-But first I want to introduce two new operators: integer 
-division and modulo.
+El tema principal de  este capítulo es la sentencia {\tt if},
+la cual ejecuta código diferente dependiendo del estado
+del programa. Pero primero quiero introducir dos operadores
+nuevos: división de enteros y módulo.
 
 
-\section{Integer Division and Modulo}
+\section{División de Enteros y Módulo}
 
-The {\bf integer division} operator, \verb"div", divides
-two numbers and rounds down to an integer.  For example, 
-suppose the
-run time of a movie is 105 minutes.  You might want to know how
-long that is in hours.  In Perl, conventional division
-returns a rational number (in many languages, it returns a 
-floating-point number, which is another kind of internal 
-representation for noninteger numbers):
+El operador {\bf división de enteros}, \verb"div", 
+divide dos números y los redondea a un entero. Por ejemplo,
+supón que una película se tarda 105 minutos. Podrías querer
+saber cuántas horas hay en 105 minutos. En Perl, la división
+convencional devuelve un número racional (en muchos lenguajes,
+devuelve un número de coma flotante, que es otra forma
+de representación interna de números que no son enteros):
 
 \begin{verbatim}
-> my $minutes = 105;
-> $minutes / 60;
+> my $minutos = 105;
+> $minutos / 60;
 1.75
 \end{verbatim}
 
-But we don't normally write hours with decimal points.  Integer 
-division returns the integer number of hours, dropping the
-fraction part:
+Sin embargo, normalmente nosotros no escribimos las horas con
+puntos decimales. La división de enteros devuelve el número
+entero de horas, descartando la parte fraccional:
 \index{operator!div}
 \index{div operator}
 \index{integer division}
 
 \begin{verbatim}
-> my $minutes = 105;
-> my $hours = $minutes div 60;
+> my $minutos = 105;
+> my $horas = $minutos div 60;
 1
 \end{verbatim}
 
-In arithmetic, integer division is sometimes called 
-\emph{Euclidean division}, which computes a quotient and a 
-remainder.
+En aritmética, la división de enteros es algunas veces
+llamada \emph{división euclidiana}, la cual calcula el
+cociente y el residuo.
 \index{Euclidean division}
 \index{division remainder}
 
-To get the remainder, you could subtract off one hour in minutes:
+Para conseguir el residuo, podrías sustraer una hora en 
+minutos:
 
 \begin{verbatim}
-> my $remainder = $minutes - $hours * 60;
+> my $residuo = $minutos - $horas * 60;
 45
 \end{verbatim}
 
@@ -57,46 +57,45 @@ To get the remainder, you could subtract off one hour in minutes:
 \index{modulo operator}
 \index{operator!modulo}
 
-
-An alternative is to use the {\bf modulo operator}, \verb"%", which
-divides two numbers and returns the remainder:
+Una alternativa es usar el {\bf operador de módulo}, \verb|%|,
+el cual divide dos números y devuelve el residuo:
 %\index{$%$ modulo operator}
 %\index{operator!$%$ (modulo)}
 
 \begin{verbatim}
-> my $remainder = $minutes % 60;
+> my $residuo = $minutos % 60;
 45
 \end{verbatim}
 %
-The modulo operator is very common in programming languages
-and is more useful than it seems.  For example, you can 
-check whether one number is divisible by another---if 
-{\tt \$dividend \% \$divisor} is zero, then {\tt \$dividend} 
-is divisible by {\tt \$divisor}. This is commonly used, for 
-example, with a divisor equal to 2 in order to determine 
-whether an integer is even or odd. We will see an example 
-of that later in this chapter (see Section~\ref{alternative.execution}).
+El operador de módulo es muy común en los lenguajes de programación
+y es más útil de lo que parece. Por ejemplo, puedes chequear si
+un número es divisible por otro---si {\tt \$dividendo \% \$divisor} es cero, entonces {\tt \$dividendo} es divisible por {\tt \$divisor}. 
+Esto es usado comúnmente, por ejemplo, con un divisor igual a 2 para determinar si un número es par o impar. Veremos un ejemplo
+de esto más adelante en este capítulo (ver Sección~\ref{alternative.execution}).
 \index{divisibility}
 \index{even number}
 \index{odd number}
 \index{integer!even}
 \index{integer!odd}
 
-To tell the truth, Perl~6 also has a specific operator for 
-divisibility, \verb"%%". The \verb'$dividend %% $divisor' 
-expression returns a true value if
-\verb'$dividend % $divisor' is equal to 0,  
-that is if {\tt \$dividend} is divisible by {\tt \$divisor} (and false otherwise):
+Para ser sincero, Perl~6 también tiene un operador específico 
+para la divisibilidad, \verb|%%|. La expresión
+\verb|$dividendo %% $divisor| devuelve verdadero si 
+\verb|$dividendo %% $divisor| es igual a 0,
+es decir si {\tt \$dividendo} es divisible por {\tt \$divisor} 
+(de lo contrario, es falso):
 \index{divisibility!operator}
 \begin{verbatim}
 > 42 %% 2;
 True
 \end{verbatim}
 
-Also, you can extract the rightmost digit
-or digits from a number with the modulo operator.  For example, {\tt \$x \% 10} yields the
-rightmost digit of {\tt \$x} (in base 10).  Similarly, {\tt \$x \% 100}
-yields the last two digits:
+De igual manera, puedes extraer el dígito más a la
+derecha o dígitos de un número con el operador
+de módulo. Por ejemplo, {\tt \$x \% 10}  extrae el
+dígito más a la derecha de {\tt \$x} (en base 10).
+Similarmente, {\tt \$x \% 100} extrae los últimos dos 
+dígitos:
 
 \begin{verbatim}
 > 642 % 100;
@@ -108,16 +107,16 @@ yields the last two digits:
 
 
 
-\section{Boolean Expressions}
+\section{Expresiones Booleanas}
 \index{Boolean expression}
 \index{expression!Boolean}
 \index{logical operator}
 \index{operator!logical}
 
-A {\bf Boolean expression} is an expression that is either true
-or false.  The following examples use the operator {\tt ==}, 
-which compares two numeric operands and produces
-{\tt True} if they are equal and {\tt False} otherwise:
+Una {\bf expresión booleana} es una expresión que es
+verdadera o falsa. Los siguientes ejemplos usan el operador
+{\tt ==} para comparar los operandos numéricos y producir
+{\tt True} si son iguales y de lo contrario, {\tt False}:
 
 \begin{verbatim}
 > 5 == 5;
@@ -126,8 +125,9 @@ True
 False
 \end{verbatim}
 %
-{\tt True} and {\tt False} are special
-values that belong to the type {\tt Bool}; they are not strings:
+{\tt True} y {\tt False} son valores especiales
+que pertenecen al tipo {\tt Bool}; ellos no son
+cadenas de texto:
 \index{True!special value}
 \index{False!special value}
 \index{special value!True}
@@ -144,16 +144,17 @@ values that belong to the type {\tt Bool}; they are not strings:
 %
 \index{operator!$==$ (numeric equality)}
 \index{$==$ numeric equality operator}
-The {\tt ==} operator is one of the {\bf numeric relational operators} 
-and checks whether the operands are equal; the others are:
+El operador {\tt ==} es uno de los {\bf operadores de relación
+numérica} y su función es chequear si los operandos son 
+iguales; los otros son:
 
 \begin{verbatim}
-      $x != $y            # $x is not numerically equal to $y
-      $x > $y             # $x is  numerically greater than $y
-      $x < $y             # $x is  numerically less than $y
-      $x >= $y            # $x is  numerically greater than or equal to $y
-      $x <= $y            # $x is  numerically less than or equal to $y
-      $x === $y           # $x and $y are truly identical
+      $x != $y            # $x no es numéricamente igual a $y
+      $x > $y             # $x es numéricamente mayor que $y
+      $x < $y             # $x es numéricamente menor que $y
+      $x >= $y            # $x es numéricamente mayor o igual a $y
+      $x <= $y            # $x es numéricamente menor o igual a $y
+      $x === $y           # $x y $y son verdaderamente idénticos
 \end{verbatim}
 % TODO: get these entries working in plastex
 \ifplastex \else
@@ -170,14 +171,15 @@ and checks whether the operands are equal; the others are:
 \index{operator!<= (less than or equal)@\texttt{<=} (less than or equal)}
 \index{operator!=== (value identity)@\texttt{===} (value identity)}
 \fi
-Although these operations are probably familiar to you, the Perl
-symbols are different from the mathematical symbols.  A common error
-is to use a single equals sign ({\tt =}) instead of a double equals sign
-({\tt ==}).  Remember that {\tt =} is an assignment operator and
-{\tt ==} is a relational operator.   There is no such thing as
-{\tt =<}, and there exists a {\tt =>} operator, but it is not 
-a relational operator, but something completely different (it 
-is, as we'll see later, a pair constructor).
+Aunque estas operaciones probablemente son familiares, los
+símbolos en Perl son diferentes a los símbolos matemáticos.
+Un error común es usar un solo signo de igualdad ({\tt =}) en vez de 
+dos signos de igualdad ({\tt ==}). Recuerda que {\tt =} es el
+operador de asignación y {\tt ==} es un operador de relación.
+No existe tal cosa como {\tt =<}, aunque existe el operador {\tt =>},
+el cual no es un operador de relación sino algo completamente
+distinto (como veremos más adelante, dicho operador es el constructor 
+de pares). 
 \index{relational operator}
 \index{relational operator!numeric}
 \index{numeric relational operator}
@@ -192,10 +194,10 @@ is, as we'll see later, a pair constructor).
 \index{operator!=> (pair constructor)@\texttt{=>} (pair constructor)}
 \fi
 
-The difference between {\tt ==} and {\tt ===} is that the 
-former operator checks whether the values of the operands 
-are equal and the latter checks whether the operands are 
-truly identical. As an example, consider this:
+La diferencia entre {\tt ==} y {\tt ==} es que el primer
+operador chequea si los valores de los operandos son iguales
+y el último chequea si los  operandos son verdaderamente
+idénticos. Como un ejemplo, considera esto:
 
 \begin{verbatim}
 say 42 ==  42;           # True
@@ -205,26 +207,28 @@ say 42 === 42.0;         # False
 \end{verbatim}
 %
 
-
-These relational operators can only compare numeric values
-(numbers or variables containing numbers) or values that 
-can be coerced to numeric values, such as, for example, 
-the string "42" which, if used with these operators 
-(except {\tt ===}), will be coerced to the number 42.
+Estos operadores de relación pueden solo comparar 
+valores numéricos (números o variables que contienen
+números) o valores que se pueden coaccionar en 
+valores numéricos, tal como, por ejemplo,
+la cadena de texto "42" la cual, si se usa con estos
+operadores (excepto {\tt ===}), serán coaccionada 
+en el número 42.
 \index{coercion}
 
-For comparing strings (in a lexicographic or ``pseudo-
-alphabetic'' type of comparison), you need to use 
-the {\bf string relational operators}:
+Para la comparación de cadenas de texto (en un tipo de 
+comparación lexicográfica o ``pseudo-alfabética``),
+necesitas usar los {\bf operadores de relación de cadena
+de texto}:
 
 \begin{verbatim}
-      $x eq $y            # $x is string-wise equal to $y
-      $x ne $y            # $x is string-wise not equal to $y
-      $x gt $y            # $x is greater than $y (alphabetically after)
-      $x lt $y            # $x is less than $y (alphabetically before)
-      $x ge $y            # $x is greater than or equal to $y
-      $x le $y            # $x is less than or equal to $y
-      $x eqv $y           # $x is truly equivalent to $y
+      $x eq $y            # $x es una cadena de texto igual a $y
+      $x ne $y            # $x no es una cadena de texto igual a $y
+      $x gt $y            # $x es mayor que $y (alfabéticamente después)
+      $x lt $y            # $x es menor que $y (alfabéticamente antes)
+      $x ge $y            # $x es mayor o igual a  $y
+      $x le $y            # $x es menor o igual a  $y
+      $x eqv $y           # $x es verdaderamente equivalente a $y
 \end{verbatim}
 %  
 \index{relational operator}
@@ -240,17 +244,19 @@ the {\bf string relational operators}:
 
 
 
-For example, you may compare (alphabetically) two former 
-US presidents:
+Por ejemplo, puedes comparar (alfabéticamente) los nombres
+de dos presidentes de los Estados Unidos:
 \begin{verbatim}
 > 'FDR' eq 'JFK';
 False
-> 'FDR' lt 'JFK';    # alphabetical comparison
+> 'FDR' lt 'JFK';    # comparación alfabética
 True
 \end{verbatim}
 %  
 
-Unlike most other programming languages, Perl~6 allows you to chain relational operators transitively, just as in mathematical notation:
+A diferencia de otros lenguajes de programación, Perl~6 te permite 
+encadenar varios operadores de relación de forma transitiva,
+al igual que en notación matemática:
 
 \begin{verbatim}
 say 4 < 7 < 12;      # True
@@ -258,38 +264,40 @@ say 4 < 7 < 5;       # False
 \end{verbatim}
 \index{chained relational operator}
 
-It may be useful to point out that numeric relational operators 
-and string relational operators don't work the same way (and 
-that's a good reason for having different operators), because 
-they don't have the same idea of what is \emph{greater than} 
-or \emph{less than}.
+Es necesario aclarar que los operadores de relación
+numérica y los operadores de relación de cadena de texto no 
+funciona de la misma manera (y esta es una buena razón 
+para tener operadores diferentes), porque ellos no poseen
+la misma idea de lo que \emph{mayor que} o \emph{menor que}.
 
-When comparing two positive integers, a number with four digits
-is always greater than a number with only two or three digits. 
-For example, 1110 is greater than 886. 
+Al comparar dos enteros positivos, un número con cuatro dígitos
+es siempre mayor que un número con solo dos o tres dígitos. 
+Por ejemplo, 1110 es mayor que 886. 
 
-String comparisons, in contrast, basically follow (pseudo) 
-alphabetical rules: ``b'' is greater than ``aaa'', because 
-the commonly accepted rule for string comparisons is to start 
-by comparing the first letter of each string: which string 
-is greater is known if the two letters are different, 
-irrespective of what character comes next; you need to proceed 
-to comparing the second letter of each word only if comparing 
-the first letter of each string led to a draw, and so on. 
-Thus, any word starting with ``a'' is less than any word 
-starting with ``b'', irrespective of the length of these 
-words. You may think that this is nitpicking, but this 
-becomes essential when you start sorting items: you really 
-have to think about which type of order (numeric or 
-alphabetical) you want to use.
+Por lo contrario, la comparación de cadenas de texto
+sigue básicamente reglas (pseudo) alfabéticas: 
+``b'' es mayor que ``aaa'', porque la regla comúnmente
+aceptada para la comparación de cadenas de texto es
+comenzar a comparar la primera letra de cada cadena
+de texto: si las dos letras son diferentes se sabe cuál de
+las dos cadenas es mayor sin importar el carácter que viene
+a continuación; necesitas proceder con la comparación
+de la segunda letra de cada palabra solo si la comparación
+de la primera letra de cada cadena termina en un empate, etc.
+Así que cualquier palabra que inicia con ``a`` es menor que 
+cualquier palabra que inicie con ``b``, sin importar la longitud
+de estas palabras. Esto puede parecer algo minucioso, no 
+obstante esto se vuelve esencial cuando comienzas 
+a ordenar elementos: realmente tienes que pensar qué tipo
+de orden (numérico o alfabético) quieres usar.
 \index{sorting}
 
-There are also some so-called ``three-way'' relational operators, 
-{\tt cmp}, {\tt <=>} and {\tt leg}, but we'll come back to them 
-when we study how to sort the items of a list. Similarly, we need 
-to learn quite a few other things about Perl before we can do 
-justice to the incredibly powerful and expressive \emph{smart match} 
-operator, \verb"~~".
+También existen los operadores de relación de ``tres bandas``,
+{\tt cmp}, {\tt <=>} y {\tt leg}, pero regresaremos a ellos
+cuando estudiemos cómo ordenar los elementos de una lista. 
+Similarmente, necesitamos aprender otras cosas sobre Perl antes
+que podamos justificar el increíblemente poderoso y expresivo
+operador de \emph{coincidencia inteligente}, \verb|~~|.
 \index{sorting}
 \index{smart match operator}
 \index{operator!smart match}
@@ -304,14 +312,14 @@ operator, \verb"~~".
 \index{operator!<=> (numeric comparison)@\texttt{<=>} (numeric comparison)}
 \fi
 
-A final point to be noted about string comparisons is 
-that uppercase letters are always deemed smaller 
-than lowercase letters. So "A," "B," "BB," and "C" 
-are \emph{all} less than "a," "b," "bb," and "c." We 
-will not go into the details here, but this becomes 
-more complicated (and sometimes confusing) when 
-the strings to be compared contain nonalphabetical 
-characters (or non-ASCII Unicode letters).
+Un punto final acerca de la comparación de cadenas
+de texto es que las letras mayúsculas son siempre menores
+que las letras minúsculas. Así que  "A," "B," "BB," y "C"
+son \emph{todas} menores que "a," "b," "bb," y "c".
+No discutiremos los detalles aquí pero esto se vuelve
+complicado (y algo confuso) cuando las cadenas de texto
+a ser comparadas contienen caracteres no alfabéticos (
+o letras Unicode que no son ASCII).
 
 \section{Logical Operators}
 \index{logical operator}
