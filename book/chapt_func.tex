@@ -1587,28 +1587,29 @@ funciones como valores de retorno.
 \end{description}
 
 
-\section{Exercises}
+\section{Ejercicios}
 
 \begin{exercise}
 \index{chars function}
 \index{function!chars}
 \label{right_justify}
 
-Write a subroutine named \verb"right-justify" that takes a string
-named {\tt \$input-string} as a parameter and prints the 
-string with enough leading spaces so that the last letter 
-of the string is in column 70 of the display.
+Escribe una subrutina llamada \verb|alinear-a-derecha| 
+que toma una cadena de texto llamada {\tt \$cadena-entrada}
+como parámetro e imprime la cadena de texto con suficiente
+espacio blanco de tal modo que la última letra de la cadena
+de texto esté en la columna 70 de la pantalla.
 
 \begin{verbatim}[fontshape=up]
-> right-justify('Larry Wall')
+> alinear-a-derecha('Larry Wall')
                                                            Larry Wall
 \end{verbatim}
 
-Hint: use string concatenation and repetition.  Also,
-Perl provides a built-in function called {\tt chars} that
-returns the length of a string, so the value of 
-\verb"chars 'Larry Wall'" or \verb"'Larry Wall'.chars" is 10.
-Solution: \ref{sol_right_justify}.
+Pista: Usa la concatenación de cadena de texto y repetición. 
+De igual manera, Perl provee una función integrada llamada 
+{\tt chars} que devuelve la longitud de una cadena, así que
+el valor de \verb"chars 'Larry Wall'" or \verb"'Larry Wall'.chars"
+es 10. Solución: \ref{sol_right_justify}.
 
 \end{exercise}
 
@@ -1619,46 +1620,47 @@ Solution: \ref{sol_right_justify}.
 \index{do-twice}
 \label{do_it_twice}
 
-
-We have seen that functions and other code objects can be 
-passed around as values, just like any object. Functions are said 
-to be \emph{first-class objects}. For example, \verb"do-twice" is a function
-that takes a function as an argument and calls it twice:
+Hemos visto que las funciones y otros objetos de código 
+se pueden pasar como valores, tal como cualquier objeto. Se dice
+que las funciones \emph{objetos de primera clase}. Por ejemplo, 
+\verb|do-twice| es una función que toma una función como un
+argumento y la llama dos veces:
 
 \begin{verbatim}[fontshape=up]
-sub do-twice($code) {
-    $code(); 
-    $code();
+sub do-twice($código) {
+    $código(); 
+    $código();
 }
-sub greet {
+sub saludar {
     say "Hello World!";
 }
-do-twice(&greet);
+do-twice(&saludar);
 \end{verbatim}
 
 \begin{enumerate}
 
-\item Type this example into a script and test it.
+\item Escribe este ejemplo en un script y 
+pruébalo.
 
-\item Modify \verb"do-twice" so that it takes two arguments, a
-function and a value, and calls the function twice,
-passing the value as an argument.
+\item Modifica la función \verb|do-twice| para que tome
+dos argumentos, una función y un valor, y llama la función
+dos veces, pasando el valor como una argumento.
 
-\item Copy the definition of 
-\verb"print-twice" from earlier in this chapter to your script.
+\item Copia la definición de \verb|doble-impresión| del 
+inicio de este capítulo en tu script.
 
-\item Use the modified version of \verb"do-twice" to call
-\verb"print-twice" twice, passing ``What's up doc'' as an argument.
+\item Usa la versión modificada de \verb|do-twice| para llamar
+a \verb|doble-impresión| dos veces, pasando como argumento
+la cadena de texto ``What's up doc''.
 
-\item Define a new function called 
-\verb"do-four" that takes a function and a value
-and calls the function four times, passing the value
-as a parameter.  There should be only
-two statements in the body of this function, not four.
+\item Define una función nueva llamada \verb|do-four|
+que toma una función y un valor y llama la función
+cuatro veces, pasando el valor como un argumento. Deberían
+haber solo dos sentencias en el cuerpo de la función, no cuatro.
 
 \end{enumerate}
 
-Solution: \ref{sol_do_it_twice}.
+Solución: \ref{sol_do_it_twice}.
 
 \end{exercise}
 
@@ -1668,13 +1670,14 @@ Solution: \ref{sol_do_it_twice}.
 \label{draw_a_grid}
 \index{print-grid}
 
-Note: This exercise should be
-done using only the statements and other features we 
-have learned so far.  
+Nota: Debes resolver este ejercicio con solo el uso de
+las sentencias y otras características que hemos
+discutidos hasta ahora.
 
 \begin{enumerate}
 
-\item Write a subroutine that draws a grid like the following:
+\item Escribe una subrutina que dibuje una cuadrícula como 
+la siguiente:
 \index{grid}
 
 \begin{verbatim}[fontshape=up]
@@ -1691,36 +1694,38 @@ have learned so far.
 + - - - - + - - - - +
 \end{verbatim}
 %
-Hint: to print more than one value on a line, you can print
-a comma-separated sequence of values:
+Pista: para imprimir más de un valor en una línea, puedes
+imprimir una secuencia de valores separados por coma:
 
 \begin{verbatim}[fontshape=up]
   say '+', '-';
 \end{verbatim}
 %
-The {\tt say} function prints its arguments with a newline at the end (it advances to the next line). If you don't want to 
-go to the next line, use the {\tt print} function instead:
-
+La función {\tt say} imprime sus argumentis con una nueva línea
+al final (la cual avanza el cursor a la siguiente línea). Si no
+quieres colocar el cursor en la siguiente línea, entonces usa
+la función {\tt print}:
 
 \begin{verbatim}[fontshape=up]
   print '+', ' ';
   print '-';
 \end{verbatim}
 %
-The output of these statements is ``+ -''.
+La salida de estas sentencias es ``+ -''.
 
-A {\tt say} statement with an empty string argument ends 
-the current line and goes to the next line.
+Una sentencia {\tt say} con una cadena de texto vacía como
+argumento termina la actual línea y va a la siguiente
+línea.
 
-\item Write a subroutine that draws a similar grid
-with four rows and four columns.
+\item Escribe una subrutina que dibuje una cuadrícula similar con
+cuatro filas y cuatro columnas.
 
 \end{enumerate}
 
-Solution: \ref{sol_draw_a_grid}
+Solución: \ref{sol_draw_a_grid}
 \index{print-grid}.
 
-Credit: this exercise is based on an exercise in Oualline, {\em
+Crédito: Este ejercicio está basado en un ejercicio en Oualline, {\em
     Practical C Programming, Third Edition}, O'Reilly Media, 1997.
 
 \end{exercise}
