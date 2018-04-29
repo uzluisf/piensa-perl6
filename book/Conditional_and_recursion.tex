@@ -321,21 +321,21 @@ complicado (y algo confuso) cuando las cadenas de texto
 a ser comparadas contienen caracteres no alfabéticos (
 o letras Unicode que no son ASCII).
 
-\section{Logical Operators}
+\section{Operadores Lógicos}
 \index{logical operator}
 \index{operator!logical}
 
-There are three main pairs of {\bf logical operators}: 
+Hay tres pares principales de {\bf operadores lógicos}:
 \begin{itemize}
-\item logical \emph{and}: ``{\tt and}'' and {\tt \&\&}
-\item logical \emph{or}: ``{\tt or}'' and {\tt ||}
-\item logical \emph{not}: ``{\tt not}'' and {\tt !}
+\item lógico \emph{and} (y) : ``{\tt and}'' y {\tt \&\&}
+\item lógico \emph{or} (o): ``{\tt or}'' y {\tt ||}
+\item lógico \emph{not} (no): ``{\tt not}'' y {\tt !}
 \end{itemize}
 
-The semantics (meaning) of these operators is
-similar to their meaning in English.  For example,
-{\tt \$x > 0 and \$x < 10} is true only if {\tt \$x} is greater 
-than 0 {\em and} less than 10.
+La semántica (significado) de estos operadores es similar
+a sus significados en inglés (y en español). Por ejemplo,
+{\tt \$x > 0 and \$x < 10} es verdadera solo si {\tt \$x}
+es mayor que 0 \emph{and} menos que 10.
 \index{and operator}
 \index{or operator}
 \index{not operator}
@@ -343,113 +343,113 @@ than 0 {\em and} less than 10.
 \index{operator!or}
 \index{operator!not}
 
-{\tt \$n \% 2 == 0 and \$n \% 3 == 0} is true if {\em both} 
-conditions are true, that is, if the number is divisible by 2
-{\em and} by 3, i.e., is in fact divisible by 6 (which could be better 
-written as: {\tt \$n \% 6 == 0} or {\tt \$n \%\% 6}).
+{\tt \$n \% 2 == 0 and \$n \% 3 == 0} es verdadero si {\em ambas}
+condiciones son verdaderas, es decir, si el número es divisible por
+2 \emph{and} por 3, i.e., es de hecho divisible por 6 (que podría
+ser mejor escrito así: {\tt \$n \% 6 == 0} or {\tt \$n \%\% 6}).
 
-{\tt \$n \% 2 == 0 or \$n \% 3 == 0} is true if {\em either or 
-both} of the conditions is true, that is, if the number is 
-divisible by 2 {\em or} by 3 (or both).
+{\tt \$n \% 2 == 0 or \$n \% 3 == 0} es verdadero si \emph{una o ambas}
+condiciones son verdaderas, es decir, si el número es divisible por 2
+\emph{or} por 3 (or ambos).
 
-Finally, the {\tt not} operator negates a Boolean
-expression, so {\tt not (x > y)} is true if {\tt x > y} 
-is false, that is, if {\tt x} is less than or equal 
-to {\tt y}.
+Finalmente, el operador {\tt not} niega una expresión Booleana,
+así que {\tt not (x > y)} es verdadero si {\tt x > y} es falso, es
+decir, si {\tt x} es menor o igual {\tt y}.
 
-The {\tt \&\&}, {\tt ||}, and {\tt !} operators have the same 
-meanings, respectively, as {\tt and}, {\tt or}, and {\tt not}, 
-but they have a tighter precedence, which means that when 
-they stand in an expression with some other operators, 
-they have a higher priority of execution. We will come 
-back to precedence later, but let's say for the time being 
-that, in most common cases, the {\tt and}, {\tt or}, and 
-{\tt not} operators will usually do what you want.
+Los operadores {\tt \&\&}, {\tt ||}, y {\tt !} tienen el mismo
+significado, respectivamente, como {\tt and}, {\tt or}, y {\tt not},
+pero una precedencia más estricta, lo que significa 
+que cuando están en una expresión con algunos otros operadores,
+ellos tienen una mayor precedencia de ejecución. Volveremos
+con la precedencia más adelante, pero digamos por el tiempo
+presente que, en los casos más comunes, los operadores 
+{\tt and}, {\tt or}, y {\tt not} usualmente serán suficientes
+para hacer lo que deseas.
 \index{precedence}      
 \index{operator precedence}
 
-Strictly speaking, the operands of the logical operators should 
-be Boolean expressions, but Perl, just like many languages 
-partly derived from C, is not very strict on that. The 
-numbers~0 and 0.0 are false; and any nonzero number 
-or nonempty string is interpreted as {\tt True}:
+En sentido estricto, los operandos de los operadores lógicos
+deberían ser expresiones Booleanas, pero Perl, como muchos
+otros lenguajes derivados parcialmente de C, no es estricto
+con respecto a eso. Los números~0 y 0.0 son falsos; y cualquier
+número que no sea cero o una cadena de cuerda que no esté 
+vacía es interpretado como {\tt True}:
 
 \begin{verbatim}
 > 42 and True;
 True
 \end{verbatim}
 %
-This flexibility can be very useful, but there are some 
-subtleties to it that might be confusing.  You might want 
-to avoid it unless you know what you are doing.
+Aunque esta flexibilidad puede ser muy útil, existen 
+sutilezas que pueden ser confusas. A menos que sepas
+lo que estás haciendo, esto es algo que deberías evitar.
 
-The {\tt so} built-in function returns a Boolean evaluation of 
-its argument:
+La función integrada {\tt so} devuelve una evaluación 
+de sus argumentos:
 
 \begin{verbatim}
 > say so (0 and True);
 False
 \end{verbatim}
 %
-Here, the expression {\tt (0 and True)} is false because 0 
-is false and the expression could be true only if both arguments 
-of the {\tt and} operator were true.
+Aquí la expresión {\tt (0 and True)} es falsa porque 0 es falso
+y la expresión sería verdadera solo si ambos argumentos del operador
+{\tt and} son verdaderos.
 
-When several Boolean conditions are linked with some logical 
-operator, Perl will only perform the comparisons that are 
-strictly necessary to figure out the final result, starting 
-with those on the left. For example, if you write:
+Cuando varias condiciones Booleanas son enlazadas con algunos
+operadores lógicos, Perl solo realizará la comparaciones que son
+estrictamente necesarias para descifrar el resultado final,
+comenzando con aquellas en la izquierda. Por ejemplo, si escribes:
 
 \begin{verbatim}
-> False and $number > 0;
+> False and $número > 0;
 False
 \end{verbatim}
 %
-there is no need to evaluate the second Boolean expression 
-to know that the overall expression will be false. In this case, 
-Perl does not try to check whether the number is positive or 
-even whether it is defined. It is sometimes said that 
-these operators ``short circuit'' unnecessary conditions.
+no hay necesidad de evaluar la segunda expresión Booleana
+para saber que la expresión completa será falsa. En este caso,
+Perl no trata de chequear si el número es positivo o hasta si
+está definido. Se dice que estos operadores realizan una evaluación
+de ``cortocircuito`` con las condiciones innecesarias.
 \index{short-circuit boolean operators}
 \index{short-circuit evaluation}
 
-Similarly, in the following code, the {\tt compute-pension} 
-subroutine will not even be called if the person's age is 
-less than 65:
+De la misma manera, en el siguiente código, la subrutina 
+{\tt calcular-pensión} no será llamada si la edad de la persona
+es menos de 65:
 
 \begin{verbatim}
-$age >= 65 and compute-pension();
+$edad >= 65 and calcular-pensión();
 \end{verbatim}
 %
-The same goes with the {\tt or} operator, but the other way 
-around: if the first boolean expression of an {\tt or} 
-statement is true, then the next expression will not be 
-evaluated. The following code is thus equivalent to the previous 
-one:
+Lo mismo ocurre con el operador {\tt or}, pero de
+manera completamente distinta: si la primera expresión booleana
+de una sentencia {\tt or} es verdadera, entonces la siguiente
+expresión no será evaluada. El siguiente código es equivalente
+al anterior:
 
 \begin{verbatim}
-$age < 65 or compute-pension();
+$edad < 65 or calcular-pensión();
 \end{verbatim}
 % 
-This \emph{can} be a way of running the {\tt compute-pension} 
-subroutine conditionally, depending on the value of the age, and 
-this is sometimes used, notably in idiomatic constructs such as:
-\index{idiomatic}
+Esta \emph{puede} ser una forma de ejecutar la subrutina
+{\tt calcular-pensión} condicionalmente, dependiendo del 
+valor de la edad, y esto se usa usualmente en construcciones
+tal como:
 
 \begin{verbatim}
-do-something() or die "could not do something";
+haz-algo() or die "no pude hacer algo";
 \end{verbatim}
 %
-which aborts the program if {\tt do-something} returns a false 
-value, meaning that it was not able to do something 
-so essential that it would not make sense to try to continue 
-running it.
+la cual aborta el programa si {\tt haz-algo} devuelve un 
+valor falso, lo cual quiere decir que fue incapaz de hacer 
+algo tan esencial que no vale la pena continuar con su
+ejecución.
 
-We will examine now clearer and much more common 
-ways of running conditional code.
+Más adelante examinaremos formas más claras y comunes
+de ejecutar código con condicionales.
 
-
-\section{Conditional Execution}
+\section{Ejecuciones Condicionales}
 \label{conditional.execution}
 
 \index{conditional!statement}
@@ -457,53 +457,57 @@ ways of running conditional code.
 \index{if statement}
 \index{statement!if}
 \index{conditional!execution}
-In order to write useful programs, we almost always need the ability
-to check conditions and change the behavior of the program
-accordingly.  {\bf Conditional statements} give us this ability.  The
-simplest form is the {\tt if} statement:
+Para escribir programas útiles, casi siempre necesitamos la habilidad 
+de evaluar condiciones y cambiar el comportamiento del programa
+adecuadamente. Las {\bf sentencias condicionales} nos brindan esta
+habilidad. La forma más simple es la sentencia {\tt if}:
 
 \begin{verbatim}
-if $number > 0 {
-    say '$number is positive';
+if $número > 0 {
+    say '$número es positivo';
 }
 \end{verbatim}
 %
-The Boolean expression after {\tt if} is called the 
-{\bf condition}.  If it is true, the subsequent 
-block of code runs.  If not, nothing happens. The block of 
-code may contain any number of statements.
+La expresión Booleana después de {\tt if} se conoce 
+como la condición. Si la condición es verdadera, el
+bloque de código subsecuente se ejecuta. Si es falsa, 
+nada pasa. El bloque de código puede contener cualquier
+cantidad de sentencias.
 \index{condition}
 
-It is conventional and highly recommended (although not 
-strictly mandatory from the standpoint of the compiler) 
-to indent the statements in the block, in order to help 
-visualize the \emph{control flow} of the program, i.e., 
-its structure of execution: with such indentation, we 
-can see much better that the statements within the 
-conditional block will run only if the condition is true.
+Es una convención y muy recomendado (aunque no es mandatario
+desde la perspectiva del compilador) indentar las sentencias
+del bloque, para así ayudar con la visualización del 
+\emph{flujo de control} del programa, i.e., su estructura
+de ejecución: con tal indentación, podemos ver mucho mejor 
+que las condiciones dentro del bloque serán ejecutadas solo 
+si la condición es verdadera.
 \index{indentation}
 
-The condition may be a compound Boolean expression:
+La condición puede ser una expresión Booleana compuesta:
 \begin{verbatim}
 if $n > 0 and $n < 20 and $n %% 2 {
-    say '$n is an even and positive number smaller than 20'
+    say '$n es un número par y positivo menor que 20'
 }
 \end{verbatim}
 %
-Note that in the print statement above, the final semi-colon 
-has been omitted. When a statement is the last code line of 
-a block, immediately before the curly brace {\tt \}} closing 
-that code block, the final semi-colon is optional and may 
-be omitted, though it might be considered good form to include it.
+Nota que en la sentencia de impresión anterior, el punto y coma
+final se omitió. Cuando una sentencia es la última línea de
+código de un bloque, inmediatamente antes de la llave derecha
+{\tt \}} que cierra el bloque, el punto y coma final es opcional
+y puede ser omitido, aunque sería recomendable incluirlo.
 \index{omitting the semi-colon}
 \index{semi-colon, omitting}
 \index{bracket!curly}
 \index{curly bracket}
 \index{curly brace}
 
-In theory, the overall code snippet above is itself a statement 
-and should also end with a semi-colon after the closing brace. 
-But a closing curly brace followed by a newline character implies a statement separator, so you don't need a semi-colon here and it is generally omitted.
+En teoría, el fragmento de código anterior es por sí mismo una
+sentencia y debería también terminar con un punto y coma después
+de la llave derecha. Pero una llave derecha seguida por un carácter
+de nueva línea implica un separador de sentencia, así que no 
+necesitas un punto y coma ahí y por lo tanto, es generalmente
+omitido.
 \index{omitting the semi-colon}
 \index{semi-colon, omitting}
 
