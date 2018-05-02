@@ -292,7 +292,7 @@ a ordenar elementos: realmente tienes que pensar qué tipo
 de orden (numérico o alfabético) quieres usar.
 \index{sorting}
 
-También existen los operadores de relación de ``tres bandas``,
+También existen los operadores de relación de ``tres sentidos``,
 {\tt cmp}, {\tt <=>} y {\tt leg}, pero regresaremos a ellos
 cuando estudiemos cómo ordenar los elementos de una lista. 
 Similarmente, necesitamos aprender otras cosas sobre Perl antes
@@ -769,147 +769,149 @@ say '$número es negativo.' unless $número >= 0;
 \index{statement!for}
 \index{factorial}
 
-Suppose you need to compute and print the product of the first 
-five positive digits (1 to 5). This product is known in mathematics 
-as the \emph{factorial} of 5 and is sometimes written as $5!$. 
-You could write this program:
+Supón que necesitas computar e imprimir el producto de los 
+primeros cinco dígitos positivos (de 1 a 5). Este producto es
+conocido en matemática como el \emph{factorial} de 5 y 
+se denota por $5!$. Podrías escribir el siguiente programa:  
 
 \begin{verbatim}
-my $product = 1 * 2 * 3 * 4 * 5;
-say $product;           # prints 120
+my $producto = 1 * 2 * 3 * 4 * 5;
+say $producto;           # prints 120
 \end{verbatim}
 %
 
-You could make it slightly simpler:
+Podrías hacerlo un poco más simple:
 \begin{verbatim}
 say 2 * 3 * 4 * 5;      # prints 120
 \end{verbatim}
 %
 
-The problem is that this syntactic construct does 
-not scale well and becomes tedious for the product of the first 
-ten integers (or factorial 10). And it becomes almost a 
-nightmare for factorial 100. 
-Calculating the factorial of a number is a fairly common computation 
-in mathematics (especially in the fields of combinatorics 
-and probability) and in computer science. We need to 
-automatize it, and using a {\tt for} 
-loop is one of the most obvious ways of doing that:
+El problema es que esta construcción sintáctica no 
+escal muy bien y se vuelve tediosa para el producto 
+de los primeros diez enteros (o factorial de 10). Y
+se vuelve una pesadilla para el factorial de 100.
+La computación del factorial de un número es algo 
+común en matemáticas (especialmente en los campos de 
+combinatoria y probabilidad) y la ciencia de la
+computación. Necesitamos automatizarlo, y el uso del
+bucle {\tt for} es una de las maneras más obvia de hacerlo:
 \index{factorial!using a for loop}
 
 \begin{verbatim}
-my $product = 1;
+my $producto = 1;
 for 1..5 {
-    $product *= $_
+    $producto *= $_
 }
-say $product;           # prints 120
+say $producto;           # prints 120
 \end{verbatim}
 
-Now, if you need to compute factorial 100, you just need to 
-replace the 5 in the code above with 100. Beware, though, 
-the factorial function is known to grow extremely rapidly, 
-and you'll get a truly huge number, with 158 digits 
-(i.e., a number much larger than the estimated total 
-number of atoms in the known universe).
+Ahora, si necesitas calcular el factorial de 100, solo
+necesitas reemplazar el 5 en el código más arriba con el 100.
+Ten presente que la función factorial es conocida por 
+crecer extremadamente rápido, y obtendrás un número
+realmente grande, con 158 dígitos (i.e., un número mucho
+más grande que el número total estimado de átomos en el
+universo conocido).
 \index{factorial}
 
 \index{range!operator}
 \index{operator!range}
 \index{special variable}
-In this script, {\tt 1..5} is the range operator, which is used here 
-to generate a list of consecutive numbers between 1 and 5. The 
-{\tt for} keyword is used to iterate over that list, and  
-\verb"$_" is a special variable that takes each successive 
-value of this list: first 1, then 2, etc. until 5. In the code 
-block forming the body of the loop, the {\tt \$product} variable 
-is multiplied successively by each value of \verb"$_". The loop 
-ends with 5 and the result, 120, is printed on the last line.
+En este script, {\tt 1..5} es el operando de rango, el cual
+es usado aquí para generar una lista de números consecutivos entre 1 y 5.
+La palabra clave {\tt for} es usada para iterar sobre una lista, y 
+la variable \verb|$_| es una variable especial que toma cada valor sucesivo
+de esta lista: primero 1, después 2, etc. hasta 5. En el bloque
+de código que forma el cuerpo del bucle, la variable {\tt \$producto}
+es multiplicada sucesivamente por cada valor de \verb|$_|. El bucle
+termina con 5 y el resultado, 120, se imprime en la última línea.
 
-This is a simple use of the {\tt for} statement, 
-but probably not the most commonly used in Perl~6; 
-we will see more below. We will also see other types of loops. 
-But that should be enough for now to let you write some loops. Loops 
-are found everywhere in computer programming.
-
+Esto es un uso simple de la sentencia {\tt for},
+pero probablemente no la más usada en Perl~6; veremos
+más formas de hacerlo adelante. También veremos otros 
+tipos de bucles. Pero esto debería ser suficiente para que 
+escribas algunos bucles. Los bucles se encuentran en todas
+partes en la ciencia de la computación.
 \index{special variable}
 \index{topical variable}
 \index{default method invocant}
 \index{invocant}
 \index{topic}
-The \verb"$_" special variable is known as the \emph{topical 
-variable} or simply the \emph{topic}. It does not need to be declared 
-and many syntactic constructs assign a value to it without 
-explicitly mentioning it. Also, \verb"$_" is a implicit argument 
-to methods called without an explicit invocant. For example, 
-to print the first five integers, you might write:
+
+La variable especial \verb|$_| es conocida como la 
+\emph{variable tópica}. No necesita ser declarada y 
+muchas de las construcciones sintácticas le asignan un valor
+sin mencionarla explícitamente. De igual manera,
+la variable \verb|$_| es un argumento implícito de los
+métodos que se llaman sin un invocante. Por ejemplo,
+para imprimir los primeros cinco dígitos, podrías
+escribir:
 
 \begin{verbatim}
-for 1..5 {.say};  # prints numbers 1 to 5, each on its line
+for 1..5 {.say};  # imprime los números del 1 al 5, cada uno en su línea
 \end{verbatim} 
 
-Here {\tt .say} is a syntax shorthand equivalent to \verb"$_.say". 
-And since, as we saw, \verb"$_" takes each successive value of 
-the range introduced by the {\tt for} keyword, this very short code 
-line prints each number between 1 and 5, each on a different line. 
-This is a typical example of the \verb"$_" topical variable being used 
-without even being explicitly mentioned. We will see many other 
-uses of the \verb"$_" special variable. 
+Aquí {\tt .say} es un atajo de sintaxis equivalente a \verb|$_.say|.
+Y debido a que, como vimos, \verb|$_| toma cada valor sucesivo del 
+rango introducido por la palabra clave {\tt for}, este atajo imprime
+cada número entre 1 y 5, cada uno de ellos en una línea distinta.
+Esto es un ejemplo típico del uso de la variable tópica \verb|$_|
+sin ser explícitamente mencionada. Más adelante veremos otros
+usos de la variable especial \verb|$_|. 
 
-Sometimes, you don't use the \verb"$_" loop variable within the 
-loop, for example if you just want to do something five times but don't 
-care each time through the loop at which iteration you 
-have arrived. A subroutine that prints a message \emph{n} times 
-might look like this:
+Algunas veces, no necesitas la variable \verb|$_| dentro de un bucle,
+por ejemplo si quieres hacer algo cinco veces pero no te importa a cuál
+iteración del bucle has llegado. Una subrutina que imprime un mensaje 
+un numero \emph{n} de veces podría lucir de la siguiente manera:
 
 \begin{verbatim}
-sub print-n-times (Int $n, Str $message) {
-    for 1..$n { say $message }
+sub imprime-n-veces (Int $n, Str $mensaje) {
+    for 1..$n { say $mensaje }
 } 
 \end{verbatim} 
 
-
-The {\tt for} loop also has a statement modifier or postfix form, 
-used here to compute again the factorial of 5:
+El bucle {\tt for} tiene una forma de modificador de sentencia (
+o forma sufijo), usada aquí para calcular otra vez el factorial de 5:
 \index{statement modifier}
 \index{postfix notation}
 \index{factorial!using a for statement modifier}
 
 \begin{verbatim}
-my $product = 1;
-$product *= $_ for 1..5;
-say $product;           # prints 120
+my $producto = 1;
+$producto *= $_ for 1..5;
+say $producto;           # imprime 120
 \end{verbatim} 
 
-There is another syntax for the {\tt for} loop, using an explicit loop variable:
+Existe otra forma de sintaxis del bucle {\tt for}, usando una variable
+de bucle explícita:
 \index{factorial!using a for pointy block }
 
 \begin{verbatim}
 sub factorial (Int $num) { 
-    my $product = 1;  
+    my $producto = 1;  
     for 1..$num -> $x { 
-        $product *= $x
+        $producto *= $x
     }
-    return $product
+    return $producto
 }
 say factorial 10;   # 3628800
 \end{verbatim} 
 
-The {\tt for} loop in this subroutine is using what is called 
-a ``pointy block'' syntax. It is essentially the same idea 
-as the previous {\tt for} loops, except that, 
-instead of using the \verb"$_" topical variable, we 
-now declare an explicit \verb"$x" loop variable with the 
-\verb"1..$num -> $x" syntax to iterate over the range 
-of values. Using an explicit loop variable can make your 
-code clearer when things get more complicated, for example 
-when you need to nest several {\tt for} loops. We will 
-see more examples of that later.
+El bucle {\tt for} en esta subrutina usa lo que se llama una
+sintaxis de ``bloque puntiagudo``. Es esencialmente la misma
+idea del bucle {\tt for} anterior, excepto que, en vez de usar
+la variable tópica \verb|$_|, ahora declaramos una variable de
+bucle explícita \verb|$x| con la sintaxis \verb|1..$num -> $x|
+para iterar sobre el rango de valores. El uso de una variable de
+bucle explícita puede hacer tu código más claro cuando las cosas
+se complican, por ejemplo cuando necesitas anidar varios bucles
+{\tt for}. Más adelante veremos más ejemplos.
 \index{pointy block}
 \index{for loop}
 \index{loop!for}
 
-We will also see several other ways of computing the factorial 
-of a number in this book.
+También veremos otras formas de calcular el factorial de un
+número en este libro.
 \index{factorial}
 
 \section{Recursion}
