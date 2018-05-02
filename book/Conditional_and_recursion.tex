@@ -513,23 +513,25 @@ omitido.
 
 
 
-\section{Alternative Execution}
+\section{Ejecución Alternativa}
 \label{alternative.execution}
 \index{alternative execution}
 \index{else keyword}
 \index{keyword!else}
 
-A second form of the {\tt if} statement is ``alternative execution,'' 
-in which there are two possibilities and the condition determines
-which one runs.  Given a \verb'$number' variable containing an 
-integer, the following code displays two different messages 
-depending on whether the value of the integer is even or odd:
+Una segunda forma de la sentencia {\tt if} es la
+``ejecución alternativa``, en la cual existen dos 
+posibilidades y la condición determina cual de ellas
+ejecutar. Dada una variable \verb|$número| que 
+contiene una entero, el siguiente código muestra dos
+mensajes diferentes dependiendo si el valor del
+entero es par o impar:
 
 \begin{verbatim}
-if $number % 2 == 0 {
-    say 'Variable $number is even'
+if $número % 2 == 0 {
+    say 'La variable $número es par'
 } else {
-    say 'Variable $number is odd'
+    say 'La variable $número es impar'
 }
 \end{verbatim}
 %
@@ -537,29 +539,27 @@ if $number % 2 == 0 {
 \index{odd number}
 \index{integer!odd}
 \index{integer!even}
-If the remainder when {\tt \$number} is divided by 2 is 0, 
-then we know that {\tt \$number} is even, and the program 
-displays an appropriate message.  If
-the condition is false, the second set of statements runs.
-Since the condition must be true or false, exactly one of the
-alternatives will run.  The alternatives are called 
-{\bf branches}, because they are branches in the flow of 
-execution.
+Si el residuo del {\tt \$número} dividido por 2 es 0,
+entonces sabemos que el {\tt \$número} es par, y el programa
+muestra el mensaje apropiado. Si la condición es falsa,
+el segundo conjunto de sentencias se ejecuta. Dado que la
+condición debe ser verdadera o falsa, exactamente una de las
+alternativas será ejecutada. Las alternativas son conocidas
+como {\bf ramas}, por ellas son ramas en el flujo de ejecución.
 \index{branch}
 
-Note that if \verb'$number' is evenly divisible by two, 
-this code will print:
+Nota que si \verb|$número| divide a dos exactamente, este
+código imprimirá:
 
 \begin{verbatim} 
-Variable $number is even
+La variable $número es par
 \end{verbatim}
 
-The \verb'$number' variable value is not interpolated, 
-because we used single quotes for the purpose 
-of printing out the variable name rather 
-than its value. We would have to use double quotes if 
-we wanted to display the variable's value instead of its 
-name.
+El valor de la  variable \verb|$número| no es interpolado,
+porque hemos usado las comillas simples con el propósito
+de imprimir el nombre de la variable y no su valor. Habríamos
+usado las comillas inglesas si hubiésemos querido imprimir
+el valor de la variable y no el nombre.
 \index{single quote}
 \index{double quote}
 \index{quote!single}
@@ -568,91 +568,95 @@ name.
 \index{interpolation}
 
 
-\section{Chained Conditionals}
+\section{Condicionales Encadenadas}
 \index{chained conditional}
 \index{conditional!chained}
 
-Sometimes there are more than two possibilities and we need more than
-two branches.  One way to express a computation like that is a 
-{\bf chained conditional}:
+Algunas veces existen más de dos posibilidades y 
+necesitamos más de dos ramas en el flujo de ejecución.
+Una forma de expresar una computación como ésta es con
+el uso de una {\bf condicional encadenada}:
 
 \begin{verbatim}
 if $x < $y {
-    say 'Variable $x is less than variable $y'
+    say 'La variable $x es menor que la variable $y'
 } elsif $x > $y {
-    say 'Variable $x is greater than variable  $y' 
+    say 'La variable $x es mayor que la variable $y' 
 } else {
-    say 'Variables $x and $y are equal'
+    say 'Las variables $x y $y son iguales'
 }
 \end{verbatim}
 %
-The {\tt elsif} keyword is an abbreviation of ``else if'' that 
-has the advantage of avoiding nesting of blocks. Again, exactly one
-branch will run.  There is no limit on the number of {\tt
-elsif} statements.  
+La palabra clave {\tt elsif} es una abreviación de ``else if``
+que tiene la ventaja de prevenir los bloques anidados. Otra vez,
+exactamente una de las ramas será ejecutada. No hay límite 
+con el número de sentencias {\tt elsif}.
 
-If there is an {\tt else} clause, it has to be
-at the end, but there doesn't have to be one:
+Si existe una claúsula {\tt else}, tiene que ir al 
+final. Sin embargo, no tiene que haber una:
+
 \index{elsif keyword}
 \index{keyword!elsif}
 
 \begin{verbatim}
-if $choice eq 'a' {
+if $selección eq 'a' {
     draw_a()
-} elsif $choice eq 'b' {
+} elsif $selección eq 'b' {
     draw_b()
-} elsif $choice eq 'c' {
+} elsif $selección eq 'c' {
     draw_c()
 }
 \end{verbatim}
 %
-Each condition is checked in order.  If the first is false,
-the next is checked, and so on.  If one of them is
-true, the corresponding branch runs and the statement
-ends.  Even if more than one condition is true, only the
-first true branch runs.
+Cada condición es examinada en orden. Si la primera
+es falsa, la siguiente es examinada, etc. Si una de ellas
+es verdadera, la rama correspondiente se ejecuta y la
+sentencia finaliza. Aún si más de una condición es verdadera,
+solo la primera rama se ejecuta.
 
 
-\section{Nested Conditionals}
+\section{Condicionales Anidadas}
 \index{nested conditional}
 \index{conditional!nested}
 
-One conditional can also be nested within another.  We could have
-written the example in the previous section like this:
+Una condicional puede también ser anidada dentro de otra. Podríamos
+haber escrito el ejemplo anterior de la siguiente manera:
 
 \begin{verbatim}
 if $x == $y {
-    say 'Variables $x and $y are equal'
+    say 'Las variables $x y $y son iguales'
 } else {
     if $x < $y {
-        say 'Variable $x is less than variable $y'
+        say 'La variable $x es menor que la variable $y'
     } else {
-        say 'Variable $x is greater than variable $y'
+        say 'La variable $x es mayor que la variable $y'
     }
 }
 \end{verbatim}
 %
-The outer conditional contains two branches.  The
-first branch contains a simple statement.  The second branch
-contains another {\tt if} statement, which has two branches of its
-own.  Those two branches are both simple statements,
-although they could have been conditional statements as well. 
-The \verb'if $x < $y' conditional is said to be nested within 
-the {\tt else} branch of the outer conditional.
+La condicional exterior contiene dos ramas. La primera
+rama contiene una sentencia simple. La segunda rama contiene
+otra sentencia {\tt if}, la cual contiene dos ramas. Estas 
+dos ramas son sentencias simples, aunque pudieran haber sido
+sentencias condicionales. Se dice que la condición \verb|if $x < $y| 
+está anidad dentro de la rama {\tt else} de la condicional
+exterior.
 
-Such nested conditionals show how critical it is for your 
-own comprehension to properly indent conditional statements, 
-as it would be very difficult here to visually grasp the 
-structure without the help of correct indentation.
+Tales condicionales anidadas muestran lo crítico que es 
+para tu propia comprensión indentar apropiadamente las
+sentencias condicionales, debido a que sería difícil 
+entender la estructura sin la ayuda visual
+proveída por la correcta indentación.
 \index{indentation}
 
-Although the indentation of 
-the statements helps make the structure apparent, 
-{\bf nested conditionals} become difficult to read very 
-quickly.  It is a good idea to avoid them when you can.
-Logical operators often provide a way to simplify nested 
-conditional statements.  For example, consider the 
-following code (which assumes \verb'$x' to be an integer):
+Aunque la indentación de las sentencias ayuda
+a entender la estructura, las {\bf condicionales anidadas}
+se vuelven difícil de leer bien rápido. Es una buena
+idea evitarlas cuando se pueda. Los operadores lógicos
+usualmente proveen una manera de simplificar las
+condicionales anidadas. Por ejemplo, considera
+el siguiente código (el cual asume que \verb|$x| es
+un entero):
 \index{logical operator}
 
 \begin{verbatim}
@@ -660,98 +664,101 @@ my Int $x;
 # ... $x = ...;
 if 0 < $x {
     if $x < 10 {
-        say 'Value of $x is a positive single-digit number.'
+        say 'El valor de $x es un número positivo de un solo dígito.'
     }
 }
 \end{verbatim}
 %
-The {\tt say} statement runs only if we make it past both
-conditionals, so we can get the same effect with the {\tt and} 
-Boolean operator, and the code can be rewritten using a 
-single conditional:
+La sentencia {\tt say} se ejecuta solo si pasamos ambas condicionales,
+así que podemos obtener el mismo efecto con el operador Booleano {\tt and},
+y el código puede escribirse usando una sola condicional:
 
 \begin{verbatim}
 if 0 < $x and $x < 10 {
-    say '$x is a positive single-digit number.'
+    say '$x es un número positivo de un solo dígito.'
 }
 \end{verbatim}
 
-For this kind of condition, Perl~6 provides a more concise 
-option using the chained relational operators described earlier:
+Para este tipo de condición, Perl~6 provee una opción más concisa
+usando los operadores de relación encadenados discutidos 
+anteriormente:
 
 \begin{verbatim}
 if 0 < $x < 10 {
-    say '$x is a positive single-digit number.'
+    say '$x es un número positivo de un solo dígito.'
 }
 \end{verbatim}
 \index{chained relational operator}
 
-\section{If Conditionals as Statement Modifiers}
+\section{Condicionales If como Modificadores de Sentencias}
 \index{statement modifier} \index{modifier!statement}
 \index{postfix conditional} \index{conditional!postfix }
 
-There is also a form of {\tt if} called a {\bf statement 
-modifier} (or sometimes  ``postfix conditional'') form when there is only 
-one conditional statement. In this case, the {\tt if} and the 
-condition come after the code you want to run conditionally. Note 
-that the condition is still always evaluated first:
+También existe una forma de {\tt if} conocida como un
+{\bf modificador de sentencia} (o algunas veces ``condicional sufija``)
+cuando hay solo una sentencia condicional. En este caso, 
+la sentencia {\tt if} y la condición vienen después del 
+código que quieres ejecutar condicionalmente. Nota que la 
+condición es siempre la primera en ser evaluada:
 
 \begin{verbatim}
-say '$number is negative.' if $number < 0;
+say '$número es negativo.' if $número < 0;
 \end{verbatim}
 %
-This is equivalent to:
+Esto es equivalente a:
 \begin{verbatim}
-if $number < 0 {
-    say '$number is negative.' 
+if $número < 0 {
+    say '$número es negativo.' 
 }
 \end{verbatim}
 %
-This syntactic form is more concise as it takes only one code 
-line instead of three. The advantage is that you can see more
-of your program code on one screen, without having to scroll up 
-and down. However, this syntax is neat and clean only when 
-both the condition and the statement are short and simple, so it 
-is probably best used only in these cases.
+Esta forma sintáctica es más concisa debido a que toma
+una sola línea de código en vez de tres. La ventaja de esto
+es que puedes ver más de tu código en una sola pantalla,
+sin tener que desplazarte hacia arriba o hacia abajo. 
+Sin embargo, este sintaxis es nítida y limpia solo cuando
+la condición y la sentencia son cortas y simple. Por lo
+tanto, es mejor usarlas en estos casos.
 
-The statement modifier form does not allow {\tt else} and
-{\tt elsif} statements.
+El modificador de sentencia no permite el uso de las
+sentencias {\tt else} y {\tt elsif}.
 
-\section{Unless Conditional Statement}
+\section{Sentencia Condicional Unless}
 \index{unless statement}
 \index{keyword!unless}
 
-If you don't like having to write negative conditions in a conditional
-{\tt if} statement such as:
+Si no te gusta escribir condiciones negativas en sentencia
+condicional {\tt if} tal como:
 %
 \begin{verbatim}
-if not $number >= 0 {
-    say '$number is negative.' 
+if not $número >= 0 {
+    say '$número es negativo.' 
 }
 \end{verbatim}
 %
 
-you may write this instead:
+podrías escribirlo así:
+
 \begin{verbatim}
-unless $number >= 0 {
-    say '$number is negative.' 
+unless $número >= 0 {
+    say '$número es negativo.' 
 }
 \end{verbatim}
 %
-This \verb'unless' keyword does exactly what the English says: 
-it will display the sentence ``\$number is negative.'' 
-\emph{unless} the number is greater than or equal to 0.
+Esta palabra clave \verb|unless| tiene el mismo significado
+que la palabra en inglés: mostrará la sentencia ``\$número es negativo.``
+\emph{a menos que} (unless) el número sea mayor o igual a 0.
 
-You cannot use {\tt else} or {\tt elsif} statements with 
-{\tt unless}, because that would end up getting confusing.
+No puedes usar las sentencias {\tt else} o {\tt elsif} con 
+{\tt unless}, porque eso se volvería confuso.
 
-The {\tt unless} conditional is most commonly used in its statement modifier (or postfix notation) form:
-
+La condicional {\tt unless} se usa más en su forma 
+de modificador de sentencia (o notación de sufijo):
 \index{statement modifier} \index{modifier!statement}
 \index{postfix conditional} \index{conditional!postfix }
 
 \begin{verbatim}
-say '$number is negative.' unless $number >= 0;
+say '$número es negativo.' unless $número >= 0;
 \end{verbatim}
 %
 
