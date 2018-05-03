@@ -1,19 +1,20 @@
 
 
-\chapter{Arrays and Lists}
+\chapter{Arrays y Listas}
 \label{arrays}
 
-This chapter presents some of Perl's most useful built-in types, 
-arrays and lists.
+Este capítulo presenta algunos de los tipos integrados
+de Perl más útiles, los arrays y las listas.
 
 
-\section{Lists and Arrays Are Sequences}
+\section{Las Listas y los Arrays Son Secuencias}
 \label{sequence}
 
-Like strings, {\bf lists} and {\bf arrays} are sequences of 
-values.  In a string, the values are characters; in a list or
-in an array, they can be any type.  The values in a list or 
-in an array are called {\bf elements} or sometimes {\bf items}.
+Al igual que las cadenas de texto, las {\bf listas} y los {\bf arrays}
+son secuencias de valores. En una cadena de texto, los valores son
+caracteres; en una lista o en un array, los valores pueden ser
+de cualquier tipo. Los valores en una lista o en un array se 
+conocen  como {\bf elementos} o algunas veces como {\bf artículos}.
 \index{list}
 \index{array}
 \index{type!list}
@@ -22,27 +23,28 @@ in an array are called {\bf elements} or sometimes {\bf items}.
 \index{sequence}
 \index{item}
 
-There are several important differences between lists and arrays. The main ones 
-are that lists are ordered and immutable collections of items: 
-you can't change the number of items in a list and you can't 
-change the individual items either. Arrays, by contrast, are 
-variables and are generally mutable: you can add elements 
-to an array, or remove elements from it. And you can access 
-the individual elements of an array and modify them. For this 
-to be possible, arrays usually have a name (as do other variables), 
-although some arrays are anonymous, which means that they 
-have no name, but have some other ways of accessing them.
+Existen varias diferencias importantes entre las listas y los arrays.
+La principal de ellas es que las listas son colecciones ordenadas e inmutables
+de elementos: no puedes cambiar el número de elementos en una lista y tampoco puedes
+cambiar los elementos individuales tampoco. Los arrays, por el contrario,
+son variables y son generalmente mutables: puedes agregar elementos 
+a un array, o quizás removerlos. Y también puedes acceder los
+elementos individuales de un array y modificarlos. Para que esto sea
+posible, los arrays usualmente tienen un nombre (como cualquier otra variable)
+aunque algunos arrays son anónimos, lo que significa que no tienen 
+un nombre, pero aún tienen otras formas de acceso.
 
-A list is also ephemeral (unless it is assigned 
-to a variable or some other thing): it ceases to exist as 
-soon as it has been used, usually as soon as the program 
-control flow goes to the next code line. An array, on the 
-other hand, has some form of persistence: you may be able to 
-use it somewhere else in the program if the variable 
-containing it is still within scope.
+Una lista es también efímera (al menos que se ha asignada a una
+variable o algo más): deja de existir tan pronto ha sido usada,
+usualmente tan pronto el flujo de ejecución del programa procede
+a la siguiente línea de código. Por el contrario, un array tiene
+alguna forma de persistencia: tú puedes usarlo en otras partes del
+programa si la variable que lo contiene aún está dentro del
+ámbito.
 
-There are several ways to create a new list; the simplest is 
-to enumerate its values, separated by commas:
+Hay varias maneras de crear una lista nueva;
+la forma más simple es enumerar sus valores, separados
+por comas:
 \index{comma operator}
 \index{operator!comma}
 
@@ -58,12 +60,12 @@ say $_ for 1, 2, 3;
 \end{verbatim}
 %
 
-You don't need parentheses to create a list, but they are 
-often useful to delimit it, i.e., to stipulate where 
-it starts and where it ends, and, in some cases, to override 
-precedence.
+No necesitas usar paréntesis para crear una lista,
+pero son usualmente útiles para delimitar los valores,
+i.e., para estipular dónde comienza y dónde termina, y
+en algunos casos, anular la precedencia.
 
-We used lists earlier in this book. If we write:
+Ya hemos usado listas en este libro. Si escribimos:
 
 \begin{verbatim}
 > print "$_ " for 1, 3, 5, 9, "\n";
@@ -73,128 +75,130 @@ We used lists earlier in this book. If we write:
 1 2 3 4 5 6 7 8 9 10 >
 \end{verbatim}
 
-we are basically creating and using a list of integers (from 
-the standpoint of the type hierarchy of Perl; this observation is 
-not entirely accurate technically for the second example, since 
-\verb'1..10' has a \emph{Range} type, and it gets 
-transformed into a \emph{Seq} type, but this approximation is 
-good enough for our purposes here).
+estamos básicamente creando y usando una lista de números
+enteros (desde el punto de vista de la jerarquía de tipos en
+Perl; esta observación no es totalmente correcta para el segundo
+ejemplo, dado que \verb|1..10| es del tipo \emph{Range} y
+es transformado en el tipo \emph{Seq}. Sin embargo, esta 
+aproximación es suficientemente buena para nuestros 
+propósitos aquí).
 \index{range!type}
 \index{range!operator}
 
-Arrays are variables whose names start with the sigil \verb'@'.
-Named arrays  need to be declared before they are used, just 
-as any other variable we've seen so far (except the topical 
-variable, \verb'$_'). One of the easiest 
-ways to create an array is to assign a list to it:
+Los arrays son variables cuyo nombre comienzan con
+el sigilo \verb|@|. Los arrays con nombres necesitan ser declarados
+antes de ser usados, como cualquier otra variable que hemos
+visto hasta ahora (excepto la variable tópico, \verb|$_|). 
+Una de las formas más fácil de crear un array es asignar una
+lista a una variable:
 \index{topical variable}
 \index{sigil}
 
 \begin{verbatim}
-> my @odd_digits = 1, 3, 5, 7, 9;
+> my @dígitos_impares = 1, 3, 5, 7, 9;
 [1 3 5 7 9]
-> say @odd_digits.WHAT;
+> say @dígitos_impares.WHAT;
 (Array)
-> my @single_digit_numbers = 0..9;
+> my @números_solo_dígito = 0..9;
 [0 1 2 3 4 5 6 7 8 9]
 \end{verbatim}
 
-Under the Perl REPL, an array is displayed between square 
-brackets (\verb"[" and \verb"]"), while lists are displayed 
-between round parentheses.
+En el REPL de Perl, un array se muestra entre corchetes
+(\verb|[| y \verb|]|), mientras que las listas se muestran
+entre paréntesis.
 \index{REPL}
 \index{square bracket operator}
 \index{operator!square bracket}
 \index{bracket!square}
 
-If the items don't contain any space characters, it is quite handy 
-to construct a list (and assign it to an array if needed) using 
-the \verb'<...>' quote-word operator:
+Si los elementos no contienen caracteres de espacio, es bien útil
+construir una lista (y asignarla a cualquier array si es necesario)
+con el operador quote-word \verb|<...>|:
 \index{quote-word operator}
 
 \begin{verbatim}
-> my @weekdays = <mon tue wed thu fri>;
-[mon tue wed thu fri]
-> my @weekend = <sat sun>;
-[sat sun]
+> my @días-semana = <lun mar mie jue vie>;
+[lun mar mie jue vi]
+> my @fin-semana = <sab dom>;
+[sab dom]
 \end{verbatim}
 
-The advantage of this construction is that there is no need to 
-separate the items with commas and no need to insert them between 
-quotes when the items are strings. Basically, 
-the quote-word operator breaks up its content on whitespace 
-and returns a list of words, which can then be 
-used in a loop or assigned to an array as in the example 
-above.
+La ventaja de este método es que no hay necesidad de separar los 
+elementos con comas y tampoco hay necesidad de insertar comillas
+cuando los elementos son cadenas de texto. Básicamente, el operador
+quote-word descompone su contenido por espacios en blanco y devuelve
+una lista de palabras, la cual puede ser entonces usada en un bucle
+o asignada a un array como en el ejemplo anterior.
 
-Most of the rest of this chapter will be devoted to arrays 
-rather than lists, but keep in mind that many of the array 
-functions and operators we will study here also work on lists 
-(at least most of those that would not violate the 
-immutability property of lists).
- 
-The items of an array (or a list) don't need to be of the 
-same type:
+La mayoría de este capítulo será dedicado a los arrays. No obstante,
+ten presente que muchas de las funciones y operadores de los arrays
+que estudiaremos aquí también funcionan con listas (por lo menos
+todas aquellas que no violan la propiedad de inmutabilidad de las
+listas). 
+
+Los elementos de un array (o una lista) no necesitan ser del mismo
+tipo:
 
 \begin{verbatim}
-> my @heterogeneous-array = 1, 2.3, pi, "str", (1, 2, 4);
+> my @array-heterogeneo = 1, 2.3, pi, "str", (1, 2, 4);
 [1 2.3 3.14159265358979 str (1 2 4)]
 \end{verbatim}
 
-Here, the array is composed of an integer, a rational, a 
-float ({\tt Num} type), a string, and a list of three integers. 
-It may not be advisable for the sake of the developer's 
-mental sanity to use an array with such wildly heterogeneous 
-items, but Perl will not complain about that: it is up 
-to you to make sense of your data.
+Aquí, el array está compuesto por un entero, 
+un racional, un número con coma flotante (tipo {\tt Num}),
+una cadena de texto, y  una lista de tres enteros.
+Aunque esto podría no ser recomendado por la sanidad mental
+del programador quien tendría que usar un array con elementos
+tan heterogéneos, Perl no se queja: al final, depende de ti hacer 
+sentido de tus datos.
 
-The array above even contains a list of items. If you iterate 
-over the elements of this array for example with a {\tt for} 
-loop statement, this list will arrive as one distinct element; 
-it will not get ``flattened'' as three elements 
-of the array. Similarly, {\tt elems} is a method to 
-count the number of items of an array (or of a list). 
-Using it on the above array produces the following result:
+El array anterior hasta contiene una lista de artículos. 
+Si iteras sobre los elementos de este array, por ejemplo con
+el bucle for, esta lista terminará como un elemento distinto;
+este elemento no será ``aplanado`` como tres elementos del
+array. Similarmente, {\tt elems} es un método que cuenta el
+número de artículos de un array (o de una lista). Al usarlo
+en el array anterior produce el siguiente resultado:
 
 \begin{verbatim}
-> say @heterogeneous-array.elems;
+> say @array-heterogeneo.elems;
 5
 \end{verbatim}
 %
 
-As you can see, the \verb'(1, 2, 4)' list ``counts'' 
-as one single array element.
+Como puedes observar, la lista \verb|(1, 2, 4)| cuenta como
+un solo elemento en el array.
 
-A list within another list is {\bf nested}.
+Una lista dentro de otra es una lista {\bf anidada}.
 \index{nested list}
 \index{list!nested}
 
-An array that contains no elements is
-called an empty array; you can create one with empty
-parentheses, \verb"()":
+Un array que carece de elementos se conoce
+como un array vacío; puedes crear un array vacío con
+paréntesis vacíos, \verb|()|:
+
 \begin{verbatim}
-> my @empty = ();
+> my @vacío = ();
 []
 \end{verbatim}
 \index{empty list}
 \index{list!empty}
 
-This code is really assigning an empty list to the array. But 
-this syntax is usually not needed when creating a new empty array, 
-since just declaring an array without defining it has the same 
-effect:
+Este código está realmente asignando una lista vacía al array.
+Pero esta sintaxis no es normalmente necesaria para crear un
+nuevo array vacío, dado que solo con declarar un array sin 
+definirlo tiene el mismo efecto:
 
 \begin{verbatim}
-> my @empty;
+> my @vacío;
 []
 \end{verbatim}
 
-So using the empty parentheses (i.e., assigning an empty list) 
-would be needed essentially for resetting an existing array to 
-an empty array.
+Así que el uso de paréntesis vacíos (i.e., en la asignación
+de una lista vacía) sería necesario para restaurar un
+array existente como un array vacío.
 
-
-\section{Arrays Are Mutable}
+\section{Los Arrays Son Mutables}
 \label{mutable}
 \index{list!element}
 \index{access}
@@ -206,30 +210,29 @@ an empty array.
 
 \index{index!starting at zero}
 \index{coercion}
-The syntax for accessing the elements of an array or a list 
-uses the square brackets operator.  The expression inside the 
-brackets specifies the index or subscript, which can be a 
-literal integer (or some value that can be coerced into 
-an integer), a variable containing a numerical value, a list 
-or a range of numerical values, an expression or a piece 
-of code returning a numerical value, etc.  Indices are offsets 
-compared to the beginning of the array 
-or the list (much in the same way as the values returned 
-by the {\tt index} function on strings), so that they start 
-at 0. Thus, the first item of an array has the index 0, the 
-second item the index 1, and so on:
+La sintaxis para acceder los elementos de un array o una lista
+usa el operador de corchetes. La expresión dentro de los corchetes
+especifica el índice o subíndice, el cual puede ser un 
+entero literal (o algún valor que puede ser coaccionado en un 
+entero), una variable que contiene un valor numérico,
+una lista o un rango de valores numéricos, una expresión o una pieza
+de código que devuelve un valor numérico, etc. Comparado con el
+comienzo de una array o una lista (de la misma 
+manera que los valores devueltos por la función {\tt index}),
+los índices comienzan en la posición 0. Así que, el primer elemento
+de un array tiene índice 0, el segundo tiene índice 1, etc. Por ejemplo:
 \index{zero, index starting at}
 
 
 \begin{verbatim}
-say <sat sun>[1];             # -> sun  (accessing a list item)
-my @weekdays = <mon tue wed thu fri>;     # assigning an array
-say "The third day is @weekdays[2]";      # -> The third day is wed
+say <sab dom>[1];             # -> sab (accediendo un elemento de la lista)
+my @días-semana = <lun mar mie jue vie>;   # asignando un array
+say "El tercer día es @días-semana[2]";    # -> El tercer día es mie
 \end{verbatim}
 %
 
-You may also use ranges or lists of indices to access 
-\emph{slices} of an array or a list:
+También puedes usar rangos o listas de índices para acceder
+partes (o \emph{rebanadas}) de un array o una lista:
 \index{slice}
 \index{slice!operator}
 \index{operator!slice}
@@ -239,55 +242,56 @@ You may also use ranges or lists of indices to access
 \index{range}
 
 \begin{verbatim}
-> my @even-digits = 0, 2, 4, 6, 8;
+> my @dígitos-pares = 0, 2, 4, 6, 8;
 [0 2 4 6 8]
-> my @small-even_digits = @even-digits[0..2];
+> my @pequeños-dígitos_pares = @dígitos-pares[0..2];
 [0 2 4]
-> my @min-max-even-digits = @even-digits[0, 4]
+> my @min-max-dígitos-pares = @dígitos-pares[0, 4]
 [0 8]
 \end{verbatim}
 
-If you need a slice in the opposite order, you can use the 
-{\tt reverse} function to reverse the range:
+Si necesitas rebanadas en el orden opuesto, puedes usar
+la función {\tt reverse} para revertir el rango:
 
 \begin{verbatim}
-> my @reverse-small-even_digits = @even-digits[reverse 0..2];
+> my @opuestos-pequeños-dígitos_pares = @dígitos-pares[reverse 0..2];
 [4 2 0]
 \end{verbatim}
 
-or reverse the data returned by the slice expression:
+o también puedes revertir los datos que resultan de la expresión
+de rebanadas:
 
 \begin{verbatim}
-> my @reverse-small-even_digits = reverse @even-digits[0..2];
+> my @opuestos-pequeños-dígitos_pares = reverse @dígitos-pares[0..2];
 [4 2 0]
 \end{verbatim}
 
-Unlike lists, arrays are mutable.  When the bracket operator 
-appears after an array on the left side of an assignment, 
-it identifies the element of the array that will be assigned:
+A diferencia de las listas, los arrays son mutables. 
+Cuando el operador de corchetes aparece después de un array 
+en el lado izquierdo de una asignación, el operador identifica el
+elemento del array que será asignado:
 \index{mutability}
 
 \begin{verbatim}
-> my @even-digits = 0, 2, 2, 6, 8;   # Oops, error on the second 2
+> my @dígitos-pares = 0, 2, 2, 6, 8;   # Oops, error en el segundo 2
 [0 2 2 6 8]
-> @even-digits[2] = 4; # fixing the faulty third digit
+> @dígitos-pares[2] = 4; # arreglando el tercer elemento
 4
-> say @even-digits
+> say @dígitos-pares
 [0 2 4 6 8]
 \end{verbatim}
 %
 
-The third element of {\tt \@even-digits}, which was  
-(presumably by mistake) 2, is now 4. If the index corresponds 
-to an item which does not exist yet in the array, the array 
-will be expanded to include the new element:
+El tercer elemento de {\tt \@dígitos-pares}, el cual es (por error) 2,
+es ahora 4. Si el índice corresponde a un artículo que no existe aún
+en el array, el array se expandaré para incluir el nuevo elemento:
 
 \begin{verbatim}
-> my @odds = 1, 3, 5;
+> my @impares = 1, 3, 5;
 [1 3 5]
-> @odds[3] = 7;
+> @impares[3] = 7;
 7
-> say @odds;
+> say @impares;
 [1 3 5 7]
 \end{verbatim}
 
@@ -298,9 +302,9 @@ will be expanded to include the new element:
 
 \index{elems function or method}
 \index{end method}
-The {\tt elems} function or method returns the number of 
-elements of an array. The {\tt end} function or method 
-returns the index of the last elements of an array:
+La función o método {\tt elems} devuelve el número
+de elementos de un array. La función o método {\tt end}
+devuelve el índice del último elemento de un array:
 
 \begin{verbatim}
 my @nums = 1..5;      # -> [1 2 3 4 5]
@@ -309,16 +313,16 @@ say elems @nums;      # -> 5
 say @nums.end;        # -> 4
 \end{verbatim}
 
-The {\tt end} method returns the result of the {\tt elems} 
-method minus one because, since indices start at 0, the 
-index of the last element is one less than the number 
-of elements.
+El método {\tt end} devuelve el resultado del método 
+{\tt elems} menos uno porque, dado que los índices comienzan
+en la posición 0, el índice del último elemento es igual
+al número de elementos menos uno.
 \index{zero, index starting at}
 
-The {\tt unique} function or method returns a sequence 
-of unique elements of the input list or array (i.e., 
-it returns the original list without any duplicate 
-values):
+La función o método {\tt unique} devuelve una secuencia
+de elementos únicos en la lista de entrada o el array (
+i.e., el método devuelve la lista original si no hay valores
+duplicados):
 \index{unique function}
 \index{function!unique}
 
@@ -327,22 +331,23 @@ values):
 (a b d c f g)
 \end{verbatim}
 
-If you know that the input is sorted (and that, therefore, 
-duplicates are adjacent), use the {\tt squish} function 
-instead of {\tt unique}, as this is likely to be more 
-efficient. The {\tt squish} function removes adjacent 
-duplicates.
+Si sabes que la entrada está ordenada (y que, por lo tanto,
+los duplicados son adyacentes), en vez de usar la función
+{\tt unique}, usa la función {\tt squish} debido a que termina
+siendo más eficiente. La función {\tt squish} remueve elementos
+duplicados y adyacentes.
 \index{squish function}
 \index{function!squish}
 
-To know whether two arrays are identical (structurally the 
-same, with the same type and same values), use the {\tt eqv} equivalence 
-operator. To know whether they just contain the same elements, use 
-the \verb'~~' smart match operator. Between two arrays or lists, the 
-\verb'==' numeric equality operator will return {\tt True} if the 
-arrays have the same number of elements and {\tt False} otherwise, 
-because \verb'==' coerces its arguments to numeric type, so that 
-it compares the number of elements:
+Para saber si dos arrays son idénticos (estructuralmente 
+los mismos, con el mismo tipo y los mismos valores), usa 
+el operador de equivalencia {\tt eqv}. Para saber si los arrays
+contienen los elementos, usa el operador de coincidencia inteligente
+\verb|~~|. Entre dos arrays o listas, el operador de equidad numérica
+\verb|==| devolverá {\tt True} si los arrays tienen el mismo número 
+de elementos y de lo contrario, {\tt False}. Esto se debe a que
+\verb|==| coacciona sus argumentos a tipo numérico, así que compara
+el número de elementos:
 \index{eqv operator}
 \index{coercion}
 \index{equivalence operator}
@@ -353,154 +358,156 @@ it compares the number of elements:
 \index{operator!numeric equality}
 
 \begin{verbatim}
-> my @even1 = 0, 2, 4, 6, 8;
+> my @pares1 = 0, 2, 4, 6, 8;
 [0 2 4 6 8]
-> my @even2 = reverse 8, 6, 4, 2, 0;
+> my @pares2 = reverse 8, 6, 4, 2, 0;
 [0 2 4 6 8]
-> say @even1 eqv @even2;          # same items, structurally the same
+> say @pares1 eqv @pares2;        # mismos elementos, misma estrutura
 True
-> say <1 2 3 4 5> eqv 1..5;       # same items, structurally different
+> say <1 2 3 4 5> eqv 1..5;       # mismos elementos, estructura diferente
 False
-> say <1 2 3 4 5> ~~ 1..5;        # same items, True
+> say <1 2 3 4 5> ~~ 1..5;        # mismos elementos, True
 True
 > my @array = 1..5;               
 [1 2 3 4 5]
->  say <1 2 3 4 5> ~~ @array;     # same elements, True
+>  say <1 2 3 4 5> ~~ @array;     # mismos elementos, True
 True
->  say <1 2 3 4 6> ~~ @array;     # not the same elements
+>  say <1 2 3 4 6> ~~ @array;     # no los mismos elementos
 False
-> say <1 2 3 4 5> == <5 6 7 8 9>; # compares the numbers of items
+> say <1 2 3 4 5> == <5 6 7 8 9>; # compara el número de elementos
 True
 \end{verbatim}
 
-The \verb'<1 2 3 4 5> eqv 1..5' statement returns \verb'False' because, 
-although they have the same items, the arguments are structurally 
-different entities (one is a list and the other one a range).
+La sentencia \verb'<1 2 3 4 5> eqv 1..5' devuelve \verb|False|, debido 
+a que aunque contienen los mismos elementos, los argumentos 
+son estructuralmente entidades diferentes (uno es una lista y 
+la otra es un rango).
 
-\section{Adding New Elements to an Array or Removing Some}
+\section{Cómo Agregar o Remover Elementos de un Array}
 
-We've just seen that assigning an item to an index that does 
-not exists yet will expand the array. There are other 
-ways of expanding an array.
+Hemos visto que la asignación de un elemento a un índice 
+que no existe expande el array. Existen otras formas de expandir
+un array.
 
-Perl has operators to add elements to, or remove one element 
-from, an array:
+Perl tiene operadores para agregar elementos a un array, o remover
+un elemento del mismo:
 \index{pop function}
 \index{push function}
 \index{shift function}
 \index{unshift function}
 
 \begin{itemize}
-\item {\tt shift}: removes the first item of an array and returns it;
-\item {\tt pop}: removes the last item of an array and returns it;
-\item {\tt unshift}: adds an item or a list of items to the 
-beginning of an array;
-\item {\tt push}: adds an item or a list of items to the 
-end of an array;
+\item {\tt shift}: elimina el primer elemento del array y lo devuelve;
+\item {\tt pop}: elimina el último elemento del array y lo devuelve;
+\item {\tt unshift}: agrega un elemento o una lista de elementos al principio 
+del array;
+\item {\tt push}: agrega un elemento o una lista de elementos al final 
+del array;
 \end{itemize}
 
-These are a few examples for each:
+Estos son algunos ejemplos sobre cada uno de ellos:
 
 \begin{verbatim}
-> my @numbers = <2 4 6 7>;
+> my @números = <2 4 6 7>;
 [2 4 6 7]
-> push @numbers, 8, 9;
+> push @números, 8, 9;
 [2 4 6 7 8 9]
-> unshift @numbers, 0, 1;
+> unshift @números, 0, 1;
 [0 1 2 4 6 7 8 9]
-> my $num = shift @numbers
+> my $num = shift @números
 0
-> $num = pop @numbers
+> $num = pop @números
 9
-> say @numbers
+> say @números
 [1 2 4 6 7 8]
 \end{verbatim}
 
-As you might expect by now, these routines also come with a 
-method invocation syntax. For example:
+Como podrías esperar por ahora, estas subrutinas también
+tienen una sintaxis de invocación de método. Por ejemplo:
 \index{invocation!method}
 \index{method invocation}
 
 \begin{verbatim}
-> my @numbers = <2 4 6 7>;
+> my @números = <2 4 6 7>;
 [2 4 6 7]
-> @numbers.push(8, 9)
+> @números.push(8, 9)
 [2 4 6 7 8 9]
 \end{verbatim}
 
-Note, however, that if you {\tt push} or {\tt unshift} an 
-array onto another array, you'll get something different 
-than what you might expect:
+No obstante, debes tener presente que si usas las funciones
+{\tt push} o {\tt unshift} con un array como argumento, 
+obtendrás algo diferente a lo que podrías esperar:
 
 \begin{verbatim}
-> my @numbers = <2 4 6 7>;
+> my @números = <2 4 6 7>;
 [2 4 6 7]
-> my @add-array = 8, 10;
+> my @agregar-array = 8, 10;
 [8 10]
-> @numbers.push(@add-array);
+> @números.push(@agregar-array);
 [2 4 6 7 [8 10]]
 \end{verbatim}
 
-As you can see, when \verb'@add-array' is added as an entity 
-to the \verb'@numbers' array, \verb'@add-array' becomes 
-the new last item of the original array. If you want to 
-add the items of \verb'@add-array' to the original array, 
-you may use the {\tt append} method instead of {\tt push}:
+Como puedes observar, cuando \verb|@agregar-array| se agrega
+como una entidad al array \verb|@números|, \verb|@agregar-array|
+se convierte en un elemento nuevo del array original. Si lo que 
+quieres es agregar los elementos de \verb|@agregar-array| 
+al array original, puedes usar el método {\tt append} en vez 
+de {\tt push}:
 
 \begin{verbatim}
-> my @numbers = <2 4 6 7>;
+> my @números = <2 4 6 7>;
 [2 4 6 7]
-> @numbers.append(@add-array);
+> @número.append(@agregar-array);
 [2 4 6 7 8 10]
 \end{verbatim}
 
-Or you can use the ``|'' prefix operator to flatten the 
-added array into a list of arguments:
+O puedes usar el operador prefijo ``|``, el cual aplana
+el array añadido en una lista de argumentos:
 
 \begin{verbatim}
-> my @numbers = <2 4 6 7>;
+> my @números = <2 4 6 7>;
 [2 4 6 7]
-> @numbers.push(|@add-array);
+> @números.push(|@agregar-array);
 [2 4 6 7 8 10]
 \end{verbatim}
 
-There is also a {\tt prepend} method that can replace 
-{\tt unshift} to add individual items of an array at the 
-beginning of an existing array (instead of adding the array 
-as a single entity).
+También existe el método {\tt prepend} que reemplaza 
+a {\tt unshift} para agregar elementos individuales 
+de un array al principio de otro array existente (
+en vez de añadir el array como una sola identidad).
 
-
-\section{Stacks and Queues}
+\section{Pilas y Colas}
 \label{stacks_queues}
 
 \index{stack}
 \index{queue}
-Stacks and queues are very commonly used data structures in 
-computer science.
+Las pilas (\emph{stacks} en inglés) y las colas ({\emph{queues} en inglés}) son 
+estructuras de datos muy usadas en la ciencia de la computación.
 
 \index{LIFO (last in / first out)}
 \index{last in / first out (LIFO)}
-A stack is a \emph{last in / first out (LIFO)} data structure. Think of 
-piled-up plates. When you put a clean plate onto the stack, 
-you usually put it on top; when you take out one, you also 
-take it from the top. So the first plate that you take 
-is the last one that you added. A CS stack implements the same 
-idea: you use it when the first piece of data you need from a 
-data structure is the last one you added.
+Una pila es una estructura de datos de tipo LIFO (del inglés 
+\emph{Last In / First Out}, ``último en entrar, primero en salir``).
+Puedes pensar sobre una pila como un grupo de platos apilados. Cuando
+pones un plato limpio en la pila, usualmente lo pones en la parte superior;
+de igual manera cuando tomas un plato, lo toma de la parte superior.
+Así que el primer plato que tomas fue el último en ser añadido. Una pila
+en la ciencia de la computación implementa la misma idea: usas una pila
+cuando la primera pieza de dato que necesitas de una estructura de datos fue
+la última en ser añadida.
 
 \index{FIFO (first in / first out)}
 \index{first in / first out (FIFO)}
-A queue, by contrast, is a \emph{first in / first out (FIFO)} data 
-structure. This is the idea of people standing in a 
-line waiting to pay at the supermarket. The first 
-person that will be served is the first person who entered 
-the queue.
+Por el contrario, una cola (o fila) es una estructura de datos de tipo FIFO (
+del inglés \emph{First In / First Out}, ``primero en entrar, primero en
+salir``). Esta es la idea de personas esperando en línea para pagar en el
+supermercado. La primera persona en ser atendida es la primera
+persona que entra en la fila.
 
-A stack may be implemented with an array and the {\tt push} 
-and {\tt pop} functions, which respectively add an item (or 
-several) at the end of an array and take one from the end of 
-the array. This is a somewhat simplistic implementation of 
-a stack:
+Una pila puede ser implementada con un array y las funciones
+{\tt push} y {\tt pop}, las cuales agregan un elemento (o varios)
+al final de un array y remueven un elemento del final del array 
+respectivamente. Esta es una implementación bien simple de una pila:
 \index{pop function}
 \index{push function} 	
 \index{function!pop}
@@ -508,20 +515,20 @@ a stack:
 \label{stack_code}
 
 \begin{verbatim}
-sub put-in-stack (@stack, $new_item) {
-    push @stack, $new_item;
+sub poner-en-pila (@pila, $new_elem) {
+	push @pila, $new_elem;
 }
-sub take-from-stack (@stack) {
-    my $item = pop @stack;
-    return $item;
+sub tomar-desde-pila (@pila) {
+    my $elem = pop @pila;
+    return $elem;
 }
-my @a-stack = 1, 2, 3, 4, 5;
-put-in-stack @a-stack, 6;
-say @a-stack;
-say take-from-stack @a-stack for 1..3;
+my @una-pila = 1, 2, 3, 4, 5;
+poner-en-pila @una-pila, 6;
+say @una-pila;
+say tomar-desde-pila @una-pila for 1..3;
 \end{verbatim}
 
-This example will print this:
+Este ejemplo imprimirá esto:
 
 \begin{verbatim}
 [1 2 3 4 5 6]
@@ -531,31 +538,31 @@ This example will print this:
 \end{verbatim}
 
 \index{stack}
-This stack is simplistic because, at the very least, a more 
-robust implementation should do something sensible when you 
-try to {\tt take-from-stack} from an empty stack. It would 
-also be wise to add signatures to the subroutines. In 
-addition, you might want to {\tt put-in-stack} more than 
-one element in one go. Take a look at the solution to the 
-exercise on queues below (Subsection~\ref{sol_exercise_queue}) 
-to figure out on how this stack may be improved.
+Esta pila es simplista porque, por lo menos, una implementación
+más robusta debería hacer algo sensible cuando tratas de 
+{\tt tomar-desde-pila} cuando la pila está vacía. También sería
+sabio agregar signaturas a las subrutinas. En adición, podrías querer
+{\tt poner-en-pila} más de un elemento al mismo tiempo. Échale un
+vistazo a la solución sobre el ejercicio sobre colas más abajo
+(Subsección~\ref{sol_exercise_queue}) para descifrar cómo esta pila
+podría ser mejorada.
 \index{signature}
 \index{subroutine signature}
 
-You could obtain the same stack features using the  
-{\tt unshift} and {\tt shift} functions instead of {\tt push} 
-and {\tt pop}. The items will be added at the beginning of 
-the array and taken from the beginning, but you will still 
-have the LIFO behavior.
+Podrías obtener las mismas funciones usando las subrutinas
+{\tt unshift} y {\tt shift} en vez de {\tt push} y {\tt pop}.
+Los elementos será añadidos al principio del array y tomados
+desde el inicio, pero todavía tendrás el comportamiento LIFO.
 \index{shift function}
 \index{unshift function}
 \index{push function}
 \index{LIFO}
 
 \label{exercise_queue}
-As an exercise, try to implement a FIFO queue on the same model. 
-Hint: you probably want to use an array and the {\tt unshift} 
-and {\tt pop} functions (or the {\tt push} and {\tt shift} functions). Solution: \ref{sol_exercise_queue}.
+Como ejercicio, trata de implementar una cola de tipo FIFO en el
+mismo modelo. Pista: probablemente quieres usar un array y las
+funciones {\tt unshift} y {\tt pop} (o las funciones 
+{\tt push} y {\tt shift}). Solución: \ref{sol_exercise_queue}.
 \index{queue}
 \index{shift function}
 \index{unshift function}
@@ -563,233 +570,240 @@ and {\tt pop} functions (or the {\tt push} and {\tt shift} functions). Solution:
 \index{pop function}
 \index{FIFO}
 
-\section{Other Ways to Modify an Array}
+\section{Otras Formas de Modificar un Array}
 \label{modify_array}
 
-The {\tt shift} and {\tt pop} functions remove respectively 
-the first and the last item of an array and return that 
-item. It is possible to do almost the same operation on any item 
-of an array, using the {\tt delete} \emph{adverb}:
+Las funciones {\tt shift} and {\tt pop} eliminan el primer
+y último elemento de un array respectivamente y devuelven
+ese elemento. Es posible casi hacer la misma operación
+con cualquier elemento de un array, usando el \emph{adverbio}
+{\tt delete}:
 
 \begin{verbatim}
-my @fruit = <apple banana pear cherry pineapple orange>;
-my $removed = @fruit[2]:delete; 
-say $removed;  # -> pear
-say @fruit;    # -> [apple banana (Any) cherry pineapple orange]
+my @frutas = <manzana banana fresa mango piña naranja>;
+my $removida = @frutas[2]:delete; 
+say $removida;  # -> fresa
+say @frutas;    # -> [<manzana banana (Any) mango piña naranja]
 \end{verbatim}
 
-Notice that the third element (``pear'') is removed and 
-returned, but the array is not reorganized; the operation leaves 
-a sort of ``empty slot'', an undefined item, in the 
-middle of the array. The colon (``:'') syntax used here is the 
-operator for an adverb (we discussed adverbs in  
-Section~\ref{regex} about regexes); 
-for the time being, you may think of it as a kind of special 
-method operating on one element of an item collection.
+Nota que el tercer elemento (``fresa``) ha sido removido
+y devuelto, pero el array no ha sido reorganizado; la operación
+deja un tipo de ``hueco``, un artículo indefinido, en el medio
+del array. La sintaxis de los dos puntos (``:``) que se usa aquí es 
+el operador para un adverbio (discutimos adverbios en la 
+Sección~\ref{regex} sobre regexes); por el tiempo presente, puedes
+imaginarte este operador como un método especial que opera sobre un
+elemento de una colección de elementos.
 
-We have seen how to use array slices to retrieve several 
-items of an array or a list at a time. The same slice syntax 
-can also be used on the left side of an assignment to modify 
-some elements of an array:
+Hemos visto cómo rebanar un array para tomar varios elementos de
+un array o una lista al mismo tiempo. La misma sintaxis de 
+rebanar puede ser usada en el lado izquierdo de una asignación
+para modificar algunos elementos de un array:
 \index{slice!assignment}
 
 \begin{verbatim}
-my @digits = <1 2 3 6 5 4 7 8 9>
-@digits[2..4] = 4, 5, 6
-say @digits;   # -> [1 2 4 5 6 4 7 8 9]
+my @dígitos = <1 2 3 6 5 4 7 8 9>
+@dígitos[2..4] = 4, 5, 6
+say @dígitos;   # -> [1 2 4 5 6 4 7 8 9]
 \end{verbatim}
 
-Of course, you can't do this with lists, since, as you 
-remember, they are immutable.
+Por supuesto no puedes hacer esto con listas, debido a que
+las listas son inmutables.
 
-The {\tt splice} function may be regarded as the Swiss Army 
-knife of arrays. It can add, remove, and return one or 
-several items to or from an array. The general syntax is 
-as follows:
-
-\begin{verbatim}
-my @out_array = splice @array, $start, $num_elems, @replacement;
-\end{verbatim}
-%
-The arguments for {\tt splice} are the input array, the index 
-of the first element on which to make changes, the number of 
-elements to be affected by the operation, and a list of 
-replacements for the elements to be removed\footnote{Notice that 
-the {\tt splice} function on arrays has almost the same syntax 
-as the {\tt substr} function on strings. This may make it easier 
-to understand them and remember their syntax.}. For example, 
-to perform the slice assignment shown just above, it is 
-possible to do this:
+La función {\tt splice} puede ser considerada como la Navaja Suiza
+de los arrays. Esta función puede añadir, remover, y devolver varios 
+elementos de un array. La sintaxis general es como sigue:
 
 \begin{verbatim}
-my @digits = <1 2 3 6 5 4 7 8 9>
-my @removed_digits = splice @digits, 3, 3, 4, 5, 6;
-say @removed_digits;     # -> [6 5 4]
-say @digits;             # -> [1 2 3 4 5 6 7 8 9]
+my @array_salida = splice @array_entrada, $inicio, $número_elems, @reemplazo;
 \end{verbatim}
 %
-Here, the {\tt splice} statement removed three elements (6, 5, 4) 
-and replaced them with the replacement arguments (4, 5, 6). 
-It also returned the removed items into \verb'@removed_digits'. 
-The number of replacements does not need to be the same as the number 
-of removed items, in which case the array size will grow or 
-shrink. For example, if no replacement is provided, then 
-{\tt splice} will just remove and return the required number 
-of elements and the array size will be reduced by the same number:
+Los argumentos para {\tt splice} son el array de entrada, el
+índice del primer elemento sobre el cual se harán los cambios,
+el número de elementos afectados por la operación, y una lista
+de reemplazos para los elementos a ser removidos\footnote{
+Nota que la función {\tt splice} en arrays tiene casi la misma
+sintaxis que la función {\tt substr} en cadenas de texto. Esto
+hará más fácil entender y recordar la sintaxis.}. Por ejemplo, 
+para realizar la asignación de rebanada mostrada más arriba, es 
+posible hacer esto:
 
 \begin{verbatim}
-my @digits = 1..9;
-my @removed_digits = splice @digits, 3, 2;
-say @removed_digits;     # -> [4 5]
-say @digits;             # -> [1 2 3 6 7 8 9]
+my @dígitos = <1 2 3 6 5 4 7 8 9>
+my @dígitos_removidos = splice @dígitos, 3, 3, 4, 5, 6;
+say @dígitos_removidos;     # -> [6 5 4]
+say @dígitos;             # -> [1 2 3 4 5 6 7 8 9]
 \end{verbatim}
 %
-
-Conversely, if the number of elements to be removed is zero, 
-no element will be removed, an empty array will be returned, 
-and the elements in the replacement list will be added in 
-the right place:
+Aquí, la sentencia {\tt splice} removió tres elementos (6, 5, 4)
+y los reemplazó con los reemplazos en los argumentos (4, 5, 6).
+También devolvió los artículos removidos, los cuales
+fueron almacenados en \verb|@dígitos_removidos|.
+El número de reemplazos no necesita ser igual al número de elementos
+removidos. En tal caso, el array crecerá o se reducirá. Por ejemplo,
+si no se proveen reemplazos, entonces {\tt splice} removerá y devolverá
+el número requerido de elementos y el array se reducirá por el
+mismo número:
 
 \begin{verbatim}
-my @digits = <1 2 3 6 4 7 8 9>;
-my @removed_digits = splice @digits, 3, 0, 42;
-say @removed_digits;     # -> []
-say @digits;             # -> [1 2 3 42 6 4 7 8 9]
+my @dígitos = 1..9;
+my @dígitos_removidos = splice @dígitos, 3, 2;
+say @dígitos_removidos;     # -> [4 5]
+say @dígitos;             # -> [1 2 3 6 7 8 9]
 \end{verbatim}
 %
 
-Assuming the {\tt shift} function did not exist in Perl, 
-you could write a {\tt my-shift} subroutine to simulate it:
+Por el contrario, si el número de elementos a removerse es
+cero, no se removerá ningún elemento, un array vacío será
+devuelto, y los elementos en la lista de reemplazos será
+añadidos en el lugar correcto:
 
 \begin{verbatim}
-sub my-shift (@array) {
-    my @result = splice @array, 0, 1;
-    return @result[0];
+my @dígitos = <1 2 3 6 4 7 8 9>;
+my @dígitos_removidos = splice @dígitos, 3, 0, 42;
+say @dígitos_removidos;     # -> []
+say @dígitos;             # -> [1 2 3 42 6 4 7 8 9]
+\end{verbatim}
+%
+
+Asumiendo que la función {\tt shift} no existiera en Perl,
+tú podrías escribir una subrutina {\tt mi-shift} para 
+simularla:
+
+\begin{verbatim}
+sub mi-shift (@array) {
+    my @resultado = splice @array, 0, 1;
+    return @resultado[0];
 }
-my @letters = 'a'..'j';
-my $letter = my-shift @letters;
-say $letter;             # -> a
-say @letters;            # -> [b c d e f g h i j]
+my @letras = 'a'..'j';
+my $letra = my-shift @letras;
+say $letra;             # -> a
+say @letras;            # -> [b c d e f g h i j]
 \end{verbatim}
 
-We might raise an exception if the array passed to 
-{\tt my-shift} is empty. This could be done by modifying 
-the subroutine as follows:
+Podrías levantar ina excepción si el array que se
+pasa a la función {\tt mi-shift} está vacío. Esto
+podría hacerse al modificar la subrutina de la siguiente
+manera:
 
 \begin{verbatim}
-sub my-shift (@array) {
-    die "Cannot my-shift from an empty array" unless @array;
-    my @result = splice @array, 0, 1;
-    return @result[0];
+sub mi-shift (@array) {
+    die "No se puede remover elemento de una array vacío" unless @array;
+    my @resultado = splice @array, 0, 1;
+    return @resultado[0];
 }
 \end{verbatim}
 %
 
-or by adding a nonempty constraint on the array in the 
-subroutine signature:
+o al añadir un restricción al array en la 
+signatura de la subrutina:
 \index{signature}
 \index{subroutine signature}
 
 \begin{verbatim}
-sub my-shift (@array where @array > 0) {
-    my @result = splice @array, 0, 1;
-    return @result[0];
+sub mi-shift (@array where @array > 0) {
+    my @resultado = splice @array, 0, 1;
+    return @resultado[0];
 }    
 \end{verbatim}
 %
 
-The \verb'@array > 0' expression evaluates to {\tt True} if 
-the number of elements of the array is more than 0, i.e., if the 
-array is not empty. It is equivalent to \verb'@array.elems > 0'.
+La expresión \verb'@array > 0' evalúa a {\tt True} si el
+número de elementos del array es más que 0, i.e., básicamente,
+si no es un array vacío. Es equivalente a la expresión 
+\verb|@array.elems > 0|.
 
 \label{splice_exercise}
-As an exercise, write subroutines using  \verb'splice' to 
-simulate the {\tt pop}, {\tt unshift}, {\tt push}, and 
-{\tt delete} built-ins. Solution: \ref{sol_splice_exercise}.
+Como ejercicio, escribe subrutinas usando \verb|splice|
+para simular las funciones integradas {\tt pop}, {\tt unshift}, 
+{\tt push}, y {\tt delete}. Solución: \ref{sol_splice_exercise}.
 
 
-\section{Traversing a List}
+\section{Cómo Recorrer una Lista}
 \index{list!traversal}
 \index{traversal!list}
 \index{for loop}
 \index{loop!for}
 \index{statement!for}
 
-The most common way to traverse the elements of a list or an 
-array is with a {\tt for} loop.  The syntax for an array is 
-the same as what we have already seen in earlier chapters 
-for lists:
+La manera más común de recorrer los elementos de una lista
+o un array es con el bucle {\tt for}. La sintaxis para un 
+array es la misma que hemos usados en los capítulos
+anteriores para las listas:
 
 \begin{verbatim}
-my @colors = <red orange yellow green blue indigo violet>;
-for @colors -> $color {
+my @colores-inglés = <red orange yellow green blue indigo violet>;
+for @colores-inglés -> $color {
     say $color;
 }
 \end{verbatim}
 %
-This works well if you only need to read the elements of the
-list.  But if you want to write or update the elements of an array, you
-need a doubly pointy block. For example, you might use the 
-{\tt tc} (title case) function to capitalize the first letter 
-of each word of the array:
+Esto funciona bien si solo necesitas leer los elementos de
+la lista. Pero si quieres escribir o actualizar los elementos
+de un array, tú necesitas un bloque de doble punta. Por ejemplo,
+podrías usar la función {\tt tc} (``title case`` en inglés) para
+capitalizar la primera letra de cada palabra de un array:
 \index{tc function}
 
 \begin{verbatim}
-my @colors = <red orange yellow green blue indigo violet>;
-for @colors <-> $color {$color = tc $color};
-say @colors;   # -> [Red Orange Yellow Green Blue Indigo Violet]
+my @colores-inglés = <red orange yellow green blue indigo violet>;
+for @colores-inglés <-> $color {$color = tc $color};
+say @colores-inglés;   # -> [Red Orange Yellow Green Blue Indigo Violet]
 \end{verbatim}
 %
-Here the \verb'$color' loop variable is a read-and-write \emph{alias} 
-on the array's items, so that changes made to this alias will 
-be reflected in the array. This works well with arrays, but 
-would not work with lists, which are immutable. You would 
-get an error with a list:
+Aquí la variable \verb|$color| del bucle es un \emph{apodo} 
+de lectura-escritura (``read-and-write`` en inglés)de 
+los elementos del array, así que cualquier cambio 
+que se hace a este apodo se refleja en el array. Esto funciona
+bien con arrays, pero no funcionaría con listas, debido a que 
+ellas son inmutables. Obtendrías el siguiente error al usarlo
+con una lista:
 
 \begin{verbatim}
 > for <red orange yellow> <-> $color { $color = tc $color}
 Parameter '$color' expected a writable container, but got Str value...
 \end{verbatim}
 
-You may also use the syntax of a {\tt for} loop with the 
-\verb'$_' topical variable. For example, this uses the
-{\tt uc} (upper case) function to capitalize each word of 
-the previous array:
+También puedes usar la sintaxis de un bucle {\tt for}
+con la variable tópico \verb|$_|. Por ejemplo, esto usa la 
+función {\tt uc} (``upper case`` en inglés) para 
+capitalizar cada palabra del array anterior:
 \index{topical variable}
 \index{uc function or method}
 
 \begin{verbatim}
-for @colors { 
+for @colores-inglés { 
     $_ = $_.uc 
 }
-say @colors; # -> [RED ORANGE YELLOW GREEN BLUE INDIGO VIOLET]
+say @colores-inglés; # -> [RED ORANGE YELLOW GREEN BLUE INDIGO VIOLET]
 \end{verbatim}
 %
 
-Sometimes, you want to traverse an array and need to know the 
-index of the elements you are visiting. A common way to do 
-that is to use the \verb'..' range operator to iterate on 
-the indices. For instance, to print the index and the value of each element of an array:
+Algunas veces quieres recorrer un array y necesitas saber
+el índice de los elementos que estás visitando. Una forma
+común de hacer esto es con el operador de rango \verb|..|
+para iterar sobre los índices. Por ejemplo, para imprimir 
+el índice y el valor de cada elemento de un array:
 
 \begin{verbatim}
-for 0..@colors.end -> $idx { 
-    say "$idx  @colors[$idx]"; 
+for 0..@colores-inglés.end -> $idx { 
+    say "$idx  @colores-inglés[$idx]"; 
 }
 \end{verbatim}
 
-This is useful, for example, for traversing two (or more) arrays 
-in parallel:
+Esto es útil, por ejemplo, para recorrer dos (o más) arrays
+en paralelo:
 
 \begin{verbatim}
-my @letters = 'a'..'e';
-my @numbers = 1..5;
-for 0..@letters.end -> $idx { 
-    say "@letters[$idx] -> @numbers[$idx]"; 
+my @letras = 'a'..'e';
+my @números = 1..5;
+for 0..@letras.end -> $idx { 
+    say "@letras[$idx] -> @números[$idx]"; 
 }
 \end{verbatim}
 %
 
-This will print:
+Esto imprimirá:
 \begin{verbatim}
 a -> 1
 b -> 2
@@ -798,57 +812,60 @@ d -> 4
 e -> 5
 \end{verbatim}
 
-You don't really need to specify the index range yourself, as 
-the {\tt keys} function will return a list of indices for 
-the array or the list:
+No necesitas especificar el rango de índices tú mismo, dado que
+la función {\t keys} devolverá una lista de índices para un
+array o una lista:
 \index{keys function or method}
 
 \begin{verbatim}
-for keys @colors -> $idx { 
-    say "$idx  @colors[$idx]"; 
+for keys @colores-inglés -> $idx { 
+    say "$idx  @colores-inglés[$idx]"; 
 }
 \end{verbatim}
 
-Another way to iterate over the indices and values of an 
-array is the {\tt kv} (``keys values'') function or method, 
-which returns the index and value of each array item:
+Otra forma de iterar sobre los índices y valores de un
+array es con el uso de la función o método 
+{\tt kv} (``keys values``-``llaves valores``) que
+devuelve el índice y el valor de cada elemento del array:
 \index{kv function or method}
 
 \begin{verbatim}
-for @letters.kv -> $idx, $val { 
+for @letras.kv -> $idx, $val { 
     say "$idx $val";
 }
 \end{verbatim}
 
-In list context, \verb'@letters.kv' simply returns an 
-interleaved sequence of indexes and values:
+En un contexto de lista, \verb|@letters.kv| simplemente
+devuelve un secuencia entrelazada de índices y valores:
 
 \begin{verbatim}
-my @letters = 'a'..'e';
-say @letters.kv;    # -> (0 a 1 b 2 c 3 d 4 e)
+my @letras = 'a'..'e';
+say @letras.kv;    # -> (0 a 1 b 2 c 3 d 4 e)
 \end{verbatim}
 
-It is the pointy block with two iteration variables 
-that makes it possible to process both an index and 
-a value at each step of the loop. You can of course 
-have more than two iteration variables if needed.
+Es el bloque de doble punta con las variables de iteración
+que hace posible procesar un índice y una valor 
+a cada paso del bucle. Por supuesto, puedes tener 
+más de dos variables de iteración si es necesario.
 
 
-\section{New Looping Constructs}
+\section{Nuevas Construcciones de Repetición}
 \index{loop}
 
-Since the subject of this chapter is arrays and lists, 
-it is probably the right time to briefly study two 
-looping constructs that I had left aside so far.
+Dado que el tema de este capítulo son los arrays y las 
+listas, es probablemente el tiempo perfecto para estudiar
+brevemente dos construcciones de repetición que hemos
+dejado a un lado hasta ahora.
 
-The first one uses the same {\tt for} keyword as above, 
-but with a different syntax for the iteration variable(s):
+La primera usa la misma palabra clave {\tt for} usada
+anteriormente, pero con una sintaxis diferente para la iteración
+de variable(s):
 \index{for loop}
 
 \begin{verbatim}
-my @letters = 'a'..'e';
-for @letters { 
-    say $^a-letter; 
+my @letras = 'a'..'e';
+for @letras { 
+    say $^a-letra; 
 }
 \end{verbatim}
 
@@ -857,31 +874,30 @@ for @letters {
 \index{twigil}
 \index{sigil}
 \index{self-declared parameter}
-The \verb'^' in the \verb'$^a-letter' variable is called 
-a \emph{twigil}, i.e., sort of a secondary sigil. When there is 
-a twigil, the first symbol (here, the \verb'$' sign) has the 
-same meaning as usual sigils (here, it denotes a scalar variable), 
-and the second one (here, \verb'^') extends the variable 
-description and usually modifies its scope. In this specific 
-case, the second character states that the \verb'$^a-letter' 
-variable is a  \emph{placeholder parameter} or a 
-\emph{self-declared positional parameter}. This is a positional 
-parameter of the current block that needs not be declared in 
-the signature.
+El símbolo \verb|^| en la variable \verb|$^a-letra| es conocido
+como un \emph{twigil}, i.e., un tipo de sigilo secundario. 
+Cuando hay un twigil, el primer símbolo (en este caso, el signo
+\verb|$|) posee el mismo significado de los sigilos usuales (aquí, denota
+una variable escalar) y el segundo (aquí, \verb|^|) extiende la descripción
+de la variable y usualmente modifica su ámbito. En este caso
+específico, el segundo carácter especifica que la variable
+\verb|$^a-letter| es un \emph{parámetro marcador} o un 
+\emph{parámetro auto-declarado de posición}. Es decir, es un parámetro
+de posición del bloque actual que no necesita ser declarado en la 
+signatura.
 \index{signature}
 
-If the block uses more than one placeholder, they are 
-associated to the input according to their lexicographic 
-(alphabetic) order:
+Si el bloque usa más de un marcador, ellos son asociados con la
+entrada de datos de acuerdo a su orden lexicográfico (alfabético):
 
 \begin{verbatim}
-my @letters = 'a'..'e';
-for @letters.kv { 
+my @letras = 'a'..'e';
+for @letras.kv { 
     say "$^a -> $^b"; 
 }
 \end{verbatim}
 %
-This will print:
+Esto imprimirá:
 \begin{verbatim}
 0 -> a
 1 -> b
@@ -891,126 +907,127 @@ This will print:
 \end{verbatim}
 %
 
-As seen just above, the {\tt kv} function returns an 
-interleaved sequence of indexes and values. Since 
-\verb'$^a' comes before \verb'$^b' in the alphabetic 
-order, \verb'$^a' will be bound to the index and 
-\verb'$^b' with the value for each pair of the input.
+Como vimos anteriormente, la función {\tt kv} devuelve
+una secuencia entrelazada de índices y valores. Dado
+que \verb|$^a| viene antes que \verb|$^b| en el orden
+alfabético, \verb|$^a| será atada al índice y \verb|$^b|
+al valor de cada pareja de la entrada de datos.
 
-Placeholders can also be used for subroutines:
+Los marcadores pueden también ser usados en las
+subrutinas:
 
 \begin{verbatim}
-> sub divide { $^first / $^second }
-sub divide ($first, $second) { #`(Sub|230787048) ... }
-> divide 6, 4
+> sub dividir { $^primero / $^segundo }
+sub dividir ($primero, $segundo) { #`(Sub|230787048) ... }
+> dividir 6, 4
 1.5
 \end{verbatim}
 %
 
-These placeholders aren't used very often for 
-simply traversing arrays, but we will see later how  
-they are very useful in cases where is would be quite 
-unpractical to have to declare the parameters.
+Estos marcadores no se usan muy a menudo para recorrer arrays,
+pero veremos más adelante lo útiles
+que son en casos donde no sería muy práctico tener que declarar los
+parámetros.
 \index{placeholder}
 
 \index{loop!keyword}
 \index{loop!statement}
 \index{C-style loop}
 \label{C-style loop}
-The second new looping construct I want to introduce 
-here uses the {\tt loop} keyword and is similar to 
-the C-style {\tt for} loop (i.e., the loop of the 
-C programming language). In this type of loop, you 
-declare between a pair of parentheses three expressions 
-separated by semi-colons: the iteration variable's 
-initial value, the condition on which the loop should 
-terminate, and the change made to the iteration variable on 
-each iteration:
+La segunda construcción de repetición que quiero introducir
+aquí usa la palabra clave {\tt loop} y es similar
+al bucle for de stilo C (i.e., el bucle del lenguaje
+de programación C). En este tipo de bucle, tú declaras
+entre una pareja de paréntesis tres expresiones separadas
+por puntos y comas: el valor inicial de la variable de iteración,
+la condición por la cual el bucle debería terminar, y el cambio
+que se hace a la variable de iteración en cada iteración:
 
 \begin{verbatim}
 loop (my $i = 0; $i < 5; $i++) {
-    say $i, " -> " ~ @letters[$i];
+    say $i, " -> " ~ @letras[$i];
 }
 \end{verbatim}
 %
-For most common loops, the {\tt for} loops seen earlier 
-are easier to write and usually more efficient than this 
-construct. This special {\tt loop} construct should probably 
-be used only when the exit condition or the change made to 
-the iteration variable is quite unusual and would 
-be difficult to express in a regular {\tt for} loop. As 
-an exception, the {\tt loop} construct with no 
-three-part specification is quite common and even 
-idiomatic for making an infinite loop:
+Para los bucles más comunes, el bucle {\tt for} visto anteriormente
+es más fácil de escribir y usualmente más eficiente que esta
+construcción. Esta construcción especial {\tt loop} debería 
+ser probablemente usada solo cuando la salida de una condición
+o el cambio que se hace a la variable de iteración es bien inusual
+y sería algo difícil de expresar en un bucle {\tt for} regular. 
+Como una excepción, la construcción {\tt loop} sin la especificación
+de tres partes es bien común  y hasta idiomática para hacer un bucle
+infinito:
 \index{infinite loop}
 \index{loop!infinite}
 \index{idiomatic}
 
 \begin{verbatim}
 loop {
-    # do something 
-    # last if ...
+    # haz algo
+    # termina si ...
 }
 \end{verbatim}
 %
 
 
-\section{Map, Filter and Reduce}
+\section{Asociaciones, Filtros y Reducciones}
 \label{map_filter}
 
-When traversing the elements of an array (or a list) so far, we have 
-processed so far one item at a time with a loop. We will 
-now study ways to process all the elements in one go.
+Al recorrer los elementos de un array (o una lista), lo que hemos
+hecho hasta ahora es procesar los elementos uno por uno con un 
+bucle. Ahora estudiaremos formas de procesar todos los elementos
+al mismo tiempo.
 
-\subsection{Reducing a List to a Value}
+\subsection{Reducir una Lista a un Valor}
 
-To add up all the numbers in a list, you can use a {\tt for} 
-loop like this:
-
+Para añadir todo los números en una lista, puedes usar 
+el bucle {\tt for} de la siguiente manera:
 
 \begin{verbatim}
-sub add_all (@numbers) {
+sub agrega-todos (@números) {
     my $total = 0;
-    for @numbers -> $x {
+    for @números -> $x {
         $total += $x;
     }
     return $total;
 }
 \end{verbatim}
 %
-{\tt \$total} is initialized to 0.  Each time through the loop,
-{\tt \$x} gets one element from the list and is added to 
-{\tt \$total}. As the loop runs, {\tt total} accumulates the 
-sum of the elements; a variable used this way is sometimes 
-called an {\bf accumulator}.
+La variable {\tt \$total} es inicializada a0. Cada vez que el
+bucle itera, la variable {\tt \$x} consigue uno de los elementos
+de la lista y es agregada a {\tt \$total}. Mientra el bucle se ejecuta,
+{\tt \$total} acumula la suma de los elementos; una variable que 
+es usada de esta forma se conoce como un {\bf acumulador}.
 \index{accumulator!sum}
 
-An operation like this that combines a sequence of elements into
-a single value is often called a reduction operation because 
-its effect is to {\bf reduce} all the items to one element (this 
-is also sometimes called ``folding'' in some other programming 
-languages). These ideas are derived from functional 
-programming languages such as LISP (whose name stands for ``list 
-processing'').
+Una operación que combina una secuencia de elementos en un
+solo valor es usualmente llamada una operación de reducción porque
+su efecto es {\bf reducir} todos los artículos a un solo elemento
+(esto es conocido como ``pliegues`` (del inglés \emph{folding})
+en otros lenguajes de programación). Estas ideas son derivadas de
+lenguajes de programación funcionales tal como LISP (cuyo nombre
+deriva de ``LISt Processing`` (procesamiento de listas)).
 \index{reduce pattern}
 \index{pattern!reduce}
 \index{traversal}
 
-Perl~6 has a {\tt reduce} function, which generates a single 
-"combined" value from a list of values, by iteratively applying 
-to each item of a list a function that knows how to combine two values. 
-Using the {\tt reduce} function to compute the sum of the 
-first ten numbers might look like this:
+Perl~6 tiene una función {\tt reduce}, la cual genera un solo
+valor "combinado" de la lista de valores. Esto se lleva a cabo 
+al aplicar de forma iterativa a cada artículo una
+función que sabe cómo combinar dos valores. El uso de la función
+{\tt reduce} para calcular la suma de los primeros 
+diez números luce así:
 
 \begin{verbatim}
-> my $sum = reduce { $^a + $^b }, 1..10;
+> my $suma = reduce { $^a + $^b }, 1..10;
 55
 \end{verbatim}
 
-Remember the \emph{factorial} function of Section~\ref{for_loops}? 
-It used a {\tt for} loop to compute the product of the \emph{n} first 
-integers up to a limit. It could be rewritten as follows using the 
-{\tt reduce} function:
+¿Recuerdas la función \emph{factorial} de la Sección~\ref{for_loops}?
+Esta función usaba un bucle {\tt for} para calcular el producto de los
+primeros enteros hasta un cierto límite. Podría ser escrita de nuevo 
+usando la función {\tt reduce}:
 \index{factorial}
 \index{factorial!using the reduce function}
 
@@ -1021,53 +1038,59 @@ sub factorial (Int $num) {
 say factorial 10;   # -> 3628800
 \end{verbatim}
 %
-In fact, the code to compute the factorial is so short with 
-the {\tt reduce} function that it may be argued that it has 
-become unnecessary to write a subroutine for that. You could 
-just ``inline'' the code:
+De hecho, el código para calcular el factorial es tan corto
+con la función {\tt reduce} que se puede argumentar se ha vuelto
+innecesario escribir una subrutina para eso. Podrías solo
+poner el código ``en línea``:
 
 \begin{verbatim}
 my $fact10 = reduce { $^a * $^b }, 1..10;     # -> 3628800
 \end{verbatim}
 %
 
-We can do many more powerful things with that, but we'll come 
-back to that later, as it requires a few syntactic features that 
-we haven't seen yet.
+Podemos hacer muchísimas cosas poderosas con esto, pero regresaremos
+a esto más tarde, debido a que requiere algunas características 
+sintácticas que no hemos visto todavía.
 
-\subsection{The Reduction Metaoperator}
+\subsection{El Metaoperador de Reducción}
 
-Perl~6 also has a reduction operator, 
-or rather a reduction \emph{metaoperator}. An operator 
-usually works on variables or values; a metaoperator acts 
-on other operators. Given a list and an operator, the 
-\verb'[...]' metaoperator iteratively applies the operator 
-to all the values of the list to produce a single value.
+Perl~6 tiene un operador de reducción, o más bien 
+un \emph{metaoperador} de reducción. Un operador usualmente
+trabaja con variables o valores; un metaoperador actúa sobre 
+otros operadores. Dada una lista y un operador, el metaoperador
+\verb|[...]| aplica de forma iterativa el operador 
+a todos los valores de la lista para producir un solo
+valor.
 \index{reduction operator}
 \index{metaoperator}
 
-For example, the following also prints the sum of all the 
-elements of a list:
+Por ejemplo, el código siguiente también imprime la suma de todos
+los elementos de una lista:
 
 \begin{verbatim}
 say [+] 1, 2, 3, 4;           # ->  10
 \end{verbatim}
 
-This basically takes the first two values, adds them up, 
-and adds the result to the next value, and so on. Actually, 
-there is a form of this operator, with a backslash before 
-the operator, which also returns the intermediate results:
+Esto básicamente toma los primeros dos valores, los agrega,
+y agrega el resultado al siguiente valor, continuando 
+hasta que haya recorrido la lista completa. Actualmente,
+existe una forma de este operador, con una barra invertida 
+delante del operador, el cual devuelve los resultados 
+intermedios de la operación:
 
 \begin{verbatim}
 say [\+] 1, 2, 3, 4;          # -> (1 3 6 10)
 \end{verbatim}
 
-This metaoperator can be used to transform basically any 
-associative infix operator\footnote{An \emph{infix} operator 
-is an operator that is placed between its two operands.} 
-into a list operator returning a single value.
+Este metaoperador puede usarse para transformar básicamente
+cualquier operador asociativo infijo\footnote{Un operador 
+\emph{infijo} es un operador que se coloca
+entre dos operandos.} en un operador de lista 
+que devuelve un solo valor.
 
-The factorial function can now be rewritten as:
+
+La función factorial puede escribirse de nuevo
+en la siguiente forma:
 \index{factorial}
 \index{factorial!using the reduction meta-operator}
 
@@ -1078,9 +1101,10 @@ sub fact(Int $x){
 my $factorial = fact(10);     # -> 3628800
 \end{verbatim}
 
-The reduction metaoperator can also be used with relational 
-operators to check whether the elements of an array or a list 
-are in the correct numerical or alphabetical order:
+El metaoperador de reducción puede también ser usado con
+operadores de relación para chequear si los elementos de
+un array o una lista están en el orden numérico o alfabético
+correcto:
 
 \begin{verbatim}
 say [<] 3, 5, 7;              # -> True
@@ -1088,382 +1112,392 @@ say [<] 3, 5, 7, 6;           # -> False
 say [lt] <a c d f r t y>;     # -> True
 \end{verbatim}
 
-\subsection{Mapping a List to Another List}
+\subsection{Asociando una Lista a Otra Lista}
 \index{map}
 
-Sometimes you want to traverse one list while building
-another.  For example, the following function takes a list 
-of strings and returns a new list that contains capitalized 
-strings:
+Algunas veces tú quieres recorrer una lista mientras 
+construyes otra. Por ejemplo, la siguiente función toma una
+lista de cadenas de texto y devuelve una lista nueva que 
+contiene las cadenas de texto en letras mayúsculas:
 
 \begin{verbatim}
-sub capitalize_all(@words){
-    my @result;
-    push @result, $_.uc for @words;
-    return @result;
+sub mayúsculas(@palabras){
+    my @resultado;
+    push @resultado, $_.uc for @palabras;
+    return @resultado;
 }
-my @lc_words = <one two three>;
-my @all_caps = capitalize_all(@lc_words); # -> [ONE TWO THREE]
+my @palabras_minus = <one two three>;
+my @palabras_mayus = mayúsculas(@palabras_minus); # -> [ONE TWO THREE]
 \end{verbatim}
 %
-\verb'@result' is declared as an empty array; each time through
-the loop, we add the next element.  So \verb'@result' is 
-another kind of accumulator.
+La variable \verb|@resultado| es declarado como un array vacío;
+cada vez que el bucle itera, agregamos el siguiente el 
+siguiente elemento. Así que \verb|@resultado| es otro tipo de
+acumulador.
 \index{accumulator!list}
 
-An operation like \verb"capitalize_all" is sometimes called a 
-{\bf map} because it ``maps'' a function (in this case the 
-{\tt uc} method) to each of the elements in a sequence.
+Una operación como \verb|mayúsculas| es algunas veces conocida
+como un {\bf map} porque ``maps`` (asocia) una función (en este
+caso el método {\tt uc}) a cada elemento en una secuencia.
 \index{map pattern}
 \index{pattern!map}
 \index{filter pattern}
 \index{pattern!filter}
 
-Perl has a {\tt map} function that makes it possible to 
-do that in just one statement:
+Perl tiene una función {\tt map} que hace posible todo eso
+en solo una sentencia:
 
 \begin{verbatim}
-my @lc_words = <one two three>;
-my @all_caps = map { .uc }, @lc_words;      # -> [ONE TWO THREE]
+my @palabras_minus = <one two three>;
+my @palabras_mayus = map { .uc }, @palabras_minus;      # -> [ONE TWO THREE]
 \end{verbatim}
 %
 
-Here, the {\tt map} function applies the {\tt uc} method to 
-each item of the \verb'@lc_words' array and returns them 
-into the \verb'@all_caps' array. More precisely, the {\tt map} 
-function iteratively assigns each item of the \verb'@lc_words' 
-array to the \verb'$_' topical variable, applies the 
-code block following the {\tt map} keyword to \verb'$_' in 
-order to create new values, and returns a list of these new 
-values.
+Aquí la función {\tt map} aplica el método {\tt uc} a cada
+elemento del array \verb|@palabras_minus| y los devuelve
+en el array \verb|@palabras_mayus|. Más precisamente, 
+la función {\tt map} asigna de forma iterativa cada elemento
+del array \verb|@palabras_minus| a la variable tópico \verb|$_|,
+aplica el bloque de código después de la palabra clave {\tt map}
+a \verb|$_| para crear nuevos valores, y devuelve una lista de estos
+valores.
 \index{map function}
 \index{topical variable}
 \index{map}
 
-To generate a list of even numbers between 1 and 10, we 
-might use the range operator to generate numbers 
-between 1 and 5 and use {\tt map} to multiply them by two:
+Para generar una lista de números pares entre 1 y 10, podríamos
+usar el operador de rango para generar números entre 1 y 5
+y usar {\tt map} para multiplicarlos por dos:
 
 \begin{verbatim}
-my @evens = map { $_ * 2 }, 1..5;  # -> [2 4 6 8 10]
+my @pares = map { $_ * 2 }, 1..5;  # -> [2 4 6 8 10]
 \end{verbatim}
 %
 
-Instead of using the \verb'$_' topical variable, we might 
-also use a pointy block syntax with an explicit iteration 
-variable:
+En vez de usar la variable tópico \verb|$_|, podríamos también
+usar la sintaxis del bloque puntiagudo con una variable de 
+iteración explícita:
 
 \begin{verbatim}
-my @evens = map -> $num { $num * 2 }, 1..5;  # -> [2 4 6 8 10]
+my @pares = map -> $num { $num * 2 }, 1..5;  # -> [2 4 6 8 10]
 \end{verbatim}
 %
 
-or an anonymous block with a placeholder variable:
+o un bloque anónimo con una variable marcador:
 
 \begin{verbatim}
-my @evens = map { $^num * 2 }, 1..5;  # -> [2 4 6 8 10]
+my @pares = map { $^num * 2 }, 1..5;  # -> [2 4 6 8 10]
 \end{verbatim}
 %
 
-Instead of a code block, the first argument to {\tt map} can 
-be a code reference (a subroutine reference):
+En vez de un bloque de código, el primer argumento para {\tt map}
+puede ser una referencia de código (una referencia de una
+subrutina):
 
 \begin{verbatim}
-sub double-sq-root-plus-one (Numeric $x) { 
+sub doble-raíz-más-uno (Numeric $x) { 
     1 + 2 * sqrt $x;
 }
-my @results = map &double-sq-root-plus-one, 4, 16, 42;
-say @results;     # -> [5 9 13.9614813968157]
+my @resultados = map &doble-cuadrado-más-uno, 4, 16, 42;
+say @resultados;     # -> [5 9 13.9614813968157]
 \end{verbatim}
 %
 \index{map}
 
-The subroutine name needs to be prefixed with the ampersand 
-sigil to make clear that it is a parameter to {\tt map} and 
-not a direct call of the subroutine.
+El nombre de la subrutina necesita ser precedido con el 
+sigilo {\tt \&} para clarificar que es un parámetro para 
+{\tt map} y no una llamada directa de la subrutina.
 \index{sigil}
 \index{ampersand sigil}
 
-If the name of the array on the left side and on the right 
-side of the assignment is the same, then the modification 
-seems to be made ``in place,'' i.e., it appears as if the 
-original array is modified in the process.
+Si el nombre del array a la izquierda y a la derecha de la 
+asignación es el mismo, entonces la modificación es hecha
+``en lugar,`` i.e., lo cual aparece ser como si el array original
+es modificado en el proceso.
 
+Esta es una función inmensamente poderosa y expresiva; regresaremos
+a ella más tarde.
 
-This is an immensely 
-powerful and expressive function; we will come back to it 
-later.
+\subsection{Filtrando los Elementos de una Lista}
 
-\subsection{Filtering the Elements of a List}
-
-Another common list operation is to select some elements from
-a list and return a sublist.  For example, the following
-function takes a list of strings and returns a list that 
-contains only the strings containing a vowel:
+Otra operación común de las listas es seleccionar algunos elementos
+de la lista y devolver una sublista. Por ejemplo, la siguiente
+función toma una lista de cadenas de texto y devuelve una lista
+que contiene solamente las cadenas de texto que contienen
+una vocal:
 
 \begin{verbatim}
-sub contains-vowel(Str $string) {
-    return True if $string ~~ /<[aeiouy]>/;
+sub contiene-vocal(Str $cadena) {
+    return True if $cadena ~~ /<[aeiouy]>/;
 }
-sub filter_words_with_vowels (@strings) {
-    my @kept-string;
-    for @string -> $st { 
-        push @kept-string, $st if contains-vowel $st;
+sub filtrar_palabras_con_vocales (@cadenas) {
+    my @cadena-retenida;
+    for @cadena -> $cad { 
+        push @cadena-retenida, $cad if contiene-vocal $cad;
     }
-    return @kept-string;
+    return @cadena-retenida;
 }  
 \end{verbatim}
 %
 
-{\tt contains-vowel} is a subroutine that returns 
-{\tt True} if the string contains at least one vowel 
-(we consider ``y'' to be a vowel for our purpose).
+La subrutina {\tt contiene-vocal} devuelve {\tt True} si 
+la cadena de texto contiene por lo menos una vocal (para 
+nuestro propósito, consideramos que ``y`` es una vocal).
 
-The \verb"filter_words_with_vowels" subroutine will return 
-a list of strings containing at least one vowel.
+La subrutina \verb|filtrar_palabras_con_vocales| devolverá 
+una lista de cadenas de texto que contienen por lo menos
+una vocal.
 
-An operation like \verb"filter_words_with_vowels" is called 
-a {\bf filter} because it selects some of the elements and 
-filters out the others.
+Una operación como la que \verb|filtrar_palabras_con_vocales| lleva
+a cabo es conocida como un {\bf filtro} (\emph{filter} en inglés) 
+porque selecciona algunos de los elementos y filtra el resto.
 \index{filter}
 
-Perl has a function called {\tt grep} to do that in just 
-one statement:
+Perl tiene una función llamada {\tt grep} que hace lo mismo
+en una sola sentencia:
 \index{grep}
 
 \begin{verbatim}
-my @filtered = grep { /<[aeiouy]>/ }, @input;
+my @filtradas = grep { /<[aeiouy]>/ }, @entrada;
 \end{verbatim}
 %
 
-The name of the {\tt grep} built-in function used to 
-filter some input comes from the Unix world, where it 
-is a utility that filters the lines that 
-match a given pattern from an input file.
+El nombre de la función integrada {\tt grep} usada
+para filtrar algunas entradas viene del mundo de Unix,
+donde es una utilidad que filtra las líneas de una archivo
+de texto que coinciden con un patrón dado. 
 
-In the code example above, all of \verb'@input' strings 
-will be tested against the 
-{\tt grep} block, and those matching the regex will go into the 
-{\tt \@filtered} array. Just like {\tt map}, the {\tt grep} 
-function iteratively assigns each item of the \verb"@input" 
-array to the \verb'$_' topical variable, applies the 
-code block following the {\tt grep} keyword to \verb'$_', 
-and returns a list of the values for which the code block 
-evaluates to true. Here, the code block is a simple regex 
-applied to the \verb'$_' variable.
+En el código de arriba, todas las cadenas de texto de 
+\verb|@entrada| serán comparadas contra el bloque {\tt grep},
+y aquellas que coinciden con el regex serán almacenadas
+en el array \verb|@filtradas|. Al igual que {\tt map},
+la función {\tt grep} asigna, de forma iterativa, cada elemento
+del array \verb|@entrada| a la variable tópico \verb|$_|, aplica 
+el bloque de código después de la palabra clave {\tt grep} a \verb|$_|, 
+y devuelve una lista de los valores para los cuales el bloque
+de código evalúa como verdadero. Aquí, el bloque de código es un 
+simple regex que se aplica a la variable \verb|$_|.
 
-Just as for {\tt map}, we could have used a function 
-reference as the first argument to  {\tt grep}:
+Al igual que {\tt map}, podríamos haber usado una referencia
+de función como el primer argumento para {\tt grep}:
 
 \begin{verbatim}
-my @filtered = grep &contains-vowel, @input;
+my @filtradas = grep &contiene-vocal, @entrada;
 \end{verbatim}
 %
 
-To generate a list of even numbers between 1 and 10, we might 
-use the range operator to generate numbers between 1 and 10 
-and use {\tt grep} to filter out odd numbers:
+Para generar una lista de números pares entre 1 y 10, podríamos
+usar el operador de rango para generar números entre 1 y 10 y
+usar la función {\tt grep} para filtrar los números impares:
 
 \begin{verbatim}
-my @evens = grep { $_ %% 2 }, 1..10;  # -> [2 4 6 8 10]
+my @pares = grep { $_ %% 2 }, 1..10;  # -> [2 4 6 8 10]
 \end{verbatim}
 %
 
 \label{exercise_squares}
-As an exercise, write a program using {\tt map} to 
-produce an array containing the square of the numbers 
-of the input list and a program using {\tt grep} to keep 
-only the numbers of an input list that are perfect squares. Solution: \ref{sol_exercise_squares}.
+Como ejercicio, escribe un programa usando la función
+{\tt map} para producir una array que contenga el cuadrado
+de los números de la lista de entrada y un programa que use 
+{\tt grep} para mantener solo los números de la lista de entrada
+que son cuadrados perfectos. Solución: \ref{sol_exercise_squares}.
 
-Most common list operations can be expressed as a combination
-of {\tt map}, {\tt grep}, and {\tt reduce}.
+Muchas de las operaciones de listas pueden ser expresadas como una
+combinación de {\tt map}, {\tt grep}, y {\tt reduce}.
 \index{map}
 \index{grep}
 \index{reduce}
 
-\subsection{Higher Order Functions and Functional Programming}
+\subsection{Funciones de Orden Superior y Programación Funcional}
 \label{array_functional_programming}
 \index{higher-order function}
 \index{functional programming}
 
-Besides their immediate usefulness, the {\tt reduce}, {\tt map} 
-and {\tt grep} functions we have been using here do something 
-qualitatively new. The arguments to these functions are not 
-just data: their first argument is a code block or a function. 
-We are not only passing to them the data that they will have 
-to use or transform, but we are also passing the code 
-that will process the data.
+Además de sus utilidades inmediatas, las funciones {\tt map},
+{\tt grep}, y {\tt reduce} que usamos aquí  hacen algo 
+cualitativamente nuevo. Los argumentos de estas funciones 
+no son solo datos: su primer argumento es un bloque de
+código o una función. No solo estamos pasando los datos
+que tendrán que usar, pero también pasamos el código
+que procesará los datos.
 
 \index{reduce function}
 \index{map function} 
 \index{grep function}
 
-The {\tt reduce}, {\tt map}, and {\tt grep} functions are 
-what are often called higher-order functions, functions that 
-manipulate not only data, but also other functions. These 
-functions can be thought of as generic abstract functions--- 
-they perform a purely technical operation: process the  
-elements of a list and apply to each of them a behavior 
-defined in the code block or the function of the first 
-parameter.
+Las funciones {\tt reduce}, {\tt map}, y {\tt grep} son 
+usualmente conocidas como funciones de orden superior porque
+ellas no solo manipulan datos, sino que también otras funciones.
+Se puede pensar de estas funciones como funciones 
+genéricas abstractas---ellas realizan una operación puramente
+técnica: procesan los elementos de una lista y aplican 
+a cada de ellos un comportamiento definido en el bloque de
+código o la función del primer parámetro.
 
-These ideas are to a large extent rooted in functional 
-programming, a programming paradigm that is very different 
-from what we have seen so far and that has been implemented 
-historically in languages such as Lisp, Caml, Ocaml, Scheme, 
-Erlang, or Haskell. Perl~6 is not a functional 
-programming language in the same sense as these languages, 
-because it can also use other programming paradigms, 
-but it has incorporated most of their useful features, so 
-that you can use the expressive power and inherent safety 
-of this programming model, without being forced to do so 
-if and when you would prefer a different model, and
-without having to learn a totally new syntax that may 
-sometimes look somewhat abstruse or even clunky.
+Estas ideas están basadas en gran medida en la programación
+funcional, un paradigma de programación que es muy diferente
+a lo que hemos visto hasta ahora y que ha sido implementado
+históricamente en lenguajes tales como Lisp, Caml, Ocaml,
+Scheme, Erlang o Haskell. Perl~6 no es un lenguaje de 
+programación funcional en el mismo sentido que estos lenguajes,
+porque puede usar otros paradigmas de programación, pero 
+ha incorporado la mayoría de las funciones útiles. Por lo tanto,
+puedes usar el poder expresivo e inherente seguridad de este 
+modelo de programación sin estar forzado a hacerlo y
+cuando prefieres un modelo diferente. Y todo esto lo 
+puedes hacer sin tener que aprender una sintaxis
+totalmente nueva la cual puede lucir un poco asbtrusa 
+o hasta torpe.
 
-This is immensely useful and can give you an incredible 
-expressive power for solving certain types of problems. But 
-other types of problems might be better solved with the more 
-``traditional'' procedural or imperative programming model, 
-while others may benefit from an object-oriented approach. Perl~6 
-lets you choose the programming model you want to use, and even 
-makes it possible to combine seamlessly several of them in the 
-same program.
+Esto es inmensamente útil y puede darte un increíble poder
+expresivo para resolver ciertos tipos de problema.
+Pero otros tipos de problemas podrían resolverse mejor
+con el modelo tradicional procedimental o imperativo,
+mientras que otros problemas se pueden beneficiar 
+de una perspectiva orientada a objetos. Perl~6 te deja
+elegir el modelo de programación que quieras usar, y hasta hace 
+posible la combinación de varios paradigmas en el mismo
+programa.
 
-Functional programming is so important in my opinion that a full chapter 
-of this book will be devoted to the functional programming 
-features of Perl (see Chapter~\ref{functional programming}). 
-Before that, make sure to read the Subsection~\ref{functional_queue} 
-in the array and list section of the exercise solution chapter.
+La programación funcional es tan importante en mi opinión
+que he dedicado un capítulo completo de este libro a las
+capacidades de la programación funcional en Perl 
+(ver Capítulo~\ref{functional programming}). Antes de leer
+ese capítulo, asegúrate de leer la Subsección~\ref{functional_queue}
+en la sección de arrays y listas en el capítulo sobre las
+soluciones de los ejercicios.
 
-\section{Fixed-Size, Typed and Shaped Arrays}
+\section{Arrays de Tamaños Fijos y Tipados}
 \index{shaped array}
 \index{fixed-size array}
 \index{typed array}
 
-By default, arrays can contain items of any type, including 
-items of different types, and can auto-extend as you need. 
-Perl will take care of the underlying gory details for you, 
-so that you don't have to worry about them. This is very 
-practical but also comes with a cost: some array 
-operations might be unexpectedly slow, because Perl may 
-have to perform quite a bit of house-cleaning behind the 
-scene, such as memory allocation or reallocation, copying 
-a full array within memory, etc.
+Por defecto, arrays pueden contener elementos de cualquier
+tipo, incluyendo elementos de diferentes tipos, y se pueden
+auto-extender según lo necesites. Perl se encargará de 
+los detalles innecesarios por ti, para que no preocupes
+por ellos. Esto es bien práctico pero viene con su costo:
+algunas operaciones de array pueden ser inesperadamente lentas,
+debido a que Perl puede tener que realizar un poco de limpieza
+entre bastidores, tales como gestionar la memoria, copiar un array 
+completo a la memoria, etc.  
 
-In some cases, however, it is possible to know beforehand 
-the size of an array and the data type of its items. If 
-Perl knows about these, it might be able to work faster and 
-to use much less memory. It might also helps you 
-to prevent subtle bugs.
+En algunos casos, sin embargo, es posible saber de antemano
+el tamaño de un array, y el tipo de sus elementos. Si Perl
+tiene esta información, podría ser capaz de funcionar más
+rápido y usar muchísima menos memoria. También esto podría 
+ayudar a prevenir errores sutiles.
 
-To declare the type of the elements of an array, just 
-specify it when declaring the array. For example, to 
-declare an array of integers:
+Para declarar el tipo de los elementos de un array, solo
+necesitas especificarlo cuando declaras el array. Por ejemplo,
+para declarar un array de números enteros:
 
 \begin{verbatim}
-> my Int @numbers = 1..20;
+> my Int @números = 1..20;
 [1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20]
-> @numbers[7] = 3.5;     # ERROR
-Type check failed in assignment to @numbers; expected Int but got Rat
+> @números[7] = 3.5;     # ERROR
+Type check failed in assignment to @números; expected Int but got Rat
   in block <unit> at <unknown file> line 1
 \end{verbatim}
 %
 
-Similarly, you can declare the size of an array. Such arrays 
-are sometimes called \emph{shaped arrays}. There are 
-twelve months in a year, so you might tell Perl that your 
-\verb'@months' array will never contain more that twelve 
-items:
+Del mismo modo, puedes declara el tamaño de un array. Arrays 
+con un tamaño fijo son conocidos como \emph{arrays moldeados} 
+(del inglés ``shaped arrays``). Hay doce meses en un año, así que 
+podrías decirle a Perl que tu array \verb|@meses| nunca tendrá 
+más de doce elementos:
 \index{shaped array}
 \begin{verbatim}
-> my @months[12] = 1..7;
+> my @meses[12] = 1..7;
 [1 2 3 4 5 6 7 (Any) (Any) (Any) (Any) (Any)]
-> say @months.elems
+> say @meses.elems
 12
-> say @months[3];
+> say @meses[3];
 4
-> say @months[12];
+> say @meses[12];
 Index 12 for dimension 1 out of range (must be 0..11)
 \end{verbatim}
 %
 
-Here, Perl has allocated 12 ``slots'' to the array, even though 
-the last five are currently undefined. Perl may not need 
-to reallocate memory when you define the tenth item of 
-the array. And Perl tells you about your mistake if you 
-accidentally try to access an out-of-range item.
+Aquí, Perl destinó 12 ``espacios`` para el array, aunque los
+último cinco están actualmente indefinidos. Perl no necesita
+destinar memoria cuando tú definas el décimo artículo del array.
+Y Perl te dejará saber tu equivocación cuando accidentalmente 
+trates de acceder un elemento que está fuera de rango.
 \index{out-of-range error}
 
-Defining both the type of the elements and the maximal size 
-of the array may lead to a noticeable performance gain 
-in terms of execution speed (at least for some operations) 
-and reduce significantly the memory usage of the program, 
-especially when handling large arrays.
+La definición del tipo de elementos y el tamaño máximo del array
+puede conducir a un mayor rendimiento en términos de la
+velocidad de ejecución (al menos para algunas operaciones) y 
+reducir significativamente el consumo de memoria por el 
+programa, especialmente cuando se manipulan arrays grandes.
 
-\section{Multidimensional Arrays}
+\section{Arrays Multidimensionales}
 \index{multidimensional array}
 \index{array!multidimensional}
 \label{multidimensional_array}
 
-The arrays we have seen so far are one-dimensional. In some 
-languages, such arrays are called vectors. But arrays can 
-also be multidimensional (you may then call them matrices).
+Los array que hemos visto hasta ahora han sido 
+de una sola dimensión. En algunos lenguajes, tales arrays
+son conocidos como vectores. Pero los arrays también 
+pueden ser multidimensionales (puedes llamarlos matrices).
 
-For example, you might use a two-dimensional array to 
-store a list of employees with their respective salaries:
+Por ejemplo, tú podrías usar un array de dos dimensiones 
+para almacenar una lista de empleados con sus respectivos
+salarios:
 
 \begin{verbatim}
-> my @employees;
+> my @empleados;
 []
-> @employees[0;0] = "Liz";
+> @empleados[0;0] = "Liz";
 Liz
-> @employees[0;1] = 3000;
+> @empleados[0;1] = 3000;
 3000
-> @employees[1] = ["Bob"; 2500];
+> @empleados[1] = ["Bob"; 2500];
 [Bob 2500]
-> @employees[2] = ["Jack"; 2000];
+> @empleados[2] = ["Jack"; 2000];
 [Jack 2000]
-> @employees[3] = ["Betty"; 1800];
+> @empleados[3] = ["Betty"; 1800];
 [Betty 1800]
-> say @employees[1;1];
+> say @empleados[1;1];
 2500
-> say @employees[2];
+> say @empleados[2];
 [Jack 2000]
-> say @employees;
+> say @empleados;
 [[Liz 3000] [Bob 2500] [Jack 2000] [Betty 1800]]
 \end{verbatim}
 
-It is possible to have more than two dimensions. For example, 
-we could have a tridimensional matrix to store the temperatures 
-in a chemical reactor, measured in various locations identified 
-by their x, y, and z coordinates:
+Es posible tener más de dos dimensiones. Por ejemplo, 
+podríamos tener un array con tres dimensiones para almacenar
+las temperaturas de un reactor químico, medidas en varios lugares
+identificados por sus coordinadas x, y y z:
 
 \begin{verbatim}
 my @temp;
 @temp[1;3;4] = 80;
 \end{verbatim}
 
-For this type of data, however, it is often easier to use the 
-data structure that we will cover in the next chapter, hashes.
+Sin embargo, para este tipo de datos, es mejor usar la estructura
+de datos que cubriremos en el siguiente capítulo, los hashes.
 
-Multidimensional arrays can also have a fixed size. For 
-example, this may be a declaration for two-dimensional array 
-where the first dimension is the month in the year and 
-the second the day in the month:
+Los arrays multidimensionales pueden también tener un tamaño fijo.
+Por ejemplo, esta puede ser la declaración de un array de dos dimensiones
+donde la primera dimensión es el mes del año y la segunda es el 
+número de días del mes:
 
 \begin{verbatim}
-my @date[12, 31];
+my @fecha[12, 31];
 \end{verbatim}
 
 
-\section{Sorting Arrays or Lists}
+\section{Ordenando Arrays o Listas}
 \label{sorting}
 \index{sorting!data}
 
-Sorting data is a very common operation in computer 
-science. Perl has a {\tt sort} function that can sort 
-an array or a list and return the sorted result:
+El ordenamiento (\emph{sorting} en inglés) de datos es 
+una operación muy común en la ciencia de la computación.
+Perl tiene una función {\tt sort} que puede ordenar
+un array o una lista y devolver el resultado ordenado:
 \index{sort}
 \index{sort!function or method}
 \index{function!sort}
@@ -1472,9 +1506,10 @@ an array or a list and return the sorted result:
 say sort <4 6 2 9 1 5 11>;  # -> (1 2 4 5 6 9 11)
 \end{verbatim}
 
-There are several types of sorts. The most common are numeric 
-sort and lexicographic (or alphabetic) sort. They differ 
-in the way they compare individual items to be sorted. 
+Existen varios tipos de ordenamiento. Los más comunes
+son los ordenamientos numérico y lexicográfico (o alfabético).
+Ellos difieren en la manera en que compara los elementos
+individuales a ser ordenados.
 \index{numeric sort}
 \index{alphabetic sort}
 \index{lexicographic sort}
@@ -1482,63 +1517,63 @@ in the way they compare individual items to be sorted.
 \index{sort!alphabetic}
 \index{sort!lexicographic}
 
-In alphabetic sort, you first compare the first letter of 
-the words to be compared; a word starting with an ``a'' 
-will always come before a word starting with a ``b'' 
-(or any other letter) in an ascending sort, irrespective 
-of the value or number of the other characters. You need to 
-compare the second character of two words only if 
-the first character of these words is the same. 
+En el ordenamiento alfabético, tú debes comparar la primera
+letra de las palabras a ser comparadas; una palabra 
+que comienza con una ``a`` siempre vendrá antes que una palabra
+que comience con una ``b`` (o cualquier otra letra) en
+orden ascendente, sin importar el valor o número de los 
+otros caracteres. Tú necesitas comparar el segundo carácter
+de las dos palabras solo si el primer carácter de las palabras
+es el mismo.
 
-Numeric sorting is very different: it is the overall 
-value of the number that is of interest. For example, 
-if we are sorting integers, 11 is larger than 9 because 
-it has more digits. But alphabetic sorting of 9 and 11 
-would consider 11 to be smaller than 9, because the 
-first digit is smaller.
+El ordenamiento numérico es muy diferente: el valor de
+interés es el valor total del número. Por ejemplo, si estamos
+ordenando números enteros, 11 es es mayor que 9 porque tiene 
+más dígitos. Sin embargo, el ordenamiento alfabético de 9 y 11
+considera a 11 menor que 9, porque el primer dígito es menor.
 
-So an alphabetic or lexicographic sort of the list of 
-integers above would return:
+Por lo tanto, el ordenamiento alfabético o lexicográfico de la
+lista de enteros anterior devuelve:
 
 \begin{verbatim}
 (1 11 2 4 5 6 9)
 \end{verbatim}
 
-The consequence is that, with many programming languages, 
-when you want to sort data, you need to specify which 
-type of sort you want. With consistent data (every item 
-of the same type), Perl~6 is usually clever enough to 
-find out which type of sort is best suited to your 
-needs. So, for example, this code will perform 
-the type of sort that you probably expect:
+La consecuencia es que, con muchos lenguajes de programación,
+cuando quieres ordenar datos, tú necesitas especificar qué
+tipo de ordenamiento quieres. Con datos consistentes (
+cada artículo del mismo tipo), Perl~6 es lo suficientemente
+astuto para encontrar qué tipo de ordenamiento es apto para
+tus necesidades. Así que, por ejemplo, este código hará
+el tipo de ordenamiento que esperas:
 
 \begin{verbatim}
 say sort <ac a bc ab abc cb ca>; # ->(a ab abc ac bc ca cb)
 \end{verbatim}
 
-Even with mixed data types, {\tt sort} can do a pretty good 
-job at providing a result that may very well be what 
-you are looking for:
+Hasta con tipos de datos mezclados, {\tt sort} puede hacer 
+un gran trabajo al proveer un resultado que puede ser lo que
+esperas:
 
 \begin{verbatim}
 say sort <1 b 11 5 cb 4 12 a ab abc 42 ac bc ca >;
          # -> (1 4 5 11 12 42 a ab abc ac b bc ca cb)
 \end{verbatim}
 
-There are cases, however, where this simple use of the 
-{\tt sort} function will fail to return what you 
-probably want:
+Existen otros casos donde el simple uso de la función
+{\tt sort} fallará y no devolverá lo que probablemente
+esperas:
 
 \begin{verbatim}
 say sort <a ab abc A bc BAC AC>; # -> (A AC BAC a ab abc bc)
 \end{verbatim}
 %
 
-Here, {\tt sort} puts all strings starting with an 
-uppercase letter before any string starting with a 
-lower case letter, probably not what you want. It 
-looks even worse if the strings use extended 
-ASCII characters:
+En este caso, {\tt sort} pone todas las cadenas de texto
+que comienzan con una letra mayúscula antes que cualquier 
+cadena de texto que comienza con una letra minúscula. Probablemente
+no deseas esto. Esto luce peor si las cadenas de texto usan
+caracteres ASCII extendidos:
 \index{case!lower}
 \index{case!upper}
 
@@ -1549,17 +1584,17 @@ say sort <a ab àb abc Ñ A bc BAC AC>;
 %
 
 \index{sort!ASCIIbetical}
-The reason is that, when sorting strings, {\tt sort} 
-uses the internal numeric encoding of letters. This 
-was sometimes called "ASCIIbetical" order (by contrast 
-with alphabetical order), but the term is now too limited 
-and somewhat obsolete, because Perl~6 is using Unicode 
-rather than ASCII. 
+La razón detrás de esto es que, al ordenar cadenas de texto,
+la función {\tt sort} usa la codificación numérica interna
+de las letras. Esto fue llamado alguna vez orden 
+"ASCIIbetical" (en contraste con orden alfabético),
+pero el término es ahora muy limitado y algo obsoleto,
+porque Perl~6 usa Unicode y no ASCII.
 
-Clearly, these are cases where more advanced sorting 
-techniques are needed. 
+Claramente, hay casos donde más técnicas avanzadas 
+de ordenamiento son necesarias.
 
-\section{More Advanced Sorting Techniques}
+\section{Más Técnicas Avanzadas de Ordenamiento}
 \label{advanced_sort}
 \index{sorting!advanced}
 
@@ -1567,34 +1602,34 @@ techniques are needed.
 \index{sort!code object}
 \index{cmp operator}
 \index{operator!cmp}
-The {\tt sort} routine typically takes two arguments, 
-a code object and a list of items to be sorted, and returns 
-a new sorted list. If no code object is specified, as in the 
-examples we have seen above, the {\tt cmp} built-in comparison 
-operator is used to compare the elements. If 
-a code object is provided (and if it accepts two 
-arguments), then it is used to perform the comparison, 
-which tells {\tt sort} which of the two elements should 
-come first in the final order.
+La rutina {\tt sort} típicamente toma dos argumentos,
+un objeto de código y una lista de artículos a ser ordenados,
+y devuelve una nueva lista ordenada. Si no se especifica un
+objeto de código, como en el ejemplo que vimos más arriba,
+el operador integrado de comparación {\tt cmp}
+se usa para comparar los elementos. Si el objeto de código
+es proveído, entonces se usa en la comparación,
+la cual informa a {\tt sort} cuál de los elementos
+debería estar primero en el orden final.
 
-There are three built-in comparison operators that can be used 
-for sorting. They are sometimes called three-way comparators 
-because they compare their operands and return a value meaning 
-that the first operand should be considered less than, equal to 
-or more than the second operand for the purpose of determining 
-in which order these operands should be sorted. The {\tt leg} 
-operator coerces its arguments to strings and performs a 
-lexicographic comparison. The \verb'<=>' operator coerces 
-its arguments to numbers (Real) and does a numeric comparison. 
-The aforementioned {\tt cmp} operator is the ``smart'' 
-three-way comparator, which compares strings with string 
-semantics and numbers with number semantics.
+Existen tres operadores integrados de comparación que pueden
+usarse para ordenar. Algunas veces son conocidos como los
+comparadores de tres sentidos porque ellos comparan sus operandos
+y devuelven un valor que informa si el primer operador debería
+ser considerado menor que, igual a o mayor que el segundo operador
+para el propósito de determinar el orden en que estos operadores
+deben ser ordenados.  El operador {\tt leg} coacciona sus argumentos
+a cadenas de texto y realiza una comparación lexicográfica. El operador
+\verb|<=>| coacciona sus argumentos a números (Real) y realiza una
+comparación numérica. El operador {\tt cmp} es el comparador ``inteligente``
+de tres sentidos, el cual compara cadenas de texto con semántica de 
+cadenas de texto y números con semántica de números.
 \index{coercion}
 
-Most of our simple examples above worked well with 
-strings and numbers because they implicitly used the 
-default {\tt cmp} operator, which ``guesses'' quite 
-well which type of comparison to perform.
+La mayoría de nuestros simples ejemplos funcionó bien
+con cadenas de texto y números porque ellos implícitamente
+usaron el operador {\tt cmp} por defecto, el cual ``adivina``
+el tipo de comparación a realizarse.
 
 \index{three-way comparator}
 \index{leg operator}
@@ -1608,14 +1643,13 @@ well which type of comparison to perform.
 \fi
 
 
-
-In other words, this:
+En otras palabras, esto:
 
 \begin{verbatim}
 say sort <4 6 2 9 1 5 11>;  # -> (1 2 4 5 6 9 11)
 \end{verbatim}
 
-is equivalent to this:
+es equivalente a esto:
 
 \begin{verbatim}
 say sort { $^a cmp $^b }, <4 6 2 9 1 5 11>;
@@ -1623,53 +1657,53 @@ say sort { $^a cmp $^b }, <4 6 2 9 1 5 11>;
 \end{verbatim}
 
 \index{placeholder}
-The code block used here as the first argument to the 
-{\tt sort} routine uses the placeholder 
-parameters (or self-declared parameters) seen earlier 
-in this chapter. The {\tt cmp} routine receives two 
-arguments that are bound to \verb'$^a' and \verb'$^b' 
-and returns to the \verb'sort' function information 
-about which of the two items should come first in the 
-resulting order.
+El bloque de código usado aquí como el primer argumento
+de la función {\tt sort} usa los parámetros marcadores
+(parámetros auto-declarados de posición) los cuales
+vimos anteriormente en este capítulo. El operador
+{\tt cpm} recibe dos argumentos y le pasa a la
+función {\tt sort}  información sobre cuál de los 
+artículos debería aparecer primero en el orden 
+resultante.
 \index{cmp operator}
 \index{operator!cmp}
 
 \index{sort!reverse order}
-If you wanted to sort in reverse order, you could just 
-swap the order of the two placeholder parameters:
+Si quieres ordenar en el orden inverso, podrías solo
+intercambiar el orden de los parámetros marcadores:
 
 \begin{verbatim}
 say sort { $^b cmp $^a }, <4 6 2 9 1 5 11>;
      # -> (11 9 6 5 4 2 1)
 \end{verbatim}
 
-Note that this example is given only for the purpose of 
-explaining some features of the placeholder parameters. 
-To sort the array we've presented here in descending order, 
-it might just be easier to obtain the same result with the 
-following code:
+Ten presente que discutimos este ejemplo solo con el
+propósito de explicar algunas funciones de los 
+parámetros marcadores. Para ordenar el array que hemos
+presentado aquí en orden descendente, sería más fácil 
+obtener el mismo resultado con el siguiente código:
 
 \begin{verbatim}
 say reverse sort <4 6 2 9 1 5 11>;  # -> (11 9 6 5 4 2 1)
 \end{verbatim}
 \index{reverse}
 
-The reason {\tt sort} does a good job even with mixed 
-strings and integers is because the default comparison 
-function, {\tt cmp}, is pretty clever and guesses by 
-looking at its arguments whether it should perform 
-a lexicographic order or numeric order comparison.
+La razón por la cual {\tt sort} hace un trabajo tan grandioso
+hasta con una mezcla de cadenas de texto y números es porque 
+la función de comparación por defecto, {\tt cmp}, es muy astuta 
+y puede adivinar si debería realizar una comparación de orden
+lexicográfico u orden numérico al examinar sus argumentos.
 
-If sorting gets too complicated for {\tt cmp}, or, more 
-generally, when a specific or custom order is required, 
-then you have to write your own ad-hoc comparison 
-subroutine.
+Si el ordenamiento se complica para {\tt cmp}, o generalmente
+cuando se requiere un ordenamiento específico o personalizado,
+entonces debes crear tu propia subrutina ad-hoc de comparación.
 \index{cmp operator}
 \index{operator!cmp}
 
-For example, if we take again the example of strings 
-with mixed-case letters, we may achieve a case-insensitive 
-alphabetical order this way:
+Por ejemplo, si tomamos de nuevo el ejemplo de las cadenas
+de texto con letras mayúsculas y minúsculas, podemos lograr un
+ordenamiento alfabético que no es sensible a la diferencia
+entre letras mayúsculas y minúsculas:
 \index{sort!case insensitive}
 
 \begin{verbatim}
@@ -1687,76 +1721,81 @@ say sort { $^a.lc leg $^b.lc}, <a ab abc A bc BAC AC>;
 \index{function!lc}
 \index{method!lc}
 \index{lower case!lc function}
-Here, when the comparison code block receives its two 
-arguments, the {\tt lc} method casts them to lowercase 
-before performing the comparison. Notice that this has 
-no impact on the case of the output, since the lowercase 
-transformation is local to the comparison code block and 
-has no impact on the data handled by {\tt sort}. We will 
-see shortly that there is a simpler and more efficient 
-way of doing such a transformation before comparing the 
-arguments.
+Cuando el bloque de código de comparación recibe sus dos 
+argumentos, el método {\tt lc} los convierte en letras
+minúsculas antes de realizar la comparación. Nota qu esto
+no tiene ningún impacto en el caso de la salida de texto,
+dado que la transformación a letra minúscula es local
+al bloque de código de comparación y no tiene impacto
+alguno en los datos manejados por {\tt sort}. Veremos
+en un rato que hay una manera más fácil y eficiente de
+realizar tal transformación antes de comparar los argumentos.
 
-If the comparison specification is more complicated, we 
-may need to write it in a separated subroutine and let 
-{\tt sort} call that subroutine. Suppose we have a list 
-of strings that are all formed of leading digits 
-followed by a group of letters and possibly followed by other 
-irrelevant characters, and that we want to sort the 
-strings according to the group of letters that follows 
-the digits.
+Si la especificación de la comparación es muy complicada,
+podría ser necesario escribirla en una subrutina separada
+y dejar que {\tt sort} llame a esa subrutina. Supón que 
+tenemos una lista de cadenas de texto que están todas formadas
+por dígitos iniciales, los cuales son seguidos por un grupo
+de letras y posiblemente seguidos por otros caracteres irrelevantes,
+y queremos ordenar las cadenas de texto de acuerdo al grupo de
+letras que siguen los dígitos.
 
-Let's start by writing the comparison subroutine:
+Comencemos con escribir la subrutina de comparación:
 \index{comparison subroutine}
 \index{sort!comparison subroutine}
 
 
 \begin{verbatim}
-sub my_comp ($str1, $str2) {
-    my $cmp1 = $0 if $str1 ~~ /\d+(\w+)/; 
-    my $cmp2 = $0 if $str2 ~~ /\d+(\w+)/; 
+sub mi_comp ($cad1, $cad2) {
+    my $cmp1 = $0 if $cad1 ~~ /\d+(\w+)/; 
+    my $cmp2 = $0 if $cad2 ~~ /\d+(\w+)/; 
     return $cmp1 cmp $cmp2;
 }
 \end{verbatim}
 
-Nothing complicated: it takes two arguments, uses a regex 
-for extracting the group of letters in each of the 
-arguments, and returns the result of the {\tt cmp} 
-function on the extracted strings. In the real world, something 
-might need to be done if either of the extractions fails, but 
-we will assume for our purposes here that this will not happen.
+Nada complicada: la subrutina toma dos argumentos, usa
+una regex para extraer el grupo de palabras de cada 
+argumento, y devuelve el resultado de las cadenas 
+extraídas a la función {\tt cmp}. En el mundo real,
+se necesitaría hacer algo si la extracción falla, pero,
+para nuestro propósito, asumiremos que esto no sucederá.
 \index{regex}
 \index{cmp operator}
 
-The sorting is now quite straight forward, we just need to 
-pass the above subroutine to the {\tt sort} function:
+El ordenamiento es ahora bastante directo, solo 
+necesitamos pasar a la función {\tt sort} la
+función anterior:
 
 \begin{verbatim}
-say sort &my_comp, < 22ac 34bd 56aa3 12c; 4abc( 1ca 45bc >;
+say sort &mi_comp, < 22ac 34bd 56aa3 12c; 4abc( 1ca 45bc >;
      # -> (56aa3 4abc( 22ac 45bc 34bd 12c; 1ca)
 \end{verbatim}
 
-We only need to prefix the comparison subroutine with the 
-``\&'' ampersand sigil and it works fine: the strings are sorted 
-in accordance to the letter groups that follow the leading digits.
+Solo necesitamos preceder la subrutina de comparación
+con el sigilo ``\&`` y funcionará bien: las cadenas de texto
+son ordenadas de acuerdo a los grupos de letras que siguen los
+dígitos al inicio de cada cadena de texto.
 \index{sigil}
 \index{ampersand sigil}
 
-In all the examples above, the comparison subroutine 
-accepted two parameters, the two items to be compared. 
-The {\tt sort} function may also work with a code object 
-taking only one parameter. In that case, the code object 
-is not a comparison code block or subroutine, but is a 
-code object implementing the transformation to be 
-applied to the items before using the default {\tt cmp} 
-comparison routine. 
+En todos los ejemplos anteriores, la subrutina de
+de comparación aceptó dos parámetros, los artículos
+a ser comparados. La función {\tt sort} puede funcionar
+con un objeto de código que toma un solo parámetro. En 
+tal caso, el objeto de código no es un bloque 
+de código de comparación, sino que es un objeto de código
+que implementa la transformación a ser aplicada a los
+artículos antes de usar la función de comparación por
+defecto {\tt cmp}. 
 \index{sort!transformation subroutine}
 \index{cmp operator}
 \index{operator!cmp}
 
-For example, if we take once more the example of strings 
-with mixed-case letters, we may achieve a case-insensitive 
-alphabetical order yet in a new way:
+Por ejemplo, si tomamos una vez más el ejemplo de las cadenas
+de texto mezcladas con letras mayúsculas y minúsculas, 
+podemos lograr un ordenamiento alfabético que no es 
+sensible a la diferencia entre letras mayúsculas y minúsculas
+en una nueva forma:
 \index{sort!case insensitive}
 
 \begin{verbatim}
@@ -1764,7 +1803,7 @@ say sort { $_.lc }, <a ab abc A bc BAC AC>;
      # -> (a A ab abc AC BAC bc)
 \end{verbatim}
 
-This could also be written with a placeholder parameter:
+Esto podría también escribirse con un parámetro marcador:
 \index{placeholder}
 
 \begin{verbatim}
@@ -1772,22 +1811,24 @@ say sort { $^a.lc }, <a ab abc A bc BAC AC>;
      # -> (a A ab abc AC BAC bc)
 \end{verbatim}
 
-Here, since the comparison code block takes only one 
-argument, it is meant to transform each of the items 
-to be compared before performing the standard {\tt cmp} routine on 
-the arguments. This not only makes things simpler, 
-but is also probably more efficient, especially if 
-the number of items to be sorted is large and if the 
-transformation subroutine is relatively costly: the 
-transformed values are actually \emph{cached} (i.e., 
-stored in memory for repeated use), so that the 
-transformation is done only once for each item, despite 
-the fact that the comparison routine is called many times 
-for each item in a sort.
+En este ejemplo, debido a que el bloque de código
+de comparación toma un solo argumento, su tarea es
+transformar cada uno de los artículos a ser comparados
+antes de aplicar la función {\tt cmp}  a los argumentos.
+Esto no solo las cosas más simples, sino que también
+es probablemente más eficaz, especialmente si 
+el número de artículos a ser ordenados es grande y si
+la subrutina de transformación es relativamente costosa
+(en término de procesamiento): los valores transformados
+son actualmente almacenados en \emph{caché} (i.e.,
+almacenados en la memoria para uso repetido), de tal manera
+que la transformación se hace solamente una vez por cada artículo,
+a pesar de que la subrutina de comparación se llama muchas veces por
+cada artículo en un ordenamiento.
 \index{cache}
 
-Similarly, we could sort numbers according to their 
-absolute values:
+De igual manera, podríamos ordenar los números de acuerdo 
+a sus valores absolutos:
 \index{abs function or method}
 \index{function!abs}
 \index{method!abs}
@@ -1796,109 +1837,111 @@ absolute values:
 say sort {$_.abs}, <4 -2 5 3 -12 42 8 -7>; # -> (-2 3 4 5 -7 8 -12 42)
 \end{verbatim}
 
-If you think about it, the ``more complicated'' example 
-with digits and letters requiring a separate subroutine 
-is also applying the same transformation to both its 
-arguments. As an exercise, write a (simpler) sorting 
-program using a transformation subroutine and the default 
-{\tt cmp} operator on transformed items. Solution: \ref{sol_sort_exercise}.
+El ejemplo ``más complejo`` con dígitos y letras que requiere
+una subrutina separada aplica la misma transformación
+a ambos argumentos. Como ejercicio, escribe un simple programa
+de ordenamiento que usa una subrutina de transformación y
+el operador de comparación por defecto {\tt cmp} sobre
+los artículos transformados. Solución: \ref{sol_sort_exercise}.
 \label{sort_exercise}
 \index{cmp operator}
 \index{sort}
 
-Needless to say, the (so-called) advanced uses of the 
-{\tt sort} function presented in this section are yet 
-more examples of the functional programming style. The 
-comparison subroutines and the transformation subroutines 
-are passed around as arguments to the {\tt sort} 
-function, and, more broadly, all of the functions, 
-subroutines, and code blocks used here are higher-order 
-functions or first-class functions.
+Sobra decir que los usos avanzados de la función {\tt sort}
+presentada en esta sección son solo más ejemplos del
+estilo de programación funcional. Las subrutinas de comparación
+y las subrutinas de transformación pueden pasarse como 
+argumentos a la función {\tt sort}, y generalmente, todas
+las funciones, las subrutinas, y los bloques de códigos
+usados aquí son funciones de orden superior o funciones
+de primera clase.
 \index{functional programming}
 
-\section{Debugging}
+\section{Depuración de Programas}
 \index{debugging}
 
-Careless use of arrays (and other mutable objects)
-can lead to long hours of debugging.  Here are some common
-pitfalls and ways to avoid them:
+El uso descuidado de arrays ( y cualquier otros objetos
+mutables) puede conducir a largas horas de depuración. 
+Estas son algunas de las dificultades y las maneras de
+evitarlas:
 
 \begin{enumerate}
 
-\item Some array built-in functions and methods modify 
-their argument(s) and others don't.
+\item Algunas de las funciones y métodos integrados de arrays
+modifican sus argumentos mientras otras no.
 
-It may be tempting to write code like this:
+Puede ser tentativo escribir código así:
 
 \begin{verbatim}
-@array = splice @array, 1, 2, $new_item;   # WRONG!
+@array = splice @array, 1, 2, $nuevo-elem;   # INCORRECTO!
 \end{verbatim}
 \index{splice function}
 
-The {\tt splice} function returns the elements it has 
-deleted from the array, not the array itself, which 
-is modified ``in place.''
+La función {\tt splice} devuelve los elementos
+que ha eliminado del array, no el array en sí mismo,
+el cual es modificado ``en el lugar``.
 
-Before using array methods and operators, you should 
-read the documentation carefully and perhaps test them 
-in interactive mode.
+Antes de usar los métodos y operadores de arrays,
+deberías leer la documentación cuidadosamente y quizás
+probarlos en modo interactivo.
 
-When traversing an array, for example with {\tt for} 
-or {\tt map}, the \verb'$_' topical variable is an 
-\emph{alias} for the successive items of the array, and 
-not a copy of them. This means that if you change 
-\verb'$_', the change will be reflected in the array. 
-There may be some cases where this is what you want, 
-and others where you don't care (if you no longer need the 
-original array), but this technique is error-prone and 
-should perhaps be avoided (or at least used only with 
-great care).
+Al recorrer un array, por ejemplo con {\tt for}
+o {\tt map}, la variable tópico \verb|$_| es
+un apodo para los elementos sucesivos del array,
+y no una copia de ellos. Esto significa que si
+cambias a \verb|$_|, el cambio sera reflejado en
+el array. Pueden haber casos donde este comportamiento
+es deseable y otros casos donde no importa lo que suceda
+con ellos (porque ya no necesitas el array original),
+pero esta técnica es propensa a errores y quizás debería
+evitarse (o por lo menos usarla con precaución).
 
 \begin{verbatim}
-my @numbers = <1 2 3>;
-push @doubles, $_*=2 for @numbers;  # WRONG (probably)
-say @numbers; # -> [2 4 6]
+my @números = <1 2 3>;
+push @dobles, $_*=2 for @números;  # INCORRECTO (probablemente)
+say @números; # -> [2 4 6]
 \end{verbatim}
 
-The error here is that the \verb'$_*=2' statement is 
-modifying \verb'$_', so that the \verb'@numbers' array is 
-also modified, whereas the intent was certainly to 
-populate the new numbers into \verb'@doubles', not 
-to modify \verb'@numbers'.
+El error aquí es que la sentencia \verb|$_*=2| está
+modificando a \verb|$_|, así que el array \verb|@números|
+es también modificado, mientras que la intención era 
+ciertamente poblar los nuevos números en el array
+\verb|@dobles|, no modificar a \verb|@números|.
 
-The same code applied to a literal list instead of an 
-array leads to a run time error because a list is 
-immutable:
+El mismo código aplica a una lista literal en vez de 
+un array lo cual conduce a un error al tiempo de 
+ejecución, debido a que una lista es inmutable:
 
 \begin{verbatim}
-> push @doubles, $_*=2 for <1 2 3>; # WRONG (definitely)
+> push @dobles, $_*=2 for <1 2 3>; # INCORRECTO (definitivamente)
 Cannot assign to an immutable value
 \end{verbatim}
 
-The fix is quite easy in this case and consists of 
-using an expression that does not modify \verb'$_' 
-but returns the new desired value:
+La solución en este caso es bien fácil y consiste
+de usar una expresión que no modifique a \verb|$_|
+pero devuelva el valor deseado:
 
 \begin{verbatim}
-push @doubles, $_ * 2 for @numbers; # OK
+push @dobles, $_ * 2 for @números; # OK
 \end{verbatim}
 
-The same goes for {\tt map}:
+Lo mismo aplica a {\tt map}:
 
 \begin{verbatim}
-my @numbers = <1 2 3>;
-say map { ++$_}, @numbers;          # WRONG (probably)
-say @numbers; # -> [2 3 4]
+my @números = <1 2 3>;
+say map { ++$_}, @números;          # INCORRECTO (probablemente)
+say @números; # -> [2 3 4]
 \end{verbatim}
 %
 
-Here again, using an expression that does not modify \verb'$_' 
-but instead returns the new desired value will fix the problem:
+Otra vez, el uso de una expresión que no modifique a \verb|$_|
+pero que en cambio, devuelva el nuevo valor deseado arreglará
+el problema:
 
 \begin{verbatim}
-my @numbers = <1 2 3>;
-say map { $_ + 1}, @numbers;        # -> (2 3 4)
-say @numbers; # -> [1 2 3]
+my @números = <1 2 3>;
+say map { $_ + 1}, @números;        # -> (2 3 4)
+say @números; # -> [1 2 3]
 \end{verbatim}
 %
 
@@ -1906,31 +1949,32 @@ say @numbers; # -> [1 2 3]
 
 
 
-\section{Glossary}
+\section{Glosario}
 
 \begin{description}
 
-\item[List] An immutable sequence of values.
+\item[Lista] Una secuencia inmutable de valores.
 \index{list}
 
-\item[Array] A variable containing a mutable sequence 
-of values.
+\item[Array] Una variable que contiene una secuencia mutable
+de valores.
 \index{list}
 
-\item[Element] One of the values in a list or an 
-array (or some other sequence), also called items.
+\item[Elemento] Uno de los valores en una lista o array (
+o cualquier otra secuencia), también llamado artículos.
 \index{element}
 \index{item}
 
-\item[Nested array] An array that is an element of another array.
+\item[Array anidado] Un array que es un elemento de otro array.
 \index{nested list}
 
-\item[Accumulator] A variable used in a loop to add up or
-accumulate a result.
+\item[Acumulador] Una variable que se usa en un bucle 
+para agregar o acumular un resultado.
 \index{accumulator}
 
-\item[Reduce] A processing pattern that traverses a sequence 
-and accumulates the elements into a single result.
+\item[Reducir] Un patrón de procesamiento que recorre
+una secuencia y acumula los elementos en un solo
+resultado.
 \index{reduce pattern}
 \index{pattern!reduce}
 
@@ -1941,37 +1985,39 @@ such a processing pattern.
 \index{map pattern}
 \index{pattern!map}
 
-\item[Filter] A processing pattern that traverses a 
-list and selects the elements that satisfy some criterion. 
-{\tt grep} is a Perl implementation of a filter.
+\item[Filtro] Un patrón de procesamiento que recorre una
+lista y selecciona los elementos que satisfacen una condición.
+{\tt grep} es una implementación de Perl de un filtro.
 \index{filter pattern}
 \index{pattern!filter}
 
-\item[Alias] A circumstance where an identifier refers 
-directly to some variable or value, so that 
-a change to it would lead to a change to 
-the variable or value. It essentially means having 
-two names for the same value, container or object.
+\item[Apodo] Una circunstancia donde un identificador
+se refiere directamente a alguna variable o valor, 
+de tal manera que un cambio del identificador
+se traduce en un cambio de la variable o valor. 
+Esto significa tener dos nombres para el mismo valor,
+contenedor u objeto.
 \index{alias}
 
 \end{description}
 
 
-\section{Exercises}
+\section{Ejercicios}
 \label{array_exercises}
 
 \begin{exercise}
 
-Write a subroutine called \verb"nested-sum" that takes an 
-array of arrays of integers and adds up the elements from all of the nested arrays. For example:
+Escribe una subrutina llamada \verb|suma-anidada| que toma un
+array de arrays de enteros y añade todos los elementos de los
+arrays anidados. Por ejemplo:
 \label{nested_sum}
 
 \begin{verbatim}[fontshape=up]
 my @AoA = [[1, 2], [3], [4, 5, 6]];
-say nested-sum(@AoA);        # -> 21
+say suma-anidada(@AoA);        # -> 21
 \end{verbatim}
 
-Solution: \ref{sol_nested_sum}.
+Solución: \ref{sol_nested_sum}.
 
 \end{exercise}
 
@@ -1979,70 +2025,70 @@ Solution: \ref{sol_nested_sum}.
 \label{cumulative}
 \index{cumulative sum}
 
-Write a subroutine called {\tt cumul-sum} that takes a list of numbers 
-and returns the cumulative sum, that is, a new list where the 
-$i$th element is the sum of the first $i+1$ elements from 
-the original list. For example:
+Escribe una subrutina llamada \verb|suma-acumula| que toma una lista
+de números y devuelve la suma acumulativa, es decir, una nueva lista
+donde la suma del elemento $i$th es la suma de los primeros elementos
+$i+1$ de la lista original. Por ejemplo:
 \label{cumsum}
 
 \begin{verbatim}[fontshape=up]
 my @nums = [1, 2, 3, 4];
-say cumul-sum(@nums);           # -> [1, 3, 6, 10]
+say suma-acumula(@nums);           # -> [1, 3, 6, 10]
 \end{verbatim}
 
-Solution: \ref{sol_cumsum}.
+Solución: \ref{sol_cumsum}.
 
 \end{exercise}
 
 \begin{exercise}
 
-Write a subroutine called \verb"middle" that takes a list and
-returns a new list that contains all but the first and last
-elements.  For example:
+Escribe una subrutina llamada \verb|medio| que toma una lista y devuelve
+una lista nueva que contiene todos los elementos excepto el primero y el
+último. Por ejemplo:
 \label{middle}
 
 \begin{verbatim}[fontshape=up]
-say middle(1, 2, 3, 4);      # -> (2, 3)
+say medio(1, 2, 3, 4);      # -> (2, 3)
 \end{verbatim}
 
-Solution: \ref{sol_middle}.
+Solución: \ref{sol_middle}.
 
 \end{exercise}
 
 \begin{exercise}
 
-Write a subroutine called \verb"chop-it" that takes 
-an array, modifies it by removing the first and last 
-elements, and returns nothing useful. For example:
+Escribe una subrutina llamada \verb|corta| que toma un
+array, lo modifica al remover el primer y último elemento y
+devuelve algo no útil. Por ejemplo:
 \label{chop}
 
 \begin{verbatim}[fontshape=up]
 my @nums = 1, 2, 3, 4;
-chop-it(@nums);
+corta(@nums);
 say @nums;                   # -> [2, 3]
 \end{verbatim}
 
-Solution: \ref{sol_chop}.
+Solución: \ref{sol_chop}.
 
 \end{exercise}
 
 
 \begin{exercise}
-Write a subroutine called \verb"is-sorted" that takes 
-a list (or array) of numbers as a parameter and returns 
-{\tt True} if the list is sorted in ascending order and 
-{\tt False} otherwise.  For example:
+Escribe una subrutina llamada \verb|está-ordenada| que toma
+una lista o un array de números como parámetro y devuelve {\tt True}
+si la lista está ordenada en orden ascendente y {\tt False} 
+de lo contrario. Por ejemplo:
 \label{is_sorted}
 \index{is-sorted}
 
 \begin{verbatim}[fontshape=up]
-> is-sorted (1, 2, 2);
+> está-ordenada (1, 2, 2);
 True
-> is-sorted (1, 2, 1);
+> está-ordenada (1, 2, 1);
 False
 \end{verbatim}
 
-Solution: \ref{sol_is_sorted}.
+Solución: \ref{sol_is_sorted}.
 
 \end{exercise}
 
@@ -2052,12 +2098,12 @@ Solution: \ref{sol_is_sorted}.
 \label{is_anagram}
 \index{anagram}
 \index{is-anagram}
-Two words are anagrams if you can rearrange the letters 
-from one to spell the other.  Write a subroutine called 
-\verb"is-anagram" that takes two strings and returns 
-{\tt True} if they are anagrams.
+Una palabra es un anagrama de otra si las dos tienen las mismas letras, 
+con el mismo número de apariciones, pero en un orden diferente.
+Escribe una subrutina llamada \verb|es-anagrama| que toma dos
+cadenas de texto y devuelve {\tt True} si son anagramas.
 
-Solution: \ref{sol_is_anagram}.
+Solución: \ref{sol_is_anagram}.
 
 \end{exercise}
 
@@ -2069,34 +2115,34 @@ Solution: \ref{sol_is_anagram}.
 \index{has-duplicates}
 \index{uniqueness}
 
-Write a subroutine called \verb"has-duplicates" that takes
-a list or an array and returns {\tt True} if there is 
-any element that appears more than once.  It should 
-not modify the original input.
+Escribe una subrutina llamada \verb|tiene-duplicados| que toma
+una lista o un array  y devuelve {\tt True} si hay algún elemento
+que aparece más de una vez. La subrutina no debería
+modificar la entrada original.
 
-Solution: \ref{sol_has_duplicates}.
+Solución: \ref{sol_has_duplicates}.
 
 \end{exercise}
 
 
 \begin{exercise}
 
-This exercise pertains to the so-called Birthday Paradox, 
-which you can read about at 
-\url{http://en.wikipedia.org/wiki/Birthday_paradox}.
+Este ejercicio es acerca de la Paradoja del Cumpleaños.
+Encuentra más información sobre esta paradoja aquí: 
+\url{https://es.wikipedia.org/wiki/Paradoja_del_cumpleaños}.
 \index{birthday paradox}
 \label{birthdays}
 
-If there are 23 students in your class, what are the 
-chances that two of you have the same birthday?  You 
-can estimate this probability by generating random 
-samples of 23 birthdays and checking for duplicates. 
-Hint: you can generate random birthdays
-with the {\tt rand} and the {\tt int} functions.
+Si hay 23 estudiantes en tu clase, cuál es la probabilidad
+de que dos estudiantes cumplan años el mismo día? 
+Puedes estimar esta probabilidad al generar muestras 
+aleatorias de los 23 cumpleaños y chequear por 
+cumpleaños duplicados. Pista: puedes generar cumpleaños 
+aleatorios con la funciones {\tt rand} y {\tt int}.
 \index{rand function}
 \index{function!rand}
 
-Solution: \ref{sol_birthdays}.
+Solución: \ref{sol_birthdays}.
 
 \end{exercise}
 
@@ -2113,7 +2159,7 @@ longer to run?  Why?
 \index{push function}
 \index{unshift function}
 
-Solution: \ref{sol_push_unshift}.
+Solución: \ref{sol_push_unshift}.
 
 
 \end{exercise}
@@ -2129,32 +2175,35 @@ Solution: \ref{sol_push_unshift}.
 \index{search!binary}
 \index{half-interval search}
 
-To check whether a word is in our standard word list, 
-you could check each element in turn, but it would be 
-slow because it searches through the words in order.
+Para chequear si una palabra está en nuestra lista 
+estándar de palabras, podrías chequear cada elemento
+por turno, pero sería lento porque buscaría a través 
+de las palabras en orden.
 
-If the words are in alphabetical order (which is the 
-case of our word list), we can speed 
-things up considerably with a \emph{bisection search} (also 
-known as binary search), which is similar to what you 
-do when you look a word up in the dictionary.  You
-start somewhere in the middle and check to see whether 
-the word you are looking for comes before the word in 
-the middle of the list.  If so, you search the first 
-half of the list the same way.  Otherwise, you search
-the second half.
+Si las palabras están en orden alfabético (el cual es
+el caso en nuestra lista de palabras), podemos 
+acelerar las cosas con una \emph{búsqueda binaria},
+la cual es similar a lo que haces cuando buscas una
+palabra en el diccionario. Tú comienzas en alguna parte
+en el medio del diccionario y chequea si la palabra que
+estás buscando se encuentra antes que la palabra en
+el medio de la lista. Si esto sucede, busca en la 
+primera mitad de la lista del mismo modo. Por lo
+contrario, busca en la segunda mitad de la lista.
 
-Either way, you cut the remaining search space in half. 
-If the word list has 113,809 words, it will take at 
-most about 17 steps to find the word or conclude that 
-it's not there.
+De cualquier manera, tú reduces el tiempo de búsqueda
+por la mitad. Si la lista de palabras contiene 113,809 
+palabras, tomará alrededor de 17 pasos para encontrar la 
+palabra o concluir que la palabra no se encuentra en 
+la lista.
 
-Write a function called \verb"bisect" that takes a 
-sorted list and a target value and returns information 
-about whether the target value is in the list or not.
+Escribe una función llamada \verb|búsqueda-binaria|
+que toma una lista ordenada y un valor a encontrar en
+la lista. La función debe devolver si el valor
+se encuentra en la lista o no.
 \index{bisect}
 
-Solution: \ref{sol_bisection}
+Solución: \ref{sol_bisection}
 
 \end{exercise}
 
@@ -2162,14 +2211,16 @@ Solution: \ref{sol_bisection}
 \index{reverse word pair}
 \label{reverse_pair}
 
-Two words are a ``reverse pair'' if each is the reverse 
-of the other.  For example, ``depot'' and ``toped'' form 
-a reverse pair; other examples include ``reward'' and 
-``drawer'', or ``desserts'' and ``stressed.'' Write a 
-program that finds all the reverse pairs in the \emph{word.txt}
-file.
+Dos palabras son una ``pareja de inversas`` si cada una es la
+inversa de la otra. Por ejemplo, ``depot`` y ``toped`` forman
+una pareja de inversas.; otro ejemplo incluye ``reward`` y ``drawer``,
+o ``desserts`` y ``stressed``.
 
-Solution: \ref{sol_reverse_pair}.
+Escribe un programa que encuentra todas las parejas de inversas en 
+el archivo \emph{word.txt}.
+
+
+Solución: \ref{sol_reverse_pair}.
 
 \end{exercise}
 
@@ -2177,17 +2228,17 @@ Solution: \ref{sol_reverse_pair}.
 \index{interlocking words}
 \label{interlock}
 
-Two words ``interlock'' if taking alternating letters from 
-each forms a new word.  For example, ``shoe'' and ``cold''
-interlock to form ``schooled.''
+Dos palabras se ``entrelazan`` si al tomar letras alternadas de
+ambas palabras se forma una nueva palabra. Por ejemplo, ``shoe``
+y ``cold`` se entrelazan para formar la palabra ``schooled``.
 
-Write a program that finds in \emph{word.txt} all pairs of 
-words that interlock. Hint: don't enumerate all pairs, there 
-are many of them!
+Escribe un programa que encuentre todos los pares de palabras
+que se entrelazan en el archivo \emph{word.txt}.
+Pista: ¡no enumeres todas la parejas, hay demasiadas!
 
-Solution: \ref{sol_interlock}
+Solución: \ref{sol_interlock}
 
-Credit: this exercise is inspired by an example at \url{http://puzzlers.org}.
+Crédito: este ejercicio fue inspirado por un ejemplo en \url{http://puzzlers.org}.
 
 \end{exercise}
 
