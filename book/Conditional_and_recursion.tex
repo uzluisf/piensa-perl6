@@ -1106,137 +1106,138 @@ lo alcanzará. Actualmente, aunque esto no absolutamente requerido
 por el lenguaje, te aconsejo que crees el hábito de tratar 
 el caso base primero.
 
-\section{Keyboard Input}
+\section{Entrada del Teclado}
 \index{keyboard input}
 
-The programs we have written so far accept no input from 
-the user. They just do the same thing every time. Perl 
-provides built-in functions that stop the program and
-wait for the user to type something. 
+Los programas que hemos escrito hasta ahora no aceptan la
+entrada de texto por el usuario. Ellos hace la mismas cosas
+una y otra vez. Perl provee funciones integradas para parar
+el programa y esperar que el usuario escriba algo.
 
-For example, the {\tt prompt} function prompts the user with 
-a question or an instruction. When the user presses 
-{\sf Return} or {\sf Enter}, the program resumes and 
-\verb"prompt" returns what the user typed as a string 
-(without the newline character corresponding to the 
-{\sf Return} key typed by the user):
+Por ejemplo, la función {\tt prompt} incita al usuario a escribir
+algo a través de una pregunta o una instrucción. Cuando el usuario 
+presiona {\sf Return} o {\sf Enter}, el programa resume y 
+la función \verb|prompt| devuelve lo que el usuario escribió 
+como una cadena de texto (sin el carácter de nueva línea que 
+corresponde a la tecla {\sf Return} que el usuario pulsa):
 \index{prompt function}
 \index{function!prompt}
 
 \begin{verbatim}
-my $user = prompt "Please type in your name: ";
-say "Hello $user";
+my $usuario = prompt "Por favor escribe tu nombre: ";
+say "Hola $usuario";
 \end{verbatim}
 %
 
-This is probably one of the most common ways to obtain 
-interactive user input, because it is usually a good idea 
-to tell the user what is expected.
+Esta es probablemente una de las maneras más común de
+obtener entrada interactiva de texto por el usuario, porque
+es una buena idea dejarle saber lo que se espera.
 
-Another possibility is to use the {\tt get} method (which
- reads a single line) on standard input:
+Otra posibilidad es usar el método {\tt get} (el cual lee
+una sola línea) en la entrada estándar:
 \index{get function}
 \index{function!get}
 
 \begin{verbatim}
-say "Please type in your name: ";
-my $user = $*IN.get;
-say "Hello $user";
+say "Por favor escribe tu nombre: ";
+my $usuario = $*IN.get;
+say "Hola $usuario";
 \end{verbatim}
 %
-or the {\tt get} function, which reads a line from standard 
-input by default:
+o la función {\tt get}, la cual lee una línea de la entrada
+estándar por defecto:
 \begin{verbatim}
-say "Please type in your name: ";
-my $user = get;
-say "Hello $user";
+say "Por favor escribe tu nombre: ";
+my $usuario = get;
+say "Hola $usuario";
 \end{verbatim}
 %
 
-\section{Program Arguments and the MAIN Subroutine}
+\section{Argumentos del Programa y la Subrutina MAIN}
 \label{MAIN}
 \index{MAIN}
 
-There is another (and often better) way to have a program 
-use varying input defined by the user, which is to pass 
-command-line arguments to the program, just as we have 
-passed arguments to our subroutines.
+Hay otra forma (y usualmente mejor) de hacer que un programa
+use entrada variada definida por el usuario, lo cual es 
+pasar argumentos desde la línea de comando al programa, de 
+la misma manera en la que pasamos argumentos a nuestras subrutinas.
 
-The easiest way to retrieve arguments passed to a program is 
-to use a special subroutine named \verb'MAIN'. A program that 
-has a defined \verb'MAIN' subroutine will usually start its execution 
-with that subroutine and the command-line arguments supplied 
-to the program will be passed as arguments to \verb'MAIN'. 
-The \verb'MAIN' signature will enable you to 
-retrieve the arguments provided in the command line and 
-possibly also check their validity.
+La manera más fácil de extraer argumentos que han sido pasados
+al programa es con el uso de la subrutina especial \verb|MAIN|.
+Un programa que tiene una subrutina \verb|MAIN| definida
+comenzará usualmente su ejecución con esa subrutina, y los argumentos
+de la línea de comando suministrados al programa serán pasados
+como argumentos a \verb|MAIN|. La signatura \verb|MAIN| te 
+permitará extraer los argumentos suministrados en la línea de comando
+y posiblemente chequear la validad de los argumentos. 
 \index{signature}
 
-For example, the {\tt greet.pl6} program might look like 
-this:
+Por ejemplo, el programa {\tt saludar.pl6} podría lucir
+así:
 \begin{verbatim}
-sub MAIN (Str $name) {
-    say "Hello $name";
+sub MAIN (Str $nombre) {
+    say "Hola $nombre";
 }
 \end{verbatim}
 
-You may call this program twice with different command-line 
-arguments as follows:
+Puedes llamar este programa dos veces con diferentes argumentos
+en la línea de comando de tal forma:
 
 \begin{verbatim}
-$ perl6 greet.pl6 Larry
-Hello Larry
+$ perl6 saludar.pl6 Larry
+Hola Larry
 
 $ perl6 greet.pl6 world
-Hello world
+Hola world
 \end{verbatim}
 
-It is very easy to change the argument, since all you need 
-to do at the operating system command line is use the up arrow 
-and edit the end of the previous command line.
+Es muy fácil cambiar el argumento, debido a que todo lo que
+necesitas hacer en la línea de comando del sistema operativo
+es usar la flecha y editar el final de la línea de comando
+anterior.
 
-If you forget to supply the argument (or provide the wrong 
-number of arguments, or arguments not matching the signature), 
-the program will die and Perl~6 will nicely generate and 
-display a usage method:
+Si olvidas suministrar un argumento (o provees el número 
+equivocado de argumentos, o los argumentos no coinciden con
+la signatura), el programa terminará y Perl~6 generará
+y mostrará el modo de uso:
 
 \begin{verbatim}
-$ perl6 greet.pl6
+$ perl6 saludar.pl6
 Usage:
-  greet.pl6 <name>
+  saludar.pl6 <nombre>
 \end{verbatim}
 
 
-\section{Debugging}
+\section{Depuración de programas}
 \label{whitespace}
 \index{debugging}
 \index{traceback}
 
-When a syntax or runtime error occurs, the error message contains
-a lot of information, but it can be overwhelming.  The most
-useful parts are usually:
+Cuando ocurre un error de sintaxis o un error al tiempo de ejecución,
+el mensaje de error contiene mucha información, aunque puede ser
+agobiante. Las preguntas más útiles son usualmente:
 
 \begin{itemize}
 
-\item What kind of error it was
+\item ¿Qué tipo de error fue?
 
-\item Where it occurred
+\item ¿Dónde ocurrió?
 
 \end{itemize}
 
-Syntax errors are usually easy to find, but there are a few
-gotchas. In general, error messages indicate where the problem 
-was discovered, but the actual error might be earlier in 
-the code, sometimes on a previous line or even many lines 
-before.
+Los errores sintácticos son usualmente fáciles de encontrar,
+sin embargos existen algunos trucos. En general, los mensajes 
+de error indican donde se descubrió el problema, aunque el actual
+error podría encontrarse un poco antes, algunas veces en la 
+línea previa o hasta varias líneas antes.
 \index{multiplication tables}
 
-For example, the goal of the following code was to display the 
-multiplication tables:
+Por ejemplo, el objetivo del siguiente código era mostrar
+la tabla de multiplicación:
 
 \begin{verbatim}
-# WARNING: faulty code
-sub multiplication-tables {
+# ADVERTENCIA: código con fallas
+sub tabla-multiplicación {
     for 1..10 -> $x {
         for 1..10 -> $y {
             say "$x x $y\t= ", $x * $y;
@@ -1244,30 +1245,30 @@ sub multiplication-tables {
     }
 }
 
-multiplication-tables();
+tabla-multiplicación();
 \end{verbatim}
 
-It failed at compilation with the following error:
+Falló al tiempo de compilación con el siguiente error:
 
 \begin{verbatim}
-$ perl6 mult_table.pl6
-===SORRY!=== Error while compiling /home/Laurent/mult_table.pl6
+$ perl6 tabla_mult.pl6
+===SORRY!=== Error while compiling /home/Laurent/tabla_mult.pl6
 Missing block (taken by some undeclared routine?)
-at /home/Laurent/mult_table.pl6:9
-------> multiplication-tables();<HERE><EOL>
+at /home/Laurent/tabla_mult.pl6:9
+------> tabla-multiplicación();<HERE><EOL>
 \end{verbatim}
 
-The error message reports an error on line~9 of the program 
-(the last line of the code), at the end of the line, but 
-the actual error is a missing closing brace after line~4 
-and before line~5. The reason for this is that, while the 
-programmer made the mistake on line~4, the Perl interpreter 
-could not detect this error before it reached the 
-end of the program. The correct program for displaying 
-multiplication tables might be:
+El mensaje de error reporta un error en la línea~9 del 
+programa (la última línea del código), al final de la línea,
+pero el error actual es que falta una llave izquierda después
+de la línea~4 y antes de la línea~5. La razón de esto es que,
+mientras el programador cometió el error en la línea~4,
+el interpretador de Perl no pudo detectar este error antes 
+de alcanzar el final del programa. El programa correcto para mostrar
+la table de multiplicación podría ser:
 
 \begin{verbatim}
-sub multiplication-tables {
+sub tabla-multiplicación {
     for 1..10 -> $x {
         for 1..10 -> $y {
             say "$x x $y\t= ", $x * $y;
@@ -1275,142 +1276,146 @@ sub multiplication-tables {
         say "";
     }
 }
-multiplication-tables();
+tabla-multiplicación();
 \end{verbatim}
 
-When an error is reported on the last line of a program, 
-it is quite commonly due to a missing closing parenthesis, 
-bracket, brace, or quotation mark several lines earlier. 
-An editor with syntax highlighting can sometimes help you.
+Cuando un error es reportado en la última línea de un
+programa, es comúnmente causado por la falta de un
+paréntesis, un corchete, una llave, o una comilla varias
+líneas más arriba. Un editor con coloración de sintaxis
+puede algunas veces ayudarte a resolver este error.
 \index{syntax!highlighting}
 
 \index{error!runtime}
 \index{runtime error}
 
-The same is true of runtime errors. Consider this program 
-aimed at computing 360 degrees divided successively by 
-the integers between 2 and 5:
+Lo mismo sucede con errores al tiempo de ejecución. Considera
+este programa cuyo objetivo es calcular 360 grados divididos
+sucesivamente por los enteros entre 2 y 5:
 
 \begin{verbatim}
-# WARNING: faulty code
+# ADVERTENCIA: código con fallas
 my ($a, $b, $c, $d) = 2, 3, 5;
-my $value = 360;
-$value /= $_ for $a, $b, $c, $d;
-say $value;
+my $valor = 360;
+$valor /= $_ for $a, $b, $c, $d;
+say $valor;
 \end{verbatim}
 
-This programs compiles correctly but displays a warning and 
-then an exception on runtime:
+Esto programa compila correctamente pero muestra una
+advertencia y después una excepción al tiempo de ejecución:
 
 \begin{verbatim}
 Use of uninitialized value of type Any in numeric context 
-in block  at product.pl6 line 3
+in block  at producto.pl6 line 3
 Attempt to divide 12 by zero using div
-  in block <unit> at product.pl6 line 4
+  in block <unit> at producto.pl6 line 4
 \end{verbatim}
 %
 
-The error message indicates a ``division by zero'' exception 
-on line~4, but there is nothing wrong with that line. 
-The warning on line~3 might give us a clue that the 
-script attempts to use an undefined value, but the real error 
-is on the first line of the script, where one of the four 
-necessary integers (4) was omitted by mistake from the list 
-assignment.
+El mensaje de error indica una excepción ``division by zero''
+en la línea~4, pero no hay nada
+incorrecto con esa línea. La advertencia en la línea~3
+podría darnos una pista sobre el intento del script 
+de usar un valor indefinido, pero el error real se encuentra 
+en la primera línea del script, donde uno de los cuatros 
+enteros necesarios fue omitido por equivocación en la
+asignación de la lista.
 
 \index{division by zero}
 \index{uninitialized value}
 
-You should take the time to read error messages carefully, 
-but don't assume they point to the root cause of the 
-exception; they often point to subsequent problems.
+Deberías prestarle atención a los mensajes de error y leerlos
+cuidadosamente. Sin embargo, no asumas que ellos apuntan a la
+causa de la excepción; usualmente ellos apuntan 
+a problemas subsecuentes.
 
 
-\section{Glossary}
+\section{Glosario}
 
 \begin{description}
 
-\item[Integer division] An operation, denoted {\tt div}, 
-that divides two numbers and rounds down (toward zero) the 
-result to an integer.
+\item[División de enteros] Una operación, denotada por {\tt div},
+que divide dos números y redondea el resultado.
   \index{integer division} 
   \index{division!integer}
 
-\item[Modulo operator]  An operator, denoted with a percent sign
-({\tt \%}), that works on integers and returns the remainder when one
-number is divided by another.
+\item[Operador de módulo]  Un operador, denotado por un signo
+de porcentaje ({\tt \%}), que funciona con números enteros y devuelve
+el residuo al dividir un número por otro.
 \index{modulo operator}
 \index{operator!modulo}
 
-\item[Boolean expression]  An expression whose value is either 
-{\tt True} or {\tt False}.
+\item[Expresión Booleana]  Una expresión cuyo valor es 
+{\tt True} o {\tt False}.
 \index{Boolean expression}
 \index{expression!Boolean}
 
-\item[Relational operator] One of the operators that compares
-its operands. The most common numeric relational operators are 
-{\tt ==}, {\tt !=}, {\tt >}, {\tt <}, {\tt >=}, and {\tt <=}. 
-The equivalent string relational operators are {\tt eq}, {\tt ne}, 
-{\tt gt}, {\tt lt}, {\tt ge}, and {\tt le}.
+\item[Operador de relación] Uno de los operadores que compara
+sus operandos. Los operadores de relación numérica más comunes son 
+{\tt ==}, {\tt !=}, {\tt >}, {\tt <}, {\tt >=}, y {\tt <=}. 
+Los operadores equivalentes de relación de cadenas de texto 
+son {\tt eq}, {\tt ne}, {\tt gt}, {\tt lt}, {\tt ge}, and {\tt le}.
 
-\item[Logical operator] One of the operators that combines Boolean
-expressions: {\tt and}, {\tt or}, and {\tt not}. The equivalent 
-higher-precedence operators are {\tt \&\&}, {\tt ||}, and {\tt !}
+\item[Operador lógico] Uno de los operadores que combina expresiones
+Booleanas: {\tt and}, {\tt or}, y {\tt not}. Los 
+operadores equivalentes de precedencia superior son
+{\tt \&\&}, {\tt ||}, y {\tt !}
 
-\item[Conditional statement]  A statement that controls the 
-flow of execution depending on some condition.
+\item[Sentencia condicional]  Una sentencia que controla el flujo
+de ejecución dependiendo en algunas condiciones.
 \index{conditional!statement}
 \index{statement!conditional}
 
-\item[Condition] The boolean expression in a conditional 
-statement that determines which branch runs.
+\item[Condición] La expresión booleana en una sentencia
+condicional que determina cual de las ramas se ejecuta.
 \index{condition}
 
-\item[Branch] One of the alternative sequences of statements in
-a conditional statement.
+\item[Rama] Una de las secuencias alternativas de sentencias
+en una sentencia condicional.
 \index{branch}
 
-\item[Chained conditional]  A conditional statement with a 
-series of alternative branches.
+\item[Condicional encadenada]  Una sentencia condicional con 
+una serie de ramas alternativas.
 \index{chained conditional}
 \index{conditional!chained}
 
-\item[Nested conditional]  A conditional statement that appears
-in one of the branches of another conditional statement.
+\item[Condicional anidada]  Una sentencia condicional que aparece
+en una de las ramas de otra sentencia condicional.
 \index{nested conditional}
 \index{conditional!nested}
 
-\item[Statement modifier] A postfix conditional expression, i.e., 
-a conditional expression (using for example {\tt if}, {\tt unless} or 
-{\tt for}) that is placed after the statement the executions of which 
-it controls. It can also refer to a postfix looping expression.
+\item[Modificador de sentencia] Una expresión condicional sufija,
+i.e., una expresión condicional (usando por ejemplo {\tt if}, {\tt unless} o 
+{\tt for}) que es colocada después de la sentencia cuya ejecución
+controla. También puede referirse a una expresión de bucle sufijo.
 \index{statement modifier}
 
-\item[Return statement] A statement that causes a function to
-end immediately and return to the caller.
+\item[Sentencia de retorno] Una sentencia que forza a una 
+función a terminar de inmediato y devolver a la función
+que realiza la llamada.
 
-\item[Recursion]  The process of calling the function that is
-currently executing.
+\item[Recursión]  El proceso de llamar una función 
+que aún está en ejecución.
 \index{recursion}
 
-\item[Base case]  A conditional branch in a
-recursive function that does not make a recursive call.
+\item[Caso base]  Una rama condicional en una función
+recursiva que no realiza una llamada recursiva.
 \index{base case}
 
-\item[Infinite recursion]  A recursion that doesn't have a
-base case, or never reaches it.  Eventually, an infinite 
-recursion causes a runtime error, for which you may not want 
-to wait because it may take a long time.
+\item[Recursión infinita]  Una recursión que carece
+de un caso base, o que nunca lo alcanza. Eventualmente, 
+una recursión infinita causa un error al tiempo de ejecución,
+por el cual no querrás esperar dado que podría tardar demasiado.
 \index{infinite recursion}
 
 \end{description}
 
-\section{Exercises}
+\section{Ejercicios}
 %
 
 \begin{exercise}
 %
-Using the integer division and the modulo operators:
+Usando los operadores división de enteros y módulo:
 \index{modulo operator}
 \index{operator!mod}
 \index{mod, modulo operator}
@@ -1421,15 +1426,19 @@ Using the integer division and the modulo operators:
 
 \begin{enumerate}
 
-\item Write a subroutine that computes how many days, hours, minutes and seconds there are in the number of seconds passed as an argument to the subroutine.
+\item Escribe una subrutina que calcule cuantos días, horas, minutos y segundos
+hay en el número de segundos pasado como argumento a la subrutina.
 
-\item Write a script that computes how many days, hours, minutes and seconds there are in 240,000 seconds.
+\item Escribe un script que calcule cuantos días, horas, minutos y segundos 
+hay en 240, 000 segundos.
 
-\item Change your script to compute the number of days, hours, minutes and seconds there are in a number of seconds entered by the script user when prompted to give a number of seconds.
+\item Cambia el script para calcular el número de días, horas, minutos y segundos
+que hay en un número de segundos proveído por el usuario cuando se le
+pide proveer un número de segundos.
 
 \end{enumerate}
 
-Solutions: Subsection~\ref{sol_int_div_modulo}.
+Soluciones: Subsección~\ref{sol_int_div_modulo}.
 
 \end{exercise}
 
@@ -1438,32 +1447,31 @@ Solutions: Subsection~\ref{sol_int_div_modulo}.
 \index{Fermat's Last Theorem}
 \label{fermat_ex}
 
-Fermat's Last Theorem says that there are no positive integers
-$a$, $b$, and $c$ such that
+El último teorema de Fermat enuncia que no existen números enteros
+positivos $a$, $b$, y $c$ tales que se cumpla:
 
 \[ a^n + b^n = c^n \]
 %
-for any values of $n$ greater than 2.
+para todos los valores de $n$ mayores que 2.
 
 \begin{enumerate}
 
-\item Write a function named \verb"check-fermat" that takes four
-parameters---{\tt a}, {\tt b}, {\tt c}, and {\tt n}---and
-checks to see if Fermat's theorem holds.  If
-$n$ is greater than 2 and 
+\item Escribe una función con el nombre \verb|chequear-fermat| que
+toma cuatro parámetros---{\tt a}, {\tt b}, {\tt c}, y {\tt n}---y
+chequea si se cumple el teorema de Fermat. Si $n$ es mayor que 2 y 
 
 \[a^n + b^n = c^n \]
 %
-the program should print, ``Holy smokes, Fermat was wrong!''
-Otherwise the program should print, ``No, that doesn't work.''
+el programa debería imprimir, ``¡Santo dios, Fermat estaba equivocado!``
+Por lo contrario, el programa debería imprimir ``Ǹo, eso no funciona.``
 
-\item Write a function that prompts the user to input values
-for {\tt a}, {\tt b}, {\tt c}, and {\tt n}, converts them to
-integers, and uses \verb"check-fermat" to check whether they
-violate Fermat's theorem.
+\item Escribe una subrutina que incita al usuario a entrar valores para 
+las variables {\tt a}, {\tt b}, {\tt c}, y {\tt n}, los convierte a enteros,
+y usa la función \verb|chequear-fermat| para chequear si ellos violan
+el teorema de Fermat.
 \end{enumerate}
 
-Solution: \ref{sol_fermat_ex}
+Solución: \ref{sol_fermat_ex}
 
 
 \end{exercise}
@@ -1473,34 +1481,36 @@ Solution: \ref{sol_fermat_ex}
 \index{triangle}
 \label{triangle}
 
-If you are given three sticks, you may or may not be able to arrange
-them in a triangle.  For example, if one of the sticks is 12 inches
-long and the other two are one inch long, you will
-not be able to get the short sticks to meet in the middle.  For any
-three lengths, there is a simple test to see if it is possible 
-to form a triangle:
+Si se te provee con tres palillos, podrías o no podrías 
+ser capaz de organizarlos en un triángulo.
+Por ejemplo, si uno de los palillos tiene una longitud de 
+12 pulgadas y los restantes tienen 1 pulgada, no podrás
+conseguir que los palillos pequeños se encuentren en 
+el medio. Para tres longitudes cualquiera, existe una 
+simple prueba para ver si es posible crear un triángulo:
 
 \begin{quotation}
-If any of the three lengths is greater than the sum of the other
-  two, then you cannot form a triangle.  Otherwise, you
-  can.  (If the sum of two lengths equals the third, they form
-    what is called a ``degenerate'' triangle.)
+Si una de las tres longitudes es mayor que la suma de las
+otras dos, entonces no puedes formar una triángulo. De lo
+contrario, puedes formar un triángulo. (Si la suma de dos
+lados es igual al tercero, ellos forman lo que se
+conoce como un triángulo "degenerado".)
 \end{quotation}
 
 \begin{enumerate}
 
-\item Write a function named \verb"is-triangle" that takes three
-positive numbers as arguments, and that prints either 
-``Yes'' or ``No,'' depending on whether you can 
-form a triangle from sticks with the given lengths.
+\item Escribe una función llamada \verb|es-triángulo| que toma
+tres números positivos como argumentos, e imprime ``Sí`` o ``No,``
+dependiendo si puedes formar un triángulo con las longitudes
+dadas.
 
-\item Write a function that prompts the user to input 
-three stick lengths and uses \verb"is-triangle" to check 
-whether sticks with the given lengths can form a triangle.
-
+\item Escribe una función que incite al usuario a entrar
+tres longitudes y use la función \verb|es-triángulo| para 
+chequear si palillos con las longitudes dadas pueden formar 
+un triángulo.
 \end{enumerate}
 
-Solution: \ref{sol_triangle}
+Solución: \ref{sol_triangle}
 
 
 \end{exercise}
@@ -1508,34 +1518,35 @@ Solution: \ref{sol_triangle}
 \begin{exercise} 
 \index{Fibonacci!numbers}
 \label{fibonacci}
-The Fibonacci numbers were invented by Leonardo Fibonacci 
-(a.k.a. Leonardo of Pisa or simply Fibonacci), an Italian 
-mathematician of the thirteenth century.
+Los números Fibonacci fueron inventados por Leonardo Fibonacci 
+(también conocido como Leonardo de Pisa o simplemente, Fibonacci), 
+un matemático italiano del siglo XIII.
 \index{Fibonacci, Leonardo}
 
-The Fibonacci numbers are a sequence of numbers such as:
+Los números Fibonacci son una secuencia de números como tal:
 
 \[1, \;1, \;2, \;3, \;5, \;8, \;13, \;21, \;34, \ldots\]
 %
-in which the first two numbers are equal to 1 and each 
-subsequent number of the sequence is defined as the sum of 
-the previous two (for example, $5 = 2 + 3$, $8 = 3 + 5$, etc.).
+en la cual los primeros dos números son 1 y cada número 
+subsecuente de la secuencia está definido como la suma de
+los dos números anteriores (por ejemplo, $5 = 2 + 3$, $8 = 3 + 5$, etc.).
 
-In mathematical notation, the Fibonacci numbers could be defined by recurrence as follows:
+En notación matemática, los números Fibonacci 
+podrían ser definidos por una relación de recurrencia  
+de la siguiente manera:
 
 \[F_1 = 1, \;F_2 = 1, \;\;and\;\;  F_n = F_{n-1} + F_{n-2} \]
 %
 \begin{enumerate}
 
-\item Write a program using a {\tt for} loop that prints on screen the first 20 Fibonacci numbers.
+\item  Escribe un programa usando el bucle {\t for} que imprime
+en la pantalla los primeros 20 números Fibonacci.
 
-\item Write a program which prompts the user to enter a number 
-$n$ and, using a {\tt for} loop, computes and displays the 
-$n^{th}$ Fibonacci number.
-
+\item Escribe un programa que incite al usuario a entrar un número $n$ y,
+usando el bucle {\tt for}, calcule y muestre el número Fibonacci $n^{th}$.
 \end{enumerate}
 
-Solution: \ref{sol_fibonacci}
+Solución: \ref{sol_fibonacci}
 
 
 \end{exercise}
@@ -1544,9 +1555,9 @@ Solution: \ref{sol_fibonacci}
 \label{sub_recurse}
 \index{recursion}
 
-What is the output of the following program?
-Draw a stack diagram that shows the state of the program
-when it prints the result.
+¿Cuál es la salida del siguiente programa?
+Dibuja un diagrama de pila que muestre el estado del 
+programa cuando imprime el resultado.
 
 \begin{verbatim}[fontshape=up]
 sub recurse($n, $s) {
@@ -1561,14 +1572,13 @@ recurse 3, 0;
 
 \begin{enumerate}
 
-\item What would happen if you called the function like 
-this: {\tt recurse(-1, 0)}?
+\item ¿Qué pasaría si llamaras la función de la siguiente forma:
+{\tt recurse(-1, 0)}?
 
-\item Write a documentation comment (maybe in the form of a multiline comment) that explains everything someone would need to know in order to use this function (and nothing else).
-
+\item Escribe un comentario de documentación (quizás en la forma de un comentario multilínea) que explique todo lo que alguien necesita saber para usar esta función (y nada más).
 \end{enumerate}
 
-Solution: \ref{sol_sub_recurse}
+Solución: \ref{sol_sub_recurse}
 
 \end{exercise}
 
