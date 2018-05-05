@@ -787,7 +787,7 @@ say 2 * 3 * 4 * 5;      # prints 120
 %
 
 El problema es que esta construcción sintáctica no 
-escal muy bien y se vuelve tediosa para el producto 
+escala muy bien y se vuelve tediosa para el producto 
 de los primeros diez enteros (o factorial de 10). Y
 se vuelve una pesadilla para el factorial de 100.
 La computación del factorial de un número es algo 
@@ -914,135 +914,146 @@ También veremos otras formas de calcular el factorial de un
 número en este libro.
 \index{factorial}
 
-\section{Recursion}
+\section{Recursión}
 \label{recursion}
 \index{recursion}
 
-It is legal for one function or subroutine to call another;
-it is also legal for a subroutine to call itself.  It may not 
-be obvious why that is a good thing, but it turns out to be 
-one of the most magical things a program can do. 
-For example, look at the following subroutine:
+Es legal que una función o subrutina llame a otra; también 
+es legal que una subrutina se llame a sí misma. Podría no ser
+obvio porque esto es algo bueno, sin embargo resulta que es una 
+de las cosas más brillante y mágica que un programa puede hacer.
+Por ejemplo, observa la siguiente subrutina:
 
 \begin{verbatim}
-sub countdown(Int $time-left) {
-    if $time-left <= 0 {
-        say 'Blastoff!';
+sub cuenta-regresiva(Int $tiempo-restante) {
+    if $tiempo-restante <= 0 {
+        say '¡Despegue!';
     } else {
-        say $time-left;
-        countdown($time-left - 1);
+        say $tiempo-restante;
+        cuenta-regresiva($tiempo-restante - 1);
     }
 }
 \end{verbatim}
 %
-If {\tt \$n} is 0 or negative, it outputs the word, 
-``Blastoff!''. Otherwise, it outputs the value of 
-{\tt \$time-left} and then calls a subroutine named 
-{\tt countdown}---itself---passing {\tt \$n-1} as an argument.
+Si {\tt \$tiempo-restante} es 0 o negativo, muestra
+la palabra ``¡Despegue!''. Por lo contrario, muestra el valor de 
+{\tt \$tiempo-restante} y después llama a la subrutina 
+{\tt \$cuenta-regresiva}---ella misma--y pasa a
+{\tt \$tiempo-restante - 1} como argumento.
 
-What happens if we call the subroutine like this?
+¿Qué pasa si llamamos la subrutina así?
 
 \begin{verbatim}
-countdown(3);
+cuenta-regresiva(3);
 \end{verbatim}
 %
-The execution of {\tt countdown} begins with {\tt \$time-left 
-= 3}, and since {\tt \$time-left} is greater than 0, it 
-outputs the value 3, and then calls itself...
+La ejecución de {\tt cuenta-regresiva} comienza con 
+{\tt \$tiempo-restante = 3}, y dado que {\tt \$tiempo-restante}
+es mayor que 0, la subrutina muestra el valor 3, y después
+se llama a sí misma...
 
 \begin{quote}
-The execution of {\tt countdown} begins with {\tt \$time-left = 2}, and since
-{\tt \$time-left} is greater than 0, it outputs the value 2, and then calls itself...
+La ejecución de {\tt cuenta-regresiva} comienza con 
+{\tt \$tiempo-restante = 2}, y dado que {\tt \$tiempo-restante}
+es mayor que 0, la subrutina muestra el valor 2, y después
+se llama a sí misma...
 
 \begin{quote}
-The execution of {\tt countdown} begins with {\tt \$time-left = 1}, and since
-{\tt \$time-left} is greater than 0, it outputs the value 1, and then calls itself...
+La ejecución de {\tt cuenta-regresiva} comienza con 
+{\tt \$tiempo-restante = 1}, y dado que {\tt \$tiempo-restante}
+es mayor que 0, la subrutina muestra el valor 1, y después
+se llama a sí misma...
 
 \begin{quote}
-The execution of {\tt countdown} begins with {\tt \$time-left = 0}, and since {\tt
-\$time-left} is not greater than 0, it outputs the word, ``Blastoff!'' and then
-returns.
+La ejecución de {\tt cuenta-regresiva} comienza con 
+{\tt \$tiempo-restante = 0}, y dado que {\tt \$tiempo-restante}
+no es mayor que 0, la subrutina muestra la palabra, "¡Despegue!",
+y después devuelve.
 \end{quote}
 
-The {\tt countdown} that got {\tt \$time-left = 1} returns.
+La {\tt cuenta-regresiva} que obtuvo {\tt \$tiempo-restante = 1} devuelve.
 \end{quote}
 
-The {\tt countdown} that got {\tt \$time-left = 2} returns.
+
+La {\tt cuenta-regresiva} que obtuvo {\tt \$tiempo-restante = 2} devuelve.
 \end{quote}
 
-The {\tt countdown} that got {\tt \$time-left = 3} returns.
 
-And then you're back in the main program.  So, the
-total output looks like this:
+La {\tt cuenta-regresiva} que obtuvo {\tt \$tiempo-restante = 3} devuelve.
+
+Y entonces, te encuentras en el programa principal. Así que la
+salida de texto luce de la siguiente manera:
 
 \begin{verbatim}
 3
 2
 1
-Blastoff!
+¡Despegue!
 \end{verbatim}
 %
-A subroutine that calls itself is {\bf recursive}; the process of
-executing it is called {\bf recursion}.
+Una subrutina que se llama a sí misma es {\bf recursiva};
+el proceso de ejecutarla se llama {\bf recursión}.
 \index{recursion}
 \index{function!recursive}
 
-As another example, we can write a subroutine that prints a
-string {\tt \$n} times:
+Como otro ejemplo, podemos escribir una subrutina que 
+imprime una cadena de texto {\tt \$n} veces:
 
 \begin{verbatim}
-sub print-n-times(Str $sentence, Int $n) {
+sub imprime-n-veces(Str $sentencia, Int $n) {
     return if $n <= 0;
-    say $sentence;
-    print-n-times($sentence, $n - 1);
+    say $sentencia;
+    imprime-n-veces($sentencia, $n - 1);
 }
 \end{verbatim}
 %
-If {\tt \$n <= 0}, the {\bf return statement} exits the
-subroutine.  The flow of execution immediately returns to 
-the caller, and the remaining lines of the subroutine don't
-run. This illustrates a feature of the {\tt return} statement 
-that we have not seen before: it is used here for flow 
-control, i.e., to stop the execution of the subroutine and 
-pass control back to the caller. Note also that, here, the 
-{\tt return} statement does not return any value to the 
-caller; {\tt print-n-times} is a void function.
-
+Si {\tt \$n <= 0}, la {\bf sentencia return} termina la ejecución 
+de la subrutina. El flujo de ejecución inmediatamente devuelve
+a la función que hace la llamada, y las líneas restantes de la
+subrutina no se ejecutan. Esto ilustra una característica de la 
+sentencia {\tt return} que no hemos visto antes: La sentencia
+{\tt return} puede usarse como un control de flujo, i.e., para 
+parar la ejecución de la subrutina y devolver el control
+a la subrutina que hace la llamada. Nota también que, aquí,
+la sentencia {\tt return} no devuelve ningún valor a la función
+que hace la llamada; la función {\tt imprime-n-veces} es una
+función void.
 \index{return!statement}
 \index{statement!return}
 \index{void function}
 
-The rest of the subroutine is similar to {\tt countdown}: it 
-displays {\tt \$sentence} and then calls itself to display 
-{\tt \$sentence} $\$n - 1$ additional times.  So the number 
-of lines of output is {\tt 1 + (\$n - 1)}, which
-adds up to {\tt \$n}.
+El resto de la subrutina es similar a {\tt cuenta-regresiva}:
+la subrutina muestra a {\tt \$sentencia} y después se llama 
+a sí misma para mostrar a {\tt \$sentencia} \verb|$n - 1| veces
+adicionales. Por lo tanto el número de líneas de salida de
+texto es {\tt 1 + (\$n - 1)}, lo que equivale a {\tt \$n}.
 
-For simple examples like this, it may seem easier to use a {\tt
-for} loop.  But we will see examples later that are hard to write
-with a {\tt for} loop and easy to write with recursion, so it is
-good to start early.
+Para ejemplos simples como este, puede parecer fácil usar
+un bucle {\tt for}. Pero más luego veremos ejemplos que son
+difíciles de escribir con un bucle {\tt for} pero son
+fáciles de escribir con recursión, por lo tanto es bueno
+empezar temprano.
 \index{for loop}
 \index{loop!for}
 
 
-\section{Stack Diagrams for Recursive Subroutines}
+\section{Diagramas de Pilas para Subrutinas Recursivas}
 \label{recursive.stack}
 \index{stack diagram}
 \index{function frame}
 \index{frame}
 
-In Section~\ref{stackdiagram}, we used a stack diagram to represent
-the state of a program during a subroutine call.  The same kind of
-diagram can help interpret a recursive subroutine.
+En la Sección~\ref{stackdiagram}, usamos un diagrama de pila 
+para representar el estado de un programa durante la llamada de 
+una subrutina. El mismo tipo de diagrama puede ayudarnos a interpretar una subrutina recursiva.
 
-Every time a subroutine gets called, Perl creates a
-frame to contain the subroutine's local variables and parameters.
-For a recursive subroutine, there might be more than one frame 
-on the stack at the same time.
+Cada vez que una subrutina es llamada, Perl crea un 
+marco para contener las variables locales de la subrutina y 
+los parámetros. Para una subrutina recursiva, podría haber más
+de un marco en la pila al mismo tiempo.
 
-Figure~\ref{fig.stack2} shows a stack diagram for {\tt countdown} called with
-{\tt n = 3}.
+La figura~\ref{fig.stack2} muestra un diagrama de pila para 
+{\tt cuenta-regresiva} llamada con {\tt n = 3}.
 
 \begin{figure}
 \centerline
@@ -1052,48 +1063,48 @@ Figure~\ref{fig.stack2} shows a stack diagram for {\tt countdown} called with
 \end{figure}
 
 
-As usual, the top of the stack is the frame for the main 
-program.
-It is empty because we did not create any variables in 
-it or pass any arguments to it.
+Como siempre, la parte superior de la pila es el marco de
+del programa principal.
+
+Está vacío porque no creamos ninguna variable dentro del marco.
+Tampoco pasamos ningún argumento al marco.
 \index{base case}
 \index{recursion!base case}
 
-The four {\tt countdown} frames have different values for the
-parameter {\tt \$time-left}.  The bottom of the stack, where {\tt \$time-left = 0}, is
-called the {\bf base case}.  It does not make a recursive call, so
-there are no more frames.
+Los cuatro marcos de {\tt cuenta-regresiva} tienen diferente valores
+para el parámetro {\tt \$tiempo-restante}. La parte inferior de la 
+pila, donde {\tt \$tiempo-restante = 0}, se conoce como el {\bf caso base}.
+El caso base no realiza una llamada recursiva y por lo tanto, no hay más
+cuadros.
 
-As an exercise, draw a stack diagram for \verb"print-n-times" 
-called with
-\verb"$sentence = 'Hello'" and {\tt \$n = 2}.
-Then write a function called \verb"do-n-times" that takes a function
-and a number, {\tt \$num}, as arguments, and that calls
-the given function {\tt \$num} times.
+Como ejercicio, dibuja un diagrama de pila para la subrutina \verb|imprime-n-veces|
+la cual se llama con los argumentos \verb|$sentence| y {\tt \$n = 2}.
+Después escribe una función llamada \verb|hazlo-n-veces| que toma una función
+y un número, {\tt \$num}, como argumentos, y llama la función 
+provista {\tt \$num} veces.
 \label{do_n_times}
 
-Solution: see Section~\ref{sol_do_n_times}
+Solución: ve la Sección~\ref{sol_do_n_times}
 
 
-\section{Infinite Recursion}
+\section{Recursión Infinita}
 \index{infinite recursion}
 \index{recursion!infinite}
 \index{runtime error}
 
 
-If a recursion never reaches a base case, it goes on making
-recursive calls forever, and the program never terminates.  This is
-known as {\bf infinite recursion}, and it is generally not
-a good idea. In fact, your program will not actually execute 
-forever but will die at some point when the computer runs out of 
-memory or some other critical resource.
+Si una recursión nunca alcanza un caso base, se mantiene 
+haciendo llamadas recursivas, y el programa nunca termina. Esto
+se conoce como {\bf recursión infinita}, y generalmente no es 
+una buena idea. De hecho, tu programa no se ejecutará por siempre
+sino que terminará en algún punto cuando la computara agote la 
+memoria disponible o algún otro recurso crítico.
 
-You have to be careful when writing recursive subroutines. 
-Make sure that you have a base case, and make sure that 
-you are guaranteed to reach it. Actually, although this is not 
-absolutely required by the language, I would advise you to 
-take the good habit of treating the base case first.
-
+Tienes que ser cuidadoso al escribir subrutinas recursivas. 
+Asegúrate de tener un caso base, y comprueba que el programa
+lo alcanzará. Actualmente, aunque esto no absolutamente requerido
+por el lenguaje, te aconsejo que crees el hábito de tratar 
+el caso base primero.
 
 \section{Keyboard Input}
 \index{keyboard input}

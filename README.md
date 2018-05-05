@@ -20,7 +20,7 @@ ser encontrada en [Think Perl 6](http://greenteapress.com/wp/think-perl-6/).
 - [ ] Capítulo 06: Iteración
 - [ ] Capítulo 07: Cadenas de texto
 - [ ] Capítulo 08: Caso Práctico: Juego de palabras
-- [ ] Capítulo 09: Arrays y Listas
+- [x] Capítulo 09: Arrays y Listas
 - [ ] Capítulo 10: Hashes
 - [ ] Capítulo 11: Caso Práctico: Selección de Estructura de Dato
 - [ ] Capítulo 12: Clases y Objetos
