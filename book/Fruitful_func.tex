@@ -1,68 +1,71 @@
 
-\chapter{Fruitful Subroutines}
+\chapter{Subrutinas Fructuosas}
 \label{fruitchap}
 
-Most of the Perl functions we have used, such as the math
-functions, produce return values.  But most of the subroutines 
-we've written so far are void: they have an effect, like 
-printing a value, but they don't have a return value.  In
-this chapter you will learn to write fruitful functions.
+La mayoría de funciones de Perl que hemos usado, tales como
+la funciones matemáticas, producen valores de retorno. Aún así,
+la mayoría de funciones que hemos escrito hasta ahora son funciones
+void: ellas tienen un efecto, como imprimir un valor,
+pero no tienen un valor de retorno. En este capítulo, aprenderás
+a escribir funciones fructuosas.
 
-
-\section{Return Values}
+\section{Valores de Retorno}
 \index{return!value}
 
-Calling a fruitful function generates a return value, 
-which we usually assign to a variable or use as part 
-of an expression:
+Al llamar una función fructuosa de genera un valor de retorno,
+el cual usualmente asignamos a una variable o usamos como 
+parte de una expresión:
 
 \begin{verbatim}
 my $pi = 4 * atan 1;
-my $height = $radius * sin $radians;
+my $altura = $radio * sin $radianes;
 \end{verbatim}
 %
-Many of the subroutines we have written so far are void.  
-Speaking casually, they have no usable return value; more 
-precisely, their return value may be {\tt Any}, {\tt Nil}, 
-{\tt ()}, or {\tt True}.
+Muchas de las subrutinas que hemos escrito hasta ahora son
+void. Hablando casualmente, ellas no tienen un valor de 
+retorno útil; más precisamente, su valor de retorno puede
+ser {\tt Any}, {\tt Nil}, {\tt ()}, o {\tt True}.
 
-In this chapter, we are (finally) going to write fruitful subroutines.
-The first example is {\tt area}, which returns the area of a circle
-with the given radius:
+En este capítulo, finalmente escribiremos subrutinas fructuosas. 
+El primer ejemplo es {\tt area}, la cual devuelve el área de un 
+círculo con un radio en particular:
 
 \begin{verbatim}
-sub area($radius) {
-    my $circular_area = pi * $radius**2;
-    return $circular_area;
+sub area($radio) {
+    my $area_circular = pi * $radio**2;
+    return $area_circular;
 }
 \end{verbatim}
 %
-We have seen the {\tt return} statement before, but in a fruitful
-function the {\tt return} statement includes
-an expression.  This statement means: ``Return immediately from
-this function and use the following expression as a return value.''
-The expression can be arbitrarily complicated, so we could
-have written this function more concisely:
+Hemos visto la sentencia {\tt return} anteriormente,
+pero en una subrutina fructuosa la sentencia {\tt return} 
+incluye una expresión. Esta sentencia quiere decir: ``
+Devuelve inmediatamente desde esta función y usa la siguiente
+expresión como un valor de retorno.``
+La expresión puede ser arbitrariamente complicada, así podríamos
+esta función en una manera más concisa:
 \index{return!statement}
 \index{statement!return}
 
 \begin{verbatim}
-sub area($radius) {
-    return pi * $radius**2;
+sub area($radio) {
+    return pi * $radio**2;
 }
 \end{verbatim}
 %
-On the other hand, {\bf temporary variables} like 
-\verb'$circular_area' can make debugging easier. They 
-may also help document what is going on.
+
+Por otro lado, las {\bf variables temporales} 
+como \verb|area_circular| hace la depuración mucho más
+fácil. También ayudar a documentar lo que está sucediendo
+en la función.
 \index{temporary variable}
 \index{variable!temporary}
 
-Sometimes it is useful to have multiple return statements, for 
-example one in each branch of a conditional:
+Algunas veces es útil tener varias sentencias return, por 
+ejemplo una en cada rama de una condicional:
 
 \begin{verbatim}
-sub absolute_value($num){
+sub valor_absoluto($num){
     if $num < 0 {
         return -$num;
     } else {
@@ -71,39 +74,39 @@ sub absolute_value($num){
 }
 \end{verbatim}
 %
-Since these {\tt return} statements are in an alternative 
-conditional, only one runs.
+Dado que estas sentencias {\tt return} están en una 
+condicional alternativa, solo una se ejecuta.
 
-This could also be written more concisely using the statement 
-modifier syntax:
+Esto podría también escribirse de forma concisa usando sintaxis 
+del modificador de sentencia:
 
 \begin{verbatim}
-sub absolute_value($num){
+sub valor_absoluto($num){
     return -$num if $num < 0;
     return $num;
 }
 \end{verbatim}
 %
-Here again, only one of the return statements runs: if the 
-number is negative, the first return statement is executed and 
-the subroutine execution stops there; if the number is 
-positive or zero, then only the second return statement is 
-executed. 
+Otra vez, solo una de las sentencias return se ejecuta: si el 
+número es negativo, la primera sentencia return es ejecutada
+y la ejecución de la subrutina termina ahí; en cambio, si el
+número es positivo o cero, solo la segunda sentencia return 
+es ejecutada.
 
-As soon as a return statement runs, the function
-terminates without executing any subsequent statements.
-Code that appears after an unconditional {\tt return} statement, 
-or any other place the flow of execution can never reach, 
-is called {\bf dead code}.
+Tan pronto una sentencia return es ejecutada, la función termina
+sin ejecutar las sentencias subsecuentes. Cualquier código que aparece
+después de una sentencia {\tt return} incondicional, o cualquier
+otro lugar que el flujo de ejecución no puede alcanzar es 
+conocido como {\bf código muerto}. 
 \index{dead code}
 
-In a fruitful function, it is a good idea to ensure
-that every possible path through the program hits a
-{\tt return} statement.  For example:
+En una función fructuosa, es buena idea asegurar que cada
+posible ruta a través del programa alcance con una sentencia
+{\tt return}. Por ejemplo:
 
 \begin{verbatim}
-# WARNING: faulty code
-sub absolute_value($num){
+# ADVERTENCIA: código con fallas
+sub valor_absoluto($num){
     if $num < 0 {
         return -$num;
     } 
@@ -114,55 +117,54 @@ sub absolute_value($num){
 \end{verbatim}
 %
 
-
-This subroutine is incorrect because if {\tt \$num} happens to be 0,
-neither condition is true, and the subroutine ends without hitting a
-{\tt return} statement.  If the flow of execution gets to the end
-of a function, the return value is {\tt ()}, which basically 
-means ``not defined'' and is clearly not the absolute value of 0:
+Esta subrutina es incorrecta porque si {\tt \$num} es 0, 
+ninguna de las condiciones es verdadera, y la subrutina termina 
+sin alcanzar una sentencia {\tt return}. Si el flujo de ejecución
+llega al final de una función, el valor de retorno es {\tt ()}, que básicamente
+significa ``no definido`` y claramente no es el valor absoluto de 0:
 \index{undefined value}
 
 \begin{verbatim}
-> absolute_value(0)
+> valor_absoluto(0)
 ()
 \end{verbatim}
 %
-By the way, Perl provides a built-in function called 
-{\tt abs} that computes absolute values.
+Casualmente, Perl provee una función integrada
+llamada {\tt abs} que calcula valores absolutos.
 \index{abs function or method}
 \index{function!abs}
 
 \label{compare}
-As an exercise, write a {\tt compare} subroutine that 
-takes two numbers, {\tt \$x} and {\tt \$y}, and returns {\tt 1} 
-if {\tt \$x > \$y}, {\tt 0} if {\tt \$x == \$y}, and 
+Como ejercicio, escribe una subrutina {\tt comparar}
+que toma dos números, {\tt \$x} y {\tt \$y}, y devuelve
+{\tt 1} si {\tt \$x > \$y}, {\tt 0} if {\tt \$x == \$y}, y 
 {\tt -1} if {\tt \$x < \$y}.
 
-Solution: \ref{sol_compare}
+Solución: \ref{sol_compare}
 \index{compare function}
 \index{function!compare}
 
 
-\section{Incremental Development}
+\section{Desarrollo Incremental}
 \label{incremental.development}
 \index{development plan!incremental}
 \index{incremental development}
 
-As you write larger functions, you might find yourself
-spending more time debugging.
+A medida que escribes funciones más largas, puedes 
+pasar más tiempo depurando.
 
-To deal with increasingly complex programs,
-you might want to try a process called
-{\bf incremental development}.  The goal of incremental development
-is to avoid long debugging sessions by adding and testing only
-a small amount of code at a time.
+Para tratar con programas complejos, podrías querer 
+usar un proceso llamado {\bf desarrollo incremental}. El 
+objetivo del desarrollo incremental es evitar sesiones largas\
+y tediosas de depuración al añadir y evaluar una pequeña pieza
+de código a la vez.
 \index{testing!incremental development}
 \index{Pythagorean theorem}
 
-As an example, suppose you want to find the distance between 
-two points, given by the Cartesian or rectangular coordinates 
-$(x_1, y_1)$ and $(x_2, y_2)$. By the Pythagorean theorem, 
-the distance is:
+Como un ejemplo, supón que quieres encontrar la distancia 
+entre dos puntos, dadas las coordenadas cartesianas o rectangulares
+$(x_1, y_1)$ y $(x_2, y_2)$ de los puntos. Por el teorema de Pitágoras,
+la distancia es:
 \index{Pythagorean theorem}
 \index{Cartesian coordinates}
 \index{coordinates!Cartesian}
@@ -171,142 +173,145 @@ the distance is:
 
 
 \begin{displaymath}
-\mathrm{distance} = \sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2}
+\mathrm{distancia} = \sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2}
 \end{displaymath}
 %
-The first step is to consider what a {\tt distance} function should
-look like in Perl.  In other words, what are the inputs (parameters)
-and what is the output (return value)?
+El primer paso es considerar cómo la función {\\t distancia} 
+debería lucir en Perl. En otras palabra,cuáles son las entradas (parámetros)
+y cuál es la salida (valor de retorno)?
 
-In this case, the inputs are two points, which you can represent
-using four numbers.  The return value is the distance represented by
-a numeric value.
+En este caso, las entradas son los puntos, los cuales puedes 
+representar usando cuatros números. El valor de retorno es la distancia
+representada por un valor numérico.
 
-Immediately you can write an outline of the function:
+Inmediatamente puedes escribir un bosquejo de la función:
 
 \begin{verbatim}
-sub distance($x1, $y1, $x2, $y2) {
+sub distancia($x1, $y1, $x2, $y2) {
     return 0.0;
 }
 \end{verbatim}
 %
-Obviously, this version doesn't compute distances; it always returns
-zero.  But it is syntactically correct, and it runs, which means that
-you can test it before you make it more complicated.
+Obviamente, esta versión no calcula la distancia; siempre 
+devuelve cero. Sin embargo, es sintácticamente correcta, y 
+puede ser ejecutada, lo que significa que la probaste antes 
+de hacerla más complicada.
 
-To test the new function, call it with sample arguments:
+Para probar la nueva función, llámala con algunos argumentos:
 
 \begin{verbatim}
-> distance(1, 2, 4, 6);
+> distancia(1, 2, 4, 6);
 0.0
 \end{verbatim}
 %
-I chose these values so that the horizontal distance is 3 and the
-vertical distance is 4; that way, the result is 5, the hypotenuse 
-of a 3-4-5 triangle. When testing a function, it is
-useful to know the right answer.
+Elegí estos valores para que la distancia horizontal sea 3 y la distancia
+vertical seaa 4; de esa manera, el resultado es 5, la hipotenusa de 
+un triángulo 3-4-5. Al probar una función, es siempre útil saber la 
+respuesta correcta.
 \index{testing!knowing the answer}
 
-At this point we have confirmed that the function is syntactically
-correct, and we can start adding code to the body.
-A reasonable next step is to find the differences
-$x_2 - x_1$ and $y_2 - y_1$.  The next version stores those values in
-temporary variables and prints them:
+En este momento, hemos confirmado que la función es sintácticamente 
+correcta, y podemos comenzar a añadir código al cuerpo de
+la función. Un siguiente paso razonable es encontrar las diferencias
+$x_2 - x_1$ and $y_2 - y_1$.  La siguiente versión almacena esos valores
+en variable temporales y los imprime:
 
 \begin{verbatim}
-sub distance($x1, $y1, $x2, $y2) {
+sub distancia($x1, $y1, $x2, $y2) {
     my $dx = $x2 - $x1;
     my $dy = $y2 - $y1;
-    say '$dx is', $dx;
-    say '$dy is', $dy;
+    say '$dx es', $dx;
+    say '$dy es', $dy;
     return 0.0;
 }
 \end{verbatim}
 %
-If the function is working, it should display \verb"$dx is 3" and 
-\verb"$dy is 4" (and still return 0.0).  If so, we know that the 
-function is getting the right arguments and performing the 
-first computation correctly.  If not, there are only a few lines 
-to check.
+Si la subrutina funciona como debe, debería mostrar \verb"$dx es 3" y 
+\verb"$dy es 4" (y todavía devolver 0.0). Si esto sucede, sabemos
+que la función está recibiendo los argumentos correctos y realizando
+la primera computación correctamente. Por lo contrario, si esto no sucede
+solo tenemos que depurar algunas líneas.
 
-Next we compute the sum of squares of {\tt \$dx} and {\tt \$dy}:
+El siguiente paso es computar la suma de los cuadrados de {\tt \$dx} y 
+{\tt \$dy}:
 
 \begin{verbatim}
-sub distance($x1, $y1, $x2, $y2) {
+sub distancia($x1, $y1, $x2, $y2) {
     my $dx = $x2 - $x1;
     my $dy = $y2 - $y1;
-    my $dsquared = $dx**2 + $dy**2;
-    say '$dsquared is: ', $dsquared;
+    my $dist-cuadrada = $dx**2 + $dy**2;
+    say '$dist-cuadrada es: ', $dist-cuadrada;
     return 0.0;
 }
 \end{verbatim}
 %
-Again, you would run the program at this stage and check the output
-(which should be 25).
-Finally, you can use the {\tt sqrt} built-in function to compute 
-and return the result:
+Otra vez, ejecutarías el programa en esta etapa y 
+chequearías la salida (que debería ser 25).
+Finalmente, puedes usar la función integrada {\tt sqrt} 
+para calcular la raíz cuadrada y devolver el resultado:
 \index{sqrt function}
 \index{function!sqrt}
 
 \begin{verbatim}
-sub distance($x1, $y1, $x2, $y2) {
+sub distancia($x1, $y1, $x2, $y2) {
     my $dx = $x2 - $x1;
     my $dy = $y2 - $y1;
-    my $dsquared = $dx**2 + $dy**2;
-    my $result = sqrt $dsquared;
-    return $result;
+    my $dist-cuadrada = $dx**2 + $dy**2;
+    my $resultado = sqrt $dist-cuadrada;
+    return $resultado;
 }
 \end{verbatim}
 %
-If that works correctly, you are done.  Otherwise, you might
-want to print the value of {\tt \$result} before the return
-statement.
+Si eso funciona correctamente, ya acabaste. Por lo contrario,
+podrías imprimir el valor de {\tt \$resultado} antes de la
+sentencia return.
 
-The final version of the subroutine doesn't display anything when it
-runs; it only returns a value.  The {\tt print} statements we wrote
-are useful for debugging, but once you get the function working, you
-should remove them.  Code like that is sometimes called 
-{\bf scaffolding} because it is helpful for building the program 
-but is not part of the final product.
+La versión final de la subrutina no muestra nada cuando se ejecuta;
+solo devuelve un valor. Las sentencias {\tt print} que escribimos
+son útiles para la depuración, pero una vez que consigues que la subrutina
+funcione correctamente, puedes removerlas. Código como ese es algunas
+veces llamado {\tt andamiaje} porque es útil para construir el programa
+pero no forma parte del producto final.
 \index{scaffolding}
 
-When you start programming, you should add only a line or two of code at a
-time.  As you gain more experience, you might find yourself writing
-and debugging bigger chunks.  Either way, incremental development
-can save you a lot of debugging time.
+Cuando empiezas a programar, debes agregar una o dos líneas de código
+al mismo tiempo. A medida que ganas experiencia, puedes entonces escribir
+y depurar piezas más grandes. De cualquier manera, el desarrollo incremental
+puede salvarte muchas horas de depuración.
 
-The key aspects of the process are:
-
+Los aspectos claves del proceso son:
 \begin{enumerate}
 
-\item Start with a working program and make small incremental changes. 
-At any point, if there is an error, you should have a good idea
-where it is.
+\item Comienza con un programa que funcione y haz pequeños cambios
+incrementales. En cualquier punto, si hay un error, deberías entonces
+tener una buena idea donde se encuentra.
 
-\item Use variables to hold intermediate values so you can
-display and check them.
+\item Usa variables para almacenar los valores intermedios
+para que puedas mostrarlos y chequearlos
 
-\item Once the program is working, you might want to remove some of
-the scaffolding or consolidate multiple statements into compound
-expressions, but only if doing so does not make the program 
-difficult to read.
+\item Una vez que el programa funciona, podrías querer remover
+algo del código de andamiaje o consolidar sentencia múltiples
+en una expresión compuesta, pero solo si no dificulta la lectura
+del programa.
 
 \end{enumerate}
 
-Note that, at least for relatively simple cases, you can also 
-use the REPL to test expressions and even multiline statements 
-or subroutines in interactive mode before you commit them to your 
-program code. This is usually fast and can save you some time.
+Nota que, por lo menos para casos relativamente simples, 
+puedes usar el REPL para probar expresiones y hasta sentencias
+multilíneas o subrutinas en el modo interactivo antes de 
+incluirlas en tu código. Esto es usualmente rápido y puede 
+ahorrarte algún tiempo.
 \index{REPL}
 \index{interactive mode}
 
 \label{hypotenuse}
-As an exercise, use incremental development to write a function
-called {\tt hypotenuse} that returns the length of the hypotenuse of a
-right triangle given the lengths of the other two legs as arguments.
-Record each stage of the development process as you go.
+Como ejercicio, usa el desarrollo incremental para escribir
+una función llamada {\tt hipotenusa} que devuelve la longitud de
+la hipotenusa de un triángulo rectángulo, dadas las longitudes de
+los otros dos lados como argumentos. Registra cada etapa del
+desarrollo a medida que avanzas.
 
-Solution: \ref{sol_hypotenuse}.
+Solución: \ref{sol_hypotenuse}.
 \index{hypotenuse}
 
 
