@@ -16,7 +16,7 @@ ser encontrada en [Think Perl 6](http://greenteapress.com/wp/think-perl-6/).
 - [x] Capítulo 02: Variables, Expresiones y Sentencias
 - [x] Capítulo 03: Funciones
 - [x] Capítulo 04: Bucles, Condicionales y Recursión
-- [ ] Capítulo 05: Subrutinas Fructuosas **TEP**
+- [x] Capítulo 05: Subrutinas Fructuosas
 - [ ] Capítulo 06: Iteración
 - [ ] Capítulo 07: Cadenas de texto
 - [ ] Capítulo 08: Caso Práctico: Juego de palabras
