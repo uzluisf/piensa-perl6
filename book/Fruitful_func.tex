@@ -537,17 +537,17 @@ como matemáticos). Por esta razón, se le conoce como la prueba de Turing
 prueba de Turing, recomiendo el libro  {\em Introduction to the
 Theory of Computation} de Michael Sipser.
 
-\section{More Recursion}
+\section{Más Recursión}
 \label{more.recursion}
 \index{recursion}
 
 
-To give you an idea of what you can do with the tools you have learned
-so far, we'll evaluate a few recursively defined mathematical
-functions.  A recursive definition is similar to a circular
-definition, in the sense that the definition contains a reference to
-the thing being defined.  A truly circular definition is not very
-useful:
+Para darte una idea de lo que puedes hacer con las herramientas
+que has aprendido hasta ahora, evaluaremos algunas funciones 
+matemáticas definidas de forma recursiva. Una definición recursiva
+es similar a una definición circular, en el sentido de que la 
+definición contiene una referencia a la cosa que se define. 
+Una definición verdaderamente circular no es muy útil:
 
 \begin{description}
 
@@ -558,39 +558,37 @@ useful:
 
 \end{description}
 
-If you saw that definition in the dictionary, you might be annoyed. On
-the other hand, if you looked up the definition of the factorial
-function, denoted with the symbol $!$, you might get something like
-this:
+Si ves esa definición en el diccionario, podrías enojarte. 
+Sin embargo, si busca la definición de la función factorial,
+denotada con el símbolo $!$, podrías conseguir algo como esto:
 %
 \begin{eqnarray*}
 &&  0! = 1 \\
 &&  n! = n (n-1)!
 \end{eqnarray*}
 %
-This definition says that the factorial of 0 is 1, and the 
-factorial of any other (positive integer) value, $n$, is 
-$n$ multiplied by the factorial of $n-1$.
+Esta definición dice que el factorial de 0 es 1, y que el factorial
+de cualquier otro valor (entero positivo), $n$, es 
+$n$ multiplicado por el factorial de $n-1$.
 
-So $3!$ is 3 times $2!$, which is 2 times $1!$, which is 1 times
-$0!$. Putting it all together, $3!$ equals 3 times 2 times 1 times 1,
-which is 6.
+Así que $3!$ es 3 por $2!$, el cual es 2 por $1!$, el cual es 1 por
+$0!$. Si lo ponemos todo junto, $3!$ es igual a 3 por 2 por 1 por 1, 
+lo cual es 6.
 \index{factorial!function}
 \index{function!factorial}
 \index{recursive definition}
 
-If you can write a recursive definition of something, you can
-write a Perl program to evaluate it. The first step is to decide
-what the parameters should be.  In this case it should be clear
-that {\tt factorial} takes a number\footnote{It should really be an 
-integer, but we'll get back to that later in this chapter.}:
+Si puedes escribir una definición recursiva de algo, puedes escribir
+un programa de Perl para evaluar dicha definición. El primer paso
+es decidir cuáles deberían ser los parámetros. En este caso, es
+claro que el factorial toma un número\footnote{Debería ser realmente un entero, pero regresaremos a esto más tarde en este capítulo.}:
 
 \begin{verbatim}
 sub factorial($n){
 }
 \end{verbatim}
 %
-If the argument happens to be 0, all we have to do is return 1:
+Si el argumento es 0, todo lo que tenemos que hacer es devolver es 1:
 
 \begin{verbatim}
 sub factorial($n){
@@ -600,9 +598,9 @@ sub factorial($n){
 }   
 \end{verbatim}
 %
-Otherwise, and this is the interesting part, we have to make a
-recursive call to find the factorial of $n-1$ and then 
-multiply it by $n$:
+Por el otro lado, y ésta es la parte interesante, tenemos que hacer
+una llamada recursiva para encontrar el factorial de $n-1$ y después
+multiplicarlo por $n$:
 \index{factorial!using recursion}
 
 \begin{verbatim}
@@ -617,67 +615,66 @@ sub factorial($n){
 }
 \end{verbatim}
 %
-The flow of execution for this program is similar to the flow of {\tt
-countdown} in Section~\ref{recursion}.  If we call {\tt factorial}
-with the value 3:
+El flujo de ejecución para este programa es similar al flujo de 
+{\tt cuenta-regresiva} en la Sección~\ref{recursion}. Si llamamos
+a {\tt factorial} con el valor 3:
 
-Since 3 is not 0, we take the second branch and calculate the factorial
-of {\tt \$n-1}...
+Dado que 3 no es 0, tomamos la segunda rama y calculamos el factorial de
+{\tt \$n-1}...
 
 \begin{quote}
-Since 2 is not 0, we take the second branch and calculate the factorial of
+Dado que 2 no es 0, tomamos la segunda rama y calculamos el factorial de
 {\tt \$n-1}...
 
 
   \begin{quote}
-  Since 1 is not 0, we take the second branch and calculate the factorial
-  of {\tt \$n-1}...
+  Dado que 1 no es 0, tomamos la segunda rama y calculamos el factorial de
+  {\tt \$n-1}...
 
 
     \begin{quote}
-    Since 0 equals 0, we take the first branch and return 1
-    without making any more recursive calls.
+    Dado que 0 es igual a 0, tomamos la primera rama y devolvemos 1
+    sin hacer más llamadas recursivas.
     \end{quote}
 
-
-  The return value, 1, is multiplied by \verb'$n', which is 1, and the
-  result is returned.
+	
+  El valor de retorno, 1, es multiplicado por \verb|$n|, el cual es 1,
+  y se devuelve el resultado.
   \end{quote}
 
 
-The return value, 1, is multiplied by \verb'$n', which is 2, and the
-result is returned.
+El valor de retorno, 1, es multiplicado por \verb|$n|, el cual es 1,
+y se devuelve el resultado.
 \end{quote}
 
 
-The return value, 2, is multiplied by \verb'$n', which is 3, and 
-the result, 6, becomes the return value of the subroutine call 
-that started the whole process.
+El valor de retorno, 2, es multiplicado por \verb|$n|, el cual es 3,
+el resultado, 6, se convierte en el valor de retorno de la llamada
+de subrutina que inició todo el proceso.
 \index{stack diagram}
 
-Figure~\ref{fig.stack3} shows what the stack diagram looks like for
-this sequence of function calls.
+La figura~\ref{fig.stack3} muestra como el diagrama de pila luce para esta
+secuencia de llamadas de función.
 
 \begin{figure}
 \centerline
-{\includegraphics[scale=0.8]{figs/stack3.pdf}}
-\caption{Stack diagram.}
+{\includegraphics[scale=0.7]{figs/stack3.pdf}}
+\caption{Diagrama de pila.}
 \label{fig.stack3}
 \end{figure}
 
-The return values are shown being passed back up the stack.  In each
-frame, the return value is the value of {\tt result}, which is the
-product of {\tt n} and {\tt recurse}.
+Los valores de retorno se muestran siendo pasados devuelta a la pila. En cada
+cuadro, el valor de retorno es el valor de {\tt result}, el cual es 
+producto de {\tt n} y {\tt recurse}.
 \index{function!frame}
 \index{frame}
 
-In the last frame, the local
-variables {\tt recurse} and {\tt result} do not exist, because
-the branch that creates them does not run.
+En el último cuadro, las variables locales {\tt recurse} y {\tt result}
+no existen, porque la rama que las crea no se ejecuta.
 
-A seasoned Perl programmer might write a more concise or
-more idiomatic subroutine\footnote{We will see later even 
-more idiomatic ways of computing the factorial of a number.}:
+Un programador de Perl con experiencia podría escribir una
+subrutina más concisa o más idiomática\footnote{Luego veremos 
+más formas idiomáticas de computar el factorial de un número.}:
 \index{idiomatic}
 
 \begin{verbatim}
@@ -687,56 +684,57 @@ sub factorial($n){
 }
 \end{verbatim}
 %
-This is not better than our initial version, and will probably 
-not run significantly faster, but this is arguably clearer, 
-at least once you get used to this type of syntax.
+Esto es no mejor que nuestra primera versión, y probablemente
+no se ejecutará significativamente más rápido, pero es presumiblemente
+más clara, por lo menos cuando te acostumbra a este tipo de sintaxis.
 
-\section{Leap of Faith}
+\section{Acto de Fe}
 \index{recursion}
 \index{leap of faith}
 
-Following the flow of execution is one way to read programs, but
-it can quickly become overwhelming.  An alternative is what may 
-be called the ``leap of faith.''  When you come to a
-subroutine call, instead of following the flow of execution, you {\em
-assume} that the subroutine works correctly and returns the right
-result.
+Seguir el flujo de ejecución es una manera de leer un programa,
+pero se vuelve agobiante en poco tiempo. Una alternativa es 
+lo que puede ser llamada el ``acto de fe``. Cuando encuentras 
+una subrutina, en lugar de seguir el flujo de ejecución,
+tu \emph{asumes} que la subrutina funcione correctamente y devuelve
+el resultado correcto.
 
-In fact, you are already practicing this leap of faith when you use
-built-in functions.  When you call math functions such as {\tt cos} or {\tt sqrt},
-you don't examine the bodies of those functions.  You just
-assume that they work because the people who wrote the built-in
-functions were likely to be good programmers (and because you 
-can safely assume that they have been thoroughly tested).
 
-The same is true when you call one of your own subroutines.  For
-example, in Section~\ref{boolean}, we wrote a subroutine called 
-\verb"is-divisible" that determines whether one number is divisible by
-another.  Once we have convinced ourselves that this subroutine is
-correct---by examining the code and testing---we can use the subroutine without looking at the body again.
+De hecho, estás ya practicando este acto de fe cuando usas las funciones
+integradas. Cuando llamas las funciones matemáticas tales como {\tt cos} 
+o {\tt sqrt}, no examinas los cuerpos de esas funciones. Asumes que funcionan
+adecuadamente porque las personas que escribieron las funciones 
+integradas eran probablemente buenos programadores (y porque puedes
+asumir seguramente que dichas funciones han sido probadas extensivamente).
+
+Lo mismo es cierto cuando llamas una de tus subrutinas. Por ejemplo,
+en la Sección~\ref{boolean}, escribimos una subrutina llamada \verb|es-divisible|
+que determina si un número es divisible por otro. Una vez que nos convencimos
+que esta subrutina es correcta---al examinar y probar el código---podemos
+usar la subrutina sin mirar al cuerpo otra vez.
 \index{testing!leap of faith}
 
-The same is true of recursive programs.  When you get to the recursive
-call, instead of following the flow of execution, you should assume
-that the recursive call works (returns the correct result) and then ask
-yourself, ``Assuming that I can find the factorial of \verb"$n-1", can I
-compute the factorial of \verb"$n"?''  It is clear that you
-can, by multiplying by \verb"$n".
+Lo mismo es cierto para programas recursivos. Cuando obtienes la
+llamada recursiva, en lugar de seguir el flujo de ejecución, deberías
+asumir que la llamada recursiva funciona (devuelve el resultado correcto)
+y después preguntarte, ``Asumiendo que puedo encontrar el factorial de
+\verb|$n-1|, puedo yo calcular el factorial de \verb|$n|?`` Es bien claro 
+que puedes, al multiplicar po \verb|$n|.
 
-Of course, it's a bit strange to assume that the subroutine works
-correctly when you haven't finished writing it, but that's why
-it's called a leap of faith!
+¡Por supuesto, es un poco extraño asumir que la subrutina funciona correctamente
+cuando no has terminado de escribirla, pero por eso es que se conoce 
+como un acto de fe!
 
 
-\section{One More Example}
+\section{Otro Ejemplo Más}
 \label{one.more.example}
 
 \index{Fibonacci!function}
 \index{function!Fibonacci}
-After {\tt factorial}, the most common example of a recursively
-defined mathematical function is {\tt fibonacci}, which has the
-following definition (see
-  \url{http://en.wikipedia.org/wiki/Fibonacci_number}):
+Después de {\tt factorial}, el ejemplo más común de una función
+matemática definida recursivamente es {\tt fibonacci}, la cual tiene
+la siguiente definición (ver
+  \url{https://es.wikipedia.org/wiki/Sucesión_de_Fibonacci}):
 %
 \begin{eqnarray*}
 && \mathrm{fibonacci}(0) = 1 \\
@@ -745,18 +743,18 @@ following definition (see
 \end{eqnarray*}
 %
 
-In plain English, a Fibonacci sequence is a sequence of numbers 
-such as:
+En lenguaje llano, una sucesión de Fibonacci es una secuencia de
+números tales como:
 \begin{verbatim}
 1, 1, 2, 3, 5, 8, 13, 21, ...
 \end{verbatim}
-where the two first terms are equal to 1 and any other term is the 
-sum of the two preceding ones.
+donde los dos primeros términos son iguales a 1 y cualquier otro
+término es la suma de los dos números que lo preceden.
 
-We briefly covered the Fibonacci sequence in Exercise~\ref{fibonacci} 
-of the previous chapter and implemented it with a {\tt for} loop.
+Discutimos la secuencia de Fibonacci brevemente en el Ejercicio~\ref{fibonacci}
+del capítulo anterior y la implementamos con un bucle {\tt for}.
 
-Let's now translate the recursive definition into Perl. It looks like this:
+Ahora traduzcamos la definición recursiva en Perl. Así es como luce:
 
 \begin{verbatim}
 sub fibonacci ($n) {
@@ -765,45 +763,46 @@ sub fibonacci ($n) {
 }
 \end{verbatim}
 %
-If you try to follow the flow of execution here, even for fairly
-small values of \verb'$n', your head explodes.  But according to the
-leap of faith, if you assume that the two recursive calls
-work correctly, then it is clear that you get
-the right result by adding them together.
+Si tratas de seguir el flujo de ejecución aquí, aún para valores
+pequeños de \verb|$n|, tu cabeza va a explotar. Sin embargo, de acuerdo
+al acto de fe, si asumimos que las llamadas recursivas funcionan correctamente,
+entonces es claro que obtendrás el resultado correcto al añadirlo todo 
+junto.
 \index{flow of execution}
 
 
-\section{Checking Types}
+\section{Chequeo de Tipos}
 \label{guardian}
 
-What happens if we call {\tt factorial} and give it 1.5 as an argument?
+¿Qué pasa si llamamos {\tt factorial} y pasamos a 1.5 como un argumento?
 \index{type!checking}
 \index{error checking}
 \index{factorial!function}
 
-It seems that we get an infinite recursion.  How can that be? 
-The subroutine has a base case---when {\tt \$n == 0}.  But if {\tt \$n} 
-is not an integer, we can {\em miss} the base case and recurse forever.
+Al parecer conseguimos una recursión infinita. ¿Cómo puede ser?
+La subrutina tiene una caso base---cuando {\tt \$n == 0}. Pero 
+si {\tt \$n} no es un entero, podemos {\em perder} el caso base 
+y hacer la recursión por siempre. 
 \index{infinite recursion}
 \index{recursion!infinite}
 \index{base case}
 
-In the first recursive call, the value of {\tt \$n} is 0.5.
-In the next, it is -0.5.  From there, it gets smaller
-(more negative), but it will never be 0.
+En la primera llamada recursiva, el valor de {\tt \$n} es 0.5.
+En la siguiente, es -0.5. Desde ahí, se vuelve más pequeño 
+(más negativo), pero nunca será 0.
 
-We have two choices.  We can try to generalize the {\tt factorial}
-function to work with noninteger numbers, or we can make 
-{\tt factorial} check its argument.  The first option is 
-called the gamma function and it's a little beyond the scope 
-of this book.  So we'll go for the second.
+Tenemos dos opciones. Podemos tratar de generalizar la función
+{\tt factorial} para funcionar con números que no son enteros, o
+podemos hacer que {\tt factorial} haga un chequeo de sus argumentos.
+La primera opción es llamada la función gamma y está fuera del alcance 
+de este libro. Por lo tanto, discutiremos la segunda opción.
 \index{function!gamma}
 \index{gamma function}
 
-We have already seen examples of subroutines using the signature 
-to verify the type of the argument. So we can add the {\tt Int} 
-type to the parameter in the signature. While we're at it, 
-we can also make sure the argument is positive or zero:
+Ya hemos visto ejemplos de subrutinas que usan la signatura para 
+verificar el tipo del argumento. Así que podemos añadir el tipo
+{\tt Int} al parámetro en la signatura. Mientras hacemos esto,
+también podemos asegurarnos de que el argumento sea positivo o cero:
 
 \begin{verbatim}
 sub factorial(Int $n where $n >= 0){
@@ -814,15 +813,15 @@ sub factorial(Int $n where $n >= 0){
 %
 \index{constraint}
 \index{trait}
-The {\tt Int} type checking in the signature handles 
-nonintegers, this is not new. The {\tt where \$n >= 0} 
-part is a parameter constraint: if the parameter is negative, 
-the subroutine should fail.  Technically, the constraint is 
-implemented here within the signature using a syntax feature 
-called a \emph{trait}, that is a property imposed on the 
-parameter at compile time. If the argument passed to the 
-function is not an integer or if it is negative, the program prints
-an error message to indicate that something went wrong:
+El tipo {\tt Int} en la signatura chequea por números no enteros,
+lo cual ya lo sabemos. La parte {\tt where \$n >= 0} es una restricción
+de parámetro: si el parámetro es negativo, la subrutina debería
+fallar. Técnicamente, la restricción se implementa aquí dentro de la
+signatura usando una característica sintáctica llamada un \emph{rasgo}
+(\emph{trait} en inglés), que es una propiedad impuesta sobre el parámetro
+al tiempo de compilación. Si el argumento que se pasa a la función no
+es un entero o si es negativo, el programa imprime un 
+mensaje de error para indicar que algo malo pasó:
 
 \begin{verbatim}
 > say factorial 1.5
@@ -838,43 +837,43 @@ Type check failed in binding $n; expected Int but got Str
   in block <unit> at <unknown file> line 1
 \end{verbatim}
 % 
-If we get past both checks, we know that \verb'$n' is an 
-integer and that it is positive or zero, so we can prove 
-that the recursion terminates.
+Si eludimos ambos chequeos, sabemos que \verb|$n|
+es un entero y que es positivo o cero, así que podemos 
+probar que la recursión termina.
 
 
 \index{subset!type}
 \index{type subset}
-Another way to achieve a similar result is to define your own 
-subset of the built-in types. For example, you can create an 
-{\tt Even-int} subset of integers and then use it more or less 
-as if it were a new type for declaring your variables or 
-typing your subroutine parameters:
+Otra modo de lograr un resultado similar es definir tu propio
+subconjunto de tipos integrados. Por ejemplo, puedes crear un
+subconjunto {\tt Par-entero} de enteros y después usarlo más o 
+menos como si fuera un tipo para declarar tus variables o asignarle
+un tipo a tus parámetros de las subrutinas:
 
 \begin{verbatim}
-subset Even-int of Int where { $_ %% 2 } # or : … where { $_ % 2 == 0 }
-# Even-int can now be used as a type
+subset Par-entero of Int where { $_ %% 2 } # o : … where { $_ % 2 == 0 }
+# Par-entero puede ahora usarse como un tipo
 
-my Even-int $x = 2; # OK
-my Even-int $y = 3; # Type mismatch error
+my Par-entero $x = 2; # OK
+my Par-entero $y = 3; # Error de discordancia de tipo
 \end{verbatim}
 
-Similarly, in the case of the {\tt factorial} subroutine, we 
-can create a \emph{nonnegative integer} subset and use it 
-for checking the parameter passed to the subroutine:
+De igual manera, en el caso de la subrutina {\tt factorial},
+podemos crear un subconjunto de enteros no negativos y usarlos
+para chequear el parámetro que se pasa a la subrutina:
 
 \begin{verbatim}
-subset Non-neg-int of Int where { $_ >= 0}
+subset Entero-no-neg of Int where { $_ >= 0}
 # ...
 
-sub factorial(Non-neg-int $n){
+sub factorial(Entero-no-neg $n){
     return 1 if $n == 0;
     return $n * factorial $n-1;
 }
 \end{verbatim}
 %
-If we pass a negative integer to the subroutine, we get 
-a similar error as before:
+Si pasamos un número negativo a la subrutina, 
+podemos obtener un error similar al anterior:
 
 \begin{verbatim}
 Constraint type check failed for parameter '$n'...
@@ -882,27 +881,26 @@ Constraint type check failed for parameter '$n'...
 
 \index{guardian pattern}
 \index{pattern!guardian}
-This program demonstrates a pattern sometimes called a {\bf guardian}.
-The signature acts as a guardian, protecting the code that
-follows from values that might cause an error.  The guardians make it
-possible to prove the correctness of the code.
+Este programa demuestra un patrón conocido como un {\bf guardián}.
+La signatura actúa como un guardián, que protege el código de valores
+que podrían causar un error. Los guardianes hacen posible probar la validez
+del código.
 
-
-\section{Multi Subroutines}
+\section{Sobrecargas}
 \label{multisubs}
 \index{multi!subroutine}
 
-It is possible to write multiple versions of a subroutine 
-with the same name but with different signatures, for example  
-a different \emph{arity} (a fancy word for the number of 
-arguments) or different argument types, using the 
-{\tt multi} keyword. In this case, the interpreter will 
-pick the version of the subroutine whose signature 
-matches (or best matches) the argument list.
+Es posible escribir múltiple versiones de una subrutina 
+con el mismo nombre pero con signaturas diferentes, por ejemplo
+una \emph{aridad} diferente (una palabra sofisticada para referirse
+al número de argumentos) o diferentes tipos del argumentos, usando 
+la palabra clave {\tt multi}. En este caso, el interpretador 
+elegirá la versión de la subrutina cuyo signatura mejor coincide con
+la lista de argumentos.
 \index{arity}
 
-For example, we could rewrite the factorial function 
-as follows:
+Por ejemplo, podríamos escribir de nuevo la función factorial como
+sigue:
 \index{factorial!using multi subroutines}
 
 \begin{verbatim}
@@ -914,13 +912,13 @@ say fact 0;   # -> 1
 say fact 10;  # -> 3628800
 \end{verbatim}
 
-Here, we don't enter into infinite recursion because, when 
-the parameter passed to {\tt fact} is 0, it is the first 
-version of the multi subroutine that is called and it returns 
-an integer value (1), and this ends the recursion.
+Aquí, no entramos en una recursión infinita porque, cuando
+el parámetro que se pasa a {\tt fact} es 0, es la primera de la
+versión de la subrutina que se llama y devuelve un valor entero (1),
+y esto termina la recursión.
 
-Similarly, the Fibonacci function can be rewritten with 
-multi subroutines:
+Similarmente, la función Fibonacci puede escribirse de nuevo
+con sobrecargas:
 \index{Fibonacci!function with multi subroutines}
 
 \begin{verbatim}
@@ -932,53 +930,55 @@ multi fibonacci(Int $n where $n > 1) {
 say fibonacci 10;  # -> 89
 \end{verbatim}
 
-Many built-in functions and most operators of Perl~6 are 
-written as multi subroutines.
+Muchas de las funciones integradas y muchos de los operadores de Perl~6 
+son escritos como sobrecargas.
 
-\section{Debugging}
+\section{Depuración de programas}
 \label{factdebug}
 
-Breaking a large program into smaller functions or subroutines 
-creates natural checkpoints for debugging.  If a subroutine 
-is not working, there are three possibilities to consider:
+La fragmentación un programa grande en funciones o subrutinas más
+pequeñas crea puestos de control naturales para la depuración.
+Si una subrutina no está funcionando, existen tres posibilidades
+para considerar:
 \index{debugging} 
 
 \begin{itemize}
 
-\item There is something wrong with the arguments the subroutine
-is getting; a precondition is violated.
+\item Hay algo incorrecto con los argumentos que la subrutina
+recibe; una precondición es violada.
 
-\item There is something wrong with the subroutine; a postcondition
-is violated.
+\item Hay algo incorrecto con la subrutina; una poscondición
+es violada.
 
-\item There is something wrong with the return value or the
-way it is being used.
+\item Hay algo incorrecto con el valor de retorno o la forma
+en la cual es usado.
 
 \end{itemize}
 
-To rule out the first possibility, you can add a print statement
-at the beginning of the function and display the values of the
-parameters (and maybe their types).  Or you can write code
-that checks the preconditions explicitly.
+Para descartar la primera posibilidad, puedes agregar una
+sentencia de impresión al inicio de la función y mostrar los valores
+de los parámetros (y tal vez sus tipos). O puedes escribir 
+código para chequear las precondiciones explícitamente.
 \index{precondition}
 \index{postcondition}
 
-For the purpose of debugging, it is often useful to print 
-the content of a variable or of a parameter within a string 
-with surrounding characters, so that you may visualize 
-characters that are otherwise invisible, such as spaces or 
-newlines. For example, you think that the \verb'$var' should 
-contain ``two,'' and run the following test:
+Para el propósito de depuración, es usualmente útil imprimir
+el contenido de una variable o de un parámetro dentro de 
+una cadena de texto con caracteres alrededor, para así 
+visualizar caracteres que de otra manera son invisibles, tales
+como espacios o caracteres de nueva línea. Por ejemplo, piensas
+que la \verb|$var| debería contener ``two```y ejecutar la 
+siguiente prueba:
 \begin{verbatim}
 if $var eq "two" {
     do-something()
 }
 \end{verbatim}
 %
-But it fails and the {\tt do-something} subroutine is never called.
+Pero falla y la subrutina {\tt do-something} nunca se ejecuta.
 
-Perhaps you want to use a print statement that will ascertain 
-the content of \verb'$var':
+Quizás quieres usar una sentencia de impresión que 
+corroborará el contenido de \verb|$var|:
 \begin{verbatim}
 say "[$var]";
 if $var eq "two" {
@@ -987,56 +987,57 @@ if $var eq "two" {
 \end{verbatim}
 %
 
-This might print:
+Esto podría imprimir:
 \begin{verbatim}
 [two ]
 \end{verbatim}
 %
 
-or:
+o:
 \begin{verbatim}
 [two
 ]
 \end{verbatim}
 %
-Now, you know that the equality test fails because \verb'$var'
-contains a trailing character (space or newline) that might otherwise 
-be difficult to detect.
+Ahora sabes que la prueba de igualdad falla porque 
+\verb|$var| contiene un carácter colgante (espacio o nueva línea)
+que podría ser difícil de detectar.
 
-If the parameters look good, add a {\tt print} statement before each
-{\tt return} statement and display the return value.  If
-possible, check the result by hand.  Consider calling the
-function with values that make it easy to check the result
-(as in Section~\ref{incremental.development}).
+Si los parámetros están bien, agrega una sentencia {\tt print}
+antes de cada sentencia {\tt return} y muestra el valor de retorno.
+Si es posible, chequea el resultado manualmente. Considera llamar 
+la función con valores que facilitan chequear el resultado
+(como en la Sección~\ref{incremental.development}).
 
-If the function seems to be working, look at the function call
-to make sure the return value is being used correctly (or used
-at all!).
+Si la función aparenta funcionar, observa la llamada de la función
+para asegurarte que el valor de retorno está siendo utilizado 
+correctamente (o apenas siendo utilizado).
 \index{flow of execution}
 
-Adding print statements at the beginning and end of a function
-can help make the flow of execution more visible.
-For example, here is a version of {\tt factorial} with
-print statements:
+Agregar sentencias de impresión al comienzo y final de una función
+ayuda a hacer al flujo de ejecución más visible. 
+Por ejemplo, la siguiente es una versión de {\tt factorial}
+con sentencias de impresión:
 \index{factorial!recursive function with debug statements}
 
 \begin{verbatim}
 sub factorial(Int $n) {
-    my $space = ' ' x (4 * $n);
-    say $space, 'factorial ', $n;
+    my $espacio = ' ' x (4 * $n);
+    say $espacio, 'factorial ', $n;
     if $n == 0 {
-        say $space, 'returning 1';
+        say $espacio, 'devolviendo 1';
         return 1;
     } else {
         my $result = $n * factorial $n-1;
-        say $space, 'returning ', $result;
+        say $espacio, 'devolviendo ', $result;
         return $result;
     }
 }
 \end{verbatim}
 %
-The {\tt \$space} variable is a string of space characters that controls the
-indentation of the output.  Here is the result of {\tt factorial(4)} :
+La variable {\tt \$espacio} es una cadena de caracteres de espacio que 
+controla la indentación de la salida. Este es el resultado para 
+{\tt factorial(4)}:
 
 \begin{verbatim}
                 factorial 4
@@ -1044,56 +1045,56 @@ indentation of the output.  Here is the result of {\tt factorial(4)} :
         factorial 2
     factorial 1
 factorial 0
-returning 1
-    returning 1
-        returning 2
-            returning 6
-                returning 24
+devolviendo 1
+    devolviendo 1
+        devolviendo 2
+            devolviendo 6
+                devolviendo 24
 \end{verbatim}
 %
-If you are confused about the flow of execution, this kind of
-output can be helpful.  It takes some time to develop effective
-scaffolding, but a bit of scaffolding can save a lot of debugging.
+Si estás confundido sobre el flujo de ejecución, este tipo
+de salida puede ser útil. Toma tiempo desarrollar andamiaje 
+efectivo, pero un poco de andamiaje puede ahorrar mucho 
+tiempo de depuración.
 
-
-\section{Glossary}
+\section{Glosario}
 
 \begin{description}
 
-\item[Temporary variable]  A variable used to store an intermediate value in
-a complex calculation.
+\item[Variable temporal]  Una variable usada para almacenar un valor
+intermedio en una operación compleja.
 \index{temporary variable}
 \index{variable!temporary}
 
-\item[Dead code]  Part of a program that can never run, often because
-it appears after a {\tt return} statement.
+\item[Código muerto]  Parte de un programa que nunca se ejecuta, usualmente
+porque aparece después de una sentencia {\tt return}.
 \index{dead code}
 
-\item[Incremental development]  A program development plan intended to
-avoid debugging by adding and testing only
-a small amount of code at a time.
+\item[Desarrollo incremental]  Un plan de desarrollo de programa 
+destinado a evitar la depuración al añadir y probar solo piezas
+pequeñas de código a la vez.
 \index{incremental development}
 
-\item[Scaffolding]  Code that is used during program development but is
-not part of the final version.
+\item[Andamiaje]  Código usado durante el desarrollo de un programa
+pero que no es parte de la versión final.
 \index{scaffolding}
 
-\item[Guardian]  A programming pattern that uses a conditional
-statement to check for and handle circumstances that
-might cause an error.
+\item[Guardián]  Un patrón de programación que usa una sentencia
+condicional para chequear y manejar circunstancias que podría causar
+un error.
 \index{guardian pattern}
 \index{pattern!guardian}
 
 \end{description}
 
 
-\section{Exercises}
+\section{Ejercicios}
 
 \begin{exercise}
 
-Draw a stack diagram for the following program.  What does 
-the program print? Please try to answer these questions before 
-trying to run the program.
+Dibuja un diagrama de pila para el siguiente programa.
+¿Qué imprime el programa? Por favor trata de contestar estas
+preguntas antes de ejecutar el programa.
 \index{stack diagram}
 
 \begin{verbatim}[fontshape=up]
@@ -1124,7 +1125,7 @@ say c($x, $y + 3, $x + $y);
 \label{ackermann}
 \index{Ackermann function}
 
-The Ackermann function, $A(m, n)$, is defined as follows:
+La función de Ackermann, $A(m, n)$, se define como sigue:
 
 \begin{eqnarray*}
 A(m, n) = \begin{cases} 
@@ -1134,12 +1135,12 @@ A(m-1, A(m, n-1)) & \mbox{if } m > 0 \mbox{ and } n > 0.
 \end{cases} 
 \end{eqnarray*}
 %
-See \url{http://en.wikipedia.org/wiki/Ackermann_function}.
-Write a subroutine named {\tt ack} that evaluates the Ackermann function.
-Use your subroutine to evaluate {\tt ack(3, 4)}, which should be 125.
-What happens for larger values of {\tt m} and {\tt n}?
+Ver \url{https://es.wikipedia.org/wiki/Funci%C3%B3n_de_Ackermann}.
+Escribe una subrutina llamada {\tt ack} que evalúa la función de Ackermann.
+Usa tu subrutina para evaluar {\tt ack(3, 4)}, que debería ser 125. 
+¿Qué pasa con valores más grandes de {\tt m} y {\tt n}?
 
-Solution: \ref{sol_ackermann}.
+Solución: \ref{sol_ackermann}.
 \index{Ackermann function}
 \index{function!ack}
 
@@ -1150,49 +1151,50 @@ Solution: \ref{sol_ackermann}.
 \label{palindrome}
 \index{palindrome}
 
-A palindrome is a word that is spelled the same backward and
-forward, like ``noon'' and ``redivider.''  Recursively, a word
-is a palindrome if the first and last letters are the same
-and the middle is a palindrome.
+Un palíndromo es una palabra que que se lee igual adelante que atrás,
+como ``Ana`` y ``radar``. Recursivamente, una palabra es un palíndromo
+si las primera y últimas letras son las mismas y el medio es un palíndromo.
 \index{palindrome}
 
-The following are subroutines that take a string argument and
-return the first, last, and middle letters:
+La siguientes son subrutinas que toman un argumento de cadena de texto
+y devuelve las letras primera, última y del centro:
 
 \begin{verbatim}[fontshape=up]
-sub first_letter(Str $word){
-    return substr $word, 0, 1;
+sub primera_letra(Str $palabra){
+    return substr $palabra, 0, 1;
 }
 
-sub last_letter(Str $word){
-    return substr $word, *-1, 1;
+sub última_letra(Str $palabra){
+    return substr $palabra, *-1, 1;
 }
 
-sub middle_letter(Str $word){
-    return substr $word, 1, *-1;
+sub centro_letra(Str $palabra){
+    return substr $palabra, 1, *-1;
 }
 \end{verbatim}
 %
-Don't worry about how they work for the time being; we will see 
-that in Chapter~\ref{strings} on strings. For now:
+Por el momento, no es necesario que sepas cómo funcionan; veremos esto en el 
+Capítulo~\ref{strings} sobre cadenas de texto. Por ahora:
 
 \begin{enumerate}
 
-\item Type these subroutines into a file named {\tt palindrome.pl6}
-and test them out.  What happens if you call \verb'middle_l' with
-a string with two letters?  One letter?  What about the empty
-string, which is written \verb"''" and contains no letters? 
-Given that the {\tt .chars} method returns the length of a 
-string, how could you add a signature constraint to reject invalid input?
+\item Escribe estas subrutinas en un archivo llamado 
+{\tt palindromo.pl6} y pruébalas. ¿Qué pasas si llamas 
+a \verb|letra_centro| con una cadena de texto con dos letras?
+¿Una letra? ¿Qué pasa con una cadena de texto, la cual se escribe
+\verb|''| y no contiene letras? Dado que el método {\tt .chars}
+devuelve la longitud de una cadena de texto, cómo podrías añadir
+una restricción de signatura para rechazar una entrada inválida?
 
-\item Write a subroutine called \verb"is-palindrome" that takes
-a string argument and returns {\tt True} if it is a palindrome
-and {\tt False} otherwise.  Remember that you can use the
-built-in method {\tt .chars} to check the length of a string.
+\item Escribe una subrutina llamada \verb|es-palindromo| que toma
+una cadena de texto como argumento y devuelve {\tt True} si es 
+un palindromo y {\tt False} de lo contrario. Recuerdas que puedes
+usar el método integrado {\tt .chars} para chequear la longitud 
+de una cadena de texto.
 
 \end{enumerate}
 
-Solution: \ref{sol_palindrome}.
+Solución: \ref{sol_palindrome}.
 \index{palindrome}
 
 \end{exercise}
@@ -1201,14 +1203,14 @@ Solution: \ref{sol_palindrome}.
 \index{power}
 \label{power}
 
-An integer number, $a$, is a power of $b$ if it is divisible by $b$
-and $a/b$ is a power of $b$.  Write a function called
-\verb"is-power-of" that takes parameters {\tt a} and {\tt b}
-and returns {\tt True} if {\tt a} is a power of {\tt b}.
-Note: you will have to think about the base case.
+Un número entero. $a$, es una potencia de $b$ si es divisible 
+por $b$ y $a/b$ es una potencia de $b$. Escribe una función llamada
+\verb|es-potencia-de| que toma los parámetros {\tt a} y {\tt b}
+y devuelve {\tt True} si {\tt a} es una potencia de {\tt b}.
+Nota: tendrás que pensar sobre el caso base.
 \index{base case}
 
-Solution: \ref{sol_power}
+Solución: \ref{sol_power}
 
 \end{exercise}
 
@@ -1219,23 +1221,24 @@ Solution: \ref{sol_power}
 \label{gcd}
 \index{gcd function}
 
-The greatest common divisor (GCD) of $a$ and $b$ is the largest number
-that divides both of them with no remainder.  
+El máximo común divisor (MCD) de $a$ y $b$ es el mayor número entero
+que los divide sin dejar un residuo.
 
-One way to find the GCD of two numbers is based on the observation
-that if $r$ is the remainder when $a$ is divided by $b$, then $gcd(a,
-b) = gcd(b, r)$.  As a base case, we can use $gcd(a, 0) = a$.
+Una manera de encontrar el MCD de dos números está basada en la
+observación de que si $r$ es el residuo cuando $a$ es dividido por $b$,
+entonces $mcd(a,b) = mcd(b,r)$. Como un caso base, podemos usar 
+$mcd(a, 0) = a$.
 
-Write a function called
-\verb"gcd" that takes parameters {\tt a} and {\tt b}
-and returns their greatest common divisor.
+Escribe una función llamada \verb|mcd| que toma los parámetros 
+{\tt a} y {\tt b} y devuelve su máximo común divisor.
 
-Credit: this exercise is based on an example from Abelson and
-Sussman's {\em Structure and Interpretation of Computer Programs}.
+Crédito: este ejercicio está basado en un ejemplo de 
+{\em Structure and Interpretation of Computer Programs}
+de Abelson y Sussman.
 \index{Abelson, Harold}
 \index{Sussman, Gerald Jay}
 
-Solution: \ref{sol_gcd}
+Solución: \ref{sol_gcd}
 
 \end{exercise}
 
