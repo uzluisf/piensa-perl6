@@ -1,214 +1,218 @@
-\chapter{Classes and Objects}
+\chapter{Clases y Objetos}
 \label{objects}
 \index{object}
 \index{class}
 
-
-At this point you know how to use functions to organize code and 
-built-in types to organize data.  The next step is to learn
-``object-oriented programming,'' which uses programmer-defined types
-to organize both code and data.
-
+A esta altura ya sabes cómo usar funciones para organizar código
+y tipos integrados para organizar datos. El siguiente paso es aprender
+``programación orientada a objetos,`` la cual usa tipos definidos por
+el programador para organizar código y datos.
 \index{abstraction}
 \index{encapsulation}
-When software applications start to grow large, the number of 
-details to be handled becomes overwhelming. The only 
-way to manage this complexity is to use abstraction and 
-encapsulation. Object orientation is a very popular and efficient 
-way to implement abstraction and encapsulation.
 
-Perl~6 is an {\bf object-oriented programming language}, which means
-that it provides features that support object-oriented
-programming, which has these defining characteristics:
+Cuando las aplicaciones de software comienzan a crecer, el número
+de detalles que se debe manejar puede volverse agobiante. La única 
+manera de manejar esta complejidad es usar abstracción y encapsulamiento.
+La programación orientada a objetos es una manera muy popular y eficiente
+de implementar abstracción y encapsulamiento. 
+
+Perl~6 es un {\bf lenguaje de programación orientado a objetos}, lo cual significa
+que el lenguaje provee características que soportan la
+programación orientada a objetos, la cual posee las siguientes
+características definitivas:
 \index{object-oriented programming}
 
 \begin{itemize}
 
-\item Programs include class and method definitions.
+\item Los programas incluyen definiciones de clases y métodos.
 \index{class}
 \index{method}
 
-\item Most of the computation is expressed in terms of operations on
-  objects.
+\item La mayor parte de la computación se expresa en términos de 
+operaciones sobre los objetos.
 
-\item Objects often represent things in the real world, and methods 
-often correspond to the ways things in the real world interact.
-
+\item Los objetos usualmente representan cosas en el mundo real, y los 
+métodos normalmente corresponden a las formas de interacción de las
+cosas en el mundo real.
 \end{itemize}
 
-
-Object-oriented programming in 
-Perl~6 is a big topic that may be worth a book by itself (and 
-there will probably be a book or two on the subject at some point). 
-This chapter will hopefully do more than just skim the surface 
-and enable you to create and use objects, but will not 
-cover some of the details and more advanced features.
+La programación orientada a objetos en Perl~6 es un tema enorme que 
+merece un libro para sí mismo (y probablemente habrá un libro o dos sobre la
+materia en algún punto). Este capítulo hará más que analizar el
+tema superficialmente y te permitará crear y usar objetos. Sin embargo,
+no cubrirá algunos detalles y características más avanzadas.
 \index{OOP (object-oriented programming)}
 \index{object-oriented programming (OOP)}
 
-\section{Objects, Methods and Object-Oriented Programming}
+\section{Objetos, Métodos y Programación Orientada a Objetos}
 \index{object-oriented programming (OOP)}
 \index{programming!object-oriented}
 
-Let us start with a high-level nontechnical overview 
-of object-oriented programming in general and a brief 
-introduction to the jargon associated with it.
+Empecemos con una sinopsis general de la programación orientada a objetos
+y una breve introducción a la jerga asociada con la misma.
+
 
 \index{object}
-In computer science, an object may loosely describe a memory 
-location or an entity having a value, and often be referred to 
-by an identifier. This can be a variable, a data structure, 
-an array, or possibly even a function. This general meaning 
-is not the sense that we will use in this chapter.
+En la ciencia de la computación, un objeto puede describirse 
+vagamente como una dirección de memoria o una entidad que 
+posee un valor, y su usualmente es conocido como un identificador.
+Esto puede ser una variable, una estructura de datos, un array,
+o posiblemente hasta una función. No usaremos esta concepción
+general con el mismo sentido en este capítulo.
 
-In object-oriented programming (OOP), the word {\bf object} 
-has a much more specific meaning: an object is an entity 
-which often has:
+En la programación orientada a objetos (POO), la palabra
+{\bf objeto} tiene un significado mucho más específico: un 
+objeto es una identidad que usualmente tiene:
 \begin{itemize}
 
-\item An identity (for example its name).
+\item Una identidad (por ejemplo, su nombre).
 
 \index{object! behavior}
-\item Some properties defining its behavior (in the form of 
-special functions that are usually called {\bf methods}); this 
-behavior usually does not change over time and is generally 
-common to all objects of the same type.
+\item Algunas propiedades que definen su comportamiento (en la forma
+de funciones especiales que son comúnmente conocidas como {\bf métodos});
+este comportamiento usualmente no cambia con el tiempo y es 
+generalmente común a todos los objetos del mismo tipo.
 \index{method}
 
-\item A {\bf state} defined by some special variables (called, 
-depending on the language, attributes, instance data, fields, 
-or members); the state may change over time and is generally 
-specific to each object. In Perl, we speak about 
-{\bf attributes}.
+\item Un {\bf estado} el cual es definido por algunas variables
+especiales (conocidas como, dependiendo en el lenguaje, atributos,
+campos, o miembros); el estado puede cambiar a medida que pasa el 
+tiempo y es generalmente específico a cada objeto. En Perl, nos
+referimos a dichas variables como {\tt atributos}.
 \index{object!state}
 \index{object!attribute}
 \index{attribute!object}
 \end{itemize}
 
-In brief, an object is a set of attributes and methods packed 
-together.
+En resumen, un objeto es un conjunto de atributos y métodos
+todos juntos.
 
 \index{class}
-Objects are usually defined in a kind of code package called 
-a {\bf class}. A class defines the methods and the nature of 
-the attributes associated with an object. In Perl~6, a class makes it 
-possible to define new types similar to the built-in types 
-that we have seen before. Very soon, we will start to define 
-some classes and to use them to create objects.
+Los objetos son usualmente definidos dentro de un tipo
+de paquete de código conocido como una {\bf clase}. 
+Una clase define los métodos y la naturaleza de los
+atributos asociados a un objeto. En Perl~6, una clase
+hace posible definir nuevos tipos similares a los tipos
+integrados que hemos visto hasta ahora. Muy pronto comenzaremos
+a definir algunas clases y las usaremos para crear objetos.
 \index{type!building new type}
 
 \index{invocant}
 \index{method}
 \index{dot notation}
-You already know informally what a method is, as we have 
-used built-in methods throughout the book. It is a sort of 
-function with a special postfix syntax using the dot notation 
-on the invocant. For example, you may invoke the {\tt say} 
-method on a simple string:
+Ya sabes informalmente lo qué es un método, dado que hemos
+usado métodos integrados a lo largo del libro. Es como una 
+como una función con una sintaxis sufija que usa la notación
+del punto sobre el invocante. Por ejemplo, puedes invocar el
+método {\tt say} sobre una simple cadena de texto:
 
 \begin{verbatim}
 "foo".say;           # -> foo
 \end{verbatim}
 
-Note that ``foo'' isn't an object, but a simple string, but 
-you can invoke the \verb'say' method on it, because Perl 
-can treat it internally as an object when needed. In some 
-OOP languages, this implicit conversion of a native type 
-into an object is sometimes called autoboxing.
+Nota que ``foo'' no es un objeto, pero una simple cadena de texto.
+No obstante, puedes invocar el método \verb|say| sobre la misma,
+debido a que Perl puede tratarla internamente como un objeto cuando
+es necesario. En algunos otros lenguajes POO, esta conversión implícita
+de un tipo nativo a un objeto es conocida como autoboxing.
 \index{autoboxing}
 
-You probably also remember that methods can be chained in a 
-process where the value returned by a method becomes the 
-invocant for the next method:
+Probablemente recuerdas que los métodos pueden ser encadenados
+en un proceso donde el valor devuelto por un método se convierte
+en el invocante para el siguiente método:
 
 \begin{verbatim}
 "foo".uc.say;        # -> FOO
 
-my @alphabet = <charlie foxtrot alpha golf echo bravo delta>;
-@alphabet.sort.uc.say;
-    # prints: ALPHA BRAVO CHARLIE DELTA ECHO FOXTROT GOLF 
+my @alfabeto = <charlie foxtrot alpha golf echo bravo delta>;
+@alfabeto.sort.uc.say;
+    # imprime: ALPHA BRAVO CHARLIE DELTA ECHO FOXTROT GOLF 
 \end{verbatim}
 
 \index{role}
-In OOP, methods applicable to objects are usually defined 
-within classes, often the class that also defined the 
-object or some other class closely related to it. In Perl~6, 
-methods can also be defined in a {\bf role}, which is 
-another type of code package somewhat resembling to a class, 
-as we will see later.
+En POO, los métodos que se pueden aplicar a los objetos son
+usualmente definidos dentro de las clases, regularmente
+la clase que también definió el objeto o alguna otra clase 
+con una cercana relación. En Perl~6, los métodos pueden también
+ser definidos en un {\bf role}, el cual es otro tipo de 
+paquete de código que se parece a una clase, como veremos
+más adelante.
 
 \index{black box}
 \index{encapsulation}
-The basic idea of object-oriented programming is that an 
-object is a kind of black box that hides its internals
-(data and code) from the user; the user can consult or change 
-the state of an object through the methods. Hiding the 
-internals of objects is called {\bf encapsulation}. This 
-often enables a higher-level view and a better data 
-abstraction than what we have seen so far; this in turns 
-helps to make programs less buggy (especially large programs).
+La idea básica de la programación orientada a objetos es
+que un objeto es un tipo de caja negra que oculta su
+estructura interna (datos y código) del usuario; el usuario
+puede consultar o cambiar el estado de un objeto a través de
+los métodos. El proceso de ocultar la estructura interna
+de los objetos se conoce como {\bf encapsulación}. Esto usualmente
+permite tener una perspectiva más general y una mejor abstracción
+de datos con respecto a lo que hemos visto hasta ahora;
+esto resulta en programas con menos errores (especialmente programas
+extensos).
 
-In addition, OOP usually also offers the following concepts:
+En adición, POO usualmente ofrece los siguientes conceptos:
 \begin{itemize}
 \index{polymorphism}
-\item {\bf polymorphism}, i.e., the possibility for a function or 
-a method to do different things depending of the type of 
-object which calls it;
+\item {\bf polimorfismo}, i.e., la función o el método tiene la
+posibilidad de hacer cosas diferentes dependiendo del tipo de 
+objeto que la llama o lo invoca;
 \index{inheritance}
-\item {\bf inheritance}, i.e., the possibility to derive a class from 
-another class, so that the child class inherits some of 
-the properties of the {\bf parent class}, which is a powerful tool 
-for code reuse.
+\item {\bf herencia}, i.e., la posibilidad de derivar una clase de
+otra clase, de tal manera que la clase hija hereda algunas de la 
+propiedades de la clase {\bf padre}, la cual es una herramienta
+poderosa para el reutilización de código.
 \end{itemize}
 
-We will now study how all these concepts are implemented in Perl.
+Ahora estudiaremos cómo todo estos conceptos se implementan en Perl.
 
 
-\section{Programmer-Defined Types}
+\section{Tipos Definidos por el Programador}
 \label{point}
 \index{programmer-defined type}
 \index{type!programmer-defined}
 
-We have used many of Perl's built-in types; now we are going
-to define a new type.  As an example, we will create a type
-called {\tt Point2D} that represents a point in 
-two-dimensional space.
+Hemos usado muchos tipos integrados de Perl; ahora vamos
+a definir un nuevo tipo. Como un ejemplo, crearemos un
+tipo llamado {\tt Punto2D} que representa a un punto en
+el espacio bidimensional.
 \index{point, mathematical}
 \index{two-dimensional space}
 
-In mathematical notation, points are often written in
-parentheses with a comma separating the coordinates. For example,
-in Cartesian or rectangular coordinates, $(0,0)$ represents 
-the origin, and $(x,y)$ represents the point $x$ units to the 
-right and $y$ units up from the origin. $x$ is called 
-the abscissa of the point, and $y$ the ordinate.
+En notación matemática, los puntos son usualmente escritos
+en paréntesis con una coma que separa las coordenadas.  Por 
+ejemplo, en las coordenadas cartesianas o rectangulares,
+$(0,0)$ representa el origen, y $(x,y)$ representa un punto
+$x$ unidades a la derecha y $y$ unidades a la izquierda. $x$
+se llama la abscisa y $y$ la ordenada.
 \index{Cartesian coordinates}
 \index{coordinates!Cartesian}
 \index{coordinates!rectangular}
 \index{rectangular coordinates}
 
-There are several ways we might represent points in Perl:
+Hay varias maneras de representar un punto en Perl:
 
 \begin{itemize}
 
-\item We could store the coordinates separately in two
-variables, {\tt \$x} and {\tt \$y}.
+\item Podemos almacenar las coordenadas separadamente 
+en dos variables, {\tt \$x} y {\tt \$y}.
 
-\item We could store the coordinates as elements in a list, 
-an array, or a pair.
+\item De igual manera, podemos almacenar las coordenadas como
+elementos en una lista, un array, o una pareja.
 
-\item We could create a new type to represent points as
-objects.
+\item Así mismo, podemos crear un nuevo tipo que representa
+puntos como objetos.
 
 \end{itemize}
 \index{representation}
 
-Creating a new type is a bit more complicated than the 
-other options, but it has advantages that will be apparent soon.
+Crear un nuevo tipo es un poco más complicado que las otras
+opciones, pero tiene ventajas que serán aparentes muy pronto.
 
-A programmer-defined type is usually created by a {\bf class}
-(or a \emph{role}, but we will come back to that later). 
-A barebones class definition for a point type looks like this:
+Un tipo definido por el programador es usualmente creado con 
+una {\bf clase} (o un {\bf rol}, pero regresaremos a esto más tarde).
+La definición de una clase bien simple para un tipo que representa a 
+un punto luce así:
 \index{class}
 \index{object!class}
 \index{class!definition}
@@ -217,85 +221,87 @@ A barebones class definition for a point type looks like this:
 \index{Point2D class}
 
 \begin{verbatim}
-class Point2D {
-    has $.abscissa;              # "x" value
-    has $.ordinate;              # "y" value
+class Punto2D {
+    has $.abscisa;               # valor "x"
+    has $.ordenada;              # valor "y" 
 }
 \end{verbatim}
 %
-The header indicates that the new class is called {\tt Point2D}.
-The body is defining two attributes, i.e., named properties 
-associated with the class, here the abscissa and ordinate 
-(or $x$ and $y$ coordinates) of the point.
+La cabecera indica que la nueva clase se llama {\tt Punto2D}. 
+El cuerpo define dos atributos, i.e., propiedades con nombres
+asociadas con la clase, aquí la abscisa y la ordenada 
+(o las coordenadas $x$ y $y$) del punto.
 \index{Point2D class}
 \index{class!Point2D}
 
 \index{type object}
-Defining a class named {\tt Point2D} creates a {\bf type object}.
+La definición de una clase con el nombre {\tt Punto2D} crea
+un {\bf tipo objeto}.
 
-The type object is like a factory for creating objects.  To create 
-a point, you call the {\tt new} method on the {\tt Point2D} class:
+El tipo objeto es como una factoría para crear objetos. Para crear
+un punto, tú llamas el método {\tt new} sobre la clase {\tt Punto2D}:
 
 \begin{verbatim}
-my $point = Point2D.new( 
-    abscissa => 3, 
-    ordinate => 4
+my $punto = Punto2D.new( 
+    abscisa  => 3, 
+    ordenada => 4
 );
-say $point.WHAT;                # -> (Point2D)
-say $point.isa(Point2D)         # -> True
-say $point.abscissa;            # -> 3
+say $punto.WHAT;                # -> (Point2D)
+say $punto.isa(Punto2D)         # -> True
+say $punto.abscisa;             # -> 3
 \end{verbatim}
 %
 \index{isa method}
 \index{WHAT}
-You can of course create as many points as you wish.
+Por supuesto puedes crear tanto puntos como desees.
 
 \index{constructor}
 \index{new, object constructor}
 \index{dot notation}
 \index{object!constructor}
-The {\tt new} method is called a {\bf constructor} and has not 
-been defined in this example; this is not needed because 
-Perl~6 supplies a default {\tt new} constructor method for 
-every class (we'll see later how). The method invocation 
-syntax, with the dot notation, is the same as what we have 
-used throughout the book to invoke built-in methods. You 
-are not forced to use this constructor; you can also create 
-your own (and you may name it {\tt new} or something else), 
-but we will stay with the built-in {\tt new} method for the 
-time being.
+El método {\tt new} se llama un {\bf constructor} y no se ha 
+definido en este ejemplo; esto no es necesario dado que 
+Perl~6 provee un constructor {\tt new} por defecto para 
+cada clase (como veremos más adelante). La sintaxis de invocación
+de método, con la notación de punto, es la misma que hemos 
+usados a lo largo del libro para invocar los métodos integrados.
+No estás forzado a usar este constructor; también puedes crear
+tu propio constructor (y puedes nombrarlo {\tt new o algo diferente}),
+pero usaremos el método integrado {\tt new} por el momento.
 \index{invocation!method}
 \index{method invocation}
 
-Creating a new object with a class is called {\bf instantiation}, 
-and the object is an {\bf instance} of the class.
+El proceso de crear un nuevo objecto con una clase es conocido
+como {\bf instanciación}, y el objeto es una {\bf instancia} de la
+clase.
 \index{instance}
 \index{object!instance}
 \index{instantiation}
 
-Every object is an instance of some class, so the terms 
-``object'' and ``instance'' are interchangeable.  But 
-we will often use ``instance'' to indicate that we are 
-talking about an object belonging to a programmer-defined type.
+Cada objeto es una instancia de alguna clase, 
+así que los términos ``objeto`` e ``instancia`` son
+intercambiables. Pero usualmente usaremos ``instancia``
+para indicar que estamos hablando de un objeto que pertenece
+a un tipo definido por el programador.
 \index{type}
 \index{programmer-defined type}
 
-\section{Attributes}
+\section{Atributos}
 \label{attributes}
 \index{instance attribute}
 \index{attribute!instance}
 \index{dot notation}
 
-The attributes that we have defined are properties associated 
-with the {\tt Point2D} class, but they are specific to the 
-instance of the class that has been created. They are 
-instance attributes. If we create another {\tt Point2D} object, 
-it will also have these attributes, but the values of 
-these attributes are likely to be different. 
+Los atributos que hemos definido son las propiedades asociadas
+con las clase {\tt Punto2D} pero, al mismo tiempo, son específicas
+a la instancia de la clase que hayamos creado. Ellos son los
+atributos de la instancia. Si creamos otro objeto {\tt Punto2D},
+también tendrá los mismos atributos, pero los valores de tales
+atributos serán probablemente diferentes. 
 
-Figure~\ref{fig.point2d} shows the result of these assignments.
-A state diagram that shows an object and its attributes is
-called an {\bf object diagram}.
+La figura~\ref{fig.point2d} muestra el resultado de estas asignaciones.
+Un diagrama de estado que muestra un objeto y sus atributos es conocido
+como un {\bf diagrama de objeto}.
 \index{state diagram}
 \index{diagram!state}
 \index{object diagram}
@@ -304,415 +310,429 @@ called an {\bf object diagram}.
 \begin{figure}
 \centerline
 {\includegraphics[scale=0.8]{figs/point2D.png}}
-\caption{Object diagram.}
+\caption{Diagrama de objeto.}
 \label{fig.point2d}
 \end{figure}
 
-The variable {\tt \$point} refers to a {\tt Point2D} object, 
-which contains two attributes.  
+La variable {\tt \$punto} se refiere a un objeto {\tt Punto2D},
+el cual contiene dos atributos. 
 
-Each attribute of the {\tt Point2D} class should refer to a 
-number, but this is not obvious in the current definition of 
-the class. As it stands right now, we could create a {\tt Point2D} 
-object with a string for the abscissa, which would not make 
-much sense. We can improve the class definition by specifying 
-a numeric type for the attributes:
+Cada atributo de la clase {\tt Punto2D} debe referirse a un 
+número, pero esto no es obvio en la definición actual de la clase.
+Al momento podemos crear un objeto {\tt Punto2D} con un cadena de texto
+como la abscisa, lo cual no hace sentido. Podemos mejora la definición de
+la clase al especificar un tipo numérico para los atributos:
 %
 \begin{verbatim}
-class Point2D {
-    has Numeric $.abscissa;              # "x" value
-    has Numeric $.ordinate;              # "y" value
+class Punto2D {
+	has Numeric $.abscisa;               # valor "x"
+	has Numeroc $.ordenada;              # valor "y" 
 }
 \end{verbatim}
 %
 \index{private attribute}
 \index{attribute!private}
-The instance attributes are private to the class, which means 
-that they normally cannot be accessed from outside the class: 
-you would usually need to invoke a method of the class 
-(i.e., a kind of subroutine defined within the class), to get 
-their value. However, when an attribute is defined with a dot 
-as in \verb'$.abscissa':
+Los atributos de la instancia son privados para la clase,
+lo cual significa que no puede accederse fuera de la clase:
+usualmente necesitarías invocar un método de la clase (i.e., un
+tipo de subrutina definida dentro de la clase), para obtener su
+valor. No obstante, cuando se define un atributo con un punto como 
+en \verb|$.abscisa|:
 
 \begin{verbatim}
-    has $.abscissa;  
+    has $.abscisa;  
 \end{verbatim}
 %
 \index{accessor}
 \index{method!accessor}
-Perl automatically creates an implicit \emph{accessor} method, 
-i.e., a method having the same name as the attribute that returns 
-the value of this attribute. Thus, when we wrote:
+Perl crea un método implícito \emph{de acceso}, i.e., un método
+que comparte el nombre del atributo y devuelve el valor de dicho
+atributo. Así que, cuando escribimos:
 
 \begin{verbatim}
-say $point.abscissa;                     # -> 3
+say $punto.abscisa;                     # -> 3
 \end{verbatim}
 %
-we were not accessing directly the {\tt abscissa} attribute of 
-the \verb'$point' object, but we were really calling the 
-{\tt abscissa} method on the object, which in turn returned 
-the value of that attribute.
+no estábamos accediendo el atributo {\tt abscisa} del objeto
+\verb|$punto| directamente, sino que estábamos llamando al método
+{\tt abscisa} sobre el objeto, el cual devolvió el valor de ese
+atributo.
 
 \index{dot notation}
 \index{accessor}
-You can use such an accessor with dot notation as part of any 
-expression. For example:
+
+Puedes usar dicho un método de acceso con la notación de punto
+como parte de cualquier expresión. Por ejemplo:
 
 \begin{verbatim}
-my $dist-to-center = sqrt($point.abscissa ** 2 + $point.ordinate ** 2);
+my $dist-al-centro = sqrt($punto.abscisa ** 2 + $punto.ordenada ** 2);
 \end{verbatim}
 %
 
-There is another way to declare an attribute in a class, with 
-an exclamation mark twigil instead of a dot:
+También hay otra manera de declarar un atributo en una clase, 
+usando el twigil de signo de exclamación en vez de un punto:
 \index{twigil}
 
 \begin{verbatim}
-    has $!abscissa;  
+    has $!abscisa;  
 \end{verbatim}
 %
 \index{attribute!private}
 \index{private attribute}
-In that case, Perl does not create an implicit accessor method 
-and the attribute can only be accessed from methods within 
-the class. Such an attribute is now fully private. 
-However, if you declare attributes this way, you 
-will not be able to populate them at object creation with 
-the default {\tt new} constructor and will need to create your 
-own constructor (or indirectly modify {\tt new}). So don't try 
-that for the time being, as you would not be able to do much 
-with your objects at this point. We'll get back to that later.
+En ese caso, Perl no crea un método implícito de acceso 
+y el atributo solo se puede acceder desde otros métodos
+dentro de la clase. Tal atributo es ahora completamente privado. 
+Sin embargo, si declaras atributos de esta manera, no podrás
+asignarles ningún valor durante la creación del objeto con el 
+constructor por defecto {\tt new} y necesitarás crear tu propio
+constructor (or modificar {\tt new} indirectamente). Así que no
+intentes esto por el tiempo presente, dado que no serás capaz
+de hacer mucho con tus objetos en este punto. Regresaremos a esto 
+más tarde.
 
 \index{attribute!mutable}
 \index{attribute!immutable}
-By default, object attributes are not mutable; they are read-only. 
-This means you cannot modify them once the object has been created. 
-This is fine for some attributes: if an object represents a 
-person, that person's name and birth date are unlikely to 
-change. Some other attributes may need to be updated, sometimes 
-very frequently. In such cases, attributes can be declared 
-to be mutable with the {\tt is rw} trait:
+Por defecto, los atributos de un objeto no son mutables; solo
+se pueden leer. Esto significa que no puedes modificarlos una vez que 
+se ha creado el objeto. Esto funciona bien para algunos atributos: si
+un objeto representa a una persona, es poco probable que el nombre 
+de la persona y su fecha de nacimiento cambien. Otros atributos necesitan
+ser actualizados, muchas veces muy frecuentemente. En tales casos, los
+atributos pueden declararse como mutables con el rasgo (del inglés \emph{trait})
+ {\tt is rw}:
 \index{is rw trait}
 \index{trait!is rw}
 
 \begin{verbatim}
-class Point2D {
-    has Numeric $.abscissa is rw;              # "x" value
-    has Numeric $.ordinate is rw;              # "y" value
+class Punto2D {
+	has Numeric $.abscisa is rw;               # valor "x"
+	has Numeroc $.ordenada is rw;              # valor "y" 
 }
 \end{verbatim}
 %
-It is now possible to modify these attributes. For example, 
-we can change the newly created point's abscissa:
+Ahora es posible modificar estos atributos. Por ejemplo,
+podemos cambiar la abscisa del punto recién creado:
 
 \begin{verbatim}
-# First creating a Point2D object:
-my $point = Point2D.new(abscissa => 3, ordinate => 4);
-say $point;    # -> Point2D.new(abscissa => 3, ordinate => 4)
+# Primero creamos un objeto Punto2D:
+my $punto = Punto2D.new(abscisa => 3, ordenada => 4);
+say $punto;    # -> Punto2D.new(abscisa => 3, ordenada => 4)
 
-# Now moving the $point object two units to the right:
-$point.abscissa = 5; 
-say $point;    # -> Point2D.new(abscissa => 5, ordinate => 4)
+# Ahora movemos el objeto $punto dos unidades a la derecha:
+$punto.abscisa = 5; 
+say $punto;    # -> Punto2D.new(abscisa => 5, ordenada => 4)
 \end{verbatim}
 
 
 \index{class!attribute}
 \index{attribute!class}
-Almost all of the information presented so far about attributes 
-has been related to instance attributes, i.e., to properties related to 
-individual objects. You can also have attributes pertaining 
-to the whole class, which are named \emph{class attributes}. 
-They are less common than instance attributes and are declared 
-with the {\tt my} declarator (instead of {\tt has}). A typical 
-example of a class attribute would be a counter at the class level 
-to keep track of the number of objects that have been 
-instantiated. 
+Casi toda la información presentada aquí acerca de los atributos
+está relacionada con los atributos de la instancia, i.e., propiedades
+relacionada a objetos individuales. También puedes tener atributos que
+pertenecen a la clase entera, los cuales se conocen como \emph{atributos de la
+clase}. Son menos común que los atributos de una instancia y son declarados
+con el declarador {\tt my} (en vez de {\tt has}). Un ejemplo típico de
+una atributo de una clase sería un contador al nivel de la clase para
+mantener un récord del número de objetos que se han instanciado.
 
 
-\section{Creating Methods}
+\section{Creando Métodos}
 \index{method}
 
-The simple {\tt Point2D} class and its instance \verb'$point' 
-are not very useful so far. Let's complete the class definition 
-with some methods:
+La simple clase {\tt Punto2D} y su instancia \verb|$punto|
+no son muy útil al momento. Completemos la definición de la
+clase con algunos métodos:
 \index{Point2D class}
 
 \begin{verbatim}
-class Point2D {
-    has Numeric $.abscissa;
-    has Numeric $.ordinate;
+class Punto2D {
+    has Numeric $.abscisa;
+    has Numeric $.ordenada;
     
-    method coordinates {        # accessor to both x and y
-        return (self.abscissa, self.ordinate)
+    method coordenadas {        #  método de acceso para "x" y "y"
+        return (self.abscisa, self.ordenada)
     }
     
-    method distance2center {
-        (self.abscissa ** 2 + self.ordinate ** 2) ** 0.5
+    method distancia-al-centro {
+        (self.abscisa ** 2 + self.ordenada ** 2) ** 0.5
     }
-    method polar-coordinates {
-        my $radius = self.distance2center;
-        my $theta = atan2 self.ordinate, self.abscissa;
-        return $radius, $theta;
+    method coordenadas-polares {
+        my $radio = self.distancia-al-centro;
+        my $theta = atan2 self.ordenada, self.abscisa;
+        return $radio, $theta;
     }
 }
 \end{verbatim}
 
-We declare three methods in the class:
+Aquí declaramos tres métodos en la clase:
 \begin{itemize}
-\item {\tt coordinates}, a simple accessor to the Cartesian 
-coordinates;
+\item {\tt coordenadas}, un simple método de acceso a
+las coordenadas cartesianas;
 \index{coordinates!Cartesian}
 \index{Cartesian coordinates}
 
-\item{\tt distance2center}, a method to compute and return 
-the distance between the object and the origin;
+\item{\tt distancia-al-centro}, un método que calcula y devuelve
+la distancia entre el objeto y el origen;
 
 \index{polar coordinates}
 \index{coordinates!polar}
-\item{\tt polar-coordinates}, a method to compute the radius 
-and azimuth (\verb'$theta') of the object in the polar 
-coordinates system (notice that {\tt polar-coordinates} 
-invokes the {\tt distance2center} method to find the radius 
-component of the polar coordinates).
+\item{\tt coordenadas-polares}, un método que calcula el radio y 
+el azimuth (\verb|$theta|) del objeto en el sistema de coordenada
+polar (nota que {\tt coordenadas-polares} invoca al método 
+{\tt distancia-al-centro} para encontrar el componente radio de las 
+coordenadas polares).
 \end{itemize}
 
 \index{invocant}
-A method definition is not very different from a subroutine 
-definition, except that it uses the {\tt method} keyword 
-instead of the {\tt sub} keyword. This is not a surprise 
-since a method is essentially a subroutine that is defined 
-within a class (or a role) and knows about its 
-\emph{invocant}, i.e., the object that called it and its class. 
-And, of course, it has a different calling syntax.
+La definición de un método no es muy distinta a la definición
+de una subrutina, excepto que usa la palabra clave {\tt method}
+en vez de {\tt sub}. Esto no es una sorpresa dado que un 
+método es esencialmente una subrutina que se define dentro de
+una clase (o un rol) y sabe acerca de su \emph{invocante}, i.e.,
+el objeto que lo llama y su clase. Y, por supuesto, tiene una
+sintaxis de llamada diferente.
 \index{method}
 
 \index{method!dispatch}
 \index{dispatching methods}
 \index{invocation!method}
 \index{method invocation}
-Another important difference between a subroutine and a method 
-is that, since there may be several methods with the same name 
-defined in different classes (or different roles), a method 
-invocation involves a \emph{dispatch} phase, in 
-which the object system selects which method to call, usually 
-based on the class or type of the invocant. However, in 
-Perl~6, that difference is blurred by the fact that you can 
-have multi subroutines, i.e., subroutines with the same name 
-and a different signature that are also resolved at run time, 
-depending on the \emph{arity} (number of arguments) and type of 
-the arguments. 
+Otra diferencia importante entre una subrutina y un método es
+que, debido a que hay varios métodos con el mismo nombre
+definidos en diferentes clases (o diferentes roles), una 
+invocación de método conlleva un fase de \emph{despacho},
+en la cual el sistema de objeto selecciona cuál método llamar,
+usualmente basado en la clase o tipo del invocante. Sin embargo,
+en Perl~6, esa diferencia no es muy clara por hecho de que 
+puedes tener multi subrutinas, i.e., subrutinas con el mismo
+y una signatura diferente que son resueltas al tiempo de ejecución,
+dependiendo en la \emph{aridad} (número de argumentos) y el 
+tipo de los argumentos.
 \index{arity}
 \index{type}
 
-Within a method definition, {\tt self} refers to the 
-\emph{invocant}, the object that invoked the method. 
-There is a short hand for it, \verb'$.', so that we could 
-write the {\tt coordinates} method as follows:
+Dentro de la definición de un método, {\tt self}
+se refiere al \emph{invocante}, el objeto que invocó
+al método. Existe un atajo para el mismo, \verb|$.|,
+así que podríamos escribir el método {\tt coordenadas}
+de la siguiente manera:
 \index{self}
 
 \begin{verbatim}
-    method coordinates {        # accessor to both x and y
-        return ($.abscissa, $.ordinate)
+    method coordenadas {        #  método de acceso para "x" y "y"
+        return ($.abscisa, $.ordenada)
     }
 \end{verbatim}
 
-The two  syntax formats, \verb'$.' and {\tt self}, are 
-essentially equivalent.
+Los dos formatos de sintaxis, \verb|$.| y {\tt self}, son
+esencialmente equivalentes.
 
-There is a third syntactic way of doing it, using an 
-exclamation mark instead of a dot:
+Existe una tercera manera de lograr el mismo objetivo,
+la cual usa el signo de exclamación en vez del punto:
 
 \begin{verbatim}
-    method coordinates {        # accessor to both x and y
-        return ($!abscissa, $!ordinate)
-    }
+    method coordenadas {        #  método de acceso para "x" y "y"
+		return ($!abscisa, $!ordenada)
+	}
 \end{verbatim}
 
-Here, the result would be the same, but this new syntax is 
-not equivalent: \verb'$.abscissa' is a method invocation, 
-whereas \verb'$!abscissa' provides direct access to the attribute.
-The difference is that \verb'$!abscissa' is available only 
-within the class (and might be slightly faster), while 
-the method invocation syntax can be used somewhere else 
-(for example in another class). We will see in the next section 
-examples of this distinction and its consequences.
+Aquí, el resultado sería el mismo, pero esta nueva sintaxis
+no es equivalente: \verb|$.abscisa| es una invocación de método,
+mientras que \verb|$!abscisa| provee acceso directo al atributo. 
+La diferencia es que \verb|$!abscisa| está disponible dentro de 
+la clase (y podría ser un poco más rápida), mientras
+la sintaxis de invocación de método puede ser usada en cualquier
+otra parte (por ejemplo dentro de otra clase). Veremos en la 
+siguiente sección ejemplos de esta distinción y sus consecuencias.
 \index{invocation!method}
 \index{method invocation}
 
-We can now create an object and call our methods on it:
+Podemos ahora crear un objeto e invocar nuestros métodos:
 
 \begin{verbatim}
-my $point =  Point2D.new(
-    abscissa => 4, 
-    ordinate => 3
+my $punto =  Punto2D.new(
+    abscisa => 4, 
+    ordenada => 3
 );
-say $point.coordinates;         # -> (4 3)
-say $point.distance2center;    # -> 5
-say $point.polar-coordinates;    # -> (5 0.643501108793284)
+say $punto.coordenadas;            # -> (4 3)
+say $punto.distancia-al-centro;    # -> 5
+say $punto.coordenadas-polares;    # -> (5 0.643501108793284)
 \end{verbatim}
 
 \index{topical variable}
 \index{invocant}
-You might remember from previous chapters that if you use a method 
-without naming an explicit invocant, then the method applies to 
-the \verb'$_' topical variable:
+Podría ser que recuerdes que si usas un método sin nombrar el
+invocante explícitamente, entonces el método se aplica
+a la \verb|variable tópico|:
 
 \begin{verbatim}
-.say for <one two three>;       # -> one two three (each on one line)
+.say for <one two three>;       # -> one two three (cada uno en su propia línea)
 \end{verbatim}
 
 \index{for loop}
 \index{given statement}
-Now that we have created an object with some methods, we can also 
-take advantage of the same syntax shortcut. For example if we 
-use {\tt for} or {\tt given} to populate the \verb'$_' topical 
-variable with the \verb'$point' object, we can write:
+Ahora que hemos creado un objeto con algunos métodos, también
+podemos tomar ventaja de la misma sintaxis. Por ejemplo, si 
+usamos {\tt for} o {\tt given} para poblar la variable tópico
+\verb|$_| con el objeto \verb|$punto|, podemos escribir:
 
 \begin{verbatim}
-given $point {
-    say .coordinates;          # -> (4 3)                       
-    say .distance2center;     # -> 5                 
-    .polar-coordinates.say;     # -> (5 0.643501108793284)
+given $punto {
+    say .coordenadas;             # -> (4 3)                       
+    say .distancia-al-centro;     # -> 5                 
+    .coordenadas-polares.say;     # -> (5 0.643501108793284)
 }    
 \end{verbatim}
 
-As an exercise, you could write a method called 
-\verb"distance_between_points" that takes two points 
-as arguments and returns the distance between
-them using the Pythagorean theorem.
+Como ejercicio, podrías escribir una subrutina llamado 
+\verb|distancia-entre-puntos| que toma dos puntos
+como argumentos y devuelve la distancia entre ellos 
+usando el teorema de Teorema de Pitágoras.
 
-The methods of our class so far are all \emph{accessors}, which 
-means they provide a snapshot of some of the invocant's attributes. 
-If the attributes are mutable (declared with the \verb'is rw' 
-trait), we can also create some \emph{mutators}, i.e., methods 
-that can be invoked to change those mutable attributes:
+Los métodos de nuestra clase son todos métodos de acceso,
+lo cual significa que ellos proveen el estado de algunos de los atributos
+del invocante. Si los atributos son mutable (al ser declarados con
+con el trait \verb|is rw|), podemos también creamos algunos \emph{mutadores},
+i.e., métodos que se invocan para cambiar aquellos atributos mutables:
 \index{accessor}
 \index{mutator}
 
 \begin{verbatim}
-class Point2D-mutable {
-    has Numeric $.abscissa is rw;
-    has Numeric $.ordinate is rw;
+class Punto2D-mutable {
+    has Numeric $.abscisa is rw;
+    has Numeric $.ordenada is rw;
     
-    # perhaps the same accessors as in the class definition above
+    # quizás los mismos métodos de acceso como
+    # en la clase anterior.
     
-    method new-ordinate (Numeric $ord) {
-        self.ordinate = $ord; 
+    method nueva-ordenada (Numeric $ord) {
+        self.ordenada= $ord; 
     }
 }
-# Creating the Point2D-mutable object:
-my $point = Point2D-mutable.new(abscissa => 3, ordinate => 4);
-say $point;  # -> Point2D-mutable.new(abscissa => 3, ordinate => 4)
+# Creando un objeto Punto2D-mutable:
+my $punto = Punto2D-mutable.new(abscisa => 3, ordenada => 4);
+say $punto;  # -> Punto2D-mutable.new(abscisa => 3, ordenada => 4)
 
-# Modifying the ordinate:
-$point.new-ordinate(6);
-say $point;  # -> Point2D-mutable.new(abscissa => 3, ordinate => 6)
+# Modificando la ordenada:
+$punto.nueva-ordenada(6);
+say $punto;  # -> Punto2D-mutable.new(abscisa => 3, ordenada => 6)
 \end{verbatim}
 
 
 
 
-\section{Rectangles and Object Composition}
+\section{Rectángulos y Composición de Objetos}
 \label{rectangles}
 \index{rectangle}
 \index{composition!object}
 \index{object!composition}
 
-Sometimes it is obvious what the attributes of an object should be,
-but other times you have to make decisions.  For example, imagine you
-are designing a class to represent rectangles.  What attributes would
-you use to specify the location and size of a rectangle?  You can
-ignore angle; to keep things simple, assume that the rectangle's edges 
-are either vertical or horizontal.
+Algunas veces es obvio qué los atributos de un objeto deberían ser,
+pero otras veces debes hacer decisiones. Por ejemplo, imagínate que estás
+diseñando una clase para representar rectángulos. ¿Qué atributos usarías para
+especificar la ubicación y tamaño de un rectángulo? Puedes ignorar 
+los ángulos; para mantener las cosas simples, asume que los bordes 
+del rectángulo son verticales or horizontales.
 \index{representation}
 
-There are at least two possibilities: 
+Existen por lo menos dos posibilidades:
 
 \begin{itemize}
 
-\item You could specify one corner of the rectangle
-(or the center), the width, and the height.
+\item Podrías especificar una esquina del rectángulo (o el centro), 
+el ancho, y la altura.
 
-\item You could specify two opposing corners.
+\item Podrías dos esquinas opuestas.
 
 \end{itemize}
 
-At this point it is hard to say whether either is better than
-the other, so we'll implement the first one, just as an example.
+En este momento es difícil decir cuál de las opciones es mejor, 
+así que implementaremos la primera, como un ejemplo.
 \index{Rectangle class}
 \index{class!Rectangle}
 
-Here is the class definition:
+Aquí está la definición de la clase:
 
 \begin{verbatim}
-class Rectangle {
-    has Numeric $.width;
-    has Numeric $.height;
-    has Point2D $.corner;     # lower left vertex 
+class Rectángulo {
+    has Numeric $.ancho;
+    has Numeric $.altura;
+    has Punto2D $.esquina;     # vértice inferior izquierdo 
 
-    method area { return $.width * $.height }
-    method top-left { $.corner.abscissa, $.corner.ordinate + $.height; }
-    # other methods, e.g. for other corners' coordinates, center, etc.
+    method area { return $.ancho * $.altura }
+    method superior-izq { $.esquina.abscisa, $.esquina.ordenada + $.altura; }
+    # otros métodos, e.g. para las coordenadas de las otras esquinas,
+    # centro, etc.
 }
 \end{verbatim}
 %
-The new feature compared to the previous {\tt Point2D} class 
-definition is that the \verb'Rectangle' class can now use the 
-{\tt Point2D} type created previously for defining the corner 
-attribute. 
+La nueva característica comparada a la definición 
+anterior de la clase {\tt Punto2D} es que la clase 
+\verb|Rectángulo| ahora usa el tipo {\tt Punto2D} 
+creado anteriormente para definir el atributo esquina.
 
-The {\tt top-left} method returns the coordinates of 
-the top left angle of the rectangle. This {\tt top-left} 
-method gives us an opportunity to explain a bit more 
-the difference between the \verb'$.' and \verb'$!' twigils. We have 
-used \verb'$.corner.abscissa' to obtain the abscissa of 
-the corner, i.e., in effect an accessor invocation. We could 
-have directly accessed the {\tt corner} and {\tt height} 
-attributes of the {\tt Rectangle} class and used the following 
-method definition:
+El método {\tt superior-izq} devuelve las coordenadas 
+del ángulo superior izquierdo del rectángulo. Este 
+método {\tt superior-izq} nos da la oportunidad de explicar
+un poco más acerca de la diferencia entre los twigils
+\verb|$.| y \verb|$!|. Hemos usado \verb|$.esquina.abscisa|
+para obtener la abscisa de la esquina, i.e., en efecto una
+invocación del método de acceso. Podríamos haber accedido 
+los atributos {\tt esquina} y {\tt altura} de la clase
+{\tt Rectángulo} directamente y usar la siguiente definición
+de método:
 \index{twigil}
-\index{invocation!method}
+\index{invoother methodscation!method}
 \index{method invocation}
 
 \begin{verbatim}
-    method top-left { $!corner.abscissa, $!corner.ordinate + $!height; }
+    method superior-izq { 
+    	$!esquina.abscisa, $!esquina.ordenada + $!altura;
+    }
 \end{verbatim}
 
-But it would not be possible to use \verb'$!corner!abscissa' or 
-\verb'$.corner!abscissa', because {\tt abscissa} is not an 
-attribute defined in the {\tt Rectangle} class, and thus cannot 
-be accessed directly there. You can use direct access 
-to the attribute (for example with the \verb'$!abscissa' syntax) 
-only within the class where this attribute is defined, 
-{\tt Point2D}. So, in {\tt Rectangle}, we need to invoke the 
-accessor (i.e., the syntax with \verb'$.') for obtaining the 
-value of the corner abscissa.
+Sin embargo, no sería posible \verb|$!esquina!abscisa| o 
+\verb|$.esquina!abscisa|, dado que {\tt abscisa} no es un 
+atributo definido en la clase {\tt Rectńgulo}, y por lo tanto
+no se puede acceder directamente ahí. Puedes usar acceso directo
+del atributo (por ejemplo con la sintaxis \verb|$!abscisa|)
+solo dentro de la clase donde el atributo es definido, {\tt Punto2D}.
+Así que, en {\tt Rectángulo}, necesitamos invocar el método de
+acceso (i.e., la sintaxis con \verb|$.|) para obtener el valor
+de abscisa de la esquina. 
 
-We can now create a {\tt Rectangle} object:
+Ahora podemos crear un objeto {\tt Rectángulo}:
 \index{rectangle}
 
 \begin{verbatim}
-my $start-pt =  Point2D.new(abscissa => 4, ordinate => 3);
-my $rect = Rectangle.new(corner => $start-pt, height => 10, width => 5);
+my $punto-inicio =  Punto2D.new(abscisa => 4, ordenada => 3);
+my $rect = Rectángulo.new(
+	esquina => $punto-inicio, 
+	altura => 10, 
+	ancho => 5
+);
 
-say "top-left coord.: ", $rect.top-left;   # -> top-left coord.: (4 13)
-say "Rectangle area: ", $rect.area;      # -> Rectangle area: 50
+say "Coord. de esquina superior-izq.: ", $rect.top-left;   
+			# -> Coord. de esquina superior-izq.: (4 13)
+say "Area del rectángulo: ", $rect.area;      
+			# -> Area del rectángulo: 50
 \end{verbatim}
+
 
 \index{named parameter}
 \index{parameter!named}
-You might have noticed that the arguments passed to the 
-{\tt Rectangle.new} constructor are not in the same order as 
-in the class definition. I did that on purpose 
-to show that the order is unimportant because we 
-are using named arguments.
+Podrás haber notado que los argumentos que pasan al 
+constructor {\tt Rectángulo.new} no están en el mismo 
+orden como en la definición de la clase. Hice eso a 
+propósito para mostrar que el orden de los argumentos
+no importan porque estamos usando argumentos nombrados.
 
-Figure~\ref{fig.rectangle} shows the state of this object.
+La figura~\ref{fig.rectangle} muestra el estado de este objeto.
 
-\begin{figure}
+\begin{figure}[h]
 \centerline
-{\includegraphics[scale=0.8]{figs/rectangle.png}}
-\caption{Object diagram.}
+{\includegraphics[scale=0.7]{figs/rectangle.png}}
+\caption{Diagrama de objeto.}
 \label{fig.rectangle}
 \end{figure}
 
@@ -725,130 +745,133 @@ Figure~\ref{fig.rectangle} shows the state of this object.
 \index{object!composition}
 \index{composition!object}
 
-Using an object as an attribute of another object, possibly 
-of another class, is called {\bf object composition}. An object 
-that is an attribute of another object is {\bf embedded}. Object 
-composition makes it possible to easily define nested layers of 
-abstraction and is a powerful feature of object-oriented 
-programming. In our ``geometry'' example, we started to define 
-a low-level object, a {\tt Point2D} instance, and then used 
-that point to build a higher level type, {\tt Rectangle}.
+El uso de un objeto como un atributo de otro objeto, posiblemente
+de otra clase, se conoce como {\bf composición de objeto}. 
+Un objeto que es un atributo de otro objeto es un objeto 
+{\bf embebido}. La composición de objeto hace posible 
+definir capas anidadas de abstracción y es una característica
+poderosa de la programación orientada a objetos. En nuestro 
+ejemplo de ``geometría``, comenzamos a definir un objeto 
+a un nivel inferior, una instancia {\tt Punto2D}, y después usamos
+ese punto para construir un tipo a un nivel superior, {\tt Rectángulo}.
 
 
-\section{Instances as Return Values}
+\section{Instancias como Valores de Retorno}
 \index{instance!as return value}
 \index{return!value}
 
-Methods can return instances of another class.  For example, 
-the {\tt Rectangle} class can have methods returning 
-instances of {\tt Point2D} for the other corners:
+Los métodos pueden devolver instancias de otras clase. 
+Por ejemplo, la clase {\tt Rectángulo} puede tener métodos
+de devuelven instancias de {\tt Punto2D} para las otras
+esquinas:
 
 \begin{verbatim}
-    method top-right-point {
-        return Point2D.new(
-            abscissa => $!corner.abscissa + $!width, 
-            ordinate => $!corner.ordinate + $!height
+    method punto-superior-der {
+        return Punto2D.new(
+            abscisa  => $!esquina.abscisa + $!ancho, 
+            ordenada => $!esquina.ordenada + $!altura
         );
     }
-   # other methods for other corners
+   # otros métodos para las otras esquinas
 \end{verbatim}
 
-Notice that we don't even bother to give a name to upper right 
-point (although we could, if we wanted); we create it with the 
-constructor and return it on the fly.
+Nota que no tenemos que molestarnos en darle un nombre al
+punto superior derecho (aunque podríamos si quisiéramos);
+podemos crearlo con el constructor y devolverlo inmediatamente.
 
-We can use the new method as follows:
+Podemos usar el nuevo método como sigue:
 
 \begin{verbatim}
-my $topRightPt = $rect.top-right-point;
-say "Top right corner: ", $topRightPt;
-# -> Top right corner: Point2D.new(abscissa => 9, ordinate => 13)
+my $puntoSupDer = $rect.punto-superior-der;
+say "Esquina superior derecha: ", $puntoSupDer;
+# -> Esquina superior derecha: Punto2D.new(abscisa => 9, ordenada => 13)
 \end{verbatim}
 
 \index{type}
-Although this is not very useful in such a simple case, we 
-could play it safe and declare a {\tt Point2D} type for 
-\verb'$topRightPt':
+Aunque esto no es muy útil en casos simples como este, 
+podríamos asegurarnos y declarar un tipo {\tt Punto2D}
+para \verb|$puntoSupDer|:
 
 \begin{verbatim}
-my Point2D $topRightPt = $rect.top-right-point;
+my Punto2D $puntoSupDer = $rect.punto-superior-der;
 \end{verbatim} 
 
-This way, the code will raise an error if the {\tt top-right-point} 
-happens to return something other than a {\tt Point2D} instance.
+De este modo, el código levantará un error si {\tt punto-superior-der}
+devuelve algo más que una instancia {\tt Punto2D}.
 
-Similarly, the \verb"find-center" method invoked on a 
-{\tt Rectangle} returns a {\tt Point2D} instance 
-representing the center of the {\tt Rectangle}:
+Similarmente, el método \verb|encontrar-centro| invocado 
+sobre un {\tt Rectángulo} devuelve una instancia de 
+{\tt Punto2D} que representa el centro del {\tt Rectángulo}:
 
 \begin{verbatim}
-    method find-center { Point2D.new(
-            abscissa => $!corner.abscissa + $!width / 2, 
-            ordinate => $!corner.ordinate + $!height / 2
+    method encontrar-centro { Punto2D.new(
+            abscisa  => $!esquina.abscisa  + $!ancho / 2, 
+            ordenada => $!esquina.ordenada + $!altura / 2
         );
     }
 \end{verbatim}
 %
-This new method can be used as follows:
+Este nuevo método puede ser usado en la siguiente manera:
 
 \begin{verbatim}
-say "Center = ", $rect.find-center;
-# -> Center = Point2D.new(abscissa => 6.5, ordinate => 8.0)
+say "Centro = ", $rect.encontrar-centro;
+# -> Centro = Punto2D.new(abscisa => 6.5, ordenada => 8.0)
 \end{verbatim}
 %
 
-\section{Inheritance}
+\section{Herencia}
 \index{inheritance}
 \index{inheritance!class}
 \index{class!inheritance}
 
+La herencia es probablemente la característica más 
+emblemática de la programación orientada a objetos.
+Es un mecanismo a través del cual es posible derivar una
+clase de otra clase. La herencia es una de las maneras 
+estándares de implementar la reutilización de código en la
+programación orientada a objeto. Es también otra manera útil 
+de definir capas sucesivas de abstracción y una 
+jerarquía de tipos.
 
-Inheritance is probably the most emblematic feature of 
-object-oriented programming. It is a mechanism through which it 
-is possible to derive a class from another class. Inheritance is 
-one of the standard ways to implement code reuse in 
-object-oriented programming. It is also another useful way of 
-defining successive layers of abstraction and a hierarchy of 
-types.
-
-\subsection{The Pixel Class}
+\subsection{La Clase Pixel}
 \index{class!Pixel}
 \index{Pixel class}
 
-The {\tt Point2D} class is very general and could be used for 
-a variety of purposes: geometry, vector graphics, animated mangas, 
-and so on. We may want to use it to display graphic data on a 
-screen. For this scenario, let's create a new derived class, 
-{\tt Pixel}, adding new properties to the point, such as color, 
-perhaps transparency, etc. 
+La clase {\tt Punto2D} es muy general y podría usarse para
+una variedad de propósitos: geometría, gráficas vectoriales, 
+mangas animados, etc. Podríamos querer usarlo para mostrar 
+datos gráficos en la pantalla. Para este escenario, crearemos
+una nueva clase derivada {\tt Pixel}, agregaremos nuevas 
+propiedades al punto, tales como color, quizás transparencia, etc.
 
-Do we need to redefine all the attributes and methods for 
-the new class? No, we don't. We can define a new class that 
-\emph{inherits} the properties of the {\tt Point2D} base class 
-and only modify what is no longer suitable or add whatever 
-new features we need. Here, we want a new attribute to represent 
-the pixel color and probably some new methods dealing with this 
-new attribute.
+¿Necesitamos redefinir todos los atributos y los métodos para la 
+nueva clase? No, no necesitamos hacer esto. Podemos definir una 
+nueva clase que \emph{hereda} las propiedades de la clase base 
+{\tt Punto2D} y solo modificamos lo que no es adecuado o agregamos nuevas
+características si las necesitamos. Aquí, queremos un nuevo
+atributo para representar el color de un píxel y probablemente
+algunos otros métodos para manejar este nuevo atributo.
 
-According to the most common standards, a color is defined 
-by three integers (really three octets, i.e., integers 
-between 0 and 255 in decimal notation), representing the red, 
-green, and blue (RGB) components of the pixel:
+De acuerdo a los estándares más comunes, un color es definido
+por tres enteros (realmente tres octetos, i.e., enteros entre 
+0 y 255 en la notación decimal), que representan los componentes
+rojo, verde y azul de un píxel. Esta combinación de componentes es normalmente
+conocida como RGB (sigla en inglés de {\bf R}ed, {\bf G}reen y {\bf B}lue en inglés):
 \index{class!child}
 \index{Pixel class}
 \index{RGB}
 \index{octet}
 
 \begin{verbatim}
-class Pixel is Point2D {
+class Pixel is Punto2D {
     has %.color is rw;
 
-    method change_color(%hue) {
-        self!color = %hue
+    method cambiar_color(%tono) {
+        %!color = %tono
     }
-    method change_color2(Int $red, Int $green, Int $blue) {
-        # signature using positional parameters
-        self!color = (red => $red, green => $green, blue => $blue)
+    method cambiar_color2(Int $rojo, Int $verde, Int $azul) {
+        # signatura usando parámetros de posición
+        %!color = (rojo => $rojo, verde => $verde, azul => $azul)
     }
 }
 \end{verbatim}
@@ -858,14 +881,14 @@ class Pixel is Point2D {
 \index{positional parameter}
 \index{octet}
 \index{is!subclassing trait}
-The new class \emph{inherits} the properties of {\tt Point2D} 
-thanks to the {\tt is Point2D} trait, except possibly those 
-that are explicitly modified (or overridden) or added in 
-the new class. The new class is sometimes called a 
-child class or subclass, whereas {\tt Point2D} is the 
-parent class. Creating this new class based on 
-{\tt Point2D} is called {\bf subclassing} the {\tt Point2D} 
-parent class. 
+La nueva clase \emph{hereda} las propiedades de la {\tt Punto2D}
+gracias al rasgo {\tt is Punto2D}, excepto posiblemente
+aquellos que son explícitamente modificados (o anulados) o agregados
+en la nueva clase. Esta nueva clase es algunas veces llamada
+una clase hija o subclase, mientras que {\tt Punto2D} es la
+clase padre, clase base o superclase. La creación de esta nueva
+clase basada en {\tt Punto2D} se como {\bf subclassing} de la 
+clase base {\tt Punto2D}.
 \index{class!parent}
 \index{class!child}
 \index{class!subclass}
@@ -873,129 +896,147 @@ parent class.
 \index{overriding a method}
 \index{method!overriding}
 
-The new child class inherits the {\tt abscissa} and 
-{\tt ordinate} attributes of the {\tt Point2D} parent 
-class (and their specific type and properties if any), 
-as well as the methods such as {\tt coordinates} defined 
-in the parent class. The child class  has a new 
-attribute (the color) and two new methods.
+La nueva clase hija hereda los atributos {\tt abscisa} y 
+{\tt ordenada} de la clase padre {\tt Punto2D} (y sus 
+propiedades específicas si tienen algunas), al igual que los
+métodos tales como {\tt coordenadas} el cual es definido en
+la clase padre. La clase hija tiene un nuevo atributo (el color)
+y dos métodos nuevos.
 
-In the preceding code example, we have written two different 
-methods for changing the color 
+Instanciar un objeto {\tt Pixel} es tan fácil como antes,
+solo necesitamos agregar un argumento adicional correspondiente
+al nuevo atributo cuando invoquemos el constructor {\tt new}:
+\begin{verbatim}
+my $pix = Pixel.new(
+	:abscisa(3.3),
+	:ordenada(4.2),
+	color => {rojo => 34, verde => 233, azul => 145}, 
+);
+
+say "El píxel original tiene los siguientes colores:", $pix.color;
+\end{verbatim}
+
+In the {\tt Pixel} class definition, we have written 
+two different methods for changing the color 
 only to illustrate two possible syntax formats, for pedagogical 
-purposes. The first one receives a hash as a parameter, and 
-the second one uses positional parameters, which forces 
-the user to remember the order (RGB) in which the arguments must 
-be passed; this can be a source of error and should be avoided 
-when the number of parameters exceeds a certain limit 
-(which will be left up to the reader). On the other 
-hand, anyone working commonly with graphics knows by heart the 
-standard conventional order of colors (i.e., RGB). Also, 
-the second method has the 
-advantage of enabling some type checks (the arguments must 
-be integers). This is a simplified example; in real life, it 
-may be desirable to check that the parameters are octets, i.e., 
-integers between 0 and 255 (which could be done by adding a 
-type constraint or defining a subset of the integer type).
+purposes.
+
+En la definición de la clase {\tt Pixel}, escribimos dos métodos
+diferentes para cambiar el color solo para ilustrar posibles 
+formatos de sintaxis, para propósitos pedagógicos. El primer método
+recibe un hash como un parámetro, y el segundo usa parámetros de posición,
+los cuales forzan al usuario recordar el orden (RGB) en el cual los
+argumentos deben pasarse; esto puede ser una fuente de errores y 
+debería evitarse cuando el número de parámetros excede un cierto 
+límite (lo cual se dejará al lector). Por otro lado, cualquier 
+persona que trabaja con gráficas sabe de memoria la convención estándar 
+del orden de los colores (i.e., RGB). También, el segundo método
+tiene la ventaja de habilitar el chequeo de tipo (los argumentos
+deben ser números enteros). Esto es un ejemplo simplificado; en la
+vida real, sería deseable chequear si los parámetros son octetos, i.e.,
+enteros entre 0 y 255 (lo cual se podría hacer al añadir un
+una restricción de tipo o al definir un subconjunto del tipo entero).
 \index{subset}
 \index{RGB}
 \index{octet}
 
-Using the new {\tt Pixel} class is straight forward:
+Usar la nueva clase {\tt Pixel} es bien directo:
 
 \begin{verbatim}
-say "Original colors: ", $pix.color;
+say "Colores originales: ", $pix.color;
 
-$pix.change_color({:red(195), :green(110), :blue(70),});
-say "Modified colors: ", $pix.color;
-say "New pixel caracteristics:";
-printf "\tAbscissa: %.2f\n\tOrdinate: %.2f\n\tColors: R: %d, G: %d, B: %d\n",
-       $pix.abscissa, $pix.ordinate, 
-       $pix.color<red>, $pix.color{"green"}, $pix.color{"blue"};
+$pix.cambiar_color({:rojo(195), :verde(110), :azul(70),});
+say "Colores modificados: ", $pix.color;
+say "Nuevas características del píxel:";
+printf "\tAbscisa: %.2f\n\tOrdenada: %.2f\n\tColores: R: %d, G: %d, B: %d\n",
+       $pix.abscisa, $pix.ordenada, 
+       $pix.color<rojo>, $pix.color{"verde"}, $pix.color{"azul"};
 
-$pix.change_color2(90, 180, 30);  # positional args
-say "New colors:  
-\tR: {$pix.color<red>}, G: {$pix.color<green>}, B: {$pix.color<blue>} ";
+$pix.cambiar_color2(90, 180, 30);  # argumentos de posición
+say "Nuevos colores:  
+\tR: {$pix.color<rojo>}, G: {$pix.color<verde>}, B: {$pix.color<azul>} ";
 \end{verbatim}
 
-This displays the following output:
+Esto muestra lo siguiente en la pantalla:
 
 \begin{verbatim}
-Original colors: {blue => 145, green => 233, red => 34}
-Modified colors: {blue => 70, green => 110, red => 195}
-New pixel caracteristics:
-        Abscissa: 3.30
-        Ordinate: 4.20
-        Colors: R: 195, G: 110, B: 70
-New colors:  
-        R: 90, G: 180, B: 30
+Colores originales: {azul => 145, rojo => 34, verde => 233}
+Colores modificados: {azul => 70, rojo => 195, verde => 110}
+Nuevas características del píxel:
+Abscisa: 3.30
+Ordenada: 4.20
+Colores: R: 195, G: 110, B: 70
+Nuevos colores:  
+R: 90, G: 180, B: 30 
 \end{verbatim}
 
-To tell the truth, it was not necessary to use two different 
-method names, \verb'change_color' and \verb'change_color2', as 
-we did in the {\tt Pixel} class definition to simplify matters. 
-It would work the same way if we use these definitions:
+Para decir la verdad, no era necesario usar dos métodos con
+nombres diferentes, \verb|cambiar_color| y \verb|cambiar_color2|,
+como hicimos en la definición de la clase {\tt Pixel} para 
+simplificar el asunto. Funcionaría de la misma manera si usáramos
+estas definiciones:
 \index{Pixel class}
 \index{method dispatch}
 
 \begin{verbatim}
-    multi method change_color(%hue) {
-        self.color = %hue
+    multi method cambiar_color(%tono) {
+        self.color = %tono
     }
-    multi method change_color(Int $red, Int $green, Int $blue) {
-        # signature using positional parameters
-        self.color = (red => $red, green => $green, blue => $blue)
+    multi method cambiar_color(Int $rojo, Int $verde, Int $azul) {
+        # signatura usando parámetros de posición
+        self.color = (rojo => $rojo, verde => $verde, azul => $azul)
     }
 \end{verbatim} 
 
-Since the multi method is defined twice, with the same name but 
-with a different signature, the object system is able to 
-dispatch the invocation to the right method.
+Debido a que el método multi se define dos veces, con el 
+mismo nombre pero diferente signatura, el sistema de objeto
+es capaz de despachar la invocación al método correcto.
 \index{method!dispatch}
 \index{multi method}
 
 
-\subsection{The MovablePoint Class}
+\subsection{La Clase PuntoMovible}
 \index{class!MovablePoint}
 \index{MovablePoint class}
 
-The \verb'$.abscissa' and \verb'$.ordinate' attributes of 
-class {\tt Point2D} are defaulted to read-only. After all, 
-when you define a point in the plan, it usually has a fixed 
-position and there is generally no reason to change its 
-coordinates.
+Los atributos \verb|$.abscisa| y \verb|$.ordenada| de la 
+clase {\tt Punto2D} son por defecto atributos con solo
+acceso de lectura. Después de todo, cuando defines un punto
+en el plano, usualmente tiene una posición fija y generalmente 
+no hay razón para cambiar su coordenada.
 
-Suppose, however, that our application is about kinematics 
-(the branch of physics dealing with the motion of points or 
-bodies) or is a video game. In such a case, we probably want 
-our points (or sets of points) to move. We need a new class, 
-{\tt MovablePoint}, enabling the modification of coordinates.
+Sin embargo, supón que nuestra aplicación es acerca de la
+cinemática (la rama de la física que estudia el movimiento
+de puntos o cuerpos) o es un videojuego. En tal caso, probablemente
+queremos que nuestros puntos (o conjunto de puntos) puedan 
+moverse. Necesitamos una nueva clase, {\tt PuntoMovible},
+para habilitar la modificación de las coordenadas.
 
-We don't need to redefine all the attributes and methods for 
-the new class. Again, we can define a new class that 
-\emph{inherits} the properties of the {\tt Point2D} base class 
-and only modifies what is no longer suitable or adds whatever 
-new features we need, for example:
+No necesitamos redefinir todos los atributos y métodos para
+la nueva clase. Otra vez, podemos definir una nueva clase
+que \emph{herede} las propiedades de la clase base {\tt Punto2D}
+y solo modifique aquello que no es adecuado o agregue 
+nuevas características que necesitemos, por ejemplo:
 
 \begin{verbatim}
-class MovablePoint is Point2D {
-    has Numeric $.abscissa is rw;
-    has Numeric $.ordinate is rw;
+class PuntoMovible is Punto2D {
+    has Numeric $.abscisa is rw;
+    has Numeric $.ordenada is rw;
     
-    method move (Numeric $x, Numeric $y) {
-        $.abscissa += $x;
-        $.ordinate += $y;
+    method mover (Numeric $x, Numeric $y) {
+        $.abscisa  += $x;
+        $.ordenada += $y;
     }
 }
 \end{verbatim}
 
 \index{is!subclassing trait}
-The new class inherits the properties of {\tt Point2D} thanks 
-to the {\tt is Point2D} trait, except those that are explicitly 
-modified (or overridden) or added in the new class. 
-Methods that exist in the parent class and are 
-redefined in a child class are said to be \emph{overridden} 
-within that class. 
+La nueva clase hereda las propiedades de {\tt Punto2D} 
+gracias al rasgo {\tt is Punto2D}, excepto que aquellos
+que son explícitamente modificados (o anulados) o agregados
+en la nueva clase. Los métodos que existen en la clase padre
+y se redefinen en la clase hija se dice que son \emph{anulados}
+dentro esa clase.
 \index{class!parent}
 \index{class!child}
 \index{class!subclass}
@@ -1003,370 +1044,366 @@ within that class.
 \index{overriding a method}
 \index{method!overriding}
 
-Here, the \verb'$.abscissa' and \verb'$.ordinate' attributes are 
-redefined as read and write (through the {\tt is rw} trait) and 
-a new method, {\tt move}, is defined to modify the position of 
-a point by adding the received parameters to the coordinates 
-of the point.
+Aquí, los atributos \verb|$.abscisa| y \verb|$.ordenada| 
+se redefinen con acceso de lectura y escritura (a través del rasgo
+{\tt is rw}) y un método nuevo, {\tt mover}, es definido para modificar
+la posición de un punto al añadir los parámetros recibidos a las
+coordenadas del punto.
 \index{is rw trait}
 
-Note that we have used positional parameters here for the 
-{\tt move} method. We said that it is often better for the sake of clarity 
-to use named parameters, but we have only two parameters here; 
-as it is fairly simple to remember that the \verb'$x' 
-parameter should come before the \verb'$y' parameter, this 
-was a good occasion to illustrate the possibility of using 
-positional parameters.
+Nota que hemos usado parámetros de posición para el método {\tt mover}. 
+Dijimos que es usualmente mejor por motivos de claridad usar parámetros
+nombrados, pero hemos usado solo dos parámetros aquí; debido a que 
+es bastante simple recordar que el parámetro \verb|$x| debería venir
+antes que el parámetro \verb|$y|. Esto fue una ocasión para ilustrar la
+posibilidad de usar parámetros de posición.
 \index{positional parameter}
 \index{parameter!positional}
 \index{parameter!named}
 \index{named parameter}
 
-We can now test our new child class, create a {\tt MovablePoint} 
-instance, display its characteristics, move it to a different 
-location, and display the new position:
+Ahora podemos probar nuestra clase hija, crear una instancia 
+{\tt PuntoMovible}, mostrar sus características, moverla a una
+posición diferente, y mostrar la posición nueva. 
 
 \begin{verbatim}
-my $point = MovablePoint.new(
-    abscissa => 6,
-    ordinate => 7,
+my $punto = PuntoMovible.new(
+    abscisa => 6,
+    ordenada => 7,
     );
 
-say "Coordinates : ", $point.coordinates;
-say "Distance to origin: ", $point.distance2center.round(0.01);
-printf "%s: radius = %.4f, theta (rad) = %.4f\n", 
-    "Polar coordinates", $point.polar-coordinates;
+say "Coordenadas: ", $punto.coordenadas;
+say "Distancia al origen: ", $punto.distancia-al-centro.round(0.01);
+printf "%s: radio = %.4f, theta (rad) = %.4f\n", 
+    "Coordenadas polares", $punto.coordenadas-polares;
 
-say "--> Moving the point.";
-$point.move(4, 5);
-say "New coordinates: ", $point.coordinates;
-say "Distance to origin: ", $point.distance2center.round(0.01);
-printf "%s: radius = %.4f, theta (rad) = %.4f\n", 
-    "Polar coordinates", $point.polar-coordinates;
+say "--> Moviendo el punto.";
+$punto.mover(4, 5);
+say "Nuevas coordenadas: ", $punto.coordenadas;
+say "Distancia al origen: ", $punto.distancia-al-centro.round(0.01);
+printf "%s: radio = %.4f, theta (rad) = %.4f\n", 
+    "Coordenadas polares", $punto.coordenadas-polares;
 \end{verbatim}
 
-This produces the following output:
+Esto produce la siguiente salida:
 
 \begin{verbatim}
-Coordinates : (6 7)
-Distance to origin: 9.22
-Polar coordinates: radius = 9.2195, theta (rad) = 0.8622
---> Moving the point.
-New coordinates: (10 12)
-Distance to origin: 15.62
-Polar coordinates: radius = 15.6205, theta (rad) = 0.8761
+Coordenadas: (6 7)
+Distancia al origen: 9.22
+Coordenadas polares: radio = 9.2195, theta (rad) = 0.8622
+--> Moviendo el punto.
+Nuevas Coordenadas: (10 12)
+Distancia al origen: 15.62
+Coordenadas polares: radio = 15.6205, theta (rad) = 0.8761
 \end{verbatim}
 
 \index{polar coordinates}
 \index{coordinates!polar}
-Here, when the user code invokes the {\tt coordinates}, 
-{\tt distance2center}, and {\tt polar-coordinates} methods, 
-Perl finds that they do not exist in {\tt MovablePoint}. But,  
-as \verb'MovablePoint' subclasses {\tt Point2D}, the program 
-looks for methods having these names in the parent class and 
-invokes them if it finds them. 	If it did not find them, it 
-might look into the parent's parent to see if there are any, and 
-so on.
+Aquí, cuando el usuario invoca los métodos {\tt coordenadas},
+{\tt distancia-al-centro}, y {\tt coordenadas-polares}, Perl
+encuentra que dichos métodos no existen en la clase {\tt PuntoMovible}.
+Pero, dado que \verb|PuntoMovible| es una subclase de {\tt Punto2D},
+el programa hace una búsqueda de estos nombres en la clase padre, 
+y los invoca si los encuentra. Si no los encuentra, entonces podría
+buscar en el padre de la clase padre para ver si se encuentran ahí, etc.
 
 
-\subsection{Multiple Inheritance: Attractive, but Is It Wise?}
+\subsection{Herencia Múltiple: Atractiva Pero, es de Sabio Utilizarla?}
 
-In object-oriented programming, the inheritance mechanism is 
-a traditional way to reuse code, it is even probably the most 
-common way to do it. 
+En la programación orientada a objeto, el mecanismo de herencia
+es una manera tradicional de reutilizar código. Es probablemente 
+la forma más común de hacerlo.
 
-A class may have several parent classes and, thus, subclass 
-several other classes. This is what is called {\bf multiple 
-inheritance}. We might want to build a new {\tt MovablePixel} 
-class inheriting from both {\tt MovablePoint} and {\tt Pixel} 
-(and, indirectly, from {\tt Point2D}). Technically, you can 
-easily do it in Perl:
+Un clase puede tener varias clases padres y, por lo tanto,
+ser una subclase de otras clases. Esto es lo que se conoce como
+{\bf herencia múltiple}. Podríamos construir una nueva 
+clase {\tt PixelMovible} la cual hereda de {\tt PuntoMovible} 
+y de {\tt Pixel} (e, indirectamente, de {\tt Punto2D}). Técnicamente,
+puedes hacer esto fácilmente en Perl:
 
 \begin{verbatim}
-class MovablePixel is MovablePoint is Pixel {
+class PixelMovible is PuntoMovible is Pixel {
     # ...
 }
 \end{verbatim}
 
-Now, {\tt MovablePixel} is subclassing both 
-{\tt MovablePoint} and {\tt Pixel} and inheriting 
-from both parent classes.
+Ahora, {\tt PixelMovible} es una clase de {\tt PuntoMovible}
+y {\tt Pixel} y hereda de ambas clases padres.
 \index{subclass}
 \index{class!parent}
 
-This looks very promising, but it turns out to be more 
-complicated than expected in real situations. If there is a 
-conflict (for example a name collision between two methods), 
-which one shall prevail? Some mechanisms exist to 
-handle such situations (for example in the C++ programming 
-language), and Perl has some metaobject methods to find out 
-about the method resolution order (MRO), but this 
-might quickly leads to severe design 
-problems and to really subtle or complicated bugs. In 
-short, while multiple inheritance originally looked as a 
-attractive idea, it turned out to be complicated to master, 
-because it creates multiple and often implicit dependencies 
-that are quite hard to sort out.
+Esto luce bastante prometedor, pero sucede que tiende a ser
+más complicado de lo esperado en situaciones reales. Si existe
+un conflicto (por ejemplo una colisión de nombre entre dos método),
+cuál debe prevalecer? Algunos mecanismo existen para manejar tales
+situaciones (por ejemplo en el lenguaje de programación C++), y
+Perl tiene métodos metaobjetos para encontrar información
+sobre el orden de resolución de los métodos (MRO por sus siglas en inglés),
+pero esto puede rápidamente conducir a varios problemas de diseño y a
+errores (\emph{bugs}) que son sutiles y complicados. En resumen, 
+mientra la herencia múltiple originalmente lucía como una atractiva idea, 
+resultó ser en algo muy complicado de dominar,
+porque crea dependencias múltiples, y usualmente implícitas, que son 
+difíciles de arreglar.
 
-This is the reason why, contrary to C++, relatively more recent 
-OO programming languages such as Java (which came out not 
-so recently, back in 1995) have decided not to implement 
-multiple inheritance.
+Esta es la razón por la cual, contrario a C++, relativamente reciente lenguajes de programación orientados a objetos como Java (el cual surgió no tan recientemente, en 1995) han decidido no implementar herencia múltiple.
 
-Perl~6 does not want to forbid such things and allows you 
-to use multiple inheritance if you wish, and it can be useful 
-for simple cases; so don't necessarily rule it out, but 
-remember that, contrary to early expectations, it often 
-leads to a mess and turns out to be quite unmanageable.
+Perl~6 no quiere prohibir tales cosas y como resultado te permite
+hacer uso de la herencia múltiple si deseas, la cual puede ser 
+muy útil para casos simples. Así que no la descarte innecesariamente,
+pero recuerdas que, contrario a las expectaciones originales, 
+la herencia múltiple usualmente conduce a un desastre y resulta
+ser incontrolable.
 
-Perl offers better concepts for tackling such situations,
-as we will see shortly.
+Perl ofrece mejores conceptos para encargarse de tales situaciones, como
+veremos en un momento.
 
-\section{Roles and Composition}
+\section{Roles y Composición}
 \index{role}
 \index{inheritance}
 
-Inheritance is a very powerful concept to describe a hierarchical 
-tree of concepts. For example, you can think of a hierarchy of 
-geometrical figures having more and more specific properties: 
+La herencia es un concepto poderoso para describir un árbol jerárquico de
+conceptos. Por ejemplo, puedes pensar de una jerarquía de figuras geométricas
+que tienen una o más propiedades específicas: 
 \begin{enumerate}
-\item Polygon
+\item Polígono
 
 \index{quadrilateral}
-\item Quadrilateral (a polygon with four edges and four corners)
+\item Cuadrilátero (un polígono con cuatro lados y cuatro esquinas)
 
 \index{trapezoid}
-\item Trapezoid (a quadrilateral with one pair of parallel edges)
+\item Trapezoide (un cuadrilátero con un par de lados paralelos)
 
 \index{parallelogram}
-\item Parallelogram (a trapezoid with two pairs of parallel 
-edges and opposite sides of equal length)
+\item Paralelogramo (un trapezoide con dos pares de lados paralelos y lados
+opuestos de la misma longitud)
 
 \index{rectangle}
-\item Rectangle (a parallelogram with four right angles)
+\item Rectángulo (un paralelogramo con cuatro ángulos rectos)
 
 \index{square}
-\item Square (a rectangle with all four edges of equal length)
+\item Cuadrado (un rectángulo con cuatro lados iguales)
 \end{enumerate}
 
 \index{rhombus}
-It is relatively easy to imagine a series of classes with a 
-hierarchical inheritance tree reflecting those properties. It 
-gets slightly more complicated, however, if we add the rhombus 
-(a parallelogram with all sides equal), because the square is 
-now \emph{also} a rhombus with four right angles. 
-The square class would subclass both the rectangle and the 
-rhombus, and we might have here a possible multiple inheritance 
-issue.
+Es relativamente fácil de imaginar una serie de clases con un árbol de
+herencia jerárquica que refleje esas propiedades. Se vuelve más 
+complicado, sin embargo, si agregamos el rombo (un paralelogramo con
+todos los lados iguales), porque el cuadrado es ahora \emph{también}
+un rombo con cuatro ángulos rectos. La clase cuadrado sería una 
+subclase del rectángulo y del rombo, y podríamos tener un posible
+caso de herencia múltiple.
 
 \index{integer} \index{rational} \index{real number} \index{complex number}
 \index{vertebrate} \index{mammal} \index{carnivoran}
 \index{canid} \index{dog}
-Similarly, we can think of a tree of classes with nested 
-inheritance representing various types of numbers (e.g. integer, 
-rational, real, complex) or animals species (e.g., vertebrate, 
-mammal, carnivoran, canid, dog, Irish setter).
+Similarmente, podemos pensar acerca de un árbol de clases con herencia
+anidada que representan varios tipos de números (e.g., entero, 
+racional, real, complejo) o especies de animales (e.g., vertebrado, 
+mamífero, carnívoro, canino, perro, setter irlandés).
 
 \index{hierarchical model}
-These are great examples for inheritance, but the real world is 
-rarely so hierarchical, and it is often difficult to force 
-everything to fit into such a hierarchical model.
+Estos son ejemplos grandiosos de herencia, pero el mundo real es
+raramente jerárquico, y es usualmente difícil de forzar cada caso 
+a encajar en un modelo jerárquico.
 
 \index{role}
-This is one of the reasons why Perl introduces the notion of 
-roles. A role is a set of behaviors or actions that can be shared 
-between various classes. Technically, a role is a collection 
-of methods (with possibly some attributes); it is therefore 
-quite similar to a class, but the first obvious difference 
-is that a role is not designed to be instantiated as an object 
-(although roles can be promoted into classes). The 
-second difference, perhaps more important, is that roles 
-don't inherit: they are used through application to a class 
-and/or composition.
+Esta es una de la razones por la cual Perl introduce la noción
+de roles. Un rol es un conjunto de comportamientos o acciones
+que pueden compartirse entre varias clases. Técnicamente, un rol
+es una colección de métodos (posiblemente con algunos atributos);
+es por lo tanto similar a una clase, pero la primera diferencia
+obvia es que un rol no está diseñado para ser instanciado como
+un objeto (aunque los roles pueden ser promovidos al estado de
+clases). La segunda diferencia, quizás la más importante, es que los
+roles no heredan: ellos se usan al ser aplicados a una clase 
+o/y una composición.
 
-\subsection{Classes and Roles: An Example}
+\subsection{Clases y Roles: Un Ejemplo}
 
 \index{vertebrate} \index{mammal} \index{dog}
-Let's come back to vertebrates, mammals and dogs. A dog is 
-a mammal and inherits some characteristics from the mammals, 
-such as having a neocortex (a region of the brain), hair, 
-and mammary glands, as well as a vertebral column, which 
-all mammals (along with fishes, birds, reptiles, and others) 
-inherit from vertebrates. So far, the class hierarchy seems 
-simple and natural.
+Volvamos con los vertebrados, mamíferos y perros. Un perro
+es un mamífero y hereda algunas características de los 
+mamíferos tales como una neocórtex (una región del cerebro),
+pelo, y glándulas mamarias, también como una columna vertebral,
+la cual todos los mamíferos (incluyendo los peces, aves, reptiles, etc.)
+heredan de los vertebrados. Hasta ahora, la jerarquía de la clase
+parece simple y natural.
 
 \index{feral animal}
 \index{pet animal}
-But dogs can have very different characteristics and behaviors.
-To quote the Wikipedia article on dogs: ``Dogs perform many 
-\emph{roles} for people, such as hunting, herding, pulling 
-loads, protection, assisting police and military, companionship 
-and, more recently, aiding handicapped individuals'' (italic emphasis 
-added). Dogs can also be \emph{feral} animals 
-(i.e., animals living in the wild but 
-descended from domesticated individuals) or stray dogs. All 
-these additional behaviors might be added to the dog class. 
-Similarly, a cat, another mammal, may also be a pet 
-or a feral animal. Mustangs, North American free-roaming horses, 
-are also feral animals, descended from once-domesticated horses; 
-but a mustang may also be captured and brought back to 
-domesticated state. This return to the wild of feral animals 
-is not limited to mammals: pigeons living in our cities are 
-often descended from once-domesticated homing pigeons used 
-in the past. It can even happen with invertebrates, such 
-as swarms of honey bees.
+No obstante los perros pueden tener diferentes características y
+comportamientos. Para citar un artículo de Wikipedia sobre los perros:
+``Los perros tienen un sin número de \emph{roles} para las personas
+entre los que figuran la caza, el pastoreo, halar cargas pesadas, asistir
+a la policía y el ejército, compañía y, recientemente, asistir a
+individuos incapacitados`` (énfasis añadido). Los perros también pueden 
+ser animales salvajes (i.e, animales que viven en ambientes silvestres
+pero que han descendido de individuos domesticados) o perros callejeros.
+Todos comportamientos adicionales pueden añadirse a la clase perro.
+Similarmente, un gato, otro mamífero, puede ser una mascota o
+un animal salvaje. Los mustangos, caballos salvajes de Norteámerica,
+también son animales salvajes, descendientes en algún tiempo de caballos
+domesticados; pero un mustango puede capturarse y puesto devuelta
+en un estado domesticado. Este retorno a lo salvaje de animales
+silvestres no está limitado a los mamíferos: las palomas que viven
+en nuestras ciudades descendieron una vez de palomas mensajeras
+usadas en el pasado. Puede hasta ocurrir con invertebrados, tales
+como enjambres de abejas melíferas.
 
-It is apparent that a hierarchical modeling of inheritance 
-trees is not adapted to describe such behaviors. 
+Es aparente que un modelo jerárquico de arboles de herencia
+no está adaptado para describir tales comportamientos.
 
 \index{vertebrate} \index{mammal} \index{dog}
-We can define classes for dogs, cats, and horses as subclasses 
-of mammals (which itself inherits from vertebrates). Besides 
-that, we define roles for pet or feral animals. In addition, 
-we can create new classes subclassing the dog, horse, and cat 
-classes and doing some specific roles; or we can assign roles 
-to individual instances of a class. This could look like this 
-(this is a dummy example that cannot be tested):
+Podemos definir clases para los perros, los gatos, y los 
+caballos como subclases de mamíferos (los cuales también heredan
+de los vertebrados). Además de eso, podemos definir roles para mascotas
+o animales salvajes. En adición, podemos crear nuevas clases
+que son subclases de las clases perro, gato y caballo y que 
+tienen algunos roles específicos. Del mismo modo, podemos
+asignar roles a instancias individuales de una clase. Esto
+podría lucir así (este un ejemplo ficticio que no se puede probar):
 
 \begin{verbatim}
-class Vertebrate { method speak {say "vertebrate"};}
-class Mammal  is Vertebrate  { method speak { say "mammal" } }
-class Bird    is Vertebrate  { method fly    {} }
-class Dog     is Mammal      { method bark   {} }
-class Horse   is Mammal      { method neigh  {} }
-class Cat     is Mammal      { method meow   {} }
-class Mouse   is Mammal      { method squeek {} }
-class Duck    is Bird        { method quack  {} }
+class Vertebrado { method hablar {say "vertebrado"};}
+class Mamífero is Vertebrado  { method hablar { say "mamífero" } }
+class Ave      is Vertebrado  { method volar     {} }
+class Perro    is Mamífero    { method ladrar    {} }
+class Caballo  is Mamífero    { method relinchar {} }
+class Gato     is Mamífero    { method maullar   {} }
+class Ratón    is Mamífero    { method chillar   {} }
+class Pato     is Ave         { method graznar   {} }
 # ...
 
-role Pet-animal { 
-    method is-companion() {...} 
-    # other methods
+role Animal-mascota { 
+    method es-compañero() {...} 
+    # otros métodos
 }
-role Shepherd   { ... }    # sheep keeper
-role Feral      { ... }    # animal back to wild life
-role Guide      { ... }    # blind guide
-role Human-like { ... }    # animal behaving like a human
+role Ovejero     { ... }    # pastor de ovejas
+role Salvaje     { ... }    # animal en un ambiente salvaje
+role Guía        { ... }    # guía de los ciegos
+role Humano-comp { ... }    # animal que se comporta como un humano
 # ...
 
-class Guide-dog        is Dog    does Guide      { ... }
-class Shepherd-dog     is Dog    does Shepherd   { ... }
-class Stray-dog        is Dog    does Feral      { ... }
-class Pet-cat          is Cat    does Pet-animal { ... }
-class Feral-cat        is Cat    does Feral      { ... }
-class Mustang          is Horse  does Feral      { ... }
-class Domestic-canary  is Bird   does Pet-animal { ... }
+class Perro-guía          is Perro   does Guía           { ... }
+class Perro-ovejero       is Perro   does Ovejero        { ... }
+class Perro-callejero     is Perro   does Salvaje        { ... }
+class Gato-mascota        is Gato    does Animal-mascota { ... }
+class Gato-salvaje        is Gato    does Salvaje        { ... }
+class Mustago             is Caballo does Salvaje        { ... }
+class Canario-dom         is Ave 	 does Animal-mascota { ... }
 # ...
-# Role can also be applied to instances:
-my $garfield = Pet-cat.new(...);
-my $mickey   = Mouse.new(...);
-$mickey does Human-like;
-my $donald   = Duck.new(...);
-$donald does Human-like;
-my $pluto    = Dog.new(...);
-$pluto does Pet-animal;
-my $snoopy   = Dog.new(...);
-$snoopy does Pet-animal does Human-like;
+# Un rol se puede aplicar a instancias:
+my $garfield = Gato-mascota.new(...);
+my $mickey   = Ratón.new(...);
+$mickey does Humano-comp;
+my $donald   = Pato.new(...);
+$donald does Humano-comp; 
+my $pluto    = Perro.new(...);
+$pluto does Animal-mascota;
+my $snoopy   = Perro.new(...);
+$snoopy does Animal-mascota does Humano-comp;
 \end{verbatim}
  
 \index{role!application}
 \index{does trait}
 \index{trait!does}
 \index{trait!is}
-A role is applied to a class or an object with the {\tt does} 
-trait (as opposed to {\tt is} for inheritance). These 
-different keywords reflect the semantic difference associated 
-to them: composing a role into a class or an object provides 
-this class or object with the \emph{supplementary behavior} associated with 
-the role, but it does not follow that the object receiving 
-the role is \emph{the same thing} as or of the same nature 
-as the role.
+Un rol se aplica a una clase o a un objeto con el rasgo
+{\tt does} (opuesto a {\tt is} para la herencia). Estas dos
+palabras claves diferentes reflejan la diferencia semántica
+asociada con ellas: componer un rol en una clase u objeto
+provee dicha clase u objeto con el \emph{comportamiento suplementario}
+asociado con el rol, pero esto no significa que al objeto
+recibir el rol es la \emph{misma cosa} o de la misma naturaleza como 
+el rol.
 
 \index{feral animal}
 \index{pet animal}
-If the {\tt Pet-animal} and {\tt feral} roles had been defined 
-as classes, then the {\tt Pet-cat} and {\tt Feral-cat} classes 
-would have undergone double inheritance, with the potential 
-problems associated with that. By applying a role to a 
-class, you avoid constructing a multiple-inheritance tree 
-that is probably not really justified and can be complicated 
-to conceptualize and difficult to maintain. Judicious use 
-of classes and roles can lead to a model that is simpler, 
-more natural, and closer to the real relations between the 
-entities and behaviors under scrutiny.
+Si los roles {\tt Animal-mascota} y {\tt Salvaje} hubiesen sido 
+definidos como clase, entonces las clases {\tt Gato-mascota} y
+{\tt Gato-salvaje} hubiesen experimentado herencia doble,
+con los problemas potenciales asociados con eso. Al aplicar
+un rol a una clase, evitas construir un árbol de herencia múltiple
+que probablemente no se puede justificar y que puede ser difícil de
+conceptualizar y manejar. Un uso juicioso de clases y roles puede 
+conducir a un modelo que es más simple, más natural, y más cercano
+a las relaciones reales entre las entidades y comportamientos 
+bajo escrutinio.
 
 \index{multiple inheritance}
 \index{method!dispatch}
 \index{role!composition}
 
-In addition, if you inadvertently compose several roles with 
-two methods having the same name, this immediately raises 
-an error (unless a method of the same name exists within the 
-class, in which case it prevails), rather than dispatching 
-silently to one of the two methods as in the case of multiple 
-inheritance. In that case, naming conflicts are identified 
-immediately (at compile time), which has the benefit of 
-immediately finding a bug that might otherwise go 
-unseen for a while.
+In adición, si compones varios roles inadvertidamente con dos
+métodos que poseen el mismo nombre, esto inmediatamente levanta
+un error (a menos que un método con el mismo nombre exista dentro
+de la clase y en tal caso, prevalece), en lugar de despachar silenciosamente
+a una de los métodos como en el caso de herencia múltiple. En 
+ese caso, los conflictos de nombre son identificados inmediatamente
+(al tiempo de compilación), lo cual tiene el beneficio de 
+encontrar un error inmediatamente, el cual podría no ser
+perceptible por un largo tiempo.
 
-\subsection{Role Composition and Code Reuse}
+\subsection{Composición de un Rol y Reutilización de Código}
 
-Classes are meant for managing instances and roles are 
-meant for managing behaviors and code reuse. The following 
-example shows how classes and roles can play together.
+Las clases son para manejar instancias y los roles son para
+manejar comportamientos y reutilización de código. El siguiente
+ejemplo muestra cómo las clases y los roles funcionan bien juntos.
 \index{class}
 \index{role}
 \index{code reuse}
 
 \begin{verbatim}
-role Drawable {
+role Dibujable {
     has $.color is rw;
-    method draw { ... }
+    method dibujar { ... }
 }
-class Figure {
+class Figura {
     method area { ... }
 }
-class Rectangle is Figure does Drawable {
-    has $.width;
-    has $.height;
+class Rectángulo is Figura does Dibujable {
+    has $.ancho;
+    has $.altura;
     method area {
-        $!width * $!height;
-   }
-    method draw() {
-        for 1..$.height {
-            say 'x' x $.width;
+        $!ancho * $!ancho;
+    }
+    method dibujar() {
+        for 1..$.altura {
+            say 'x' x $.ancho;
         }
     }
 }
-Rectangle.new(width => 10, height => 4).draw;
+Rectángulo.new(ancho => 10, altura => 4).dibujar;
 \end{verbatim}
 
 \index{ellipsis}
-Please note that the ellipsis \verb'...' used in the code 
-above is meant here to represent some code that is left 
-to your implementation. However, this is actually valid code 
-and it will compile and even run without any problem. The 
-ellipsis is used to represent functionality that is not yet 
-there but is supposed to be implemented at a later point. This 
-will work as long as you don't invoke these methods (you would 
-get a runtime error) or setup a situation where they would 
-need to be defined (which would cause a compile-time error). 
-In the case of the {\tt draw} method in the 
-{\tt Drawable} role, role composition into the {\tt Rectangle} 
-class works only because {\tt draw} is redefined in the 
-{\tt Rectangle} class; without this redefinition, it would 
-have raised a compile-time error. Similarly, 
-the \verb'method area { ... }' 
-code of the {\tt Figure} class would raise a runtime error if it 
-were called without having been redefined in the {\tt Rectangle} 
-class. The ellipsis has been used here only as a convenient way 
-to represent code whose implementation is not important for 
-our example because it is being redefined anyway. In real coding, 
-it is probably best advised not to use ellipsis, except as a 
-temporary expedient for code that is not yet developed but
-will be implemented.
+Ten presente que la intención de los puntos suspensivos
+\verb|...| usados en el código anterior es representar
+código que se deja para tu implementación. Sin embargo, esto
+es actualmente código válido y se compilará y hasta se 
+ejecutará sin ningún problema. Los puntos suspensivos 
+son usados para representar una funcionalidad que no se ha
+implementado todavía pero que se hará en el futuro. Esto funcionará
+siempre y cuando to no invoques estos métodos (lo que producirá un 
+error de ejecución) o crees una situación donde ellos necesitarían
+estar definidos (lo que ocasionará un error de compilación).
+En el caso del método {\tt dibujar} en el role {\tt Dibujable},
+la composición de rol en la clase {\tt Rectángulo} funciona
+solo porque {\tt dibujar} es redefinido en la clase {\tt Rectángulo};
+sin esta redefinición, hubiese levantado un error al tiempo de
+compilación. Similarmente, el código \verb|method area { ... }|
+de la clase {\tt Figura} levantaría un error al tiempo de
+ejecución si fuera llamado sin haber sido redefinido en
+la clase {\tt Rectángulo}. Los puntos suspensivos se han usado 
+aquí como una manera conveniente de representar código cuyo 
+implementación no es importante para nuestro ejemplo porque se está
+redefiniendo de cualquier modo. En código real, es probablemente
+recomendado no usar puntos suspensivos, excepto como expediente temporario
+para código que no se ha desarrollado todavía pero que será
+implementado.
 
-The code example above draws an ASCII rectangle:
+El código de más arriba dibuja un rectángulo ASCII:
 \begin{verbatim}
 ~ perl6 test_drawable.pl6
 xxxxxxxxxx
@@ -1375,97 +1412,100 @@ xxxxxxxxxx
 xxxxxxxxxx
 \end{verbatim}
 
-\subsection{Roles, Classes, Objects, and Types}
+\subsection{Roles, Clases, Objetos, y Tipos}
 \index{role}
 \index{class}
 \index{object}
 \index{type}
 
-A role can be applied to an entire class or only to some 
-instances of the class:
+Un rol se puede aplicar a una clase entera o solamente a 
+algunas instancias de la clase:
 
 \begin{verbatim}
-role Guide { ...}
-class Guide-dog is Dog does Guide { 
+role Guía { ...}
+class Perro-guía is Perro does Guía { 
     ... 
-}  # Composing the Guide role into the Guide-dog class
-   # inheriting from the Dog class
+}  # Componiendo el rol Guía en la clase Perro-guía
+   # la cual hereda de la clase Perro
 
-my $doggy = new Dog;    # creating a Dog object
-$doggy does Guide;      # applying the role to the object
+my $perrito = new Perro; # creando un objeto Perro
+$doggy does Guide;       # aplicando el rol al objeto
 \end{verbatim}
 
 \index{type}
 \index{role!type}
 \index{type!-defining role}
 \index{guide}
-Roles and classes are different, but both are or define types.
-This means that a role can be used as a type for a variable 
-declaration where you might expect a class name. For example, 
-the {\tt Guide} role sketched in the code snippet above does 
-effectively create a {\tt Guide} type. So a {\tt Blind} role for 
-a human might have an attribute of {\tt Guide} type, which 
-might represent a guide-dog, a guide-horse, a human guide, or 
-even a guiding robot.
+Los roles y las clases son diferentes, pero ambos son tipos
+o definen tipos. Esto significa que un rol puede usarse como
+un tipo para una declaración de variable donde esperaría el 
+nombre de una clase. Por ejemplo, el rol {\tt Guía} en el fragmento
+de código anterior efectivamente crea un tipo {\tt Guía}. Así que
+un rol {\tt Invidente} para un humano podría tener un atributo
+de tipo {\tt Guía}, el cual representaría un perro-guía, un 
+caballo-guía, un humano-guía o hasta un robot-guía.
 
 \begin{verbatim}
-class Human {
-    has Dog $dog;      # May contain any dog, with or without
-                       # a guide role
+class Humano {
+    has Perro $perro;  # Puede contener cualquier perro,
+    		  # con o sin un rol guía
 }
-role Blind {
-    has Guide $guide;  # May contain any Guide type, whether 
-                       # a dog, a horse, a human or a robot
+role Invidente {
+    has Guía $guía;  # Puede contener un tipo Guía, 
+    	  	# un perro, un caballo, un humano, o un robot
 }
 \end{verbatim}
 
 \index{type!built-in}
-A number of Perl~6 built-in types are defined by roles and 
-not by classes, such as {\tt IO}, {\tt Iterable}, 
+
+Una mayoría de los tipos integrados de Perl~6 son definidos
+por roles y no clases, tales como {\tt IO}, {\tt Iterable}, 
 {\tt Iterator}, {\tt Numeric}, {\tt Rational}, {\tt Real},
 etc.
 
-\section{Method Delegation}
+\section{Delegación de Método}
 \index{delegation}
 
-{\bf Delegation} is another way to link an object to another piece 
-of code. The delegation technique has been relatively well 
-studied at the theoretical level and implemented in a few 
-specialized research languages, but mainstream generalist 
-languages implementing delegation are rather rare.
 
-Rather than defining methods in a class or in a role, the 
-idea is to invoke methods belonging to another object, as 
-if they were methods of the current class. In Perl~6, delegation 
-may be performed at the level of a class or a role. A delegated 
-object is simply an attribute defined in the class or in the role 
-with the {\tt handles} keyword which makes it possible to specify 
-which methods of the delegated object may be used in the 
-current class:
+La {\bf Delegación} es otra manera de enlazar un objeto a otra pieza 
+de código. La técnica de delegación ha sido estudia extensivamente 
+al nivel teórico e implementada en algunos cuantos lenguajes 
+especializados de investigación, pero la implementación de
+delegación en los lenguajes generalistas convencionales
+es bien inusual.
+
+En lugar de definir métodos en una clase o en un rol, la idea 
+es invocar los métodos perteneciente a otro objeto, como si fueran
+métodos de la clase actual. En Perl~6, la delegación puede realizarse
+al nivel de una clase o un rol. Un objeto delegado es simplemente
+un atributo definido en una clase o en un rol con la palabra clave
+{\tt handles} que posibilita especificar cuales métodos del objeto 
+delegado pueden ser usados en la clase actual:
 
 \index{Cervantes, Miguel de} \index{Shakespeare, William} 
 \index{Chekhov, Anton} \index{Schiller, Friedrich} \index{Hamlet} 
 \index{Don-Quijote} \index{Don-Carlos} \index{Three Sisters}
 \begin{verbatim}
-class BaseClass {
+class ClaseBase {
     method Don-Quijote()    { "Cervantes"   }
     method Hamlet()         { "Shakespeare" }
     method Three-Sisters () { "Chekhov"     }
     method Don-Carlos()     { "Schiller"    }
 }
+
 class Uses { 
     has $.base is rw handles < Don-Quijote Hamlet Three-Sisters >;
 }
 
 my $user = Uses.new;
-$user.base = BaseClass.new(); # implementing an object-handler
+$user.base = ClaseBase.new(); # implementando un object-handler
 say $user.Don-Quijote;
 say $user.Hamlet;
 say $user.Three-Sisters;
 say $user.Don-Carlos;
 \end{verbatim}
 
-This displays the following output:
+Esto muestra lo siguiente:
 
 \begin{verbatim}
 Cervantes
@@ -1476,38 +1516,38 @@ Method 'Don-Carlos' not found for invocant of class 'Uses'
 \end{verbatim}
 \index{invocant}
 
-The program properly displays the names of writers returned 
-by the first three methods, because they have been sort of 
-``imported'' into the {\tt Uses} class, but it fails on the 
-last one, because ``Don-Carlos'' is not part of the handler's 
-list. The error on the last method is a runtime exception 
-and the program would stop running there even if there 
-were some more correct code afterward. 
+El programa muestra apropiadamente los nombres de los
+escritores que los primeros tres métodos devuelve, porque ellos
+han sido más o menos ``importados`` en la clase {\tt Uses}, pero 
+falla con el último, porque ``Don-Carlos`` no es parte de la 
+lista del handler. El error en el último método es una excepción al
+tiempo de ejecución y el programa terminaría la ejecución ahí aún
+hubiera algún código correcto después. 
 
-Note that the {\tt Uses} class does not know from where the 
-methods will be imported; it only knows about the names of 
-the methods that will be imported. It is only when the 
-\verb'$user' object is created and the \verb'$user.base' 
-attribute is added to it that the object is dynamically 
-associated with the methods defined in {\tt BaseClass}. 
-By the way, this process could be done in just one step:
+Nota que la clase {\tt Uses} no sabe de donde los métodos 
+serán importados; solo sabe sobre los nombres de los 
+métodos que serán importados. Solamente cuando el objeto
+\verb|$user| es creado y el atributo \verb|$user.base|
+es añadido, el objeto es dinámicamente con los métodos
+definidos en {\tt ClaseBase}. Casualmente, este proceso
+puede hacerse en un solo paso:
 
 \begin{verbatim}
-my $user = Uses.new( base => BaseClass.new() );
+my $user = Uses.new( base => ClaseBase.new() );
 \end{verbatim}
 
-There is no need to enumerate the methods to be handled. The 
-{\tt Uses} class can import all the methods of {\tt BaseClass}:
+No hay necesidad de enumerar los métodos que serán manipulados.
+La clase {\tt Uses} puede importar todos los métodos de 
+{\tt ClaseBase}:
 
 \begin{verbatim}
 class Uses { 
-    has $.base is rw handles BaseClass;
+    has $.base is rw handles ClaseBase;
 }
 \end{verbatim}
 
-This will work as before, except of course that it will not fail 
-on the {\tt Don-Carlos} method this time, since this method is 
-also imported now:
+Esto funcionará como antes, excepto que no fallará con el método
+{\tt Don-Carlos} ahora, debido a que este método fue importado también:
 
 \begin{verbatim}
 Cervantes
@@ -1516,270 +1556,263 @@ Chekhov
 Schiller
 \end{verbatim} 
 
-\section{Polymorphism}
+\section{Polimorfismo}
 \index{polymorphism}
 \index{interface}
 
-Polymorphism is a way to supply a common or close interface 
-to different types. In a certain way, the inheritance examples 
-studied previously offer a form of polymorphism: the 
-{\tt coordinates}, {\tt distance2center}, and {\tt polar-coordinates} 
-methods are polymorphic, since they can apply to 
-{\tt Point2D}, {\tt movablePoint}, and {\tt pixel} types. But 
-these are trivial forms of polymorphism. We will speak of 
-polymorphism when the relevant methods or functions are 
-doing something different from each other, at least at the 
-implementation level, even if they share the same name and 
-interface.
+El polimorfismo es una manera de suplir un interfaz común o 
+relacionada a tipos diferentes. En cierta manera, los ejemplos
+de herencia que estudiamos anteriormente ofrecen una forma
+de polimorfismo: los métodos {\tt coordenadas}, {\tt distancia-al-centro}, y {\tt coordenadas-polares} son polimórficos, debido a que ellos pueden aplicar a los tipos
+{\tt Punto2D}, {\tt PuntoMovible} y {\tt Pixel}. Hablaremos de
+polimorfismo cuando los métodos relevantes o funciones hacen cada uno algo diferente, por lo menos al nivel de implementación, aún
+compartan el mismo nombre y misma interfaz.
 
 \index{multi!subroutine}
 \index{invocant}
-Outside of object-oriented programming, Perl's 
-\emph{multi} subroutines implement a form of polymorphism, 
-since they can behave differently depending on the 
-type and number of their arguments. Within the OOP context, 
-it is often the type of the invocant (its class or possibly one 
-of its roles) that will determine, usually at runtime, 
-which of the possible methods will be invoked.
+Fuera de la programación orientada a objeto (POO), las subrutinas
+\emph{multi} de Perl implementan una forma de polimorfismo,
+dado que se comportan de forma diferente dependiendo del tipo
+y número de sus argumentos. Dentro del contexto POO, es
+usualmente el tipo del invocante (su clase o posiblemente uno de
+sus roles) que determinará, usualmente al tiempo de 
+ejecución, cuales de los posibles métodos será invocado.
 
-For example, we might want to create a new class for points 
-in a three-dimensional space. The methods will have to be 
-different, but it seems interesting to offer the user an 
-interface that is the same (or almost) as for two-dimensional 
-points:
+Por ejemplo, podríamos querer crear una nueva clase para 
+puntos en el espacio tridimensional. Los métodos tendrán 
+que ser diferentes, pero sería interesante ofrecer al usuario
+un interfaz que es igual (o casi igual)  a aquella de los
+puntos en dos dimensiones:
 \index{Point3D class}
 
 \begin{verbatim}
-class Point3D {
+class Punto3D {
     has Numeric $.x;
     has Numeric $.y;
     has Numeric $.z;
     
-    method coordinates () {      # accessor to the 3 coordinates
-        return $.x, $.y, $.z
+    method coordenadas () {      # método de acceso a las 3 coordenadas
+    	return $.x, $.y, $.z
     }
-    method distance2center () {
+    method distancia-al-centro () {
         return ($.x ** 2 + $.y ** 2 + $.z ** 2) ** 0.5
     }
-    method polar-coordinates () {
-    	return self.spherical-coordinates;
+    method coordenadas-polares () {
+    	return self.coordenadas-esféricas;
     }
-    method spherical-coordinates {
+    method coordenadas-esféricas {
     	my $rho = $.distance2center;
-    	my $longitude = atan2 $.y, $.x;          # theta
-    	my $latitude = acos $.z / $rho;          # phi 
-    	return $rho, $longitude, $latitude;
+    	my $longitud = atan2 $.y, $.x;          # theta
+    	my $latitud = acos $.z / $rho;          # phi 
+    	return $rho, $longitud, $latitud;
     }
-    method cylindrical-coordinates {
+    method coordenadas-cilíndricas {
     	# ...
     }
 }
 \end{verbatim}
 
-The methods in this new class are not the same as those in 
-{\tt Point2D}, but methods with a similar semantics have 
-the same name; it is thus possible to use either class 
-without being lost with different names. 
+Los métodos en esta nueva clase no son los mismos que 
+en {\tt Punto2D}, pero los métodos con semánticas similares
+tienen el mismo nombre; así que es posible usar cualquiera
+de las clases sin perderse con nombres diferentes.
 
-The {\tt distance2center} method has exactly the same interface. 
-The {\tt coordinates} method returns a list of three values 
-instead of two, but the calling convention is the same. Note 
-that it might also have been possible to design {\tt Point2D} 
-so that this method would return a third zero value, in order 
-to have exactly the same interface (after all, a point in 
-the plane might be considered as a point in the 3D space 
-with a zero height); complying to exactly the same 
-interface is not mandatory, but only a possible implementation 
-decision that might make for a more intuitive interface. 
+El método {\tt distancia-al-centro} tiene exactamente la misma interfaz. El método {\tt coordenadas} devuelve una lista de tres 
+valores en lugar de dos, pero la convención de llamada es la misma. Nota que podría haber sido posible diseñar {\tt Punto2D}
+de tal manera que este método devolviera un tercer valor cero, 
+para tener exactamente la misma interfaz (después de todo, un punto en el plano podría ser considerado como un punto en el 
+espacio 3D con altura cero); cumplir exactamente con la misma
+interfaz no es mandatorio, pero solo una posible implementación
+que podría hacer una interfaz más intuitiva.
+ 
 
 \index{polar coordinates}
 \index{spherical coordinates}
 \index{coordinates!polar}
 \index{coordinates!spherical}
-The notion of polar coordinates does not have a well-defined 
-meaning in a 3D space, but I have chosen here to keep the name 
-in our interface because it is intuitively quite similar to 
-the idea of spherical coordinates; it does nothing more 
-than invoke the \verb'spherical-coordinates' method on 
-its invocant and to return the return values.
+La noción de coordenadas polares no tiene un significado 
+bien definido en el espacio 3D, pero he elegido mantener el nombre
+en nuestra interfaz porque es intuitivamente similar a la idea
+de coordenadas esféricas; no hace nada más que invocar 
+el método \verb|coordenadas-esféricas| sobre su invocante y
+devolver los valores de retorno.
 \index{invocant}
 
-Please note that mathematicians, physicists, astronomers, 
-engineers, geographers, and navigators all use the same basic system 
-for spherical coordinates, but their conventions are different 
-concerning the origin, angle range, angle measurement 
-units and rotation direction, and the name of the various 
-values or symbols associated with them. So you might find 
-some different formulas in a textbook. The conventions and 
-formulas we have used here are commonly used in geography and 
-some branches of mathematics. A real general-purpose class 
-might have to take these varying conventions into account and 
-implement the necessary conversions.
+Por favor nota que los matemáticos, físicos, astrónomos, ingenieros, geógrafos, y navegadores todos usan el mismo sistema
+básico para las coordenadas esféricas, pero sus convenciones
+son diferentes con respecto al origen, rango del ángulo, 
+unidades medidas de ángulos y dirección de rotación, y el nombre de los varios valores o símbolos asociados con los mismos. 
+Así que podrías encontrar diferentes fórmulas en un libro de
+texto. Las convenciones y fórmulas que hemos usado son comúnmente
+utilizadas en geografía y algunas ramas de las matemáticas. Una clase real de propósito general tendría que tomar en cuenta toda estas convenciones e implementar las convenciones necesarias.
 
-\section{Encapsulation}
+\section{Encapsulación}
 
 \index{encapsulation}
-Encapsulation is the idea of hiding the data and the code 
-of a library or a module from the user. It is not specific to 
-object-oriented programming, but it is a fundamental concept 
-of OOP.
+La encapsulación es la idea de ocultar los datos y código 
+de una librería o un módulo del usuario. El concepto no es
+específico a la programación orientada a objeto, pero 
+es parte fundamental de la misma.
 
 \index{accessor}
 \index{mutator}
 \index{getter}
 \index{setter}
-In object-oriented programming, encapsulation consists of 
-protecting the data in an object from being tampered with 
-directly (and possibly made inconsistent) 
-by the user, who can access such data only through
-the means of methods. This is achieved by providing to the 
-user methods that are commonly called \emph{accessors} (or 
-\emph{getters}) and \emph{mutators} (or \emph{setters}). This 
-makes it possible to ensure that the object properties will 
-be validated by its methods.
+En la programación orientada a objetos, la encapsulación 
+consiste de proteger los datos en un objeto de manipulación
+directa (y de manera inconsistente) por el usuario, quien 
+acceder tales datos a través de los métodos. Esto se logra al
+proveer al usuario métodos que son conocidos como \emph{métodos 
+de acceso} (o \emph{getters}) y \emph{mutadores} (o \emph{setters}).
+Esto hace posible asegurar que las propiedades del objeto 
+serán validadas por sus métodos. 
+
 
 \index{black box}
 \index{object!interface}
-Encapsulation is a strong form of data abstraction and 
-procedural abstraction. Seen from the outside, an object 
-is a black box having some specified properties and 
-behaviors. This way, these properties and behaviors are 
-\emph{hidden} from the user. They're not hidden in the 
-sense that the user cannot know about them (at least in 
-the open-source world, it is easy to know that), but 
-hidden in the sense that it is usually not possible to 
-use that knowledge to bypass the supplied interface. This 
-means that the internal implementation of the object may 
-change without having to modify the external behavior. If you 
-are going to use insider knowledge, your code will 
-probably break when the internal implementation is 
-modified, so don't do that.
+La encapsulación es una forma poderosa de abstracción
+y abstracción procedimental. Visto desde afuera, un
+objeto es una caja negra que tiene propiedades y 
+comportamientos específicos. De esta forma, estas propiedades
+y comportamientos están \emph{ocultos} del usuario. 
+No están ocultos en el sentido de que el usuario no puede
+saber sobre ellos (por lo menos en el mundo de código 
+abierto (\emph{open source}), es fácil saber esto), pero
+que están ocultos en el sentido de que es usualmente no posible
+usar ese conocimiento para eludir la interfaz proveída.
+Esto significa que la implementación interna del objeto 
+puede cambiar sin tener que modificar el comportamiento
+externo. Si usas conocimiento privilegiado, tu código
+probablemente no funcionará correctamente cuando la 
+implementación interna sea modificada. Por lo tanto,
+no hagas eso.
 
-Various programming languages don't have the same rules for 
-guaranteeing encapsulation. Some are stricter than others, 
-some are less restrictive for read access than for write access, 
-others don't make such a distinction but rather rely on the 
-visibility level specified for an attribute, for example 
-``public'' or ``private'' (with sometimes an intermediate 
-``protected'' level).
+Varios lenguajes de programación no tienen las mismas reglas para
+garantizar encapsulación. Algunos son más estrictos que otros,
+algunos son menos estrictos sobre el acceso de lectura que el
+acceso de escritura, otros no hacen tal distinción pero más bien
+dependen en el nivel de visibilidad especificado por un atributo,
+por ejemplo ``public`` o ``private`` (algunas veces con un nivel 
+intermedio ``protegido``).
 
 \index{attribute!private}
-Perl~6 lets you choose the encapsulation model you want to 
-apply to your objects and attributes. All attributes are 
-private. If you declare a class as follows:
+Perl~6 te permite eligir el modelo de encapsulación que quieres
+aplicar a tus objetos y atributos. Todos los atributos son 
+privados. Si declaras una clase así:
 
 \begin{verbatim}
-class Point2D {
-    has $!abscissa;
-    has $!ordinate;
+class Punto2D {
+    has $!abscisa;
+    has $!ordenada;
     # …
-    method value_x { return $!abscissa }
-    method value_y { return $!ordinate }
+    method valor_x { return $!abscisa }
+    method valor_y { return $!ordenada }
 }
 \end{verbatim}
 
-the \verb'$!x' and \verb'$!y' coordinates will be 
-accessible only from within the class. This is why 
-we have added accessor methods. In addition, the 
-attributes are immutable by default.
+las coordenadas \verb|$!abscisa| y \verb|$!ordenada|
+serán accesible solo dentro de la clase. Esta es la 
+razón por la cual hemos añadido métodos de acceso.
+Además, los atributos son inmutables por defecto.
 
-But as we have seen earlier, if you declare this class 
-as follows:
+Pero como vimos anteriormente, si declaras
+esta clase así:
 
 \begin{verbatim}
-class Point2D {
-    has $.abscissa;
-    has $.ordinate;
+class Punto2D {
+    has $.abscisa;
+    has $.ordenada;
     # ...
 }
 \end{verbatim}
 
-the coordinates will still be private attributes, but Perl~6 
-will automatically generate accessor methods having the same 
-names as the attributes, so that it will be possible to access 
-them from outside the class almost as if they were public:
+las coordenadas serán todavía atributos privados, pero
+Perl~6 generará métodos de acceso automáticamente con los
+mismos nombres de los atributos. De esta manera, se pueden
+acceder fuera de la clase casi como si fueran públicos:
 \index{attribute!public}
 
 \begin{verbatim}
-class Point2D {
+class Punto2D {
     # ...
 }
-my $point = Point2D.new(abscissa => 2, ordinate => 3);
-say $point.abscissa;       # -> 2
+my $punto = Punto2D.new(abscisa => 2, ordenada => 3);
+say $punto.abscisa;       # -> 2
 \end{verbatim}
 
 \index{attribute!mutable}
 \index{attribute!immutable}
-Whether the attribute is mutable or not is managed separately 
-by the {\tt is rw} trait. In brief, Perl~6 offers a default 
-access mode, but you can fine-tune it and what you need.
+El rasgo {\tt is rw} maneja separadamente si un atributo 
+es mutable o no. En resumen, Perl~6 ofrece un modo acceso por
+defecto, pero puedes configurarlo y lo que necesitas.
 
 
-\subsection{Private Methods}
+\subsection{Métodos Privados}
 \index{private method}
 \index{method!private}
 \index{interface}
 
-Methods are the normal way to use objects, whether with read-only 
-or read and write access. They usually form the \emph{interface} 
-of a class, that is the part of the class that is made public 
-and available to programmers wishing to use them. It is thus 
-natural and legitimate for methods to be public, i.e., accessible 
-from outside the class.
+Los métodos son la manera normal de usar objetos, ya sea con
+solo acceso de lectura o con acceso de lectura y escritura. 
+Usualmente forman la \emph{interfaz} de una clase, que es la
+parte de la clase que es pública y disponible para los programadores que deseen usarla. Es por lo tanto natural y legítimo que los métodos sean públicos, i.e, accesibles fuera
+de la clase.
 \index{method!public}
 \index{public method}
 
-But a class may also contain numerous methods that are part 
-of the internal cooking recipes of the class, i.e., the way it does 
-things internally, and that are not 
-meant to be used from outside the class. It is possible to prevent 
-their use from outside the class by making these methods private. 
-A Perl~6 private method is prefixed with an exclamation mark:
+Pero una clase puede también contener numerosos métodos
+que son parte de la receta de cocina interna de la clase, i.e.,
+la forma en la que hace las cosas internamente, y que no están
+destinadas a ser usadas fuera de la clase. Es posible prevenir 
+su uso fuera de la clase al hacer estos métodos privados. 
+Un método privado de Perl~6 se prefija con un signo de 
+exclamación:
 
 \begin{verbatim}
-method !private-behavior($x, $y) {
+method !comportamiento-privado($x, $y) {
     ...
 }
 \end{verbatim}
 
-You will also need to use an exclamation mark to call them:
+También necesitarás usar un signo de exclamación para llamarlos:
 
 \begin{verbatim}
-$my-object!private-behavior($val1, $val2)
+$mi-objecto!comportamiento-privado($val1, $val2)
 \end{verbatim}
 
 \index{private method}
 \index{method!private}
-Private methods are really internal to a given class. In 
-particular, they are not inherited by child classes.
+Los métodos privados son realmente internos de una clase 
+dada. En particular, ellos no son heredados por las clases hijas.
 
 
-\subsection{Constructing Objects with Private Attributes}
+\subsection{Construir Objetos con Atributos Privados}
 
-Constructing objects with private attributes raises a 
-little difficulty. Let's consider the following program:
+Construir objetos con atributos privados trae consigo una
+pequeña dificultad. Consideremos el siguiente programa:
 \index{private attribute}
 
 \begin{verbatim}
-class Point3D {
+class Punto3D {
     has $.x;
     has $.y;
     has $!z;
     
-    method get {
+    method coord_valores {
         return ($!x, $!y, $!z);
     }
 };
 
-my $a = Point3D.new(x => 23, y => 42, z => 2);
-say $_ for $a.get;
+my $a = Punto3D.new(x => 23, y => 42, z => 2);
+say $_ for $a.coord_valores;
 \end{verbatim}
 
 \index{attribute!private}
 \index{attribute!public}
-In this example, we have declared \verb'$.x' and \verb'$.y' 
-as ``public'' (so to speak) attributes, and \verb'$.z' as 
-a truly private attribute. Running this code displays this:
+En este ejemplo, hemos declarado a \verb|$.x| y \verb|$.y|
+como atributos ``públicos`` (por así decirlo), y a \verb|$!z|
+como un atributo verdaderamente privado. La ejecución de 
+este código muestra lo siguiente:
 
 \begin{verbatim}
 23
@@ -1787,89 +1820,87 @@ a truly private attribute. Running this code displays this:
 (Any)
 \end{verbatim}
 
-Oops, what is going on? It seems that the {\tt get} 
-method is not able to read \verb'$!z', since it returns 
-an undefined value. This method is defined within the 
-class and it should be able to access this attribute. In 
-fact, {\tt get} is not the problem, it is \verb'$!z' that is 
-not defined within the object, because it hasn't been properly 
-initialized during object construction.
-
+¿Qué está sucediendo? Parece que el método \verb|coord_valores|
+es incapaz de leer el contenido de \verb|$!z|, dado que 
+devuelve un valor indefinido. Este método es definido dentro
+de la clase y debería ser capaz de acceder este atributo. De hecho,
+\verb|coord_valores| no es el problema, sino que \verb|$!z| no está
+definido dentro del objeto, porque no se inicializó apropiadamente
+durante la creación del objeto.
 \index{new!constructor}
 \index{constructor!new}
-The guilt lies with the {\tt new} implicit constructor which, 
-by default, initializes only ``public'' attributes.
+La culpa yace con el constructor implícito {\tt new} que, por
+defecto, inicializa solo los atributos ``públicos``.
 
 \index{submethod}
-Here, the simplest solution is probably to add a {\tt BUILD} 
-submethod in the class definition.
+Aquí la solución más simple es probablemente añadir el 
+submétodo {\tt BUILD}  en la definición de la clase.
 \index{BUILD submethod}
 
 \index{submethod}
 \index{subclass}
 \index{type}
-A \emph{submethod} is a public method of a class that is not inherited 
-in its child classes. Semantically, it is really equivalent 
-to a subroutine, but it is called with a method syntax (hence 
-the name). Submethods are especially useful to perform object 
-construction and destruction tasks that should not be 
-inherited by subclasses, as well as for tasks that are 
-so specific to a given type that classes derived from it  
-will almost surely have to redefine them.
+Un {\tt submétodo} es un método público de una clase que 
+no es heredado por sus clases hijas. Semánticamente, es realmente
+equivalente a una subrutina, pero se invoca con una sintaxis 
+de método (de ahí su nombre). Los submétodos son especialmente útiles
+al realizar las tareas de construir y destruir un objeto que no 
+deberían ser heredadas por las subclases, también como para las
+tareas que son tan específicas para tipo particular que las clases
+derivadas tendrán que seguramente modificarlas.
 
-Initializing private attributes at object instantiation 
-might look like this:
+Inicializar los atributos privados durante la instanciación de un objeto
+podría lucir así:
 
 \begin{verbatim}
-class Point3D {
+class Punto3D {
     has $.x;
     has $.y;
     has $!z;
 
     submethod BUILD (:$!x, :$!y, :$!z) {
-        say "Initialization";
+        say "¡Inicialización!";
         $!x := $!x; 
         $!y := $!y; 
         $!z := $!z;
     }
-    method get {
+    method coord_valores {
         return ($!x, $!y, $!z);
     }
 };
 
-my $a = Point3D.new(x => 23, y => 42, z => 2);
-say $_ for $a.get;
+my $a = Punto3D.new(x => 23, y => 42, z => 2);
+say $_ for $a.coord_valores;
 \end{verbatim}
 
-The program now works as desired and displays all 
-three attributes:
+El programa ahora funciona como se deseaba y muestra 
+todos los atributos:
 
 \begin{verbatim}
-Initialization!
+¡Inicialización!
 23
 42
 2
 \end{verbatim}
 
-This works because the default {\tt new} constructor, a method 
-defined in the {\tt Mu} ultimate superclass and inherited by 
-default by any Perl~6 class, calls 
-the default {\tt BUILD} submethod. If we redefine {\tt BUILD} 
-in our class, it will supersede the default one 
-called by {\tt new}. By redefining {\tt BUILD}, we force 
-the constructor to take into account the private attribute that 
-was not used previously.
+Esto funciona porque el constructor por defecto {\tt new},
+un método definido la superclase suprema {\tt Mu} y heredado
+por cualquier clase de Perl~6, llama al submétodo por defecto
+{\tt BUILD}. Si redefinimos a {\tt BUILD} en nuestra clase, entonces
+reemplazará el submétodo por defecto que {\tt new} llama. Al redefinir
+a {\tt BUILD}, forzamos el constructor a tomar en cuenta el
+atributo privado que no se usó previamente.
 
-Quite a bit of simplification is possible. Since passing arguments 
-to a routine binds the arguments to the parameters, a separate 
-binding step is unnecessary if the attributes are used as 
-parameters. Hence, the {\tt BUILD} submethod in the example 
-above could also have been written simply as:
+Un poco de simplificación es posible. Dado que los argumentos
+que se pasan a una rutina enlazan los argumentos a los parámetros,
+un paso de enlace separado es innecesario si los atributos se usan
+como parámetros. Por lo tanto, el submétodo {\tt BUILD} en el ejemplo
+anterior podría también escribirse tan simple como esto:
 \index{BUILD submethod}
 
 \begin{verbatim}
     submethod BUILD(:$!x, :$!y, :$!z) {
-        say "Initialization!";
+        say "¡Inicialización!";
     }
 \end{verbatim}
 
@@ -1881,277 +1912,277 @@ above could also have been written simply as:
 \index{constructor!new}
 \index{new!constructor}
 
-While we are speaking about the intricacies of object 
-construction, note that since {\tt new} is a method inherited 
-from the {\tt Mu} superclass, you can override it if you wish. 
-The default {\tt new} constructor can only be used with named 
-arguments. Assuming you absolutely want to use positional parameters, you 
-could override {\tt new} with your own method, like so:
-\index{new!constructor} \index{constructor!new}
+Mientras hablamos de las particularidades de la construcción de un objeto,
+nota que debido a que {\tt new} es un método heredado desde la superclase
+{\tt Mu}, puedes anularlo si lo prefieres. El constructor por defecto
+{\tt new} puede usarse solo con argumentos nombrados. Asumiendo que realmente
+quieras parámetros de posición, puedes anular a {\tt new} con tu 
+propio método, de esta manera:
+\index{new!constructor} 
+\index{constructor!new}
 
 \begin{verbatim}
-class Point2D {
-    has Numeric $.abscissa;
-    has Numeric $.ordinate;
+class Punto2D {
+    has Numeric $.abscisa;
+    has Numeric $.ordenada;
 
     method new ($x, $y) {
-        self.bless(abscissa => $x, ordinate => $y);
+        self.bless(abscisa => $x, ordenada => $y);
     }
-    method coordinates {        # accessor to both coordinates
-        return (self.abscissa, self.ordinate)
+    method coordenadas {        # método de acceso a las coordenadas
+        return (self.abscisa, self.ordenada)
     }
-    # other methods
+    # otros métodos
 };
 
-my $point = Point2D.new(3, 5);
-say $_ for $point.coordinates;
+my $punto = Punto2D.new(3, 5);
+say $_ for $punto.coordenadas;
 \end{verbatim}
 
-This will duly display the two coordinates. {\tt bless} is a 
-low-level method for object construction, inherited from 
-{\tt Mu} and called automatically when you invoke 
-{\tt new} to construct an object. You usually don't need 
-to know about it, except when you want to write your own custom 
-constructor.
+Esto mostrará las dos coordenadas. {\tt bless} es un método
+de nivel inferior para la construcción de objetos, heredado
+desde {\tt Mu} y llamado automáticamente cuando invocas a {\tt new}
+para construir un objeto. Usualmente no necesitas saber sobre 
+ese método, excepto cuando quieres escribir tu propio
+constructor personalizado.
 
 \index{constructor!custom}
-You can give the constructor a different name than {\tt new}, 
-for example:
+Puedes darle un nombre diferente al constructor, por ejemplo:
 
 \begin{verbatim}
-class Point2D {
-    has Numeric $.abscissa;
-    has Numeric $.ordinate;
+class Punto2D {
+    has Numeric $.abscisa;
+    has Numeric $.ordenada;
 
-    method construct ($x, $y) {
-        self.bless(abscissa => $x, ordinate => $y);
+    method construir ($x, $y) {
+        self.bless(abscisa => $x, ordenada => $y);
     }
-    method coordinates {        # accessor to both coordinates
-        return (self.abscissa, self.ordinate)
+    method coordenadas {        # método de acceso a las coordenadas
+        return (self.abscisa, self.ordenada)
     }
-    # other methods
+    # otros métodos
 };
 
-my $point = Point2D.construct(3, 5);
-say $_ for $point.coordinates;
+my $punto = Punto2D.construir(3, 5);
+say $_ for $punto.coordenadas;
 \end{verbatim}
 
-Think twice, though, before you override {\tt new} or create your 
-own custom constructor with a different name, as it may make it 
-more complicated to subclass your {\tt Point2D} class.
+Aunque deberías pensar dos veces antes de anular a {\tt new} 
+o crear tu propio constructor personalizado con un nombre diferente,
+dado que podría hacer más difícil la creación de subclases de la 
+clase {\tt Punto2D}.
 
 
 
-\section{Interface and Implementation}
+\section{Interfaz e Implementación}
 
-One of the goals of object-oriented design is to make software more
-maintainable, which means that you can keep the program working when
-other parts of the system change, and modify the program to meet new
-requirements.
+Una de las metas del diseño orientado a objetos es crear software
+más fácil de mantener, lo que significa que mantener el programa
+funcionando cuando otras partes del sistema cambia, y modificar el 
+programa para satisfacer los requerimientos.
 \index{interface}
 \index{implementation}
 \index{maintainable}
 \index{object-oriented design}
 
-A design principle that helps achieve that goal is to keep
-interfaces separate from implementations.  For objects, that means
-that the public interface of the methods provided by a class 
-should not depend on how the attributes are represented.
+Un principio de diseño que ayuda a lograr esa meta es mantener
+la interfaz separada de las implementaciones. Para objetos, esto
+significa que la interfaz pública de los métodos proveídos por una
+clase no debería depender en cómo los atributos son representados.
 \index{attribute}
 
 \index{coordinates!Cartesian}
 \index{Cartesian coordinates}
 \index{polar coordinates}
-For example, we designed a {\tt Point2D} class in which the main 
-attributes were the point's Cartesian coordinates. We may find 
-out that, for the purpose of our application, it would be easier 
-or faster to store the point's polar coordinates in the object 
-attributes. It is entirely possible to change the internal 
-implementation of the class, and yet keep the same interface. 
-In order to do that, we would need the constructor 
-to convert input parameters from 
-Cartesian into polar coordinates, and store the latter in the 
-object attribute. The {\tt polar-coordinates} method would 
-return the stored attributes, whereas methods returning the 
-Cartesian coordinates may have to do the backward conversion 
-(or may perhaps be stored separately in private attributes). 
-Overall, the change can be made with relatively heavy refactoring 
-of the {\tt Point2D} class, but users of the class would still 
-use the same interface and not see the difference.
+Por ejemplo, diseñamos una clase {\tt Punto2D} en la cual los
+atributos principales eran las coordenadas cartesianas del punto.
+Podemos descubrir que, para el propósito de nuestra aplicación,
+sería más fácil o más rápido almacenar las coordenadas polares del
+punto en los atributos del objeto. Es totalmente posible cambiar
+la implementación interna de la clase, y aún así mantener
+la misma interfaz. Para hacer esto, necesitamos que el constructor
+convierte los parámetros de entrada desde coordenadas cartesianas
+a polares, y almacenar las coordenadas polares en el
+atributo del objeto. El método {\tt coordenadas-polares} devolvería
+los atributos almacenados, mientras que los métodos que 
+devuelven las coordenadas cartesianas podrían tener que hacer la 
+conversión opuesta (o quizás ser almacenados en atributos privados).
+En general, el cambio ser podría hacer con la refactorización  
+de la clase {\tt Punto2D}, pero los usuarios de la clase todavía
+usarían la misma clase sin notar diferencia alguna.
 
-After you deploy a new class, you might discover a better
-implementation.  If other parts of the program are using your
-class, it might be time-consuming and error-prone to change the
-interface.  
+Después de desplegar una nueva clase, podrías descubrir 
+una mejor implementación. Si otras partes del programa están
+usando tu clase, podría ser un proceso largo y proclive a errores
+cambiar la interfaz.
 
-But if you designed the interface carefully, you can
-change the implementation without changing the interface, which
-means that other parts of the program don't have to change.
+Pero si diseñaste la interfaz cuidadosamente, puedes cambiar
+la implementación sin cambiar la interfaz, lo cual significa que las
+otras partes del programa no tienen que cambiar.
 
-
-\section{Object-Oriented Programming: A Tale}
+\section{Programación Orientada a Objetos: Una Fábula}
 
 \index{tale about OOP}
 \index{OOP (object-oriented programming)!a tale}
 \index{object-oriented programming (OOP))!a tale}
-Most tutorials and books teaching object-oriented 
-programming tend to focus on the technical aspects 
-of OOP (as we have done in this chapter so far), and 
-that's a very important part of it, but they sometimes 
-neglect to explain the reasons for it. They say ``how,'' 
-but not ``why.'' We've tried to explain the ``why'' (and 
-hopefully succeeded in doing so), but this section attempts to 
-explain OOP from the standpoint of the reasons for it 
-and its benefits, independently of any technical 
-consideration, in the form of a parable (the code 
-examples are only pseudocode and are not supposed 
-to compile, let alone run). 
+La mayoría de los libros y tutoriales que enseñan 
+la programación orientada a objetos se enfocan en los
+aspectos técnicos de POO (como hemos hecho en este capítulo
+hasta ahora), y esa es una parte muy importante, pero algunas
+veces tienden a descuidar las razones de POO. Dicen 
+``cómo``, pero no ``porqué``. Hemos intentado explicar
+el ``porqué`` (y posiblemente logramos hacerlo bien), pero
+esta sección intenta explicar POO desde de la perspectiva de las
+razones y los beneficios de POO, independientemente de 
+cualquier consideración técnica, en la forma de una parábola (los ejemplos
+e código son solo pseudocódigo y no se pueden compilar, menos
+ejecutarse).
 
-\subsection{The Fable of the Shepherd} 
+\subsection{La Fábula del Pastor} 
 
 \index{shepherd}
-Once upon a time, there was a sheep farmer who had a 
-flock of sheep. His typical workday looked like this:
+Había una vez un pastor que tenía un rebaño de ovejas. 
+Su típico día de trabajo era así:
 
 \begin{verbatim}
-$shepherd.move_flock($pasture);
-$shepherd.monitor_flock();
-$shepherd.move_flock($home);
+$pastor.mover_rebaño($pasto);
+$pastor.vigilar_rebaño();
+$pastor.mover_rebaño($casa);
 \end{verbatim}
 
-Eventually, due to successful wool sales, he expanded 
-his farming activities and his day became like this:
+Eventualmente, debido a una venta exitosa de lana, él
+expandió sus actividades granjeras y su día se volvió
+así:
 
 \begin{verbatim}
-$shepherd.move_flock($pasture);
-$shepherd.monitor_flock();
-$shepherd.move_flock($home);
-$shepherd.other_important_work();
+$pastor.mover_rebaño($pasto);
+$pastor.vigilar_rebaño();
+$pastor.mover_rebaño($casa);
+$pastor.otro_tarea_importante();
 \end{verbatim}
 
-But now the shepherd wanted to devote more time to 
-\verb'other_important_work()', so he decided to hire 
-a minion to handle the sheep-related work, so the 
-work was now split like this:
+Pero ahora el pastor quería dedicar más tiempo a 
+\verb|otro_tarea_importante()|, así que él decidió 
+emplear un subordinado para hacerse cargo de las tareas
+relacionadas con las ovejas. De esta manera, el trabajo
+se dividió así:
 \index{shepherd-boy}
 \index{tale about OOP}
 
 \begin{verbatim}
-$shepherd-boy.move_flock($pasture);
-$shepherd-boy.monitor_flock();
-$shepherd-boy.move_flock($home);
-$shepherd.other_important_work();
+$niño-pastor.mover_rebaño($pasto);
+$niño-pastor.vigilar_rebaño();
+$niño-pastor.mover_rebaño($casa);
+$pastor.otro_tarea_importante();
 \end{verbatim}
 
-This did give the shepherd more time for 
-\verb'other_important_work()', but unfortunately the 
-\verb'$shepherd-boy' had a tendency to cry wolf, so 
-the farmer had to replace him with a new assistant:
+Esto otorgó más tiempo al pastor para la
+\verb|otro_tarea_importante()|, pero desafortunadamente
+el \verb|$nino-pastor| tenía la tendencia de gritar lobo.
+Como resultado, el pastor tuvo que reemplazarlo con un 
+asistente nuevo:
 
 \index{sheep dog}
 \index{dog!shepherd}
 \begin{verbatim}
-$sheep-dog.move_flock($pasture);
-$sheep-dog.monitor_flock();
-$sheep-dog.move_flock($home);
-$shepherd.other_important_work();
+$perro-ovejero.mover_rebaño($pasto);
+$perro-ovejero.vigilar_rebaño();
+$perro-ovejero.mover_rebaño($casa);
+$pastor.otro_tarea_importante();
 \end{verbatim}
 
-\verb'$sheep-dog' was more reliable and demanded 
-less pay than \verb'$shepherd-boy', so this was 
-a win for the farmer.
+El \verb|$perro-ovejero| era más falible y demandaba 
+un salario más bajo que el \verb|$niño-pastor|, así que
+esto representaba una ganancia para el pastor.
 
-\subsection{The Moral}
+\subsection{La Moraleja}
 
-We can learn a few things from this parable.
+Podemos aprender varias cosas de esta parábola.
 
-\subsubsection{Delegation}
+\subsubsection{Delegación}
 \index{delegation}
 
-To handle complexity, delegate to a suitable 
-entity, e.g., the farmer delegates some of his 
-work to \verb'$shepherd-boy'.
+Para manejar complejidad, delega a una entidad confiable, e.g.,
+el granjero delegó parte de sus responsabilidades al \verb|$niño-pastor|.
 
-\subsubsection{Encapsulation}
+\subsubsection{Encapsulación}
 \index{encapsulation}
 
-Tell objects what to do, rather than micro-manage, e.g.:
+Indica a los objetos que hacer, en lugar de micro-gestionar, e.g.:
 
 \begin{verbatim}
-$sheep-dog.monitor_flock();
+$perro-ovejero.vigilar_rebaño();
 \end{verbatim}
 
-rather than something like:
+como esto:
 
 \begin{verbatim}
-$sheep-dog.brain.task.monitor_flock;
+$perro-ovejero.cerebro.tarea.vigilar_rebaño();
 \end{verbatim}
 
-At a high level, we do not particularly care 
-what the internals of the object are. We only 
-care what the object can do.
+A un nivel superior, no nos importa particularmente
+la estructura interna del objeto. Solo nos importa
+lo que el objeto puede hacer.
 
-An object becomes harder to change the 
-more its internals are exposed.
+Mientra más se expone la estructura interna de un objeto,
+más difícil se vuelve cambiarlo.
 
-\subsubsection{Polymorphism}
+\subsubsection{Polimorfismo}
 \index{polymorphism}
-\verb'$sheep-dog' and \verb'$shepherd-boy' both 
-understood the same commands, so replacing the 
-latter with the former was easier than it would 
-have been otherwise. 
+\verb|$perro-ovejero| y \verb|$niño-pastor| ambos
+entienden los mismos comandos, así que el reemplazo
+del último con el primero fue más fácil de lo que
+hubiese sido por el contrario.
 \index{tale about OOP}
 
-\emph{The fable of this section is adapted 
-from a post by ``Arunbear'' on the ``PerlMonks'' 
-website: \url{http://www.perlmonks.org/?node_id=1146129}. 
-Thanks to ``Arunbear'' for authorizing me 
-to reuse it.}
+\emph{La fábula en esta sección es una adaptación de
+un post de ``Arunbear```en el sitio web ``PerlMonks``:
+\url{http://www.perlmonks.org/?node_id=1146129}. Gracias
+a ``Arunbear`` por autorizarme a reutizarla.}
 
 
-\section{Debugging}
+\section{Depuración de Programas}
 \label{perl-debugger}
 \index{debugger}
 \index{debugger!using a}
 
-This section is about using a debugger, a program that is 
-designed to help you to debug your programs. ``What? There 
-is a tool to debug my programs, and you're telling me only 
-now?'' you might complain. Well, it's not quite that. A debugger 
-is not going to do the debugging for you; you'll still have 
-to do the hard investigation work, but a debugger can help 
-you a lot in figuring out why your program isn't doing 
-what you think it should be doing. Or, rather, why what your 
-program is doing isn't quite what you want it to do.
+Esta sección es sobre un depurador, un programa diseñado para
+ayudarte a depurar tus programas. ``¿Qué? Tal herramienta existe,
+y me lo dices solo ahora?`` podrías quejarte. Bueno, no es realmente
+eso. Un depurador no a realizar tus tareas de depuración; todavía 
+tienes que hacer el trabajo investigativo difícil, pero un depurador
+puede ayudarte a descubrir la razón por la cual tu programa
+no hace lo que crees que debería hacer. O, más bien, por qué lo
+que tu programa hace no es lo que quieres que haga.
 
-Debuggers are a bit like people with a strong personality: 
-some people love them and others hate them. Often, people 
-who don't like debuggers simply never took the time to learn 
-how to use them, but there are also many expert programmers 
-who don't like them and whom we can't suspect of not having 
-seriously tried. Whether you like debuggers or not is 
-probably a matter of personal taste, but they can provide an 
-invaluable help, if you know how to use them.
+Los depuradores son similares a personas con una fuerte
+personalidad: algunas personas los aman y otras los odian. Usualmente,
+las personas que no les gustan los depuradores simplemente
+nunca tomaron el tiempo de aprender cómo usarlos, pero existen 
+algunos programadores expertos que no les gustan y de quienes 
+no podemos sospechar de no intentar seriamente. Si te gustan
+o no te gustan los depuradores es probablemente un asunto de
+gusto personal, pero ellos pueden proveer una ayuda invaluable, si sabes 
+cómo usarlos.
 
-\subsection{The Perl~6 Debugger}
+\subsection{El Depurador de Perl~6}
 
 \index{debugger!the Perl~6 debugger}
 \index{debugger!launching the}
 \index{debugging!using a debugger}
 \index{debugging!the Perl 6 debugger}
-Rakudo-Perl~6 ships with an interactive debugger that 
-you call with the {\tt perl6-debug} command (or, on 
-some installs at least, {\tt perl6-debug-m}). You can 
-just fire this command, followed by the name of the program 
-to be debugged, just as you would normally use {\tt perl6} with 
-the name of a program to run the program. One word of 
-warning: you can run the debugger on a program only if 
-the program compiles with no errors; a debugger is not 
-aimed as finding compile-time error, but only execution 
-or semantic errors.
+Rakudo-Perl~6 incluye un depurador interactivo que 
+llamas con el comando {\tt perl6-debug} (o, en algunas
+instalaciones, {\tt perl6-debug-m}). Puedes ejecutar este 
+comando, seguido del nombre del programa a depurarse, como
+lo normalmente usaría {\tt perl6} con el nombre del programa
+para ejecutarlo. Una palabra de advertencia: puedes ejecutar
+el depurador con un programa solo si el programa
+compila sin ningún error; el objetivo de un depurador no es encontrar 
+errores al tiempo de compilación, sino solo errores de
+ejecución o errores semánticos.
 
-Once you've launched the debugger, you will see something 
-like this:
+Una vez que has ejecutado el depurador, verás algo así:
 
 \begin{verbatim}
 >>> LOADING while_done.pl6
@@ -2163,20 +2194,20 @@ like this:
 \end{verbatim}
 
 \index{prompt}
-This says that it is loading the \verb'while_done.pl6' program, 
-and displays the first lines of the program; the last line at 
-the bottom (``\verb">"'') is a prompt where you can enter some 
-commands. The program 
-is stopped at the first statement that actually does something 
-and waits for your input. The code line that is waiting to be 
-executed is highlighted in a different color.
+Esto quiere decir que está cargando el programa \verb|while_done.pl6|,
+y muestra las primeras líneas del programa; la última línea al fondo
+(``\verb">"'')  es un prompt donde puedes entrar algunos comandos.
+El programa para en la primera sentencia que actualmente hace algo y espera
+por tu entrada. La línea de código que espera ser ejecutada
+es resaltada en un color diferente.
 
-\subsection{Getting Some Help}
+\subsection{Cómo Conseguir Ayuda}
 
 \index{debugger!help}
-The first command you probably want to issue is ``h,'' which 
-will display the debugger help and return to the prompt. 
-Below, we have omitted most of the output for brevity:
+El primer comando que probablemente quieres ejecutar es ``h``,
+el cual mostrará la ayuda del depurador y regresará al 
+prompt. Abajo, hemos omitido la mayoría de la salida
+para ser breve:
 
 \begin{verbatim}
 > h
@@ -2188,35 +2219,35 @@ q[uit]                 exit the debugger
 >
 \end{verbatim}
 
-Take the time to issue that command and to read the 
-various possible instructions you can enter. We will 
-describe the most common ones. As you can see 
-above, just use ``q'' or ``quit'' to exit the debugger.
+Toma el tiempo para ejecutar ese comando y lee 
+las posibles instrucciones que puedes entrar.
+Describiremos las más comunes. Como puedes ver arriba,
+solo usas ``q`` o ``quit`` para salir del depurador.
 
-\subsection{Stepping Through the Code}
+\subsection{Recorriendo el Código}
 
 \index{debugger!running code step by step}
 \index{debugger!stepping over subroutines}
 \index{debugger!stepping out of subroutines}
 
-The main characteristic of a debugger is that it 
-lets you run the program step 
-by step. Each time you hit the {\tt Enter} key, the 
-program will move forward one step (e.g., one code line). 
-It will enter into any subroutine if the code line 
-is a subroutine call, but you can step over the 
-subroutine call by issuing the ``s'' 
-command at the debugger prompt: this will run the subroutine 
-and bring you to the first code line after the subroutine 
-call (and any nested call of other subroutines) is over.
-If you entered into a subroutine but are no longer 
-interested in stepping through it, just issue the ``so'' 
-command to step out of it.
+La característica principal de un depurador es que
+te deja ejecutar un programa paso a paso. Cada vez
+que presionas la tecla {\tt Enter}, el programa se
+moverá un paso hacia adelante (e.g., una línea de 
+código). Entrará en una subrutina si la línea de 
+código es una llamada de subrutina, pero puedes pasar 
+sobre la llamada de la subrutina al ejecutar el comando
+``s`` en el prompt del depurador: esto ejecutará la subrutina
+y te colocará en la primera línea de código después de la
+llamada de la subrutina (y cualquier llamada anidada de otras
+subrutinas)ha finalizado. Si entraste en la subrutina pero ya 
+no está interesado en recorrerla, solo entra el comando 
+``so`` para salir de ahí.
 
 \index{debugger!accessing variables}
-At any point through that process, you can look at the 
-content of variables or even call methods on them. To 
-view a variable, just type its name and then press 
+A cualquier punto del proceso, puedes mirar el contenido 
+de las variables o hasta métodos sobre ellas. Para ver
+una variable, escribe su nombre y después presiona 
 {\tt Enter}:
 
 \begin{verbatim}
@@ -2224,69 +2255,69 @@ view a variable, just type its name and then press
 "foo"
 \end{verbatim}
 
-You can also view an array or a hash, or use the index 
-or the key, for example \verb'@array[10]' or 
-\verb'%hash{"bar"}'), to visualize one specific item of 
-the array or the hash.
+También puedes mirar un array o un hash, o usar el
+índice o la llave, por ejemplo \verb|@array[10]| o
+\verb|%hash{"bar"}|, para visualizar un elemento específico
+del array o del hash.
 
-You may also use ``s'' (or ``say'') or ``p'' (or ``print'') 
-to evaluate and display an expression in the current scope.
+De igual modo, puedes utilizar ``s`` (o ``say``) o ``p`` (o ``print``)
+para evaluar y mostrar una expresión en el ámbito actual.
 
-\subsection{Stopping at the Right Place with Breakpoints}
-
+\subsection{Parando en el Lugar Correcto con Puntos de Interrupción}
 \index{breakpoint}
 \index{debugger!breakpoint}
-You might find it tedious to run through the program step 
-by step until you get to the interesting part. As it happens, 
-you can get there immediately using a \emph{breakpoint}. For 
-adding a breakpoint, you type {\tt bp add line}, where 
-{\tt line} is the line number where you want the program to stop running 
-and resume stepping line by line. Then you enter the ``r'' 
-command and the program will run until it reaches one of the 
-breakpoints that you have set. The execution will also 
-stop if the program runs into an exception; in that case, 
-you can still access variables to try to figure out what went 
-wrong. If it does not hit a breakpoint or an exception, it 
-will run to the end.
 
-You can view all breakpoints ({\tt bp list}), remove 
-one breakpoint ({\tt bp rm line}), or remove all breakpoints 
-({\tt bp rm all}). You can also set a breakpoint in 
-another file (for example if you are using a module) by 
-using the following syntax: {\tt bp add file:line}, where 
-``file'' is the file name.
+Podría encontrarlo tedioso recorrer el programa paso a paso
+hasta que llegas a la parte interesante. Como sucede, 
+tu puedes llegar ahí inmediatamente usando un \emph{punto de
+interrupción} (\emph{breakpoint}). Para agregar un punto de 
+interrupción, escribe {\tt bp add línea}, donde {\tt línea} es
+el número de línea donde quieres que el programa pare 
+la ejecución y vuelva de nuevo a recorrer el código línea a 
+línea. Después entra el comando ``r`` y el programa se ejecutará
+hasta que alcance uno de los puntos de interrupción que has creado.
+La ejecución también parará si el programa llega a una excepción;
+en ese caso, puedes todavía acceder las variables para intentar 
+descubrir lo que pasó. Si no alcanza ningún punto de interrupción
+o una excepción, se ejecutará hasta el final.
 
-\subsubsection{You're all set to start using the debugger}
+Puedes ver todos los puntos de interrupción ({\tt bp list}),
+remover un punto de interrupción ({\tt bp rm line}), o
+remover todos los puntos de interrupción ({\tt bp rm all}).
+También puedes crear un punto de interrupción en otro 
+archivo (por ejemplo si estás usando un módulo) 
+al usar la siguiente sintaxis: {\tt bp add archivo:línea},
+donde ``archivo`` es el nombre del archivo.
 
-You probably know enough by now to make good use of the Perl~6 
-debugger, step through your program and find out where it 
-does something that isn't what you intended. It wasn't so 
-much to learn, was it? Try it!
+\subsubsection{Ya Estás Listo para Usar el Depurador}
 
-We'll cover a couple of additional goodies, though. 
+Probablemente ya sabes lo suficiente para hacer buen uso del 
+depurador de Perl~6, recorrer tu programa y descubrir 
+donde hace algo que no está supuesto hacer. No fue tanto
+que aprender, cierto? ¡Inténtalo!
 
-\subsection{Logging Information with Trace Points}
+Aún discutiremos varios puntos adicionales.
+
+\subsection{Registrar Información con Puntos de Trace}
 
 \index{debugger!trace point}
-It is possible to set trace points on specific lines of code 
-and variables (or expressions), with the command {\tt tp add 
-line \$var}. This will record the value of \verb'$var' each 
-time the programs hits the chosen line. Then you simply run 
-the program for a while and, at some point, you can visualize 
-how the variable changed over time, using the command 
-{\tt tp show}.
+Es posible crear puntos de trace en líneas específicas de código y
+variables (o expresiones), con el comando {\tt tp add line \$var}.
+Esto registrará el valor de \verb|$var| cada vez que el programa
+alcanza la línea elegida. Después simplemente ejecutas el 
+programa por un momento y, en algún punto, puedes visualizar
+cómo la variable cambió a lo largo del tiempo, usando el comando {\tt tp show}.
 
-For example, we used it to log the variable \verb'$rotated-word' 
-in the solution to the Caesar's cipher exercise 
-(see Subsection~\ref{sol_rotate}) for the 
-``ABCDabcd'' input string with a rotation of 25 letters; 
-the {\tt tp show} command displayed how the coded output 
-string was progressively populated letter by letter:
+Por ejemplo, lo usamos para registrar la variable \verb|$palabra-rotada|
+en la solución del ejercicio sobre el cifrado César (ver Subsección~\ref{sol_rotate}) 
+para la cadena de texto de entrada ``ABCDabcd'' con una rotación
+de 25 letras; el comando {\tt tp show} mostró cómo la cadena de texto
+codificada fue progresivamente poblada letra por letra:
 \index{Caesar cipher}
 
 \begin{verbatim}
 > tp show
->>> rotate.pl6:23
+>>> rotar.pl6:23
 *
 * Z
 * ZA
@@ -2297,156 +2328,161 @@ string was progressively populated letter by letter:
 * ZACBzab
 \end{verbatim}
 
-\subsection{Stepping Through a Regex Match}
+\subsection{Recorriendo una Coincidencia Regex}
 \label{regex-debugging}
 \index{regex}
 \index{regex!debugging}
 \index{debugger!stepping through a regex}
 
-The debugger can also provide useful information when the 
-code is trying to match a regex. For example, suppose we're 
-running a program under the debugger in which we have the 
-following code:
+El depurador puede también proveer información útil cuando
+el código está intentando coincidir un regex. Por ejemplo, 
+supón que ejecutamos un programa con el depurador con el
+siguiente código:
 
 \begin{verbatim}
 "foobar" ~~ /f.+b/;
 \end{verbatim}
 
 \index{backtracking}
-If you run the regex step by step, color highlighting will show 
-atom by atom where it is in the regex and which part of the 
-string has been matched. (We can't show the color highlighting 
-here, but you should try it to see it.)
+Si ejecutas el regex paso a paso, la coloración de sintaxis mostrará
+átomo por átomo donde está en el regex y que parte de la 
+cadena de texto coincide. (No podemos mostrar la coloración de sintaxis
+aquí, pero deberías intentarlo para verlo.)
 
-With the above regex, you'll see that 
-the regex engine tries to match the ``f'' of the pattern and that 
-it finds an ``f'' at the beginning of the string; next, you'll see 
-that the regex engines tries to match the ``.+'' subpattern and 
-that it matches the whole string; then, when the regex engine 
-tries to match the final ``b'' of the pattern, you'll see that 
-the regex engine backtracks and gives away the ``r'' and then the 
-``a''; finally, the regex engine succeeds with ``foob.''
+Con el regex arriba, verás que el motor de regex 
+intenta coincidir el carácter ``f``del patrón
+y encuentra un ``f`` al principio de la cadena de texto;
+siguiente, verás que el motor de regex intenta coincidir 
+el subpatrón ``+.`` y que coincide la cadena de texto entero;
+después, cuando el motor de regex intenta coincidir la 
+última ``b`` del patrón, verás que el motor de regex retrocede,
+se deshace de la ``r`` y después de la ``a``; finalmente,
+el motor de regex tiene éxito con `foob``.
 \index{backtracking}
 
-If you have difficulty understanding how regexes work or are 
-mystified by backtracking, just run the debugger on a few 
-regexes and observe what's going on step by step. You don't 
-even have to write a program; you can use it as a one-liner. 
-For example, to test the above regex as a one-liner under  
-Windows, just type the following command at the prompt:
+Si tienes dificultad entendiendo cómo los regexes trabajan
+o estás mistificado por el retroceso (\emph{backtracking}),
+solo ejecuta el depurador sobre algunos regexes y observa
+lo que sucede paso a paso. No tienes ni que escribir un 
+programa; puedes usarlo en el modo de una sola línea (\emph{one-liner}).
+Por ejemplo, para probar el regex de arriba como un one-liner 
+en Windows, solo escribe el comando siguiente en el prompt:
 \index{one-liner mode}
 
 \begin{verbatim}
 C:\Users\Laurent>perl6-debug-m -e "'foobar' ~~ /f.+b/;"
 \end{verbatim}
 
-As usual, change double quotes to single quotes and the other 
-way around if you are using a Unix-like platform.
+Como es usual, cambia las comillas inglesas a comillas simples 
+si estás usando cualquier plataforma de Unix.
+ 
+Nuestra nota final sobre el depurador: recuerda siempre entrar
+``h`` para conseguir ayuda sobre el comando que necesitas.
 
-Our final word on the debugger: remember you can always hit 
-``h'' to get help on the command you need. 
 
-
-\section{Glossary}
+\section{Glosario}
 
 \begin{description}
 
-\item[Object] An entity that encloses its state (attributes) 
-and its behavior (methods).
+\item[Objeto] Una entidad que encapsula su estado (atributos)
+y su comportamiento (métodos).
 \index{object}
 
-\item[Class] A programmer-defined type.  A class definition 
-creates a new type object (a form of abstract definition) and 
-makes it possible to instantiate concrete objects representing 
-real data.
+\item[Clase] Un tipo definido por el programador. La definición de
+una clase crea un nuevo tipo de objeto (una forma de abstracción) y
+hace posible la instanciación de objetos concretos que representan
+datos reales.
 \index{class}
 \index{programmer-defined type}
 \index{type!programmer-defined}
 
-\item[Method] A special kind of subroutine defined within a class or a role, that can be called using the dot notation syntax
+\item[Método] Un tipo especial de subrutina dentro de una clase o un rol,
+que puede llamarse usando la sintaxis de la notación del punto.
 \index{method}
 \index{dot notation}
 
-\item[Type object] An object that contains information about a
-programmer-defined type.  The type object can be used to create instances
-of the type.
+\item[Objeto de tipo] Un objeto que contiene información sobre un 
+tipo definido por el programador. El objeto de tipo puede usarse 
+para crear instancias del tipo.
 \index{type object}
 \index{object!type}
 
-\item[Instance] An object that belongs to a class and contains 
-real data.
+\item[Instancia] Un objeto que pertenece a una clase y contiene
+datos reales.
 \index{instance}
 
-\item[Instantiate] To create a new object.
+\item[Instanciar] Crear un nuevo objeto.
 \index{instantiate}
 
-\item[Attribute] A state property akin to a variable within 
-an OOP framework. An instance attribute is one of the named 
-values associated with an object. Class attributes are variables 
-associated with the whole class. 
+\item[Atributo] Una propiedad de estado dentro de la estructura
+POO que es similar a una variable. El atributo de una instancia 
+es uno de los valores nombrados asociados con un objeto. Los
+atributos de una clase son las variable asociadas con la clase
+entera. 
 \index{attribute!instance}
 \index{instance attribute}
 \index{attribute!class}
 \index{class!attribute}
 
-\item[Embedded object] An object that is stored as an attribute
-of another object.
+\item[Objeto integrado] Un objeto que es almacenado como un
+atributo de otro objeto.
 \index{embedded object}
 \index{object!embedded}
 
-\item[Object composition] Using an object as part of the definition 
-of another object, especially using an object as an attribute of 
-another object.
+\item[Composición de objeto] Uso de un objeto como parte de la 
+definición de otro objeto, especialmente el uso de un objeto como
+un atributo de otro objeto.
 \index{composition}
 \index{object!composition}
 
-\item[Object diagram] A diagram that shows objects, their
-attributes, and the values of the attributes.
+\item[Diagrama de objeto] Un diagrama que muestra objetos, sus atributos, 
+y los valores de dichos atributos.
 \index{object diagram}
 \index{diagram!object}
 
-\item[Role] A collection of methods quite similar to a class but 
-that is not designed to build objects. A role contains methods 
-that can be applied to a class or an object to add new behaviors 
-to them.
+\item[Rol] Una colección de métodos similar a una clase pero
+que no está diseñada para construir objetos. Un rol contiene 
+métodos que pueden aplicarse a una clase o a un objeto para
+añadir comportamientos a ellos.
 \index{role}
 
-\item[Polymorphic] Pertaining to a function that can work with more
-  than one type.  
+\item[Polimórfico] Perteneciente a una función que funciona con
+más de un tipo.  
 \index{polymorphism}
 
-\item[Encapsulation] The principle that the interface provided 
-by an object should not depend on its implementation, in particular
-the representation of its attributes. This is also called 
-\emph{information hiding}.
+\item[Encapsulación] El principio que dicta como la interfaz proveída por un objeto
+no debería depender en su implementación, en particular 
+la representación de sus atributos. Esto también se conoce como
+\emph{ocultación de información}.
 \index{encapsulation}
 \index{information hiding}
 
-\item[Inheritance] The ability to define a new class that is a
-modified version of a previously defined class.
+\item[Herencia] La habilidad de crear una nueva clase la cual
+es una versión modificada de otra clase previamente definida.
 \index{inheritance}
 
-\item[Parent class] The class from which a child class inherits.
+\item[Clase padre] La clase desde la cual la clase hija 
+hereda. También conocida como \emph{superclase} o \emph{clase base}.
 \index{parent class}
 
-\item[Child class] A new class created by inheriting from an
-existing class; also called a \emph{subclass}.
+\item[Clase hija] Una nueva clase que hereda de una clase existente;
+también llamada \emph{subclase}.
 \index{child class}
 \index{class!child}
 
-\item[Subclassing] Creating a child class derived from an 
-existing parent class.
+\item[Subclassing] El proceso de crear una clase hija derivada
+de una clase padre.
 \index{subclass}
 
-\item[Override] when the method of a parent class is 
-redefined in a child class, it is said to be overridden 
-within that child class.
+\item[Anular] Cuando un método de una clase padre 
+es redefinido en una clase hija, se dice que ha sido 
+anulado dentro de la clase hija.
 
-\item[Multiple inheritance] A situation in which a child class 
-is derived and inherits from more than one parent class.
+\item[Herencia múltiple] Una situación en la cual una clase hija
+es derivada y hereda desde más de una clase padre.
 
-\item[Delegation] Defining a class or a role in which it is 
-possible to invoke methods belonging to another object.
+\item[Delegación] Definir una clase o un rol en el cual 
+es posible invocar métodos que pertenecen a otro objeto.
 \index{delegation}
 
 \end{description}
