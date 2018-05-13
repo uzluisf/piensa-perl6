@@ -17,16 +17,16 @@ ser encontrada en [Think Perl 6](http://greenteapress.com/wp/think-perl-6/).
 - [x] Capítulo 03: Funciones
 - [x] Capítulo 04: Bucles, Condicionales y Recursión
 - [x] Capítulo 05: Subrutinas Fructuosas
-- [ ] Capítulo 06: Iteración
+- [ ] Capítulo 06: Iteración **TEP**
 - [ ] Capítulo 07: Cadenas de texto
 - [ ] Capítulo 08: Caso Práctico: Juego de palabras
 - [x] Capítulo 09: Arrays y Listas
-- [ ] Capítulo 10: Hashes
+- [ ] Capítulo 10: Hashes **TEP**
 - [ ] Capítulo 11: Caso Práctico: Selección de Estructura de Dato
-- [ ] Capítulo 12: Clases y Objetos **TEP**
+- [x] Capítulo 12: Clases y Objetos
 - [ ] Capítulo 13: Regexes y Grammars
 - [ ] Capítulo 14: Programación Funcional en Perl
-- [ ] Capítulo 15: Algunos Últimos Consejos
+- [x] Capítulo 15: Algunos Últimos Consejos
 - [ ] Apéndice A:  Soluciones a los Ejercicios
 
 * **Revisado y Corregido**

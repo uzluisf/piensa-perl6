@@ -1,62 +1,61 @@
 
-\chapter{Iteration}
+\chapter{Iteración}
 \label{iteration}
 
-This chapter is about iteration, which is the ability to run
-a block of statements repeatedly.  We saw a kind of iteration,
-using recursion, in Section~\ref{recursion}.
-We saw another kind, using a {\tt for} loop,
-in Section~\ref{for_loops}.  In this chapter we'll see yet another
-kind, using a {\tt while} statement.
-But first we want to say a little more about variable assignment.
+Este capítulo es sobre iteración, la cual es la habilidad
+para ejecutar un bloque de sentencias repetidamente. Vimos
+un tipo de iteración, usando recursión, en la Sección~\ref{recursion}.
+También vimos otro tipo, usando un bucle {\tt for}, en la
+Sección~\ref{for_loops}. En este capítulo veremos otro tipo, 
+usando la sentencia {\tt while}. Pero primero queremos discutir
+un poco más sobre la asignación de variable.
 
-\section{Assignment Versus Equality}
+\section{Asignación Versus Igualdad}
 \index{assignment!operator}
 \index{equality operator}
 
-Before going further, I want to address a common source of confusion.
-Because Perl uses the equals sign ({\tt =}) for assignment, it is
-tempting to interpret a statement like {\tt \$a = \$b} as a
-mathematical proposition of equality, that is, the claim that 
-{\tt \$a} and {\tt \$b} are equal.  But this interpretation is 
-wrong.
+Antes de proceder, quiero hablar sobre una fuente común de confusión.
+Dado que Perl usa el signo de igualdad ({\tt =}) para la asignación, 
+es tentativo interpretar una sentencia como {\tt \$a = \$b} como 
+una proposición matemática de igualdad, eso es, la afirmación que 
+{\tt \$a} y {\tt \$b} son iguales. Pero esta interpretación es incorrecta.
 \index{equality and assignment}
 
-First, equality is a symmetric relationship and assignment is not.  For
-example, in mathematics, if $a=7$ then $7=a$.  But in Perl, the
-statement {\tt \$a = 7} is legal and {\tt 7 = \$a} is not.
+Primero, la igualdad es una relación simétrica y la asignación no lo es. 
+Por ejemplo, en matemática, si $a = 7$, entonces $7 = a$. Pero en Perl, 
+la sentencia {\tt \$a = 7} es legal y {\tt 7 = \$a} no lo es.
 
-Also, in mathematics, a proposition of equality is either true or
-false for all time.  If $a=b$ now, then $a$ will always equal $b$.
-In Perl, an assignment statement can make two variables equal, but
-they don't have to stay that way:
+De igual manera, en matemática, un proposición de igualdad es verdadera
+o falsa todo el tiempo. Si $a = b$ ahora, entonces $a$ siempre será igual
+a $b$. En Perl, una sentencia de asignación puede hacer dos variables iguales,
+pero no tienen que permanecer de ese modo:
 
 \begin{verbatim}
 > my $a = 5;
 5
-> my $b = $a;   # $a and $b are now equal
+> my $b = $a;   # $a y $b son iguales ahora
 5
-> $a = 3;       # $a and $b are no longer equal
+> $a = 3;       # $a y $b ya no son iguales
 3
 > say $b;
 5
 \end{verbatim}
 %
-The third line changes the value of {\tt \$a} but does not 
-change the value of {\tt \$b}, so they are no longer equal. 
+La tercera línea cambia el valor de {\tt \$a} pero no cambia el 
+valor de {\tt \$b}, así que ya no son iguales.
 
-In brief, remember that {\tt =} is an assignment operator and  
-not an equality operator; the operators for testing equality 
-between two terms are {\tt ==} for numbers and {\tt eq} for strings.
-
-\section{Reassignment}
+En resumen, recuerda que {\tt =} es un operador de asignación y
+no un operador de igualdad; los operadores para probar igualdad entre
+dos términos son {\tt ==} para números y {\tt eq} para cadenas de 
+texto.
+\section{Reasignación}
 \index{assignment}
 \index{statement!assignment}
 \index{reassignment}
 
-As you may have discovered, it is legal to make more than one
-assignment to the same variable.  A new assignment makes an existing
-variable refer to a new value (and stop referring to the old value):
+Como tal vez descubriste, es legal hacer más de una asignación a la 
+misma variable. Una asignación nueva hace que una variable existente
+haga referencia a un nuevo valor (y pare de referirse al valor antiguo):
 
 \begin{verbatim}
 > my $x = 5;
@@ -69,45 +68,45 @@ variable refer to a new value (and stop referring to the old value):
 7
 \end{verbatim}
 %
-The first time we display 
-{\tt \$x}, its value is 5; the second time, its
-value is 7.
+La primera vez mostramos a {\tt \$x},
+su valor es 5; la segunda vez, su valor es 7.
 
-Figure~\ref{fig.assign2} shows what {\bf reassignment} looks
-like in a state diagram. \index{state diagram} \index{diagram!state}
+La figura~\ref{fig.assign2} muestra como la {\tt reasignación}
+luce en un diagrama de estado. 
+\index{state diagram} \index{diagram!state}
 
-Reassigning variables is often useful, but you should use this feature 
-with some caution.  If the values of variables change frequently, it can
-make the code difficult to read and debug.
+Reasignar variables es usualmente útil, pero deberías utilizar esta
+característica con cierta precaución. Si los valores de las variables 
+se cambian frecuentemente, puede hacer el código difícil de leer y depurar.
 
 \begin{figure}
 \centerline
-{\includegraphics[scale=0.5]{figs/reassignment.png}}
-\caption{State diagram.}
+{\includegraphics[scale=0.5]{figs/reassignment.pdf}}
+\caption{Diagrama de estado.}
 \label{fig.assign2}
 \end{figure}
 
 
 
-\section{Updating Variables}
+\section{Actualización de las Variables}
 \label{update}
 
 \index{update}
 \index{variable!updating}
 
-A common kind of reassignment is an {\bf update},
-where the new value of the variable depends on the old:
+Un tipo común de reasignación es una {\bf actualización},
+donde el nuevo valor de la variable depende en el viejo:
 
 \begin{verbatim}
 > $x = $x + 1;
 \end{verbatim}
 %
-This means ``get the current value of {\tt \$x}, add one, and then
-update {\tt \$x} with the new value.''
+Esto significa ``obtén el valor actual de {\tt \$x}, agrega uno, y después
+actualiza {\tt \$x} con el valor nuevo.``
 
-If you try to update a variable that has not been given a value, 
-you get a warning, because Perl evaluates the right side 
-of the assignment statement before it assigns a value to {\tt \$x}:
+Si intentas actualizar una variable que no se le ha dado un valor,
+obtienes una advertencia, porque Perl evalúa el lado derecho de la 
+sentencia de asignación antes de que asigne un valor a {\tt \$x}:
 
 \begin{verbatim}
 > my $x;
@@ -116,8 +115,8 @@ Use of uninitialized value of type Any in numeric context
  in block <unit> at <unknown file> line 1
 \end{verbatim}
 %
-Before you can update a variable, you have to declare it and 
-{\bf initialize} it, usually with an assignment statement:
+Antes de actualizar una variable, tienes que declararla 
+e {\bf inicializarla}, usualmente con una sentencia de asignación:
 \index{initialization (before update)}
 
 \begin{verbatim}
@@ -125,20 +124,20 @@ Before you can update a variable, you have to declare it and
 > $x = $x + 1;
 \end{verbatim}
 %
-Updating a variable by adding 1 is called an {\bf increment};
-subtracting 1 is called a {\bf decrement}.
+Actualizar una variable al agregar 1 se conoce como un {\bf incremento};
+substraer 1 se conoce como un {\bf decremento}.
 \index{increment operator}
 \index{decrement operator}
 
-As mentioned earlier in Section~\ref{expr_and_statements}, 
-Perl has some shortcuts for increment and decrement :
+Como se mencionó anteriormente en la Sección~\ref{expr_and_statements},
+Perl tiene algunos atajos para el incremento y el decremento:
 
 \begin{verbatim}
-$x += 1; # equivalent to $x = $x + 1
-$x++;    # also equivalent 
+$x += 1; # equivalente a $x = $x + 1
+$x++;    # también equivalente 
 
-$x -= 1; # equivalent to $x = $x - 1
-$x--;    # also equivalent 
+$x -= 1; # equivalente a $x = $x - 1
+$x--;    # también equivalente 
 \end{verbatim}
 
 \section{The {\tt while} Statement}
