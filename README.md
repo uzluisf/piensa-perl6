@@ -2,6 +2,8 @@
 
 Archivo LATEX de la traducción en español de Think Perl 6.
 
+![book cover](book/figs/thinkperl6_cover.png)
+
 Traducción por Luis F. Uceta.
 
 La versión original en inglés por Laurent Rosenfeld con Allen Downey puede
