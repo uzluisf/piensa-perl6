@@ -140,88 +140,87 @@ $x -= 1; # equivalente a $x = $x - 1
 $x--;    # también equivalente 
 \end{verbatim}
 
-\section{The {\tt while} Statement}
+\section{La Sentencia {\tt while}}
 \index{statement!while}
 \index{while loop}
 \index{loop!while}
 \index{iteration}
 
-Computers are often used to automate repetitive tasks.  Repeating
-identical or similar tasks without making errors is something that
-computers do well and people do poorly.  In a computer program,
-repetition is also called {\bf iteration}.
+Las computadoras usualmente automatizan tareas repetitivas.
+Repetir tareas idénticas o similares sin hacer errores es algo que las computadoras saben hacer bien y las personas
+no tan bien. En un programa de computadora, la repetición se
+conoce como {\bf iteración}.
 
-We have already seen two functions, {\tt countdown} and
-\verb"print-n-times", that iterate using recursion 
-(see Section~\ref{recursion}).  Because 
-iteration is so common, most programming languages including 
-Perl provide language features to make it easier.
-One is the {\tt for} statement we saw in Section~\ref{for_loops}.
-We'll get back to that later.
+Ya hemos visto dos funciones, {\tt cuenta-regresiva} 
+y \verb|imprime-n-veces|, que iteran usando recursión (
+ver Sección~\ref{recursion}). Dado que la iteración es tan
+común, muchos lenguajes de programación incluyendo a Perl 6
+proveen características para hacerla más fácil. Una de ellas es la sentencia {\tt for} que vimos en la Sección~\ref{for_loops}. Regresaremos a eso más tarde.
 
-Another is the {\tt while} statement.  Here is a version of {\tt
-countdown} that uses a {\tt while} statement:
+Otra es la sentencia {\tt while}. Ésta es una versión de 
+{\tt cuenta-regresiva} que usa la sentencia {\tt while}:
 
 \begin{verbatim}
-sub countdown(Int $n is copy) {
+sub cuenta-regresiva(Int $n is copy) {
     while $n > 0 {
         say $n;
         $n--;
     }
-    say 'Blastoff!';
+    say '¡Despegue!';
 }
 \end{verbatim}
 %
-You can almost read the {\tt while} statement as if it were English.
-It means, ``While {\tt \$n} is greater than 0,
-display the value of {\tt n} and then decrement
-{\tt \$n}.  When you get to 0, display the word {\tt Blastoff!}''
+Puedes casi leer la sentencia {\tt while} como si fuera inglés.
+Significa, ``Mientras (while) {\tt \$n} sea mayor que 0,
+muestra el valor de {\tt \$n} y después reduce {\tt \$n}. Cuando 
+llegues a 0, muestra la palabra {\tt ¡Despegue!}``
 \index{flow of execution}
 
-More formally, here is the flow of execution for a {\tt while} statement:
+Aquí se presenta el flujo de ejecución de una sentencia {\tt while}
+más formalmente:
 
 \begin{enumerate}
 
-\item Determine whether the condition is true or false.
+\item Determina si la condición es verdadera o falsa.
 
-\item If false, exit the {\tt while} statement
-and continue execution at the next statement.
+\item Si es falsa, abandona la sentencia {\tt while}
+y continua la ejecución en la siguiente sentencia.
 
-\item If the condition is true, run the
-body and then go back to step 1.
+\item Si la condición es verdadera, ejecuta el cuerpo y
+después regresa al paso 1.
 
 \end{enumerate}
 
-This type of flow is called a loop because the third step
-loops back around to the top.  
+Este tipo de flujo se llama un bucle (\emph{loop} en inglés)
+porque el tercera paso regresa de nuevo al principio. 
 \index{condition}
 \index{loop}
 \index{body}
 
-The body of the loop should change the value of one or more variables
-so that the condition becomes false eventually and the loop
-terminates.  Otherwise, the loop will repeat forever, which is called
-an {\bf infinite loop}.  An endless source of amusement for computer
-scientists is the observation that the directions on shampoo,
-``Lather, rinse, repeat,'' are an infinite loop.
+El cuerpo del bucle debería cambiar el valor de una o más variables
+para que la condición se vuelva falsa eventualmente y el bucle
+termine. De lo contrario, el bucle se repetirá por siempre, lo cual 
+se llama un {\bf bucle infinito}. Una fuente de entretenimiento para
+los científicos de la computación es la observación de que las instrucciones
+en la botella de champú, ``Enjabona, enjuage, repite``, son un bucle 
+infinito.
 \index{infinite loop}
 \index{loop!infinite}
 
-In the case of {\tt countdown}, we can prove that the loop
-terminates: if {\tt \$n} is zero or negative, the loop never runs.
-Otherwise, {\tt \$n} gets smaller each time through the
-loop, so eventually we have to get to 0.
+En el caso de {\tt cuenta-regresiva}, podemos probar que el bucle
+termina: si {\tt \$n} es cero o negativo, el bucle nunca se ejecuta.
+Por lo contrario, {\tt \$n} se vuelve más pequeño cada vez a través del
+bucle, así que eventualmente tenemos que llegar a 0.
 
-For some other loops, it is not so easy to tell whether the 
-loop terminates.  For example:
+Para otros bucles, no es tan fácil decir si el bucle termina. Por ejemplo:
 
 \begin{verbatim}
-sub sequence($n is copy) {
+sub secuencia($n is copy) {
     while $n != 1 {
         say $n;
-        if $n %% 2 {        # $n is even
+        if $n %% 2 {        # $n es par
             $n = $n / 2;
-        } else {            # $n is odd
+        } else {            # $n es impar
             $n = $n*3 + 1
         }
     }
@@ -229,234 +228,226 @@ sub sequence($n is copy) {
 }
 \end{verbatim}
 %
-The condition for this loop is {\tt \$n != 1}, so the loop will continue
-until {\tt \$n} is {\tt 1}, which makes the condition false.
+La condición de est bucle es {\tt \$n =! 1}, así que el bucle continuará
+hasta que {\t \$n} sea {\tt 1}, lo cual hace la condición falsa.
 
-Each time through the loop, the program outputs the value of {\tt \$n}
-and then checks whether it is even or odd.  If it is even, {\tt \$n} is
-divided by 2.  If it is odd, the value of {\tt \$n} is replaced with
-{\tt \$n*3 + 1}. For example, if the argument passed to {\tt sequence}
-is 42, the resulting values of {\tt n} are 42, 21, 64, 32, 16, 8, 4, 2, 1.
+Cada vez a través del bucle, el programa muestra el valor de {\tt \$n}
+y después chequea si es par o impar. Si es par, {\tt \$n} es dividido por 2.
+Si es impar, el valor de {\tt \$n} es reemplazado con {\tt \$n*3 + 1}. Por ejemplo,
+si el argumento que se pasa a {\tt secuencia} es 42, los valores resultantes
+de {\tt n} son 42, 21, 64, 32, 16, 8, 4, 2, 1. 
 
-Since {\tt \$n} sometimes increases and sometimes decreases, there is no
-obvious proof that {\tt \$n} will ever reach 1, or that the program
-terminates.  For some particular values of {\tt n}, we can prove
-termination.  For example, if the starting value is a power of two,
-{\tt n} will be even every time through the loop
-until it reaches 1. The previous example ends with such a sequence
-of powers of two, starting with 64.
+Dado que {\tt \$n} algunas veces incrementa y otras disminuye, no hay prueba
+obvia que {\tt \$n} llegará a 1, o que el programa termina. Para algunos valores
+particulares de {\tt n}, podemos probar que el programa termina. Por ejemplo, si 
+el valor inicial es una potencia de dos, {\tt n} será un par a través del bucle
+hasta que llega al 1. El ejemplo anterior termina con tal secuencia de potencias
+de dos, comenzando con 64.
 \index{Collatz conjecture}
 
-The hard question is whether we can prove that this program terminates
-for {\em all} positive values of {\tt n}.  So far, no one has
-been able to prove it {\em or} disprove it!  (See
-\url{http://en.wikipedia.org/wiki/Collatz_conjecture}.)
+¡La pregunta difícil es si podemos probar que este programa termina para 
+{\em todos} los valores positivos de {\tt n}. Hasta ahora, nadie ha sido capaz
+de probarlo o refutarlo! (Ver \url{https://es.wikipedia.org/wiki/Conjetura_de_Collatz}.)
 
-As an exercise, you might want to rewrite the function 
-\verb"print-n-times" from Section~\ref{recursion} using 
-iteration instead of recursion.
+Como ejercicio, podrías escribir de nuevo la función 
+\verb|imprimir-n-veces| de la Sección~\ref{recursion}
+usando iteración en lugar de recursión.
 
 \index{statement modifier}
 \index{postfix!syntax}
-The {\tt while} statement can also be used as a statement modifier (or postfix syntax):
+La sentencia {\tt while} puede también usarse como un modificador de sentencia (o sintaxis sufija):
 
 \begin{verbatim}
 my $val = 5;
-print "$val " while $val-- > 0;   # prints 4 3 2 1 0
+print "$val " while $val-- > 0;   # imprime 4 3 2 1 0
 print "\n";
 \end{verbatim}
 
-The {\tt while} loop statement executes the block as long as 
-its condition is true. There is also an {\tt until} loop 
-statement, which executes the block as long as its condition 
-is false:
+La sentencia {\tt while} del bucle ejecuta el bloque mientra la 
+condición sea verdadera. También existe un bucle {\tt until},
+el cual ejecuta el bloque mientra su condición se falsa:
 \index{until loop}
 
 \begin{verbatim}
 my $val = 1;
 until $val > 5 {
-    print $val++;                 # prints 12345
+    print $val++;                 # imprime 12345
 }
 print "\n";
 \end{verbatim}
 
-\section{Local Variables and Variable Scoping}
+\section{Variables Locales y Ámbito de una Variable}
 
-We have seen in Section~\ref{localvar} that variables created 
-within a subroutine (with the {\tt my} keyword) are \emph{local} 
-to that subroutine. The {\tt my} 
-keyword is often called a \emph{declarator}, because it 
-is used for declaring a new variable (or other identifier). 
-It is by far the most common declarator. Other declarators 
-include {\tt our} or {\tt state}, briefly described later 
-in this chapter. 
+Hemos visto en la Sección~\ref{localvar} que las variables
+creadas dentro de una subrutina (con la palabra clave {\tt my}
+son \emph{locales} a esa subrutina. La palabra clave {\tt my}
+es usualmente llamada un \emph{declarador} porque 
+se usa para declarar una variable nueva (o otro identificador).
+Es uno de los declaradores más comunes. Ente otros declaradores
+se encuentran {\tt our} o {\tt state}, los cuales se describen
+brevemente más tarde en este capítulo.
 \index{lexical scope}
 \index{lexical variable}
 \index{variable!lexical}
 \index{my}
 \index{declarator}
 
-Similarly, subroutine 
-parameters are also usually \emph{local} to the subroutine 
-in the signature of which they are declared.
+Similarmente, los parámetros de una subrutina son usualmente
+\emph{locales} a la subrutina en la signatura donde son
+declarados.
 \index{subroutine parameters}
 
-We briefly mentioned that the term \emph{lexically scoped} 
-is probably more accurate than local, but it was 
-too early at that point to really explain what this means.
+Mencionamos brevemente que el término \emph{ámbito lexical}
+es probablemente más preciso que local, pero era muy temprano
+en ese punto para realmente explicar lo que esto significa.
 
-Declaring a variable with {\tt my} gives it \emph{lexical 
-scope}. This means it only exists within the current block. 
-Loosely speaking, a 
-block is a piece of Perl code within curly brackets or 
-braces. For example, the body of a subroutine and the code of a 
-{\tt while} or {\tt for} loop or of an {\tt if} conditional
-statement are code blocks. Any variable created with the 
-{\tt my} declarator exists and is available for use only 
-between the place where it is declared and the end of the 
-enclosing code block.
+La declaración de una variable con {\tt my} le da un \emph{ámbito lexical}.
+Esto significa que solo existe dentro del bloque actual. En términos
+generales, un bloque es una pieza de código de Perl dentro de llaves.
+Por ejemplo, el cuerpo de una subrutina y el código de un bucle 
+{\tt while} o {\tt for} o de una sentencia condicional {\tt if} 
+son bloques de códigos. Cualquier variable creada con el declarador
+{\tt my} existe y está disponible solo para usarse dentro del 
+lugar donde fue declarada y el final del bloque de código.
 \index{bracket!curly}
 \index{curly bracket}
 
-For example, this code:
+Por ejemplo, este código:
 
 \begin{verbatim}
-if $condition eq True {
+if $condición eq True {
     my $foo = "bar";
-    say $foo;  # prints "bar"
+    say $foo;  # imprime "bar"
 }
 say $foo;      # ERROR: "Variable '$foo' is not declared ..."
+			   # ERROR: "La variable '$foo' no está declarada ..."
 \end{verbatim}
 %
-will fail on the second print statement, because the \verb'say' 
-function call is not in 
-the lexical scope of the {\tt \$foo} variable, which ends 
-with the closing brace of the condition block. If we want 
-this variable to be accessible after the end of the condition, 
-then we would need to declare it before the {\tt if} statement. 
-For example:
+fallará en la segunda sentencia de impresión, porque la llamada de la función
+\verb|say| no está en el ámbito lexical de la variable {\tt \$foo}, 
+el cual termina con llave derecha que cierra el bloque de la condición.
+Si queremos que esta variable pueda accederse después que la condición termine,
+entonces tendríamos que declararla antes de la sentencia {\tt if}.
+Por ejemplo:
 
 \begin{verbatim}
 my $foo;
-if $condition eq True {
+if $condición eq True {
     $foo = "bar";
-    say $foo;  # prints "bar"
+    say $foo;  # imprime "bar"
 } else {
     $foo = "baz";
 }
-say $foo;      # prints "bar" or "baz" depending on $condition
+say $foo;      # imprime "bar" o "baz" dependiendo de $condición
 \end{verbatim}
 %
-If a lexical variable is not declared within a block, its 
-scope will extend until the end of the file (this is sometimes 
-called a static or a global variable, although these terms are 
-somewhat inaccurate). For example, in the last code snippet 
-above, the scope of the {\tt \$foo} variable will extend 
-until the end of the file, which may or may not be a good thing, 
-depending on how you intend to use it. It 
-is often better to reduce the scope of variables as much as 
-possible, because this helps reduce dependencies between 
-various parts of the code and limits 
-the risk of subtle bugs. In the code above, if we want to 
-limit the scope of {\tt \$foo}, we could add braces to create 
-an enclosing block for the sole purpose of limiting the scope:
+Si una variable lexical no se declara dentro dentro de un
+bloque, su ámbito se extiende hasta al final del archivo 
+(esto se llama algunas veces una variable estática o global, aunque estos términos
+no son del todo preciso). Por ejemplo, en el último fragmento de código,
+el ámbito de la variable {\tt \$foo} se extenderá hasta al final del 
+archivo, lo cual puede o no puede ser algo bueno, dependiendo de
+como pretendas usarla. Es usualmente mejor reducir el ámbito de las 
+variables tanto como sea posible porque esto ayuda reducir las dependencias
+entre las varias partes del código y limita el riesgo de errores sutiles.
+En el código anterior, si queremos limitar el ámbito de {\tt \$foo}, podemos
+agregar llaves para crear un bloque delimitador con el único propósito de
+limitar el ámbito:
+
 \begin{verbatim}
 {
     my $foo;
-    if $condition eq True {
+    if $condición eq True {
         $foo = "bar";
-        say $foo;  # prints "bar"
+        say $foo;  # imprime "bar"
     } else {
         $foo = "baz";
     }
-    say $foo;      # prints "bar" or "baz" depending on $condition
+    say $foo;      # imprime "bar" o "baz" dependiendo de $condición
 }
 \end{verbatim}
 % 
-Now, the outer braces create an enclosing block limiting the 
-scope of {\tt \$foo} to where we need it. This may seem to be a 
-somewhat contrived example, but it is not uncommon to add 
-braces only for the purpose of precisely defining the scope 
-of something.
+Ahora las llaves exteriores crean un bloque delimitador que delimita
+el ámbito de {\tt \$foo} para donde lo necesitamos. Esto puede parecer
+un ejemplo un poco forzado, pero es común agregar llaves solo con el propósito de
+definir el ámbito de algo.
 
-Lexical scoping also means that variables with the same names
-can be temporarily redefined in a new scope: 
+El ámbito lexical también significa que las variables con el mismo nombre
+pueden ser temporalmente redefinidas en un nuevo ámbito:
 
 \begin{verbatim}
-my $location = "outside";
-sub outer {
-    say $location;
+my $posición = "fuera";
+sub exterior {
+    say $posición;
 }
-sub inner {
-    my $location = "inside";
-    say $location;
+sub interior {
+    my $posición = "dentro";
+    say $posición;
 }
-say $location;   # -> outside
-outer();         # -> outside
-inner();         # -> inside
-say $location;   # -> outside
+say $posición;      # -> fuera
+exterior();         # -> fuera
+interior();         # -> dentro
+say $location;      # -> fuera
 \end{verbatim}
 % 
-We have in effect two variables with the same name, 
-{\tt \$location}, but different scopes. One is valid only 
-within the {\tt inner} subroutine where it has been redefined, 
-and the other anywhere else.
+Tenemos en efecto dos variables con el mismo nombre,
+{\tt \$posición}, pero en diferentes ámbitos. Una es válida solo
+dentro de la subrutina {\tt interior} donde ha sido redefinida,
+y la otra en otro lugar.
 
-If we add a new subroutine:
+Si agregamos una subrutina nueva:
 \begin{verbatim}
-sub nowhere {
-    my $location = "nowhere";
-    outer();
+sub en-ningún-lugar {
+    my $posición = "en ningún lugar";
+    exterior();
 }
-nowhere();       # -> outside
+nowhere();       # -> fuera
 \end{verbatim}
 % 
-this will still print ``outside,'' because the {\tt outer} 
-subroutine knows about the ``outside'' version of the 
-{\tt \$location} variable, which existed when {\tt outer} was defined.
-In other word, the {\tt outer} code that referenced to the 
-outer variable (``outside'') knows about the variable that existed 
-when it was created, but not about the variable existing where 
-it was called. This is how \emph{lexical} variables work. 
-This behavior is the basis for building \emph{closures}, a  
-form of subroutine with some special properties that we 
-will study later in this book, but 
-is in fact implicitly present everywhere in Perl~6.
+está aún imprimirá ``fuera`` porque la subrutina {\tt exterior}
+sabe sobre la versión ``fuera`` de la variable {\tt \$posición},
+la cual existía cuando {\tt exterior} fue definida. En otras palabras,
+el código {\tt exterior} que aludió a la variable exterior (``fuera``) 
+sabe sobre la variable que existía cuando fue creada, pero no sobre la 
+variable existente donde fue llamada. Así es como las variables 
+{\tt lexicales} funcionan. Este comportamiento es la base para construir 
+\emph{clausuras}, una forma de subrutina con algunas propiedades especiales
+que estudiaremos más tarde en este libro, pero que en efecto está 
+presente en todas partes en Perl~6.
 \index{closure}
 \index{variable!lexical}
 \index{lexical variable}
 
-While having different variables with the same name can give 
-you a lot of expressive power, we would 
-advise you to avoid creating different variables with the 
-same name and different scopes, at least until you really understand 
-these concepts well enough to know what you are doing, as this 
-can be quite tricky.
+Mientras que tener variables diferentes con el mismo nombre
+puede darte mucho poder expresivo, te aconsejamos que evite 
+crear variables distintas con el mismo nombre y diferentes 
+ámbitos, por lo menos hasta que realmente entiendas estos 
+conceptos lo suficiente para saber lo que estás haciendo, debido
+a que esto puede ser un poco complejo.
 
-By far, most variables used in Perl are lexical variables, 
-declared with the {\tt my} declarator. Although they are 
-not declared with {\tt my}, parameters declared 
-in the signature of subroutines and parameters of pointy 
-blocks also have a lexical scope limited to the body of the 
-subroutine or the code block.
+En su mayoría, mucha de las variables usadas en Perl son variables
+lexicales, que se declaran con el declarador {\tt my}. Aunque no son 
+declarados con {\tt my}, los parámetros declarados en la 
+signatura de las subrutinas y los parámetros de los bloques
+puntiagudos también tienen un ámbito lexical limitado al cuerpo de
+la subrutina o el bloque de código.
 \index{my}
 \index{declarator}
 
-There are other declarators, such as {\tt our}, which creates 
-a package-scoped variable, and {\tt state}, which creates a 
-lexically scoped variable but with a persistent value. They 
-are relatively rarely used.
+Existen otros declaradores, tales como {\tt our}, el cual crea
+una variable con ámbito de paquete, y {\tt state}, que crea
+un variable con ámbito lexical pero con un valor persistente.
+Raramente son usados.
 \index{our}
 \index{state}
 
-One last point: although they are usually not declared with 
-a {\tt my} declarator, subroutines themselves also have by default
-a lexical scope. If they are defined within a block, they will 
-be seen only within that block. An example of this has been 
-given at the end of the solution to the GCD exercise of the 
-previous chapter (see Subsection~\ref{sol_gcd}). 
-That being said, you \emph{can} declare a subroutine with 
-a {\tt my} declarator if you wish:
+Un punto final: aunque usualmente no se declaran con 
+un declarador {\tt my}, las subrutinas tienen también
+un ámbito lexical por defecto. Si se definen dentro de un bloque,
+serán visibles solo dentro de ese bloque. Un ejemplo de esto
+se dió al final de la solución al ejercicio MGD del capítulo anterior
+(ver Subsección~\ref{sol_gcd}). Con eso dicho, \emph{puedes} declarar
+una subrutina con un declarador {\tt my} si así lo deseas:
 
 \begin{verbatim}
 my sub frobnicate { 
@@ -464,9 +455,9 @@ my sub frobnicate {
 }
 \end{verbatim}
 
-This technique might add some consistency or some form of 
-self-documenting feature, but you won't buy very much 
-added functionality with that.
+Este técnica podría agregar consistencia o alguna forma
+de característica de auto-documentación, pero no obtendrá
+mucho funcionalidad con eso.
  
 
 \section{Control Flow Statements ({\tt last}, {\tt next}, etc.)}
@@ -591,24 +582,25 @@ with reasonable scopes, everything gets automatically cleaned up
 at the appropriate moment, no matter how you leave the block.
 
 
-\section{Square Roots}
+\section{Raíces Cuadradas}
 \label{squareroot}
 \index{square root}
 
-Loops are often used in programs that compute
-numerical results by starting with an approximate answer and
-iteratively improving it.
+Los bucles se usan a menudo en programas que calculan
+resultados numéricos comenzando con una respuesta 
+aproximada y mejorándola iterativamente.
+
 \index{Newton's method}
 
-For example, one way of computing square roots is Newton's 
-method (also known as the Newton-Raphson's method).
-Suppose that you want to know the square root of $a$.  If you start
-with almost any estimate, $x$, you can compute a better
-estimate $y$ with the following formula:
+Por ejemplo, una manera de calcular las raíces cuadradas
+es con el método de Newton (también conocido como el método de
+Newton-Raphson). Supón que quieres saber la raíz cuadrada de $a$. 
+Si comienzas con casi cualquier estimado, $x$, puedes calcular un mejor
+estimado con la siguiente fórmula:
 
 \[ y = \frac{x + a/x}{2} \]
 %
-For example, if $a$ is 4 and $x$ is 3:
+Por ejemplo, si $a$ es 4 y $x$ es 3:
 
 \begin{verbatim}
 > my $a = 4;
@@ -619,8 +611,8 @@ For example, if $a$ is 4 and $x$ is 3:
 2.166667
 \end{verbatim}
 %
-The result is closer than 3 to the correct answer 
-($\sqrt{4} = 2$) .  If we repeat the process with the new estimate, it gets even closer:
+El resultado está mucho mas cerca que 3 a la respuesta correcta ($\sqrt{4} = 2$).
+Si repites el proceso con el estimado nuevo, se acerca aún más:
 
 \begin{verbatim}
 > $x = $y;
@@ -629,7 +621,7 @@ The result is closer than 3 to the correct answer
 2.006410
 \end{verbatim}
 %
-After a few more updates, the estimate is almost exact:
+Después de varias actualizaciones, el estimado es casi exacto:
 \index{update}
 
 \begin{verbatim}
@@ -643,9 +635,9 @@ After a few more updates, the estimate is almost exact:
 2.000000000026
 \end{verbatim}
 %
-In general we don't know ahead of time how many steps it takes
-to get to the right answer, but we know when we get there
-because the estimate stops changing:
+En general no sabemos con antelación cuántos pasos toma
+para obtener la respuesta correcta, pero sabemos cuando la 
+obtenemos porque el estimado para de cambiar:
 
 \begin{verbatim}
 > $x = $y;
@@ -658,14 +650,13 @@ because the estimate stops changing:
 2
 \end{verbatim}
 %
-When {\tt \$y == \$x}, we can stop.  Here is a loop that starts
-with an initial estimate, {\tt x}, and improves it until it
-stops changing:
+Cuando {\tt \$y == \$x}, podemos parar. Este es un bucle que comienza
+con un estimado inicial, {\tt x}, y lo mejora hasta que pare de cambiar:
 
 \begin{verbatim}
 my ($a, $x) = (4, 3);
 while True {
-    say "-- Intermediate value: $x";
+    say "-- Value Intermedio: $x";
     my $y = ($x + $a/$x) / 2;
     last if $y == $x;
     $x = $y;
@@ -673,181 +664,183 @@ while True {
 say "Final result is $x";
 \end{verbatim}
 %
-This will print:
+Esto imprimirá:
 \begin{verbatim}
--- Intermediate value: 3
--- Intermediate value: 2.166667
--- Intermediate value: 2.006410
--- Intermediate value: 2.000010
--- Intermediate value: 2.000000000026
--- Intermediate value: 2
-Final result is 2
+-- Valor Intermedio: 3
+-- Valor Intermedio: 2.166667
+-- Valor Intermedio: 2.006410
+-- Valor Intermedio: 2.000010
+-- Valor Intermedio: 2.000000000026
+-- Valor Intermedio: 2
+Resultado final es 2
 \end{verbatim}
 %
 
-For most values of {\tt \$a} this works fine, but there are a 
-couple of caveats with this approach. First, in most programming 
-languages, it is dangerous to test {\tt float} equality, because 
-floating-point values are only approximately right. We do not 
-have this problem with Perl~6, because, as we have already 
-mentioned, it is using a better representation of rational 
-numbers than most generalist programming languages. (You 
-may want to keep this in mind if you are using some other
-languages.) Even if we don't have this problem with Perl, there 
-may also be some problems with algorithms that do not behave 
-as well as Newton's algorithm. For example, some algorithms 
-might not converge as fast and as neatly as Newton's algorithm but might instead produce alternate values above and below the accurate result.
+Para muchos valores de {\tt \$a} esto funciona bien,
+pero tenemos que considerar varias cosas.
+Primero, en la mayoría de lenguajes de programación, es peligroso
+chequear la igualdad de {\tt coma flotante} (float), porque
+los valores de coma flotante son solo aproximadamente correctos.
+No tenemos este problema con Perl~6, porque, como hemos mencionado, 
+Perl~6 usa una mejor representación de los números racionales que la mayoría
+de los lenguajes de programación generalistas.(Deberías tener esto
+presente si estás usando algún otro lenguaje). Aún si no tenemos este problema
+en Perl~6, también pueden existir otros problemas con algoritmos que no se
+comportan tan bien como el algoritmo de Newton. Por ejemplo, 
+algunos algoritmos podrían no convergir tan rápida y perfectamente como
+el algoritmo de Newton pero en lugar producir valores
+alternativas por encima y por debajo del resultado preciso.
 \index{floating-point}
 \index{epsilon}
 
-Rather than checking whether {\tt \$x} and {\tt \$y} are exactly equal, it
-is safer to use the built-in function {\tt abs} to compute the
-absolute value, or magnitude, of the difference between them:
+En lugar de chequear si {\tt \$x} and {\tt \$y} son exactamente iguales,
+es más seguro usar la función integrada {\tt abs} para calcular el 
+valor absoluto, o magnitud, de la diferencia entre ellos:
 
 \begin{verbatim}
     last if abs($y - $x) < $epsilon:
 \end{verbatim}
 %
-where \verb"epsilon" has a very small value like {\tt 0.0000001} 
-that determines how close is close enough.
+donde \verb"epsilon" tiene un valor pequeñísimo como {\tt 0.0000001} 
+que determina qué tan cerca es suficientemente cerca.
 
 
 
-\section{Algorithms}
+\section{Algoritmos}
 \index{algorithm}
 
-Newton's method is an example of an {\bf algorithm}: it is a
-mechanical process for solving a category of problems (in this
-case, computing square roots).
+El método Newton es un ejemplo de una {\bf algoritmo}: es un proceso
+mecánico para resolver una categoría de problemas (en este caso,
+calcular raíces cuadradas).
 
-To understand what an algorithm is, it might help to start with
-something that is not an algorithm.  When you learned to multiply
-single-digit numbers, you probably memorized the multiplication table.
-In effect, you memorized 100 specific solutions.  That kind of
-knowledge is not algorithmic.
+Para entender lo que es un algoritmo, podría ser útil comenzar con algo que no 
+es aun algoritmo. Cuando aprendiste a multiplicar los números de un solo dígito, 
+probablemente memorizaste la tabla de multiplicación. En efecto, 
+memorizaste 100 soluciones específicas. Ese tipo de conocimiento no
+es algorítmico.
 
-But if you were ``lazy,'' you might have learned a few
-tricks.  For example, to find the product of $n$ and 9, you can
-write $n-1$ as the first digit and $10-n$ as the second
-digit.  (For example, to figure out $9*7$, $n-1$ is 6 and 
-$10-n$ is 3, so that the product $9*7$ is 63.) This trick 
-is a general solution for multiplying any single-digit 
-number by 9.  That's an algorithm!
+Pero si eras ``perezoso``, posiblemente aprendiste algunos 
+trucos. Por ejemplo, para encontrar el producto de $n$ y 9,
+puedes escribir $n-1$ como el primer dígito y $10-n$ como el 
+segundo dígito. Por lo tanto para calcular $9*7$, $n-1$ es 6 y
+$10-n$ es 3, así que el producto $9*7$ es 63. Es truco es una 
+solución general para multiplicar un número de un solo 
+dígito por 9. ¡Eso es un algoritmo!
 \index{addition with carrying}
 \index{carrying, addition with}
 \index{subtraction!with borrowing}
 \index{borrowing, subtraction with}
 
-Similarly, the techniques you learned in school for addition 
-(with carrying), subtraction (with borrowing), and long 
-division are all algorithms.  One
-of the characteristics of algorithms is that they do not require any
-intelligence to carry out.  They are mechanical processes where
-each step follows from the last according to a simple set of rules.
+Similarmente, las técnicas que aprendiste en la escuela
+para añadir (cargando), substraer (tomando prestado), y la
+división larga son todos algoritmos. Una de las características
+de los algoritmos es que no requieren ninguna inteligencia
+para llevarse a cabo. Ellos son procesos mecánicos donde
+cada paso sigue precede al último de acuerdo a un conjunto simple
+de reglas.
 
-Executing algorithms is boring, but designing them is interesting,
-intellectually challenging, and a central part of computer science.
+Ejecutar los algoritmos es aburrido, pero diseñarlos es interesante,
+intelectualmente estimulante, y una parte central de la ciencia de 
+la computación.
 
-Some of the things that people do naturally, without difficulty or
-conscious thought, are the hardest to express algorithmically.
-Understanding natural language is a good example.  We all do it, but
-so far no one has been able to explain {\em how} we do it, at least
-not in the form of an algorithm.
+Algunas de las cosas que la gente hace naturalmente, sin ninguna 
+dificultada o pensamiento consciente, son las más difícil de 
+expresar algorítmicamente. Entender un lenguaje natural es un buen
+ejemplo. Todos los hacemos, pero hasta ahora nadie ha podido explicar
+{\em cómo} lo hacemos, por lo menos no en la forma de un algoritmo.
 
 
-\section{Debugging}
+\section{Depuración de Programas}
 \label{bisectbug}
 
-As you start writing bigger programs, you might find yourself
-spending more time debugging.  More code means more chances to
-make an error and more places for bugs to hide.
+A medida que empieces a escribir programas más grandes, podría ser
+que dediques más tiempo a la depuración. Más código significa que existen
+más posibilidades de hacer un error y más lugares que los errores
+se oculten.
 \index{debugging!by bisection}
 \index{bisection, debugging by}
 
-One way to cut your debugging time is ``debugging by bisection.''
-For example, if there are 100 lines in your program and you
-check them one at a time, it would take 100 steps.
+Una manera de reducir tu tiempo de depuración es ``depura por bisección``.
+Por ejemplo, si hay 100 líneas en tu programa y las chequeas una a la vez,
+te tomaría 100 pasos.
 
-Instead, try to break the problem in half.  Look at the middle
-of the program, or near it, for an intermediate value you
-can check.  Add a {\tt say} statement (or something else
-that has a verifiable effect) and run the program.
+En lugar de eso, intenta dividir el problema a la mitad. Inspecciona
+el medio del programa, o sus alrededores, con un valor intermedio
+que puedas chequear. Agrega una sentencia {\tt say} (o algo más 
+que tengo un efecto verificable) y ejecutar el programa.
 
-If the midpoint check is incorrect, there must be a problem in the
-first half of the program.  If it is correct, the problem is
-in the second half.
+Si el chequeo del medio del programa es incorrecto, entonces podría haber un
+problema en la primera mitad del programa. Si es correcto, entonces
+el problema está en la segunda mitad.
 
-Every time you perform a check like this, you halve the number of
-lines you have to search.  After six steps (which is fewer than 100),
-you would be down to one or two lines of code, at least in theory.
+Cada vez que realizas un chequeo como este, divides el número de 
+líneas por la mitad que tienes que inspeccionar. Después de seis pasos
+(lo cual es menos que 100), lo habrás reducido a uno o dos líneas de
+código, por lo menos en teoría.
 
-In practice it is not always clear what
-the ``middle of the program'' is and not always possible to
-check it.  It doesn't make sense to count lines and find the
-exact midpoint.  Instead, think about places
-in the program where there might be errors and places where it
-is easy to put a check.  Then choose a spot where you
-think the chances are about the same that the bug is before
-or after the check.
+En práctica no es siempre claro cual es la ``mitad del programa``
+y no siempre es posible chequearla. No hace sentido contar el número de 
+líneas y encontrar el punto exacto. En lugar, piensa sobre los lugares
+en el programa donde podría haber errores y los lugares donde es fácil
+chequear. Después, elige el sitio donde piensas que la posibilidad de
+encontrar el error antes o después del chequeo es la misma.
 
 
-\section{Glossary}
+\section{Glosario}
 
 \begin{description}
 
-\item[Reassignment] Assigning a new value to a variable that
-already exists.
+\item[Reasignación] Asignar un valor nuevo a una variable que ya existe.
 \index{reassignment}
 
-\item[Update] An assignment where the new value of the variable
-depends on the old.
+\item[Actualizar] Una asignación donde el valor nuevo de la variable depende
+del viejo.
 \index{update}
 
-\item[Initialization] An assignment that gives an initial value to
-a variable that may later be updated.
+\item[Initialización] Una asignación que provee una variable con valor
+inicial que puede ser actualizada más tarde.
 \index{initialization!variable}
 
-\item[Increment] An update that increases the value of a variable
-(often by one).
+\item[Incremento] Una actualización que aumenta el valor de una 
+variable (usualmente por uno).
 \index{increment operator}
 
-\item[Decrement] An update that decreases the value of a variable.
+\item[Decremento] Una actualización que reduce el valor de una variable.
 \index{decrement operator}
 
-\item[Iteration] Repeated execution of a set of statements using
-either a recursive function call or a loop.
+\item[Iteración] Ejecución repetida de un conjunto de sentencias usando
+una llamada de una función recursiva o un bucle.
 \index{iteration}
 
-\item[Infinite loop] A loop in which the terminating condition is
-never satisfied.
+\item[Bucle infinito] Un bucle en el cual la condición para terminar
+nunca es satisfecha.
 \index{infinite loop}
 \index{loop!infinite}
 
-\item[Algorithm]  A general process for solving a category of
-problems.
+\item[Algoritmo]  Un proceso general para resolver una categoría de problemas.
 \index{algorithm}
 
 \end{description}
 
 
-\section{Exercises}
+\section{Ejercicios}
 
 \begin{exercise}
 \label{test_sqrt}
 \index{square root}
 \index{algorithm!square root}
 
-Copy the loop from Section~\ref{squareroot}
-and encapsulate it in a subroutine called
-\verb"my-sqrt" that takes {\tt \$a} as a parameter, chooses a
-reasonable value of {\tt \$x}, and returns an estimate of 
-the square root of {\tt \$a}.
+Copia el bucle de la Sección~\ref{squareroot} y 
+encapsúlalo en una subrutina llamada \verb|mi-r-cuad|
+que toma a {\tt \$a} como un parámetro, elige un valor 
+razonable de {\tt \$x}, y devuelve un estimado de la 
+raíz cuadrada de {\tt \$a}.
 
-To test it, write a function named \verb"test-square-root"
-that prints a table like this:
+Para probarla, escribe una función llamada \verb|probar-raiz-cuadrada|
+que imprime una tabla como esta:
 
 \begin{verbatim}[fontshape=up]
-a  mysqrt(a)        sqrt(a)          diff
+a  mi-r-cuad(a)        sqrt(a)          diff
 1  1.0000000000000  1.0000000000000  1.110223e-15
 2  1.4142135623747  1.4142135623731  1.594724e-12
 3  1.7320508075689  1.7320508075689  0.000000e+00
@@ -860,15 +853,16 @@ a  mysqrt(a)        sqrt(a)          diff
 
 \end{verbatim}
 %
-The first column is a number, $a$, the second column is the 
-square root of $a$ computed with \verb"my-sqrt", the third 
-column is the square root computed by the {\tt sqrt} built-in 
-function of Perl, and the fourth column is the absolute value of 
-the difference between the two estimates. Don't worry too much about 
-obtaining a clean tabular formatting, we haven't 
-seen the built-in functions to do that. 
+La primera columna es un número, $a$, la segunda columna
+es la raíz cuadrada $a$ que es calculada con \verb|mi-r-cuad|,
+la tercera columna es la raíz cuadrada calculada con la 
+función integrada {\tt sqrt} de Perl, y la cuarta columna
+es el valor absoluto de la diferencia entre los dos
+estimados. No te preocupes mucho acerca de obtener un formato 
+tabular organizado, todavía no hemos visto las funciones
+integradas para hacer eso.
 
-Solution: \ref{sol_test_sqrt}
+Solución: \ref{sol_test_sqrt}
 %
 
 \end{exercise}
@@ -881,21 +875,23 @@ Solution: \ref{sol_test_sqrt}
 \index{pi!estimate}
 \label{pi_estimate}
 
-The mathematician Srinivasa Ramanujan found an infinite 
-series that can be used to generate a numerical
-approximation of $1 / \pi$:
+El matemático Srinivasa Ramanujan encontró una serie infinita
+que puede ser usada para generar una aproximación numérica
+de $1 / \pi$:
 \index{pi}
 
 \[ \frac{1}{\pi} = \frac{2\sqrt{2}}{9801} 
 \sum^\infty_{k=0} \frac{(4k)!(1103+26390k)}{(k!)^4 396^{4k}} \]
 
-Write a function called \verb"estimate-pi" that uses this 
-formula to compute and return an estimate of $\pi$.  It 
-should use a {\tt while} loop to compute terms of the 
-summation until the last term is smaller than {\tt 1e-15} 
-(which is Perl notation for $10^{-15}$). You can check
-the result by comparing it to the built-in constant {\tt pi}.
-Solution: \ref{sol_pi_estimate}.
+Escribe una función llamada \verb|estimar-pi| que use 
+esta fórmula para computar y devolver un estimado de $\pi$.
+Debería usar un bucle {\tt while} para computar los términos
+de la sumatoria hasta que el último término sea menor que 
+{\tt 1e-15}  (la cual es la notación de Perl para $10^{-15}$).
+Puedes chequear el resultado al compararlo con la constante
+integrada {\tt pi}.
+
+Solución: \ref{sol_pi_estimate}.
 
 \end{exercise}
 
