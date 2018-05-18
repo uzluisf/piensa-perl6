@@ -460,7 +460,7 @@ de característica de auto-documentación, pero no obtendrá
 mucho funcionalidad con eso.
  
 
-\section{Control Flow Statements ({\tt last}, {\tt next}, etc.)}
+\section{Sentencias de Flujo de Control ({\tt last}, {\tt next}, etc.)}
 \index{control flow}
 \index{flow!control}
 \index{last statement}
@@ -468,90 +468,102 @@ mucho funcionalidad con eso.
 \index{next statement}
 \index{statement!next}
 
-Sometimes you don't know it's time to end a loop until you get half
-way through the body.  In that case, you can use a control flow 
-statement such as {\tt last} to jump out of the loop.
+Algunas veces no sabes cuando terminar un bucle hasta que 
+llegas a la mitad del cuerpo. En ese caso, puedes usar una
+sentencia de flujo de control como {\tt last} para
+salir del bucle.
 
-For example, suppose you want to take input from the user until they
-type {\tt done}.  You could write:
+Por ejemplo, supón que quieres tomar entrada del usuario hasta
+que entre {\tt terminar}. Podrías escribir lo siguiente:
 
 \begin{verbatim}
 while True {
-    my $line = prompt "Enter something ('done' for exiting)\n";
-    last if $line eq "done";
-    say $line;
+    my $línea = prompt "Entra algo ('terminar' para salir)\n";
+    last if $línea eq "terminar";
+    say $línea;
 }
-say 'Done!';
+say '¡Terminado!';
 \end{verbatim}
 %
-The loop condition is {\tt True}, which is always true, so the
-loop runs until it hits the {\tt last} statement.
+La condición de bucle es {\tt True}, lo cual siempre es verdadero,
+así que el bucle se ejecuta hasta que alcanza la sentencia
+{\tt last}.
 
-Each time through, it prompts the user to type something.
-If the user types {\tt done}, the {\tt last} statement exits
-the loop.  Otherwise, the program echoes whatever the user types
-and goes back to the top of the loop.  Here's a sample run:
+Cada vez, el bucle incita al usuario a escribir algo.
+Si el usuario escribe {\tt terminar}, la sentencia {\tt last}
+terminar el bucle. Por lo contrario, el programa refleja cualquier
+cosa que el usuario escribe y regresa a la parte superior del bucle.
+Esta es una muestra:
 
 \begin{verbatim}
-$ perl6 while_done.pl6
-Enter something ('done' for exiting)
-Not done
-Not done
-Enter something ('done' for exiting)
-done
-Done!
+$ perl6 terminar.pl6
+Entra algo ('terminar' para salir)
+Hola
+Hola
+Entra algo ('terminar' para salir)
+Estoy aprendiendo Perl6
+Estoy aprendiendo Perl6
+Entra algo ('terminar' para salir)
+terminar
+¡Terminado!
 \end{verbatim}
 %
-This way of writing {\tt while} loops is common because you
-can check the condition anywhere in the loop (not just at the
-top) and you can express the stop condition affirmatively
-(``stop when this happens'') rather than negatively (``keep 
-going until that happens'').
+Esta manera de escribir bucles {\tt while} es común 
+porque puedes chequear la condición en cualquier parte 
+en el bucle (no solo en la parte superior) y puedes expresar
+la condición para terminar afirmativamente (``termina cuando esto suceda``)
+en lugar de negativamente (``mantente haciendo esto hasta que esto pase``).
 
-Using a {\tt while} loop with a condition that is always true 
-is a quite natural way of writing an infinite loop, i.e., a 
-loop that will run forever until something else in the code 
-(such as the {\tt last} statement used above) forces the 
-program to break out of the loop. This is commonly used in 
-many programming languages, and this works well in Perl. There 
-is, however, another common and more idiomatic way of constructing 
-infinite loops in Perl~6: using the {\tt loop} statement, 
-which we will study in Section~\ref{C-style loop} 
-(p.~\pageref{C-style loop}). For now, we'll use the {\tt while True} 
-statement, which is fairly legitimate.
+Usar un bucle {\tt while} con una condición que es siempre
+verdadera es un manera natural de escribir un bucle infinito, i.e.,
+un bucle que se ejecutará por siempre hasta que algo en el 
+código (tal como la sentencia {\tt last} usada anteriormente)
+force el programa a salir del bucle. Esto es comúnmente usado
+en lenguajes de programación, y funciona muy bien en Perl. Existe, 
+sin embargo, otra forma común y más idiomática de construir
+un bucle infinito en Perl~6: al usar la sentencia {\tt loop},
+la cual estudiaremos en la Sección~\ref{C-style loop} 
+(p.~\pageref{C-style loop}). Por ahora, usaremos la sentencia 
+{\tt while True}, la cual es bastante legítima.
 \index{idiomatic}
 \index{loop!infinite}
 \index{infinite loop}
 
-Sometimes, rather than simply breaking out of the {\tt while}  loop 
-as with the {\tt last} control statement, you need to start the 
-body of the loop at the beginning. For example, you may want 
-to check whether the user input is correct with some 
-(unspecified) {\tt is-valid} subroutine before processing 
-the data, and ask the user to try again if the input was not 
-correct. In this case, the {\tt next} control statement lets 
-you start at the top the loop body again:
+
+Algunas veces, en lugar de salir del bucle {\tt while} con la 
+sentencia de control {\tt last} por ejemplo, necesitas comenzar
+el cuerpo del bucle al principio. Por ejemplo, quieres
+chequear si la entrada del usuario es correcta con alguna
+subrutina {\tt es-válido} (no especificada) antes de procesar los datos,
+e incitar al usuario a intentar nuevamente si la entrada 
+no era correcta. En este caso, la sentencia de control {\tt next}
+te deja comenzar al principio del bucle otra vez:
 \index{next statement}
 \index{statement!next}
 
 \begin{verbatim}
 while True {
-    my $line = prompt "Enter something ('done' for exiting)\n";
-    last if $line eq "done";
-    next unless is-valid($line);
-    # further processing of $line;
+    my $línea = prompt "Entra algo ('terminar' para salir)\n";
+    last if $línea eq "terminar";
+    next unless es-válido($línea);
+    # procesamiento posterior de $línea;
 }
-print('Done!')
+print('¡Terminado!')
 \end{verbatim}
 %
-Here, the loop terminates if the user types ``done.'' If not, the user input is checked by the {\tt is-valid} subroutine; if the subroutine returns a true value, the processing continues forward; if it returns a false value, then the control flow starts again at the beginning of the body of the loop, so the user is prompted again to submit a valid input.
+Aquí, el bucle termina si el usuario escribe ``terminar``. Si no,
+la entrada del usuario se chequea con la subrutina {\tt es-válido};
+si la subrutina devuelve un valor verdadero, el procesamiento 
+continúa; si devuelve un valor falso, entonces el flujo de control 
+comienza comienza nuevamente al principio del cuerpo del bucle,
+y por lo tanto se incita al usuario a escribir una entrada válida.
 
-The {\tt last} and {\tt next} control statements also work in 
-{\tt for} loops. For example, the following {\tt for} loop 
-iterates in theory on a range of integer numbers between 1 and 20, 
-but discards odd numbers by virtue of a {\tt next} statement 
-and breaks out of the loop with a {\tt last} statement as 
-soon as the loop variable is greater than {\tt \$max} (i.e., 10 in this  example):
+La sentencias de control {\tt last} y {\tt next} también funcionan
+con los bucles {\tt for}. Por ejemplo, el siguiente bucle {\tt for}
+itera en teoría sobre un rango de números enteros entre 1 y 20,
+pero desecha los números impares por virtud de una sentencia {\tt next}
+y sale del bucle con una sentencia {\tt next} tan pronto la variable del
+bucle es mayor que {\tt \$max} (i.e., 10 en este ejemplo):
 \index{for loop}
 \index{loop!for}
 \index{statement!for}
@@ -559,28 +571,27 @@ soon as the loop variable is greater than {\tt \$max} (i.e., 10 in this  example
 \begin{verbatim}
 my $max = 10;
 for 1..20 -> $i {
-    next unless $i %% 2; # keeps only even values
-    last if $i > $max;   # stops loop if $i is greater than $max
-    say $i;              # prints 2 4 6 8 10
+    next unless $i %% 2; # mantiene solos los valores pares
+    last if $i > $max;   # termina el bucle si $i es mayor que $max
+    say $i;              # imprime 2 4 6 8 10
 }
 \end{verbatim}
 
-You may have as many {\tt last} and {\tt next} statements as you 
-like, just as you may have as many {\tt return} statements as 
-you like in a subroutine. Using such control flow statements 
-is not considered poor 
-practice. During the early days of structured programming, 
-some people insisted that loops and subroutines have only one 
-entry and one exit. The one-entry notion is still a good idea, 
-but the one-exit notion has led people to bend over backwards 
-and write a lot of unnatural code. Much of programming consists of traversing 
-decision trees. A decision tree naturally starts with a single 
-trunk but ends with many leaves. Write your code with the number 
-of loop controls (and subroutine exits) that is natural to the 
-problem you're trying to solve. If you've declared your variables 
-with reasonable scopes, everything gets automatically cleaned up 
-at the appropriate moment, no matter how you leave the block.
-
+Puedes tener tantas sentencia {\tt last} y {\tt next} como desees,
+al igual que puedes tener tantas sentencias {\tt return} como quieras
+en una subrutina. El uso de tales sentencias de flujo de control no
+es considerado mala práctica. Durante la infancia de la programación 
+estructurada, algunas personas insistían que los bucles y las subrutinas
+tienen solo una entrada y una sola salida. La noción de una sola entrada
+es todavía una buena idea, pero la noción de una sola salida ha causado que 
+muchas personas hagan lo imposible y escriban muchísimo código no tan natural.
+La mayor parte de la programación consiste en recorrer un árboles de
+decisiones. Un árbol de decisiones naturalmente comienza con un solo trunco 
+pero termina con muchas hojas. Escribe tu código con el número de 
+controles de bucle (y salida de subrutinas) que es natural para el 
+problema que estás intentando resolver. Si declaras tus variables con ámbitos
+razonables, todo se limpia automáticamente al momento apropiado, sin importar
+como dejes el bloque.
 
 \section{Raíces Cuadradas}
 \label{squareroot}

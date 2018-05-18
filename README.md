@@ -19,7 +19,7 @@ ser encontrada en [Think Perl 6](http://greenteapress.com/wp/think-perl-6/).
 - [x] Capítulo 03: Funciones
 - [x] Capítulo 04: Bucles, Condicionales y Recursión
 - [x] Capítulo 05: Subrutinas Fructuosas
-- [ ] Capítulo 06: Iteración **TEP**
+- [x] Capítulo 06: Iteración
 - [ ] Capítulo 07: Cadenas de texto
 - [ ] Capítulo 08: Caso Práctico: Juego de palabras
 - [x] Capítulo 09: Arrays y Listas
