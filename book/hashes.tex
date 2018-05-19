@@ -2,13 +2,12 @@
 \chapter{Hashes}
 \label{hashes}
 
-This chapter presents another built-in type called a hash. 
-Hashes are one of Perl's best and most commonly used 
-features; they are the building blocks of many efficient 
-and elegant algorithms.
+Este capítulo presenta otro tipo integrado conocido como un
+hash. Los hashes son unas de las mejores y más comunes 
+características de Perl; ellos constituyen los componentes básicos
+de muchos algoritmos eficientes y elegantes.
 
-
-\section{A Hash is a Mapping}
+\section{Un Hash es un Mapeo}
 \label{hash_descr}
 
 \index{hash}
@@ -17,135 +16,138 @@ and elegant algorithms.
 \index{key-value pair}
 \index{index}
 \index{mapping}
-A {\bf hash} is like an array, but more general.  In an 
-array, the indices or subscripts have to be integers; in a hash, 
-they can be (almost) anything.
+Un {\bf hash} es como un array, pero más general. En un array,
+los índices o subíndices tienen que ser enteros; en un hash,
+pueden ser (casi) cualquier cosa.
 
-A hash contains a collection of indices, which are called 
-{\bf keys}, and a collection of values.  Each key is associated with a single value.  A key and a value together form a pair 
-(an object of the Pair type), or a {\bf key-value pair}. A 
-hash can be viewed as a collection of key-value pairs. The 
-values in a hash can also be called items or elements, as with arrays.
+Un hash contiene una colección de índices, los cuales se llaman
+{\bf claves}, y una colección de valores. 
+Cada llave está asociada a un valor único. Una clave y un valor
+juntos forman un par (un objeto del tipo Pair), o un {\bf par
+clave-valor}. Un hash puede ser visto como una colección de parejas de
+clave-valor. Los valores en un hash puede también llamarse artículos o 
+elementos, como con los arrays.
 \index{item}
 
-In other programming languages, hashes are sometimes called 
-dictionaries, hash tables, maps, or associative arrays.
+En otros lenguajes de programación, los hashes son algunas veces
+llamados diccionarios, tablas hash, mapas, o arrays asociativos.
 
-In mathematical language, a hash represents a {\bf mapping}
-from keys to values, so you can also say that each key
-``maps to'' a value. As an example, we'll build a hash that 
-maps from English to Spanish words, so the keys and the 
-values are all strings.
+En el lenguaje matemático, un hash representa a un {\bf mapeo}
+desde las claves a los valores, así que puedes también decir que cada
+clave ``mapea`` a un valor. Como un ejemplo, construiremos un hash
+que mapea palabras del inglés al español, y por lo tanto las llaves y
+los valores son todos cadenas de texto.
 
-In Perl, hash names start with the ``\verb"%"'' sigil. To create 
-a new hash, you just declare it this way:
+En Perl, el nombre de un hash comienza con el sigilo ``\verb|%|``. Para
+crear un nuevo hash, solo decláralo de esta manera:
 \index{sigil}
 \index{sigil, percent}
 
 \begin{verbatim}
-> my %eng2sp;
+> my %ingAesp;
 \end{verbatim}
 
-This creates an empty hash. To add items to the hash, 
-you can use curly braces (a.k.a. curly brackets and 
-sometimes simply ``curlies''):
+Esto crea un hash vacío. Para agregar artículos al hash,
+puedes usar llaves:
 \index{curly bracket}
 \index{bracket!curly}
 \index{brace}
 
 \begin{verbatim}
-> %eng2sp{'one'} = 'uno';
+> %ingAesp{'one'} = 'uno';
 uno
 \end{verbatim}
 %
-This line creates an item that maps from the key
-\verb"'one'" to the value \verb"'uno'".  
+Esta línea crea un artículo que relaciona la clave
+\verb"'one'" al valor \verb"'uno'".  
 
-If the key is a string containing a single word (i.e., 
-without any space in the middle of it), there is a more 
-idiomatic shortcut to create the same hash entry:
+Si la clave es una cadena de texto que contiene una sola palabra
+(i.e., sin ningún espacio en el medio), existe un atajo más 
+idiomático para crear la misma entrada de hash:
 \index{idiomatic}
 
 \begin{verbatim}
-> %eng2sp<one> = 'uno';
+> %ingAesp<one> = 'uno';
 uno
 \end{verbatim}
 %
-
-If we print the hash, we see a key-value pair with a 
-\verb'=>' pair constructor operator between the key 
-and value:
+Si imprimimos el hash, vemos un par clave-valor con el 
+operador constructor de pares \verb|=>| entre la clave y
+el valor:
 \index{pair constructor}
 
 \begin{verbatim}
-> say %eng2sp;
+> say %ingAesp;
 one => uno
 \end{verbatim}
 %
-This output format is also an input format.  For example,
-you can create a new hash with three items:
+Este formato de salida es también un formato de entrada.
+Por ejemplo, puedes crear un hash nuevo con tres artículos:
 
 \begin{verbatim}
-> my %eng2sp = ('one' => 'uno', 'two' => 'dos', 'three' => 'tres');
+> my %ingAesp = ('one' => 'uno', 'two' => 'dos', 'three' => 'tres');
 one => uno, three => tres, two => dos
 \end{verbatim}
 %
 
-Using the \verb'=>' pair constructor operator between keys and 
-values is not required; you may use a comma as well:
+El uso del operador constructor de pares \verb|=>| entre claves y 
+valores no es requerido; puedes usar comas tambíen:
 
 \begin{verbatim}
-my %eng2sp = ('one', 'uno', 'two', 'dos', 'three', 'tres');
+my %ingAesp = ('one', 'uno', 'two', 'dos', 'three', 'tres');
 \end{verbatim}
 %
 
-But the pair constructor has the advantage of showing more 
-graphically the key-value relations. The pair constructor 
-operator also makes the use of quotes non mandatory on its 
-lefthand side (provided the key is a string with no space):
+Pero el constructor de pares tiene la ventaja de mostrar
+gráficamente las relaciones clave-valor. El operador constructor
+de pares también hace que el uso de comillas no mandatario
+en su lado izquierdo (provisto que la clave sea una cuerda 
+de texto sin espacios):
 
 \begin{verbatim}
-> my %eng2sp = (one => 'uno', two => 'dos', three => 'tres');
+> my %ingAesp = (one => 'uno', two => 'dos', three => 'tres');
 one => uno, three => tres, two => dos
 \end{verbatim}
 %
 
-You might also use a more concise list syntax for the hash 
-assignment and Perl will happily convert the list into a 
-hash, provided the number of items in the input list is even:
+También podrías usar una sintaxis de lista más concisa para la
+asignación del hash y Perl convertirá felizmente la lista
+en un hash, provisto que el número de artículos en la lista 
+de entrada sea par:
 
 \begin{verbatim}
-> my %eng2sp = <one uno two dos three tres>;
+> my %ingAesp = <one uno two dos three tres>;
 one => uno, three => tres, two => dos
 \end{verbatim}
 %
 
-You might be surprised by the output. The order of the 
-key-value pairs is usually not the order in which you 
-populated the hash. In general, the order 
-of items in a hash is unpredictable.
+Podrías sorprenderte con el resultado. El orden de los
+pares clave-valor usualmente no se encuentran en el orden
+en el cual lo poblaste. En general, el orden de los artículos
+en un hash es impredecible.
 
-But that's not a problem because the elements of a hash 
-are never indexed with integer subscripts. Instead, you use 
-the keys to look up the corresponding values:
+Pero eso no es un problema porque los elementos de un hash
+nunca son indexados con subíndices enteros. En lugar de esto,
+usas las claves para consultar los valores correspondientes:
 
 \begin{verbatim}
-> say %eng2sp<two>;
+> say %ingAesp<two>;
 dos
 \end{verbatim}
 %
-The key \verb"two" always maps to the value \verb"'dos'" 
-so the order of the items doesn't matter.
+La clave \verb"two" siempre mapea al valor \verb|`dos`|
+así que el orden de los artículos no importa.
 
-If the key isn't in the hash, you get an undefined value:
+Si la clave no se encuentra en el hash, obtienes un valor 
+indefinido:
 
 \begin{verbatim}
-> say %eng2sp<four>;
+> say %ingAesp<four>;
 (Any)
 \end{verbatim}
 %
-The {\tt elems} method or function works on hashes just 
-as on arrays; it returns the number of key-value pairs:
+El método o la función {\tt elems} funciona con los hashes
+como con los array; devuelve el número de pares clave-valor:
 \index{elems function or method}
 \index{function!elems}
 \index{elems function or method}
@@ -153,177 +155,177 @@ as on arrays; it returns the number of key-value pairs:
 
 
 \begin{verbatim}
-> say %eng2sp.elems;
+> say %ingAesp.elems;
 3
-> say elems %eng2sp
+> say elems %ingAesp
 3
 \end{verbatim}
 %
-The {\tt :exists} adverb also works on hashes as on 
-arrays; it tells you whether something appears as 
-a {\em key} in the hash (appearing as a value is not 
-good enough)\footnote{Evaluating the value in a Boolean 
-context would also work with our example, but this would 
-return something wrong when the key exists, but the value 
-is not defined or otherwise evaluates to a false value 
-(for example if it is equal to {\tt False}, zero, or 
-an empty string).}:
+El adverbio {\tt :exists} también funciona con los hashes 
+como con los arrays; te dice si algo aparece como una 
+{\em clave} en el hash (aparecer como un valor no es suficiente)
+\footnote{Evaluar el valor en un contexto Booleano también 
+funcionaría con nuestro ejemplo, pero esto devolvería
+algo erróneo cuando la clave existe, pero el valor 
+no está definido o por lo contrario evalúa a un valor falso
+(por ejemplo, si es igual a {\tt False}, cero, o 
+cadena de texto vacía).}:
 \index{membership!hash}
 \index{exists adverb}
 \index{adverb!:exists}
 
 \begin{verbatim}
-> %eng2sp<two> :exists;
+> %ingAesp<two> :exists;
 True
-> %eng2sp<four> :exists;
+> %ingAesp<four> :exists;
 False
 \end{verbatim}
 %
-To see whether something appears as a value in a hash, you
-can use the {\tt values} method, which returns a collection of
-values, and then use a loop (or possibly a {\tt grep}) to 
-look for the searched item:
+Para chequear si algo aparece como un valor en un hash, 
+puedes usar el método {\tt values}, el cual devuelve una 
+colección de valores, y después usar un bucle (o posiblemente 
+{\tt grep}) para buscar el artículo:
 \index{values function or method}
 \index{method!values}
 \index{grep}
 
 \begin{verbatim}
-my @vals = values %eng2sp;
+my @vals = values %ingAesp;
 for @vals -> $value {
-    say "Found it!" if $value eq 'uno';           # -> Found it!
+    say "¡Encontrado!" if $value eq 'uno';           # -> ¡Encontrado!
 }
 \end{verbatim}
 %
-Or more concisely:
+O más concisamente:
 \begin{verbatim}
-say "Found it!" if grep {$_ eq 'uno'}, %eng2sp.values;
+say "¡Encontrado!" if grep {$_ eq 'uno'}, %ingAesp.values;
 \end{verbatim}
 
-Since {\tt grep} defaults to a smart match, this can be 
-made even more concise:
+Dado que {\tt grep}  usa por defecto una coincidencia inteligente, 
+esto puede hacerse de una forma aún más concisa:
 
 \begin{verbatim}
-say "Found it!" if grep {'uno'}, %eng2sp.values;  # -> Found it!
+say "¡Encontrado!" if grep {'uno'}, %ingAesp.values;  # -> ¡Encontrado!
 \end{verbatim}
 
-When looking for values, the program has to search the 
-elements of the list in order (or sequentially), as in 
-Section~\ref{find}.  As the list gets longer, the search 
-time gets longer in direct proportion.
+Cuando se inspecciona los valores, el programa tiene que buscar 
+los elementos de la lista en orden (o en secuencia), como en la
+Sección~\ref{find}. A medida que la lista se vuelve más larga, 
+el tiempo de búsqueda se extiende en proporción directa.
 \index{sequential search}
 \index{search!sequential}
 
-By contrast, when looking for keys, Perl uses a {\bf hashing} 
-algorithm that has a remarkable property: it takes about 
-the same amount of time no matter how many items are in 
-the hash. In other words, it performs really fast, compared 
-to the list size, when the 
-searched list is large. This is the reason why the solution to 
-the reverse pair exercise (Exercise~\ref{reverse_pair}) of the 
-previous chapter using a hash was almost three times 
-faster than the bisection search solution 
-(see Subsection~\ref{sol_reverse_pair}).
+Por el contrario, cuando se inspecciona las claves, Perl usa
+un algoritmo de {\bf hashing} que tiene una propiedad interesante:
+toma el mismo monto de tiempo sin importar cuantos artículos
+se encuentren en el hash. En otras palabras, funciona bastante 
+rápido, comparado con el tamaño de la lista, cuando la lista
+que se inspecciona es larga. Ésta es la razón por la cual la
+solución al ejercicio de par reverso (Ejercicio~\ref{reverse_pair})
+del capítulo anterior usando un hash fue casi tres veces más rápido
+que la solución de búsqueda binaria (ver Subsección~\ref{sol_reverse_pair}).
 
 \label{ex_employees}
-As an exercise, use the sample employee data of the 
-multidimensional array of Section~\ref{multidimensional array} 
-(p.~\pageref{multidimensional array}), load it into a hash, and 
-look up some salaries. Hint: you don't need a 
-multidimensional structure for doing that with a hash.
-Solution: \ref{sol_ex_employees}
+Como ejercicio, usa la muestra de los datos de empleados del 
+array multidimensional  de la Sección~\ref{multidimensional array}
+(p.~\pageref{multidimensional array}), organízala en un hash, y 
+busca algunos salarios. Pista: no necesitas una estructura 
+multidimensional para hacer eso con un hash.
+Solución: \ref{sol_ex_employees}
 
 
-\section{Common Operations on Hashes}
+\section{Operaciones Comunes con Hashes}
 
-We've seen already that to populate a hash, you can just 
-assign an even list to it. The four syntactical forms 
-below are correct:
-
-\begin{verbatim}
-my %first_quarter = ("jan" => 1, "feb" => 2, "mar" => 3);
-my %second_quarter = (apr => 4, may => 5, jun => 6);
-my %third_quarter = jul => 7, aug => 8, sep => 9;
-my %fourth_quarter = < oct 10 nov 11 dec 12 >;
-\end{verbatim}
-
-To add an element to a hash, just assign the hash with a key:
+Ya vimos que para poblar un hash, puedes asignarle una lista 
+par. Las cuatros formas sintácticas siguientes son correctas:
 
 \begin{verbatim}
-my %months = ("jan" => 1, "feb" => 2, "mar" => 3);
-%months{'apr'} = 4;
-say %months;         # -> apr => 4, feb => 2, jan => 1, mar => 3
+my %primer_trimestre  = ("ene" => 1, "feb" => 2, "mar" => 3);
+my %segundo_trimestre = (abr => 4, may => 5, jun => 6);
+my %tercer_trimestre  = jul => 7, aug => 8, sep => 9;
+my %cuarto_trimestre  = < oct 10 nov 11 dec 12 >;
 \end{verbatim}
 
-Remember that you can also do the same without having to 
-quote the keys if you use the angle brackets quote-word 
-operator (if the keys are strings):
+Para agregar un elemento a un hash, solo asigna el hash con
+una clave:
+
+\begin{verbatim}
+my %meses = ("ene" => 1, "feb" => 2, "mar" => 3);
+%meses{'abr'} = 4;
+say %meses;         # -> abr => 4, feb => 2, ene => 1, mar => 3
+\end{verbatim}
+
+Recuerda que también puedes hacer lo mismo sin encerrar 
+las claves en comillas si usas el operador quote-word de
+las comillas angulares (si las claves son cadenas de texto):
 \index{quote-word operator}
 \index{angle bracket}
 
 \begin{verbatim}
-%months<apr> = 4;       # same as: %months{'apr'} = 4;
+%months<abr> = 4;       # igual que: %meses{'abr'} = 4;
 \end{verbatim}
 
-or you can also use the {\tt push} function with a pair:
+o puedes usar la función {\tt push} con un par:
 \index{push function}
 \index{function!push}
 
 \begin{verbatim}
-> push %months, (may => 5);
-apr => 4, feb => 2, jan => 1, mar => 3, may => 5
-> my $new-pair = jun => 6
+> push %meses, (may => 5);
+abr => 4, feb => 2, jan => 1, mar => 3, may => 5
+> my $nuevo-par = jun => 6
 jun => 6
-> push %months, $new-pair;
-apr => 4, feb => 2, jan => 1, jun => 6, mar => 3, may => 5
+> push %meses, $nuevo-par;
+abr => 4, feb => 2, jan => 1, jun => 6, mar => 3, may => 5
 \end{verbatim}
 %
 
-Using {\tt push} to add a pair to a hash is not exactly the same, 
-though, as making a hash assignment: if the key already 
-exists, the old value is not replaced by the new one---instead,  
-the old and the new ones are placed into an array (or, 
-if the old value is already an array, then the new value 
-is added to the array):
+Usar {\tt push} para agregar un par a un hash no es exactamente lo
+mismo que hacer una asignación de hash: si la clave ya existe,
+el valor antiguo no es reemplazado por el valor nuevo---en lugar,
+ambos valores son colocados en un array (o si el valor antiguo se 
+encuentra ya en el array, entonces el valor nuevo se agrega al 
+array):
 
 \begin{verbatim}
-> push %months, (jan => '01');
-{apr => 4, feb => 2, jan => [1 01], jun => 6, mar => 3, may => 5}
+> push %meses, (jan => '01');
+{abr => 4, feb => 2, jan => [1 01], jun => 6, mar => 3, may => 5}
 \end{verbatim}
 
-To check whether a value is defined for a given key, 
-use {\tt defined}:
+Para chequear si un valor está definido para una clave dada,
+usa {\tt defined}:
 \index{defined}
 
 \begin{verbatim}
-> say True if defined %months<apr>;
+> say True if defined %meses<abr>;
 True
 \end{verbatim}
 %
 
-To obtain the number of items in a hash, use the {\tt elems}
-method:
+Para obtener el número de artículos en un hash, usa el 
+método {\tt elems}:
 \index{elems function or method}
 
 \begin{verbatim}
-say %months.elems;                # -> 6
+say %meses.elems;                # -> 6
 \end{verbatim}
 
-To remove a hash item, use the {\tt :delete} adverb:
+Para remover un artículo del hash, usa el adverbio {\tt :delete}:
 \index{delete adverb}
 \index{adverb!:delete}
 
 \begin{verbatim}
-> push %months, (jud => 7);      # Oops, a typo!
-apr => 4, feb => 2, jan => 1, jud => 7, jun => 6, mar => 3, may => 5
-> %months{'jud'}:delete;         # typo now removed
+> push %meses, (jud => 7);      # ¡Oops, un error!
+abr => 4, feb => 2, jan => 1, jud => 7, jun => 6, mar => 3, may => 5
+> %meses{'jud'}:delete;         # error removido
 7
-> say %months
-apr => 4, feb => 2, jan => 1, jun => 6, mar => 3, may => 5
+> say %meses
+abr => 4, feb => 2, jan => 1, jun => 6, mar => 3, may => 5
 \end{verbatim}
 
-Note that the {\tt :delete} adverb also returns the value that 
-is being removed.
+Nota que el adverbio {\tt :delete} también devuelve le valor que
+ha sido removido.
 
+Para interar sobre un hash, usa:
 To iterate over a hash, use:
 \index{kv function or method}
 \index{keys function or method}
@@ -331,28 +333,28 @@ To iterate over a hash, use:
 \index{pairs function or method}
 
 \begin{itemize}
-\item {\tt kv} to retrieve the interleaved keys and values;
-\item {\tt keys} to retrieve the keys;
-\item {\tt values} to retrieve the values;
-\item {\tt pairs} to retrieve the key-value pairs;
+\item {\tt kv} para extraer las claves y los valores intercalados;
+\item {\tt keys} para extraer las llaves;
+\item {\tt values} para extraer los valores;
+\item {\tt pairs} para extraer los pares clave-valor;
 \end{itemize}
 
-For example:
+Por ejemplo:
 
 \begin{verbatim}
-> for %months.kv -> $key, $val { say "$key => $val" }
+> for %meses.kv -> $clave, $val { say "$clave => $val" }
 jan => 1
-apr => 4
+abr => 4
 mar => 3
 jun => 6
 may => 5
 feb => 2
-> say keys %months;
-(jan apr mar jun may feb)
-> say values %months;
+> say keys %meses;
+(jan abr mar jun may feb)
+> say values %meses;
 (1 4 3 6 5 2)
-> say %months.pairs;
-(jan => 1 apr => 4 mar => 3 jun => 6 may => 5 feb => 2)
+> say %meses.pairs;
+(jan => 1 abr => 4 mar => 3 jun => 6 may => 5 feb => 2)
 \end{verbatim}
 %
 
@@ -442,7 +444,7 @@ If you use a hash in a {\tt for} statement, it traverses
 the pairs of the hash:
 
 \begin{verbatim}
-> for %eng2sp -> $pair { say $pair}
+> for %ingAesp -> $pair { say $pair}
 two => dos
 three => tres
 one => uno
@@ -457,7 +459,7 @@ access the key and value of a \verb'Pair'. For example, to
 reverse the order in which each line is printed:
 
 \begin{verbatim}
-> for %eng2sp -> $pair { say $pair.value ~ " <= " ~ $pair.key; }
+> for %ingAesp -> $pair { say $pair.value ~ " <= " ~ $pair.key; }
 dos <= two
 tres <= three
 uno <= one
@@ -752,8 +754,8 @@ for example a hash mapping months to their number in the year
 (we limit the example to five months for brevity):
 
 \begin{verbatim}
-> my %months = jan => 1, feb => 2, mar => 3, apr => 4, may => 5;
-apr => 4, feb => 2, jan => 1, mar => 3, may => 5
+> my %months = jan => 1, feb => 2, mar => 3, abr => 4, may => 5;
+abr => 4, feb => 2, jan => 1, mar => 3, may => 5
 \end{verbatim}
 %
 
@@ -763,7 +765,7 @@ hash:
 
 \begin{verbatim}
 > my %rev_months = %months.kv.reverse;
-1 => jan, 2 => feb, 3 => mar, 4 => apr, 5 => may
+1 => jan, 2 => feb, 3 => mar, 4 => abr, 5 => may
 \end{verbatim}
 \index{kv function or method}
 \index{reverse function or method}
