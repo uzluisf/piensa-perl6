@@ -484,7 +484,7 @@ for %histo.keys.sort -> $clave {
 
 
 
-\section{Reverse Lookup}
+\section{Búsqueda Inversa}
 \label{raise}
 \index{hash!lookup}
 \index{hash!reverse lookup}
@@ -742,106 +742,101 @@ para chequear si un valor ya se ha visto.
 \index{unique function}
 \index{map}
 
-\section{Hashes and Arrays}
+\section{Hashes y Arrays}
 \label{invert}
 
 \index{inverting a hash}
 \index{hash!invert}
-Inverting a hash can be very easy if it is known that the 
-values can happen only once (that they are unique). Consider 
-for example a hash mapping months to their number in the year 
-(we limit the example to five months for brevity):
+Invertir un hash puede ser muy fácil si se conoce que los valores 
+ocurren solamente una sola vez (es decir, son únicos). Considera por ejemplo
+un hash que mapea los meses a sus números en el año
+(limitamos el ejemplo a cinco ejemplos por brevedad):
 
 \begin{verbatim}
-> my %months = jan => 1, feb => 2, mar => 3, abr => 4, may => 5;
-abr => 4, feb => 2, jan => 1, mar => 3, may => 5
+> my %meses = ene => 1, feb => 2, mar => 3, abr => 4, may => 5;
+abr => 4, feb => 2, ene => 1, mar => 3, may => 5
 \end{verbatim}
 %
 
-We can transform the key-value pairs into a flat list, 
-reverse the list, and assign the reversed list to a new 
-hash:
+Podemos transformar los pares clave-valor en un lista plana,
+invertir la lista, y asignar la lista inversa a un nuevo hash:
 
 \begin{verbatim}
-> my %rev_months = %months.kv.reverse;
-1 => jan, 2 => feb, 3 => mar, 4 => abr, 5 => may
+> my %meses_inv = %meses.kv.reverse;
+1 => ene, 2 => feb, 3 => mar, 4 => abr, 5 => may
 \end{verbatim}
 \index{kv function or method}
 \index{reverse function or method}
 %
 
-We now have a new hash mapping month numbers to their names.
-This can be very handy if a hash is known to be bijective, but this approach does not work correctly if a value can 
-happen more than once: in such a case, some pairs will be 
-lost:
+Ahora tenemos un nuevo hash que mapea los números de los meses
+a sus nombres. Esto puede ser útil si se conoce que un hash es biyectivo,
+pero esta estrategia no funciona correctamente si un valor aparece más de una
+vez: en tal caso, algunos pares se perderán:
 
 \begin{verbatim}
-> my %months = jan => 1, january => 1, feb => 2, february => 2;
-feb => 2, february => 2, jan => 1, january => 1
-> my %rev_months = %months.kv.reverse;
-1 => january, 2 => february
+> my %meses = ene => 1, enero => 1, febrero => 2, febrero => 2;
+feb => 2, febrero => 2, ene => 1, enero => 1
+> my %meses_inv = %meses.kv.reverse;
+1 => enero, 2 => febrero
 \end{verbatim}
 
-Arrays can appear as values in a hash.  For example, if you
-are given a hash that maps from letters to frequencies, you
-might want to invert it; that is, create a hash that maps
-from frequencies to letters.  Since there might be several 
-letters with the same frequency, each value in the inverted hash 
-should probably be an array of letters.
+Los arrays pueden aparecer como valores en un hash. Por ejemplo,
+su te dan un hash que mapea las letras a las frecuencias, podrías querer
+invertirlo; es decir, crear un hash que mapea las frecuencias  a las
+letras. Dado que podría haber varias letras con las misma frecuencia, cada
+valor en el hash invertido debería ser un array de letras.
 \index{inverting a hash}
 \index{hash!invert}
 
-Here is a function that inverts such a hash:
+La siguiente es una función que invierte un hash similar:
 
 \begin{verbatim}
-sub invert-hash (%in-hash) { 
-    my %out-hash; 
-    for %in-hash.kv -> $key, $val {
-        push %out-hash{$val}, $key; 
+sub invertir-hash (%hash-entrada) { 
+    my %hash-salida; 
+    for %hash-entrada.kv -> $clave, $val {
+        push %hash-salida{$val}, $clave; 
     }
-    return %out-hash;
+    return %hash-salida;
 }
 \end{verbatim}
 %
-Each time through the loop, a hash item is assigned to the  \verb'$key' and \verb'$val' variables, and \verb'$key' is 
-appended to the value \verb'%output-hash' for the \verb'$val' 
-key; if that value does not exist yet, it is created. At 
-the end of the process, the values of \verb'%output-hash' are 
-all anonymous arrays.
+Cada paso a través del bucle, un artículo del hash se asigna a las variables
+\verb|$clave| y  \verb|$val|, y \verb|$clave| se añade al valor \verb|%hash-salida|
+para la clave \verb|$val|; si dicho valor no existe todavía, entonces es creado.
+Al final del proceso, los valores de \verb|%hash-salida| son todos arrays anónimos.
 
-Here is an example:
+Este es un ejemplo:
 
 \begin{verbatim}
-my %rev-hist = invert-hash histogram 'parrot';
+my %rev-hist = invertir-hash histograma 'parrot';
 say %rev-hist;
 dd %rev-hist;
 \end{verbatim}
 
-This will display:
+Esto mostrará:
 
 \begin{verbatim}
 1 => [p a o t], 2 => [r]
 Hash %rev-hist = {"1" => $["p", "a", "o", "t"], "2" => $["r"]}
 \end{verbatim}
 
-Notice that the {\tt say} function gives a simple representation 
-of the hash data, and that the new {\tt dd} (short for ``data 
-dumper'') function used here gives more detailed information. 
-{\tt dd} is not very commonly used in normal programs, but 
-can be quite useful while debugging a program to display a 
-detailed description of a complex data structure 
-\footnote{To tell the full truth, {\tt dd} is not standard 
-Perl~6, it is a Rakudo-specific debugging feature. A future 
-implementation of Perl~6 not based on Rakudo might not have 
-it.}.
+Nota que la función {\tt say} provee una representación simple
+de los datos del hash, y que la nueva función {\tt dd} (abreviatura 
+de ``data dumper`` -- ``vertedero de datos``) usada en este ejemplo
+provee información más detallada. {\tt dd} no es comúnmente usada en 
+programas normales, pero puede ser útil mientra la depuración de un
+programa para mostrar una descripción detallada de una estructura de 
+datos compleja.\footnote{Para ser honesto, {\tt dd} no es Perl~6 estándar,
+es una característica específica de Rakudo. Una implementación futura de Perl~6 que
+no esté basada en Rakudo podría no tenerla.}
 \index{say function or method}
 \index{dd function}
 
-\verb'%output-hash' contains two items (two pairs) whose 
-values are anonymous arrays. You can access the second 
-element of the first array using the hash value 
-\verb'%rev-hist{"1"}' as if it was any ordinary array name, 
-with this simple syntax:
+Por ejemplo, \verb|%hash-salida| contiene dos artículos (dos pares)
+cuyos valores son arrays anónimos. Puedes acceder el segundo elemento
+del primer array usando el valor del hash \verb|%rev-hist{"1"}|
+como si fuera un nombre de array ordinario, con esta simple sintaxis:
 
 \begin{verbatim}
 say %rev-hist{"1"}[1];  # -> a
@@ -851,20 +846,19 @@ say %rev-hist{"1"}[1];  # -> a
 \begin{figure}
 \centerline
 {\includegraphics[scale=0.8]{figs/hash1.pdf}}
-\caption{State diagram.}
+\caption{Diagrama de estado.}
 \label{fig.hash1}
 \end{figure}
 
-Figure~\ref{fig.hash1} is a state diagram showing \verb'%hist'  and \verb'%rev-hist' .
-A hash is represented as a box with the type {\tt hash} above it
-and the key-value pairs inside.
+La figura~\ref{fig.hash1} es un estado de diagrama que muestra a \verb|%hist| 
+y a \verb|%rev-hist|. Un hash se representa como una caja con el tipo {\tt hash}
+encima y los pares clave-valor dentro.
 \index{state diagram}
 \index{diagram!state}
 
-Arrays can be values in a hash, as this example shows, but they
-cannot be keys.  If you try, you're likely to end up with a 
-key that contains only one item of the array, but most likely 
-not what you intended:
+Los arrays pueden ser valores en un hash, como este ejemplo muestra, pero
+no pueden ser claves. Si intentas hacerlo, probablemente termines con una clave
+que contiene solo un elemento del array, pero no lo que esperabas:
 
 \begin{verbatim}
 my @a = 'a' .. 'c';
@@ -873,42 +867,41 @@ my %h;
 say %h;  # -> a => 5, b => (Any), c => (Any)
 \end{verbatim}
 
-Here, Perl interpreted the \verb'%h{@a} = 5;' assignment 
-as a a slice assignment, i.e., assumed that we were 
-trying to populate three items in one go, one for each 
-element of the array.
+Aquí, Perl interpretó la asignación \verb|%h{@a} = 5;|
+como una asignación de rebanada, i.e., asumió que intentamos
+poblar tres artículos de una vez, una para cada elemento del
+array.
 
 \index{hash!function}
 \index{hashable}
-As mentioned earlier, a hash is implemented using
-a hashing function and that means that the keys have to 
-be \emph{hashable} \footnote{This is not entirely true. The 
-keys of a ``normal'' hash must be hashable and therefore 
-immutable. There is another type of hash, object hashes, 
-for which the need to have immutable keys does not apply.}. 
-A {\bf hashing} is a function that takes 
-a value (of any kind) and returns an integer.  Hashes use 
-these integers, called hash values, to store and look up 
-key-value pairs.
+
+Como se mencionó anteriormente, un hash se implementa usando 
+una función hash y significa que las llaves tienen
+que ser {\tt hashable}\footnote{Esto no es del todo verdad.
+Las claves de un hash ``normal``deben ser del tipo hashable
+y por lo tanto, inmutable. Hay otro tipo de hash, objetos hash,
+para los cuales la necesidad de tener claves inmutables no aplica.}.
+Una {\bf función hash} es una función que toma un valor (de cualquier tipo)
+y devuelve un número entero. Los hashes usan estos enteros, llamados valores
+de hash, para almacenar y buscar pares clave-valor.
 \index{immutability}
 
-This system works fine if the keys are immutable.  But if the
-keys are mutable, like with arrays, bad things would happen. For example,
-when you create a key-value pair, Perl would hash the key and 
-store it in the corresponding location.  If you modify the
-key and then hash it again, it would go to a different location.
-In that case, you might have two entries for the same key,
-or you might not be able to find a key.  Either way, the
-hash wouldn't work correctly.
+Este sistema funciona bien si las claves son inmutables. Pero si las claves
+son mutables, como con los arrays, cosas extrañas pasarían. Por ejemplo,
+cuando creas un par clave-valor, Perl aplicaría una función hash a la clave
+y la almacenaría en la ubicación correspondiente. Si modificas el clave y después
+aplica la función hash nuevamente, entonces sería almacenada en una ubicación
+diferente. En ese caso, podrías tener dos entradas para la misma clave, o 
+no podría ser capaz de encontrar una clave. En ambos casos, el hash
+no funcionaría correctamente.
 
-That's why keys have to be hashable, and why mutable types like
-arrays aren't. So Perl will do something else that can be 
-useful (such as creating three distinct hash items in the 
-example above), but will not hash the array itself.
-
-Since hashes are mutable, they can't be used as keys,
-but they {\em can} be used as values, so that you can 
-have nested hashes.
+Esa es la razón por la cual las claves deben ser hashable, y porqué
+los tipos mutables como los arrays no lo son. Así que Perl hará algo más 
+que puede ser útil (tal como crear tres artículos de hash distintos en el
+ejemplo anterior), pero no aplicará la función hash al array. 
+  
+Dado que los hashes son mutables, ellos no pueden ser usados como claves,
+pero {\em pueden} usarse como valores, así que puedes tener hashes anidados.
 
 \section{Memos}
 \label{memoize}
@@ -917,310 +910,309 @@ have nested hashes.
 \index{memo}
 \index{Fibonacci}
 
-If you played with the {\tt fibonacci} subroutine from
-Section~\ref{one.more.example}, you might have noticed that 
-the bigger the argument you provide, the longer the 
-subroutine takes to run. Furthermore, the run time 
-increases extremely quickly.
+Si jugueteaste con la subrutina {\tt fibonacci} en la 
+Sección~\ref{one.more.example}, probablemente notaste que 
+mientra más grande el argumento, más tiempo toma la subrutina
+para ejecutarse. Además, el tiempo de ejecución aumenta extremadamente
+rápido.
 \index{Fibonacci!function}
 \index{function!Fibonacci}
 
-To understand why, consider Figure~\ref{fig.fibonacci}, which shows
-the {\bf call graph} for {\tt fibonacci} with {\tt n=4}.
+Para entender el porqué, considera la figura~\ref{fig.fibonacci},
+la cual muestra la {\bf gráfica de llamada} para {\tt fibonacci} 
+con {\tt n=4}.
 
 \begin{figure}
 \centerline
 {\includegraphics[scale=0.7]{figs/fibonacci.pdf}}
-\caption{Call graph.}
+\caption{Gráfica de llamada.}
 \label{fig.fibonacci}
 \end{figure}
 
-A call graph shows a set of subroutine frames, with lines 
-connecting each frame to the frames of the functions it 
-calls.  At the top of the graph, {\tt fibonacci} with 
-\verb'$n=4' calls {\tt fibonacci} with \verb'$n=3' and 
-\verb'$n=2'.  In turn, {\tt fibonacci} with \verb'$n=3' calls
-{\tt fibonacci} with \verb'$n=2' and \verb'$n=1'.  And so on.
+Una gráfica de llamada muestra un conjunto de cuadros de 
+una subrutina, con líneas que conectan cada cuadro a los 
+cuadros de las funciones que llamas. En la parte superior
+de la gráfica, {\tt fibonacci} con \verb|$n=4| llama a \verb|fibonacci|
+con \verb|$n=3| y con \verb|$n=2|. En cambio, {\tt fibonacci} con
+\verb|$n=3| llama a {\tt fibonacci} con \verb|$n=2| y a \verb|$n=1|,
+etcétera.
 \index{function frame}
 \index{frame}
 \index{call graph}
 
-Count how many times {\tt fibonacci(0)} and {\tt fibonacci(1)} 
-are called.  This is an inefficient solution to the problem, 
-and it gets much worse as the argument gets bigger.
+Cuenta cuántas veces {\tt fibonacci(0)} y {\tt fibonacci(1)} 
+son llamadas. Esta es una solución ineficiente al problema,
+y se vuelve peor a medida que el argumento crece.
 \index{memo}
 
-One solution is to keep track of values that have already been
-computed by storing them in a hash.  A previously computed value
-that is stored for later use is called a {\bf memo}.  Here is a
-``memoized'' version of {\tt fibonacci}:
+Una solución es mantener un registro de los valores que ya se han
+calculado al almacenarlos en un hash. Un valor que se ha computado
+y se almacena para uso posterior se conoce como un {\bf memo}. 
+Aquí presentamos una versión ``memoizada`` de {\tt fibonacci}:
 \index{Fibonacci!memoized}
 
 \begin{verbatim}
-my %known = 0 => 1, 1 => 1;
+my %conocidos = 0 => 1, 1 => 1;
 say fibonacci(10);
 sub fibonacci ($n) {
-    return %known{$n} if %known{$n}:exists;
-    %known{$n} = fibonacci($n-1) + fibonacci($n-2);
-    return %known{$n};
+    return %conocidos{$n} if %conocidos{$n}:exists;
+    %conocidos{$n} = fibonacci($n-1) + fibonacci($n-2);
+    return %conocidos{$n};
 }
 \end{verbatim}
 %
 
-\verb'%known' is a hash that keeps track of the Fibonacci
-numbers we already know.  It starts with
-two items: 0 and 1, which both map to 1.
+\verb|%conocidos| es un hash que mantiene un registro
+de los números Fibonacci que ya sabemos. Comienza con dos
+artículos: 0 y 1, los cuales mapean a 1.
 
-Whenever {\tt fibonacci} is called, it checks \verb'%known'.
-If the result is already there, it can return
-immediately.  Otherwise, it has to 
-compute the new value, add it to the hash, and return it.
+Cuando se llama a {\tt fibonacci}, la subrutina chequea a
+\verb|%known|. Si el resultado ya existe, lo devuelve inmediatamente.
+De lo contrario, tiene que computar el nuevo valor, 
+agregar al hash, y devolverlo.
 
-If you run this version of {\tt fibonacci} and compare it with
-the original, you will find that it is much faster, especially 
-for a large argument (say more than 30).
+Si ejecutas esta versión de {\tt fibonacci} y la comparas con
+la original, encontrarás que es mucho más rápida, especialmente
+para un argumento grande (por ejemplo, mayor que 30).
 
 \index{cache}
 \index{memoize}
-Memoizing is a form of \emph{caching}, i.e., storing in memory 
-the result of a (presumably costly) computing operation in 
-order to avoid computing it again. This process is 
-sometimes called ``trading memory against CPU cycles.''  In 
-some cases, such as our Fibonacci recursive example here, the gain 
-can be absolutely huge: calculating the 100th Fibonacci 
-number would take billions of years with the original recursive 
-subroutine and it takes only a split second with the memoized 
-version.
+La memoización es una forma de \emph{caché}, i.e., almacenar en 
+memoria el resultado de una computación (presumiblemente costosa)
+para evitar computarla nuevamente. Este proceso es algunas veces 
+llamado ``negociación de memoria por ciclos de CPU.`` En algunos 
+casos, tal como nuestro ejemplo recursivo de Fibonacci, la ganancia
+es absolutamente inmensa: calcular el número Fibonacci 100$^{o}$
+tomaría billones de años con la subrutina recursiva original
+y toma solo segundos con la versión memoizada. 
 
-Please note that in the specific case of the Fibonacci function, 
-we are storing values for each successive integer; we could 
-have memoized the Fibonacci numbers in an array rather than 
-in a hash (and it might even be slightly more efficient), but 
-using a hash for such purpose is a more general solution, 
-working even when the memo keys are not consecutive integers.
+Nota que en el caso específico de la función Fibonacci,
+estamos almacenando valores para cada entero sucesivo; podría
+haber memoizado los números Fibonacci en un array en lugar de 
+un hash (y podría ser hasta un poco más eficiente), pero usar
+un hash para tal propósito es una solución más general, 
+lo cual funciona hasta cuando las claves del memo no son
+enteros consecutivos.
 
-As an exercise, try to rewrite the {\tt fibonacci} subroutine 
-using an array instead of a hash to memoize the calculated 
-Fibonacci numbers.
+Como ejercicio, intentar escribir la subrutina {\tt fibonacci}
+usando un array en lugar de un hash para memoizar los números
+Fibonacci ya calculados.
 
 
-\section{Hashes as Dispatch Tables}
+\section{Hashes como Tablas de Despacho}
 \label{dispatch}
 
-You may 
-need a procedure to launch some action depending on the 
-value of a parameter received by the program. To do that, 
-you could use a series of 
-\verb'if {...} elsif {...} else {...}' 
-statements like this:
+Puede necesitar lanzar alguna acción dependiendo en el valor
+de un parámetro recibido por el programa. Para hacer eso,
+podrías usar una serie de sentencias
+\verb'if {...} elsif {...} else {...}' como esta:
 
 \begin{verbatim}
-sub run-stop  { ... };
-sub run-start { ... };
-my $param = get-param;
-if $param eq "stop" {
-    run-stop;
-} elsif $param eq "start" {
-    run-start;
-} elsif $param = "h" {
-    say $help;
-} elsif $param = "help" {
-    say $help;
+sub ejecuta-parar   { ... };
+sub ejecuta-iniciar { ... };
+my $param = obtén-param;
+if $param eq "parar" {
+    ejecuta-parar;
+} elsif $param eq "iniciar" {
+    ejecuta-iniciar;
+} elsif $param = "a" {
+    say $ayuda;
+} elsif $param = "ayuda" {
+    say $ayuda;
 } elsif $param = "v" {
     $verbose = True;
 } else {
-    die "Unknown option $param";
+    die "Opción desconocida $param";
 }
 \end{verbatim}
 
-This approach is boring and error-prone. Using a dispatch table 
-is often a simpler solution.
+Esta estrategia es aburrida y sujeta a errores. El uso de 
+una tabla de despacho es usualmente una solución más simple.
 
-A dispatch table is a data structure mapping identifiers to 
-code references or subroutine objects. Applied to the 
-above scenario, it could look like this:
+Una tabla de despacho es una estructura de datos que mapea 
+identificadores a referencias códigos o objetos de subrutinas.
+Si se aplica al escenario anterior, podría lucir así:
 
 \begin{verbatim}
-sub run-stop  { ... };
-sub run-start { ... };
-my %dispatch = (
-    stop  => &run-stop,
-    start => &run-start,
-    h     => { say $help; },
-    help  => { say $help; },
-    v     => { $verbose = True;},
+sub ejecuta-parar   { ... };
+sub ejecuta-iniciar { ... };
+my %despacho = (
+    parar   => &ejecuta-parar,
+    iniciar => &ejecuta-iniciar,
+    a       => { say $ayuda; },
+    ayuda   => { say $ayuda; },
+    v       => { $verbose = True;},
 );
-my $param = get-param();
-die "Unknown option $param" unless %dispatch{$param}:exists;
-%dispatch{$param}(); # execute the action specified in %dispatch
+my $param = obtén-param();
+die "Opción desconocida $param" unless %despacho{$param}:exists;
+%despacho{$param}(); # ejecuta la acción especificada en %despacho
 \end{verbatim}
 
-The \verb'%dispatch' hash defines the action depending on 
-the parameter used as a key. The \verb'%dispatch{$param}()' 
-statement calls the required action.
+El hash \verb|%despacho| define la acción dependiendo en el 
+parámetro usado como una clave. La sentencia \verb|%despacho{$param}()|
+llama la acción requerida.
 
-This approach is a bit more concise and slightly cleaner, but there 
-are some other advantages. It is more maintainable: if you need 
-to add one option, you just need to add one entry to the hash 
-and don't have to add code in the middle of a complicated 
-chain of nested \verb'if {...} elsif {...} else {...}' 
-statements at the risk of breaking up something. 
+Esta estrategia es un poco más concisa y más limpia, pero existen 
+otras ventajas. Es más fácil de mantener: si necesitas agregar
+una opción, solo necesitas agregar una entrada al hash y evitas
+agregar código en el medio de una cadena complicada de sentencias
+\verb'if {...} elsif {...} else {...}' lo cual podría estropear algo.
 
-Another upside is that the dispatch table can be dynamically 
-modified at run time, for example depending on certain 
-external circumstances (for example the day in the month when 
-the program is running) or in accordance with a configuration 
-file. This means that it is possible to dynamically modify 
-the behavior of a program after compile time, while it is 
-already running. This paves the way to some very interesting 
-advanced programming techniques that are beyond the scope 
-of this book.
+Otra ventaja es que la tabla de despacho puede modificarse
+dinámicamente durante el tiempo de ejecución, por ejemplo 
+dependiendo en ciertas circunstancias externas (por ejemplo el día
+del mes cuando el programa se ejecuta) o de acuerdo a un 
+archivo de configuración. Esto significa que es posible 
+modificar el comportamiento de un programa dinámicamente 
+después del tiempo de compilación, mientras todavía se
+ejecuta. Esto abre el camino a algunas técnicas avanzadas de
+programación que están fuera del alcance de este libro.
 
-Note that we have been using hashes for our dispatch tables, 
-and this is the most common way to implement them. If it 
-makes sense to have small integers as keys, you could also 
-implement a dispatch table as an array. This is the case, 
-for example, with numbered menu items where the user is 
-prompted to type a number to indicate which menu option 
-to activate.
+Nota que hemos usado hashes para nuestras tablas de despacho,
+y esta es la manera más común de implementarlas. Si hace sentido
+tener pequeños enteros como claves, podrías también implementar
+una tabla de despacho como un array. Este es el caso, por ejemplo,
+los artículos numerados de un menú donde al usuario se le incita
+a teclear un número para indicar la opción de menú a activar.
 
 
-\section{Global Variables}
+\section{Variables Globales}
 \index{global variable}
 \index{variable!global}
 \index{lexical variable}
 \index{variable!lexical}
 
-In the memoized Fibonacci example above, the 
-\verb'%known' hash is created outside the subroutine,
-so it belongs to the whole main package.
-Such variables are sometimes called {\bf global} 
-because they can be accessed from any function.  Unlike ``local'' 
-lexical variables, which usually disappear when their scope 
-ends, global variables persist from one subroutine call to 
-the next.
+En el ejemplo anterior sobre Fibonacci memoizado, el hash \verb|%conocidos|
+es creado fuera de la subrutina, así que pertenece al 
+paquete principal entero. Tales variables con conocidas
+como {\bf globales} porque pueden accederse desde cualquier
+otra función. A diferencia de variables lexicales ``locales``, 
+las cuales desaparecen cuando sus ámbitos terminan, las 
+variables globales persisten de una llamada de subrutina 
+a la siguiente.
 \index{flag}
 
-It is common to use global variables for {\bf flags}; that is, 
-boolean variables that indicate (``flag'') whether a condition
-is true.  For example, some programs use a flag named 
-\verb'$verbose' to control the level of detail in the
-output:
+Es común usar variables globales como {\bf banderas} (\emph{flags} en inglés);
+es decir, variables booleanas que indican si una condición es
+verdadera. Por ejemplo, algunos programas usan banderas nombradas
+\verb|$verbose| para controlar el nivel de detalle en la salida de texto:
 
 \begin{verbatim}
 my $verbose = True;
-sub example1 {
-    say 'Running example1' if $verbose;
+sub ejemplo1 {
+    say 'Ejecutando ejemplo1' if $verbose;
     # ...
 }
 \end{verbatim}
 %
 
-Global variables are also sometimes used for environment 
-variables and parameters passed to the program, as well
-as for storing a large 
-data structure that is the centerpiece of a program, in order 
-to avoid copying it when passing it around as an argument to 
-subroutines.
+Las variables globales son también usadas para variables
+de entorno y parámetros que se pasan al programa, como 
+para almacenar una estructura de datos que es la pieza central
+de un programa, para evitar copiarla cuando se pasa como un 
+argumento a las subrutinas.
 
-But, asides from those specific cases, it is usually 
-considered poor practice to use a global variable, because 
-it creates dependencies and unexpected ``action-at-a-distance'' 
-behaviors between various parts of a program and may lead to 
-difficult-to-track bugs.
+Pero, a parte de esos casos específicos, es usualmente
+considerado mala práctica usar variables globales, porque
+crea dependencias y comportamientos de ``acciones a distancia``
+inesperados entre varias partes de un programa y puede conducir
+a errores que son difícil de encontrar.
 
-In the case of our memoized \verb'fibonacci' subroutine, the 
-\verb'%known' hash is useful only within the subroutine. We 
-can improve the implementation by using the \verb'state' 
-declarator within the subroutine:
+En el caso de nuestra subrutina \verb|fibonacci| memoizada,
+el hash \verb|%conocidos| es útil solo dentro de la subrutina.
+Podemos mejorar la implementación al usar el declarador \verb|state|
+dentro de la subrutina:
 \index{state}
 \index{Fibonacci!memoized with a state variable}
 
 \begin{verbatim}
 say fibonacci(10);
 sub fibonacci ($n) {
-    state %known = 0 => 1, 1 => 1;
-    return %known{$n} if %known{$n}:exists;
-    %known{$n} = fibonacci($n-1) + fibonacci($n-2);
-    return %known{$n};
+    state %conocidos = 0 => 1, 1 => 1;
+    return %conocidos{$n} if %conocidos{$n}:exists;
+    %conocidos{$n} = fibonacci($n-1) + fibonacci($n-2);
+    return %conocidos{$n};
 }
 \end{verbatim}
 %
-The \verb'state' declarator makes the variable local to the 
-subroutine and persistent from one call to the subroutine to 
-another: the code line with the \verb'state' statement is 
-executed only once (at the first call of the subroutine) 
-and the content of variable, the \verb'%known' hash in this 
-case, is kept from one call to the next.
+El declarador \verb|state| hace la variable local a la subrutina
+y persistente de una llamada de la subrutina a la otra: la línea de
+código con la sentencia \verb|state| se ejecuta una sola vez 
+(en la primera llamada de la subrutina) y el contenido de la 
+variable, el hash \verb|%conocidos| en este caso, se mantiene
+de una llamada a la siguiente.
 
 
-
-\section{Debugging}
+\section{Depuración de Programas}
 \index{debugging}
 
-As you work with bigger datasets it can become unwieldy to
-debug by printing and checking the output by hand.  Here are some
-suggestions for debugging large data sets:
+A medida que trabajas con conjuntos de datos (\emph{datasets}) más grandes,
+puede volverse tedioso e inmanejable depurar con solo la impresión y chequeo
+de la salida manualmente. Aquí presentamos algunas sugerencias para depurar
+conjuntos de datos grandes:
 
 \begin{description}
 
-\item[Scale down the input] If possible, reduce the size of the
-dataset.  For example if the program reads a text file, start with
-just the first 10 lines, or with the smallest example you can find.
-You can either edit the files themselves, or (better) modify the
-program so it reads only the first {\tt n} lines.
+\item[Reduce la entrada] Si es posible, reduce el tamaño de
+tu conjunto de datos. Por ejemplo, si el programa
+lee un archivo de texto, comienza con las primeras 10 líneas, o con
+el ejemplo más pequeño que puedas encontrar. Puedes editar los archivos
+o (mejor aún) modificar el programa para que lea solo las primeras {\tt n}
+líneas.
 
-If there is an error, you can reduce {\tt n} to the smallest
-value that manifests the error, and then increase it gradually
-as you find and correct errors.
+Si hay un error, puedes reducir {\tt n} al valor más pequeño que manifiesta
+el error, y después incrementarlo gradualmente a medida que encuentras
+y arreglas los demás errores.
 
-\item[Check summaries and types] Instead of printing and checking the
-entire dataset, consider printing summaries of the data: for example,
-the number of items in a hash or the total of a list of numbers.
+\item[Chequea los resúmenes y tipos] En lugar de imprimir y chequear el conjunto
+de datos, considera imprimir resúmenes de los datos: por ejemplo,
+el número de artículos en un hash o el total de una lista de 
+números.
 
-A common cause of runtime errors is a value that is not the right
-type.  For debugging this kind of error, it is often enough to print
-the type of a value (think about the {\tt .WHAT} method).
+Una causa común de los errores al tiempo de ejecución es una valor 
+que no es del tipo correcto. Para depurar este tipo de error, es 
+usualmente suficiente con imprimir el tipo de un valor (piensa sobre
+el método {\tt .WHAT}).
 \index{WHAT}
 
-It is often useful to add typing to your variables. Where you 
-expect a string, make sure you type the variable or subroutine 
-parameter with {\tt Str}. If you expect an integer, type it with 
-{\tt Int}. If you expect an {\tt Int} of a certain range, create 
-a subset for it as in Section~\ref{guardian} (p.~\pageref{guardian}) 
-and type the variable with that.
+Es usualmente útil agregar tipos a tus variables. Donde espera una
+cadena de texto, asegúrate de escribir la variable o el parámetro 
+de la subrutina con {\tt Str}. Si espera un entero, escríbelo 
+con {\tt Int}. Si espera un {\tt Int} de un cierto rango, 
+crea un subconjunto para el mismo como en la Sección~\ref{guardian} (p.~\pageref{guardian}) 
+y agrega ese tipo a la variable.
 \index{subset!type}
 \index{type subset}
 
-\item[Write self-checks:]  Sometimes you can write code to check
-for errors automatically.  For example, if you are computing the
-average of a list of numbers, you could check that the result is
-not greater than the largest element in the list or less than
-the smallest.  This is called a ``sanity check'' because it detects
-results that are ``insane.''
+\item[Escribe autochequeos]  Algunas veces puedes escribir código para
+chequear errores automáticamente. Por ejemplo, si estás calculando
+el promedio de una lista de números, podrías chequear que el 
+resultado no sea mayor que el elemento más grande en la lista o menor
+que el elemento mas pequeño. Esto se conoce como ``comprobación de
+validez`` porque detecta aquellos resultados que son ``inválidos``.
 \index{sanity check}
 \index{consistency check}
 
-Another kind of check compares the results of two different
-computations to see if they are consistent.  This is called a
-``consistency check.''
+Otro tipo de chequeo compara los resultados de dos computaciones
+diferentes para ver si son consistentes. Esto se llama
+``comprobación de consistencia``.
 
-\item[Format the output] Formatting debugging output
-can make it easier to spot an error.  We saw an example in
-Section~\ref{factdebug}.  The {\tt dd} function displays 
-helpful details on a composite or complex data structure.
+\item[Formatea la salida] Formatear la salida de un proceso de
+depuración puede facilitar la detección de errores. Vimos un ejemplo
+en la Sección~\ref{factdebug}. La función {\tt dd} muestra detalles
+útiles de una estructura de datos compuesta o compleja.
 
 \index{dd function}
 \index{function!dd}
 
 \end{description}
 
-Again, time you spend building scaffolding can reduce
-the time you spend debugging.
+Nuevamente lo repito: el tiempo que inviertes en andamiaje puede 
+reducir el tiempo que pierdes en depuración.
 \index{scaffolding}
 
 
-\section{Glossary}
+\section{Glosario}
 
 \begin{description}
 
@@ -1290,7 +1282,7 @@ u otro bloque. Las variables globales pueden accederse desde cualquier
 subrutina.
 \index{global variable}
 
-\item[Flag] Una variable Booleana que se usa para indicar si una 
+\item[Bandera] Una variable Booleana que se usa para indicar si una 
 condición es verdadera.
 \index{flag}
 
