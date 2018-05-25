@@ -5,51 +5,46 @@
 
 Las cadenas de texto no son como los enteros, los racionales,
 y los Booleanos. Una cadena de texto es una {\bf secuencia} de caracteres,
-lo cual significa 
-
-
-Strings are not like integers, rationals, and Booleans.  
-A string is a {\bf sequence} of characters, which means 
-it is an ordered collection of other values, and you 
-sometimes need to access to some of these individual 
-values.  In this chapter you'll see how to analyze, 
-handle, and modify strings, and you'll learn about some 
-of the methods strings provide. You will also start to learn about 
-a very powerful tool for manipulating text data, regular 
-expressions a.k.a. regexes.
+lo cual significa que es una colección ordenada de otros valores,
+y algunas veces necesitas acceder algunos de estos valores individuales.
+En este capítulo verás cómo analizar, manejar, y modificar cadenas
+de texto, y aprenderás sobre algunos de los métodos que las
+cadenas de texto proveen. También aprenderás sobre una
+herramienta muy poderosa para la manipulación de texto, 
+expresiones regulares (también conocidas como ``regexes``).
 \index{sequence}
 \index{regex}
 
 
-\section{A String is a Sequence}
+\section{Una Cadena de Texto es una Secuencia}
 
 \index{sequence}
 \index{character}
 \index{bracket operator}
 \index{operator!bracket}
-A string is primarily a piece of textual data, but it 
-is technically an ordered sequence of characters.  
+Una cadena de texto es primariamente una pieza de datos textuales,
+pero es técnicamente una secuencia ordenada de caracteres.
 
-Many programming languages allow you to access individual 
-characters of a string with an index between brackets. This 
-is not directly possible in Perl, but you still can access 
-the characters one at a time using the {\tt comb} built-in 
-method and the bracket operator:
+Muchos lenguajes de programación te permiten acceder caracteres
+individuales de una cadena de texto con índice entre corchetes. 
+Esto no es directamente posible en Perl, pero todavía puedes
+los caracteres uno a la vez usando el método integrado {\tt comb} 
+y el operador corchete:
 
 \begin{verbatim}
-> my $string = "banana";
+> my $cadena = "banana";
 banana
-> my $st = $string.comb;
+> my $cad = $cadena.comb;
 (b a n a n a)
-> say $st[1];
+> say $cad[1];
 a
-> say $st[2];
+> say $cad[2];
 n
 \end{verbatim}
 %
-The {\tt comb} in the second statement splits the string 
-into a list of characters that you can then access 
-individually with square brackets.
+El método {\tt comb} en la segunda sentencia divide la cadena de texto
+en una lista de caracteres que puedes acceder individualmente con
+los corchetes.
 \index{comb function and method}
 \index{method!comb}
 \index{function!comb}
@@ -58,70 +53,77 @@ individually with square brackets.
 \index{index}
 \index{subscript}
 
-The expression in brackets is called an {\bf index} 
-(it is sometimes also called a subscript).  
-The index indicates which character in the sequence you
-want (hence the name). But this may not be what you 
-expected: the item with index 1 is the second letter of 
-the word. For computer scientists, the index is usually 
-an offset from the beginning. The offset of the first 
-letter (``b'') is zero, and the 
-offset of the first ``a'' is 1, not 2, and so on.
+La expresión dentro de los corchetes se llama un {\bf índice}
+(también llamado subíndice). El índice indica cuales 
+caracteres en la secuencia quieres (de ahí el nombre). Pero
+puede ser que esto no es lo que esperabas: el artículo con
+índice 1 es la segunda letra de la palabra. Para los
+científicos de la computación, el índice es usualmente
+un desplazo del inicio. Por ejemplo, el índice de la primera 
+letra (``b``) es 0, y el índice de la primera ``a`` es 1,
+no 2, etcétera.
 \index{index!starting at zero}
 \index{zero, index starting at}
 
-You could also retrieve a ``slice'' of several characters in 
-one go using the range operator within the brackets:
+También podrías extraer una ``rebanada`` de varios caracteres
+de una sola vez al usar el operador de rango dentro de los 
+corchetes:
 \index{slice}
 
 \begin{verbatim}
-> say $st[2..5]
+> say $cad[2..5]
 (n a n a)
 \end{verbatim}
 %
 \index{substring}
-Again, the ``nana'' substring starts on the third letter of 
-\verb"'banana'", but this letter is indexed 2, and the sixth letter is index 5. 
+De nuevo, la subcadena ``nana`` comienza en la tercera letra
+de \verb|'banana'|, pero esta letra está indexada 2, y la
+sexta letra tiene índice 5.
 
-But, even if all this might be useful at times, this is 
-not the way you would usually handle strings in Perl, 
-which has higher level tools that are more powerful and more 
-expressive, so that you seldom need to use indexes or 
-subscripts to access individual characters.
+Aunque esto puede ser útil en ocasiones, esta no es la manera
+en la que manejarías cadenas de texto en Perl, el cual tiene
+herramientas superiores que son más poderosas y más 
+expresivas, así que raramente necesitas usar índices o 
+subíndices para acceder caracteres individuales.
 
-Also, if there is a real need to access and manipulate 
-individual letters, it would make more sense to store 
-them in an array, but we haven't covered arrays yet, so 
-we'll have to come back to that later.
+También, si existe una necesidad real de acceder y manipular
+las letras individuales, haría más sentido almacenarlas en un 
+array, pero no hemos hablado sobre arrays todavía, así que
+regresaremos a esto más tarde.
 
-
-\section{Common String Operators}
+\section{Operadores Comunes de Cadenas de Texto}
 \index{string!operators}
 
-Perl provides a number of operators and functions to 
-handle strings. Let's review some of the most popular ones.
+Perl provee un número de operadores y funciones para el 
+manejo de cadenas de texto. Revisemos algunos de los más 
+populares.
 
-\subsection{String Length}
+\subsection{Longitud de una Cadena de Texto}
 \index{chars function}
 \index{function!chars}
 \index{string!length}
 
-The first thing we might want to know about a string is its length. The {\tt chars} built-in returns the number of characters 
-in a string and can be used with either a method or a function 
-syntax:
+La primera cosa que desearíamos saber sobre una cadena de texto 
+es su longitud. El método (o función) {\tt chars} devuelve el número de
+caracteres de una cadena de texto. Como podemos ver, {\tt chars} puede
+usarse con una sintaxis de método o función:
 \index{invocation!method}
 \index{method invocation}
 
 \begin{verbatim}
-> say "banana".chars;   # method invocation syntax
+> say "banana".chars;   # sintaxis de invocación de método
 6
-> say chars "banana";   # function call syntax
+> say chars "banana";   # sintaxis de llamada de función
 6
 \end{verbatim}
 %
 
 \index{Unicode}
 \index{grapheme}
+Nota que, con el advenimiento de Unicode, la noción 
+sobre la longitud de una cadena de texto se ha vuelto 
+más complicada que 
+
 Note that, with the advent of Unicode, the notion of 
 string length has 
 become more complicated than it used to be in the era
