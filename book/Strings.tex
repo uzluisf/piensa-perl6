@@ -122,138 +122,135 @@ usarse con una sintaxis de método o función:
 \index{grapheme}
 Nota que, con el advenimiento de Unicode, la noción 
 sobre la longitud de una cadena de texto se ha vuelto 
-más complicada que 
+más complicada que lo era con cadenas de texto ASCII.
+Hoy en día, un carácter puede estar compuesto de uno, dos, o 
+más bytes. La rutina {\tt chars} devuelve el número de 
+caracteres (en el sentido de los grafemas de Unicode, los cuales
+son más o menos lo que los humanos perciben como caracteres) dentro
+de la cadena, aún cuando algunos caracteres requieren una
+codificación de más de 2, 3, o 4 bytes.
 
-Note that, with the advent of Unicode, the notion of 
-string length has 
-become more complicated than it used to be in the era
-of ASCII-only strings. Today, a character may be made of one,
-two, or more bytes. The {\tt chars} routine returns the 
-number of characters (in the sense of Unicode graphemes, which
-is more or less what humans perceive as characters) within 
-the string, even if some of these characters require an 
-encoding over 2, 3, or 4 bytes.
+Una cadena de texto con una longitud cero (i.e., sin caracteres) se
+conoce como una \emph{cadena de texto vacía}.
 
-A string with a zero length (i.e., no character) is called 
-an \emph{empty string}.
-
-\subsection{Searching For a Substring Within the String}
-
+\subsection{Búsqueda de una Subcadena Dentro de una Cadena de Texto}
 \label{find}
 \index{index function}
 \index{function!index}
 \index{substring}
 
-The {\tt index} built-in usually takes two arguments, a string 
-and a substring (sometimes called the ``haystack'' and the 
-``needle''), searches for the substring in the string, and 
-returns the position where the substring is found (or an 
-undefined value if it wasn't found): 
+La función integrada {\tt index} usualmente toma dos argumentos,
+una cadena de texto y una subcadena (algunas veces conocidas como
+la ``paja`` y la ``aguja``), busca la subcadena en la cadena de texto,
+y devuelve la posición donde se encuentra la subcadena. Si la subcadena
+no se encuentra en la cadena, la función devuelve un valor indefinido:
 
 \begin{verbatim}
-> say index "banana", "na";
+> say index "naranja", "ra";
 2
-> say index "banana", "ni";
+> say index "naranja", "je";
 Nil
 \end{verbatim}
 %
 
 \index{offset}
-Here again, the index is an offset from the beginning of the 
-string, so that the index of the first letter (``b'') is zero, 
-and the offset of the first ``n'' is 2, not 3.
+Nuevamente, el índice es un desplazo del inicio de la cadena 
+de texto, así que el índice de la primera letra (``n``) es cero,
+y el índice de la segunda ``a`` es 3, no 4.
 \index{index!starting at zero}
 
-You may also call {\tt index} with a method syntax:
+También puedes invocar a {\tt index} con una sintaxis de método:
 \begin{verbatim}
-> say "banana".index("na");
+> say "naranja".index("ra");
 2
 \end{verbatim}
 %
 
-The {\tt index} function can take a third optional argument, 
-an integer indicating where to start the \emph{search} 
-(thus ignoring in the search any characters before the 
-start position):
+La función {\tt index} puede tomar un tercer argumento opcional,
+un entero que indica donde comenzar la \emph{búsqueda} (y por lo
+tanto ignorando en la búsqueda cualquier carácter posterior a
+la posición de inicio):
 
 \begin{verbatim}
-> say index "banana", "na", 3;
-4
+> say index "naranja", "a", 2;
+3
 \end{verbatim}
 %
-Here, the {\tt index} function started the search on the middle 
-``a'' and thus found the position of the second occurrence of 
-the ``na'' substring.
+Aquí la función {\tt index} comenzó la búsqueda en la ``r`` y encontró 
+la posición de la segunda ocurrencia de la subcadena ``a``.
+ 
 
 \index{function!rindex}
 \index{rindex function}
-There is also a {\tt rindex} function, which searches the string 
-backwards from the end and returns the last position of the 
-substring within the string:
+También existe una función {\tt rindex}, la cual realiza la búsqueda
+de la subcadena de atrás hacia adelante y devuelve la última posición de 
+la subcadena dentro de la cadena de texto:
 
 \begin{verbatim}
-> say rindex "banana", "na";
-4
+> say rindex "naranja", "a";
+6
 \end{verbatim}
 %
 
-Note that even though the {\tt rindex} function searches the 
-string backwards (from the end), it returns a position 
-computed from the start of the string.
+Nota que aunque {\tt rindex} inspecciona la cadena de texto
+de atrás hacia adelante, la función devuelve una posición
+computada desde el inicio de la cadena de texto.
 
-\subsection{Extracting a Substring from a String}
+\subsection{Extrayendo una Subcadena de una Cadena de Texto}
 \index{substr function or method}
 \index{function!substr}
 \index{substring}
 
-The opposite of the {\tt index} function is the {\tt substr} 
-function or method, which, given a start position and a length, 
-extracts a substring from a string:
+La función opuesta a {\tt index} es la función (o método) {\tt substr},
+la cual, dada una posición inicial y una longitud, extrae una subcadena
+de una cadena de texto:
 
 \begin{verbatim}
-> say substr "I have a dream", 0, 6;
-I have
-> say "I have a dream".substr(9, 5)
-dream
+> say substr "Hacer es la mejor manera de decir.", 0, 5;
+Hacer
+> say "Hacer es la mejor manera de decir.".substr(12, 5)
+mejor
 \end{verbatim}
 %
 
 \index{chars function}
 \index{Unicode}
 \index{grapheme}
-Note that, just as for the {\tt chars} function, the length 
-is expressed in characters (or Unicode graphemes), not in bytes. 
-Also, as you can see, spaces separating words within the string 
-obviously count as characters. The length argument is optional; 
-if it is not provided, the {\tt substr} function returns the 
-substring starting on the start position to the end of the string:
+Nota que, al igual que la función {\tt chars}, la longitud es
+expresada en caracteres (o grafemas Unicode), no en bytes.
+De igual modo, como puedes observar, los espacios que separan
+las palabras dentro de la cadena de texto obviamente cuentan 
+como caracteres. El argumento de la longitud es opcional; 
+si no se provee, la función {\tt substr} devuelve la subcadena
+comenzando en la posición de inicio al final de la cadena de texto:
 
 \begin{verbatim}
-> say "I have a dream".substr(7)
-a dream
+> say "Hacer es la mejor manera de decir.".substr(9)
+la mejor manera de decir.
 \end{verbatim}
 
-Similarly, if the length value is too large for the 
-substring starting on the start position, the {\tt substr} 
-function will also return the substring starting on the start 
-position to the end of the string:
+Similamente, si el valor de la longitud es muy largo para que 
+la subcadena comience en la posición inicial, la función
+{\tt substr} devolverá la subcadena comenzando en la posición
+inicial hasta el final de la cadena:
 
 \begin{verbatim}
 > say substr "banana", 2, 10;
 nana
 \end{verbatim}
 
-Of course, the start position and length parameters need not be 
-hardcoded numbers as in the examples above; you may use a variable 
-instead (or even an expression or a function returning a numeric 
-value), provided the variable or value can be coerced into an integer. 
-But the start position must be within the string range, 
-failing which you would obtain a {\tt Start argument to 
-substr out of range ...} error; so you may have to verify it 
-against the length of the string beforehand. 
+Por supuesto, los parámetros de la posición inicial y la longitud 
+no necesitan números literales como en los ejemplos anteriores; puedes
+también usar variables (o hasta una expresión o una función que devuelve 
+un valor numérico), provisto que la variable o la función pueda ser 
+coaccionada en un entero. Pero la posición de inicio debe estar dentro 
+del rango de la cadena de texto, y si falla obtienes un error 
+{\tt Start argument to substr out of range ...}; por lo tanto
+podrías tener que verificarlo en contra de la longitud de la 
+cadena de texto con antelación.
 
-You can also start counting backwards from the end of the 
-string with the following syntax:
+También puedes comenzar a contar de atrás hacia adelante con la
+siguiente sintaxis:
 
 \begin{verbatim}
 > say "I have a dream".substr(*-5)
@@ -262,35 +259,35 @@ dream
 dream
 \end{verbatim}
 %
-Here, the star * may be thought as representing the total size 
-of the string; \verb'*-5' is therefore the position in the string 
-five characters before the end of the string. So, \verb'substr(*-5)' 
-returns the characters from that position to the end of the string, 
-i.e., the last five characters of the string.
-
+Aquí, el asterisco * puede considerarse como una representación de la
+longitud total de la cadena de texto; \verb|*-5| es por lo tanto la posición
+en la cadena de texto cinco caracteres antes del final de la cadena. Así que
+\verb|substr(*-5)| devuelve los caracteres desde esa posición hasta el final
+de la cadena de texto, i.e., los últimos cinco caracteres de la cadena de
+texto.
 \index{substr function}
 \index{substring}
 
-\subsection{A Few Other Useful String Functions or Methods}
+\subsection{Otras Funciones o Métodos Útiles de Cadenas de Texto}
 \index{string!operators}
 
-This may not be obvious yet, but we will see soon 
-that the combination of the above string functions gives you 
-already a lot of power to manipulate strings way beyond what 
-you may think possible at this point.
+Esto puede no ser obvio todavía, pero prontamente veremos
+que la combinación de las funciones de cadenas de texto que discutimos
+más arriab nos dan ya mucho poder para manipular cadenas de texto
+más allá de lo que piensas posible en este punto.
 
-Let us just mention very briefly a few additional functions 
-that may prove useful at times.
+Déjanos mencionar brevemente varias funciones adicionales
+que pueden ser útiles de vez en cuando.
 
 \subsubsection{flip}
 
 \index{flip function}
 \index{function!flip}
-The {\tt flip} function or method reverses a string:
+La función (o método) {\tt flip} invierte una cadena de texto:
 
 \begin{verbatim}
-> say flip "banana";
-ananab
+> say flip "mango";
+ognam
 \end{verbatim}
 %
 
@@ -298,11 +295,13 @@ ananab
 \index{split function or method}
 \index{function!split}
 \index{delimiter}
-The {\tt split} function or method splits a string 
-into substrings, based on delimiters found in the string:
+La función (o método) {\tt split} divide una cadena de texto 
+en subcadenas de texto, basado en los delimitadores en l
+cadena de texto:
 
 \begin{verbatim}
 > say $_ for split "-", "25-12-2016";
+> #                 ^ delimitador
 25
 12
 2016
@@ -312,25 +311,26 @@ into substrings, based on delimiters found in the string:
 2016
 \end{verbatim}
 
-The delimiter can be a single quoted character as in the 
-examples above or a string of several characters, such as 
-a comma and a space in the example below:
+El delimitador puede ser un solo carácter con comillas como
+en el ejemplo más arriba o una cadena de varios caracteres, 
+tales como una coma y un espacio en el ejemplo más abajo:
 
 \begin{verbatim}
 > .say for split  ", ", "Jan, Feb, Mar";
+> #                ^^ delimitador
 Jan
 Feb
 Mar
 \end{verbatim}
 
-Remember that \verb'.say' is a shortcut for \verb'$_.say'.
+Recuerda que \verb|.say| es un atajo para \verb|$_.say|.
 
-By default, the delimiters don't appear in the output produced 
-by the {\tt split} function or method, but this behavior can 
-be changed with the use of an appropriate \emph{adverb}. An adverb 
-is basically a named argument to a function that modifies 
-the way the function behaves. For example, the {\tt :v} (values) adverb 
-tells {\tt split} to also output the value of the delimiters:
+Por defecto, los delimitadores no aparecen en la salida producida por 
+la función (o método) {\tt split}, pero este comportamiento puede 
+cambiarse con el uso de {\tt adverbio} apropiado. Un adverbio es básicamente
+un argumento nombrado de una función que modifica la manera en la 
+función se comporta. Por ejemplo, el adverbio {\tt :v} (valores)
+le dice a {\tt split} que también devuelva el valor del delimitador:
 \index{adverb}
 \index{:v adverb}
 
@@ -343,27 +343,26 @@ tells {\tt split} to also output the value of the delimiters:
 "Mar"
 \end{verbatim}
 
-The other adverbs that can be used in this context are 
-{\tt :k} (keys), {\tt :kv} (keys and values), and {\tt :p} 
-(pairs). Their detailed meaning can be 
-found in the documentation for {\tt split} 
-(\url{https://docs.perl6.org/routine/split}). The 
-{\tt skip-empty} adverb removes empty chunks from the result 
-list.
+Los otros adverbios que pueden usarse en este contexto son {\tt :k} (claves), 
+{\tt :kv} (claves y valores), y {\tt :p} (pares). Su significados detallados pueden
+encontrarse en la documentación para {\tt split}
+(\url{https://docs.perl6.org/routine/split}). El adverbio {\tt skip-empty}
+remueve las partes vacías de la lista de resultados.
 
-The {\tt split} function can also use a regular expression 
-\emph{pattern} as delimiter, and this can make it much more powerful. 
-We will study regular expressions later in this chapter.
+La función {\tt split} pueden también usarse un \emph{patrón} 
+de expresión regular como un delimitador, y esto puede hacerla
+mucho más poderosa. Estudiaremos expresiones regulares más adelante
+en este capítulo.
 \index{regular expression}
 \index{regex}
 
-\subsubsection{String Concatenation}
+\subsubsection{Concatenación de Cadenas de Texto}
 
 \index{concatenate operator}
 \index{string!concatenation}
 \index{string concatenation}
 
-The \verb'~' operator concatenates two strings into one:
+El operador \verb|~| concatena dos cadenas de texto y forma una:
 
 \begin{verbatim}
 > say "ban" ~ "ana";
@@ -371,8 +370,8 @@ banana
 \end{verbatim}
 %
 
-You may chain several occurrences of this operator to 
-concatenate more than two strings:
+Puedes tener cadenas de varias ocurrencias de este operador
+para concatenar más de dos cadenas:
 
 \begin{verbatim}
 > say "ba" ~ "na" ~ "na";
@@ -380,8 +379,8 @@ banana
 \end{verbatim}
 %
 
-Used as a unary prefix operator,
-\verb'~' ``stringifies'' (i.e., transforms into a string) its argument:
+Si se usa como un operador prefijo unario,
+\verb|~| transforma su argumento en una cadena de texto:
 \index{stringify operator}
 \index{stringification}
 
@@ -391,11 +390,11 @@ Used as a unary prefix operator,
 \end{verbatim}
 %
 
-\subsubsection{Splitting on Words}
+\subsubsection{Separando en Palabras}
 
 \index{words function or method}
-The {\tt words} function returns a list of words that make 
-up the string:
+La función {\tt words} devuelve una lista de palabras
+que componen la cadena de texto:
 
 \begin{verbatim}
 > say "I have a dream".words.perl;
@@ -412,13 +411,14 @@ dream
 
 \index{join function or method}
 \index{function!join}
-The {\tt join} function takes a separator argument and a list 
-of strings as arguments; it interleaves them with the separator, 
-concatenates everything into a single string, and returns the 
-resulting string.
+La función {\tt join} toma un argumento separador y una lista
+de cadenas de texto como argumentos; la función las intercala
+con el separador, concatena todo en una sola cadena de texto, y 
+devuelve la cadena de texto resultante.
 
-This example illustrates the chained use of the {\tt words} and 
-{\tt join} functions or methods:
+Este ejemplo ilustra el uso de las funciones (o métodos) 
+{\tt words} y {\tt join}:
+
 \begin{verbatim}
 say 'I have a dream'.words.join('|');    # -> I|have|a|dream
 say join ";", words "I have a dream";    # -> I;have;a;dream
@@ -426,12 +426,12 @@ say join ";", words "I have a dream";    # -> I;have;a;dream
 %
 
 \index{words function or method}
-In both cases, {\tt words} first splits the original 
-string into a list of words, and {\tt join} stitches 
-the items of this list back into a new string interleaved 
-with the separator.  
+En ambos casos, {\tt words} primero divide la cadena original
+en una lista de palabras,  {\tt splits} sutura los artículos
+de esta lista y los devuelve en una nueva cadena de texto 
+intercalados con el separador.
 
-\subsubsection{Changing the Case}
+\subsubsection{Conversión a Minúscula y a Mayúscula}
 \index{lc function or method} 
 \index{lower case!lc function}
 \index{uc function or method}
@@ -443,24 +443,23 @@ with the separator.
 \index{case!lower}
 \index{case!title}
 
-The {\tt lc} and {\tt uc} routines return respectively a 
-lowercase and an uppercase version of their arguments. 
-There is also a {\tt tc} function or method returning its 
-argument with the first letter converted to title case (or 
-upper case):
+Las rutinas {\tt lc} y {\tt uc} devuelven respectivamente
+una versión en minúscula y una versión mayúscula de sus 
+argumentos. También está la función {\tt tc} la cual devuelve
+su argumento con la primera letra en mayúscula:
 
 \begin{verbatim}
-say lc "April";    # -> april
-say "April".lc;    # -> april
-say uc "april";    # -> APRIL
-say tc "april";    # -> April
+say lc "Abril";    # -> april
+say "Abril".lc;    # -> april
+say uc "abril";    # -> APRIL
+say tc "abril";    # -> April
 \end{verbatim}
 
 \index{eq, string equality operator}
-Remember also that the {\tt eq} operator checks the equality 
-of two strings. 
+Recuerda que el operador {\tt eq} chequea la igualdad de dos 
+cadenas de texto.
 
-\section{String Traversal With a {\tt while} or {\tt for} Loop}
+\section{Recorrido de una Cadena con un bucle {\tt while} o {\tt for}}
 \label{stringtraversal}
 \index{traversal}
 \index{loop!traversal}
@@ -470,28 +469,28 @@ of two strings.
 \index{index function}
 \index{while loop}
 
-A lot of computations involve processing a string one 
-character at a time.  Often they start at the beginning, 
-select each character in turn, do something to it or with 
-it, and continue until the end.  This pattern of
-processing is called a {\bf traversal}.  One way to write
-a traversal is with a {\tt while} loop and the 
-{\tt index} function:
+Muchas computaciones involucran el procesamiento de una
+cadena de texto una carácter a la vez. Usualmente ellas
+comienzan al principio, seleccionan cada carácter en turno,
+hacen algo con dicho carácter, y continúan hasta el final.
+Este patrón de procesamiento se conoce como {\bf recorrido}. 
+Una manera de escribir un recorrido es con un bucle {\tt while}
+y la función {\tt index}:
 \index{while loop}
 \index{index}
 
 \begin{verbatim}
-my $index = 0;
-my $fruit = "banana";
-while $index < $fruit.chars { 
-    my $letter = substr $fruit, $index, 1; 
-    say $letter; 
-    $index++;
+my $indice = 0;
+my $fruta = "banana";
+while $indice < $fruta.chars { 
+    my $letra = substr $fruta, $indice, 1; 
+    say $letra; 
+    $indice++;
 }
 \end{verbatim}
 %
 
-This will output each letter, one at a time:
+Esto imprimirá cada letra, una a la vez:
 \begin{verbatim}
 b
 a
@@ -501,41 +500,43 @@ n
 a
 \end{verbatim}
 %
-This loop traverses the string and displays each letter on 
-a line by itself.  The loop condition is 
-{\tt \$index < \$fruit.chars}, so when {\tt \$index} is equal 
-to the length of the string, the condition is false, and 
-the body of the loop doesn't run. In other words, the loop 
-stops when {\tt \$index} is the length of the string minus 
-one, which corresponds to the last character of the string.
+Este bucle recorre la cadena de texto y muestra cada letra
+en un línea por si misma. La condición del bucle es 
+{\tt \$indice < \$fruta.chars},
+así que cuando {\tt \$indice} es igual a la longitud de
+la cadena de texto, la condición es falsa, y el cuerpo del
+bucle no se ejecuta. En otras palabras, el bucle para cuando
+{\tt \$indice} es la longitud de la cadena de texto menos 
+uno, lo cual corresponde al último carácter de la cadena 
+de texto.
 
-As an exercise, write a function that takes a string as 
-an argument and displays the letters backward, one 
-per line. Do it at least once without using the 
-{\tt flip} function. Solution: \ref{sol_stringtraversal}
+Como ejercicio, escribe una función que toma una cadena de 
+texto como un argumento y muestra las letras de atrás hacia
+adelante, una por línea. Hazlo por lo menos una vez sin utilizar
+la función {\tt flip}. Solución: \ref{sol_stringtraversal}
 
-Another way to write a traversal is with a {\tt for} loop:
+Otra forma de escribir un recorrido es con un bucle {\tt for}:
 \index{for loop}
 \index{comb function and method}
 
 \begin{verbatim}
-my $fruit = "banana";
-for $fruit.comb -> $letter {
-    say $letter
+my $fruta = "banana";
+for $fruta.comb -> $letra {
+    say $letra
 }
 \end{verbatim}
 %
 
-Each time through the loop, the next character in the string 
-is assigned to the variable {\tt \$letter}.  The loop 
-continues until no characters are left.
+Cada vez a través del bucle, el siguiente carácter en la
+cadena de texto es asignado a la variable {\tt \$letra}.
+El bucle continúa hasta que no hayan más caracteres.
 
-The loop could also use the {\tt substr} function:
+El bucle podría también usar la función {\tt substr}:
 \index{index function}
 
 \begin{verbatim}
-for 0..$fruit.chars - 1 -> $index {
-    say substr $fruit, $index, 1;
+for 0..$fruta.chars - 1 -> $indice {
+    say substr $fruta, $indice, 1;
 }
 \end{verbatim}
 %
@@ -545,21 +546,21 @@ for 0..$fruit.chars - 1 -> $index {
 \index{aphabetic order}
 \index{McCloskey, Robert}
 
-The following example shows how to use concatenation and a 
-{\tt for} loop to generate an abecedarian series (that is, in
-alphabetical order).  In Robert McCloskey's book {\em Make
-Way for Ducklings}, the names of the ducklings are Jack, Kack, Lack,
-Mack, Nack, Ouack, Pack, and Quack.  This loop outputs these names in
-order:
+El siguiente ejemplo muestra cómo usar concatenación y
+un bucle {\tt for} para genera una serie de abecedario (
+es decir, en orden alfabético). En el libro 
+{\em Make Way for Ducklings} de McCloskey, los nombres de los
+patitos son Jack, Kack, Lack, Mack, Nack, Ouack, Pack, y Quack. 
+Este bucle podría muestra estos nombres en orden:
 
 \begin{verbatim}
-my $suffix = 'ack';
-for 'J'..'Q' -> $letter {
-    say $letter ~ $suffix;
+my $sufijo = 'ack';
+for 'J'..'Q' -> $letra {
+    say $letra ~ $sufijo;
 }
 \end{verbatim}
 %
-The output is:
+La salida es:
 
 \begin{verbatim}
 Jack
@@ -572,44 +573,44 @@ Pack
 Qack
 \end{verbatim}
 %
-Of course, that's not quite right because ``Ouack'' and 
-``Quack'' are misspelled.  As an exercise, modify the program 
-to fix this error. Solution: \ref{sol_ducklings}.
+Por supuesto, esto no es del todo correcto dado que ``Ouack'' y 
+``Quack'' están mal escritos. Como ejercicio, modifica el programa
+para arreglar este error. Solución: \ref{sol_ducklings}.
 
 
-\section{Looping and Counting}
+\section{Bucles y Conteo}
 \label{counter}
 \index{counter}
 \index{counting and looping}
 \index{looping and counting}
 \index{looping!with strings}
 
-The following program counts the number of times the 
-letter ``a'' appears in a string:
+El siguiente programa cuenta el número de veces que 
+la letra ``a`` aparece en una cadena de texto:
 \index{comb function and method}
 
 \begin{verbatim}
-my $word = 'banana';
-my $count = 0;
-for $word.comb -> $letter {
-    $count++ if $letter eq 'a';
+my $palabra = 'banana';
+my $conteo = 0;
+for $palabra.comb -> $letra {
+    $conteo++ if $letra eq 'a';
 }
-say $count;              # -> 3
+say $conteo;              # -> 3
 \end{verbatim}
 %
 
 \index{counter}
-This program demonstrates another pattern of computation called a {\bf
-counter}.  The variable \verb'$count' is initialized to 0 and then
-incremented each time an ``a'' is found. When the loop exits, 
-\verb'$count' contains the result---the total number of 
-occurrences of letter ``a''.
+Este programa demuestra otro patrón de la computación 
+llamado {\bf contador}. La variable \verb|$conteo| se inicializa
+a 0 y después se incrementa por uno cada vez que se encuentra
+una ``a``. Cuando el bucle termina, \verb|$conteo| contiene
+el resultado---el número total de ocurrencias de la letra ``a``.
 \index{incrementation}
 
 \index{encapsulation}
-As an exercise, encapsulate this code in a subroutine named 
-{\tt count}, and generalize it so that it accepts the string
-and the searched letter as arguments. Solution: \ref{sol_count_letters}.
+Como ejercicio, encapsula este código en una subrutina llamada
+{\tt contar}, y generalízala para que acepte una cadena de texto 
+y la letra a contar como argumentos. Solución: \ref{sol_count_letters}.
 \label{count_letters}
 
 \section{Regular Expressions (Regexes)}
@@ -1791,7 +1792,7 @@ result.
 
 If the regex on the lefthand side contains captures, the 
 replacement part on the righthand side can use the \verb'$O', 
-\verb'$1', \verb'$2', etc. variables on the right side to insert 
+\verb'$1', \verb|$2|, etc. variables on the right side to insert 
 captured substrings in the replacement text. A typical 
 example of that is date reformatting:
 
