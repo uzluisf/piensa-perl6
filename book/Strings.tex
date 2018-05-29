@@ -613,93 +613,97 @@ Como ejercicio, encapsula este código en una subrutina llamada
 y la letra a contar como argumentos. Solución: \ref{sol_count_letters}.
 \label{count_letters}
 
-\section{Regular Expressions (Regexes)}
+\section{Expresiones Regulares (Regexes)}
 \label{regex}
 \index{regex}
 \index{regular expression}
 
-The string functions and methods we have seen so far are 
-quite powerful, and can be used for a number of string 
-manipulation operations. But suppose you want to extract 
-from the string ``yellow submarine'' any letter that is 
-immediately preceded by the letter ``l'' and followed by 
-the letter ``w''. This kind of ``fuzzy search'' 
-can be done in a loop, but this is 
-somewhat unpractical. You may try to do it as an exercise if 
-you wish, but you should be warned: it is quite tricky and 
-difficult. Even if you don't do it, the solution may be of some 
-interest to you: see Subsection\ref{sol_regex_loop}. 
+Las funciones y los métodos de cadenas de texto que hemos visto
+hasta ahora son realmente poderosos, y pueden usarse para un 
+sin número de operaciones relacionadas con la 
+manipulación de cadenas de texto. Pero supón que quieres extraer
+de la cadena ``yellow submarine`` cualquier letra después
+de la letra ``l`` y antes de la letra ``w``. Este tipo de 
+``búsqueda difusa`` puede hacerse con un bucle, pero no 
+es práctico. Puedes hacerlo como un ejercicio si deseas,
+pero debo advertirte: es algo delicado y difícil. Aún si 
+no lo haces, la solución puede interesarte: 
+ver Subsección\ref{sol_regex_loop}. 
 \label{regex_loop}
 
+Si agregas otra condición, por ejemplo que esta letra 
+debería extraerse o \emph{capturarse} (i.e. almacenada para 
+uso futuro) solo si el resto de la cadena de texto contiene
+la subcadena ``rin``, esto comienza a ser algo tedioso. También,
+cualquier cambio a los requerimientos conduce a que tengamos
+que hacer una reescritura substancial o hasta refactorizar
+el código completamente.
 
-If you add some further condition, 
-for example that this letter should be extracted or 
-\emph{captured} (i.e. saved for later use) only if 
-the rest of the string contains the substring ``rin'', 
-this starts to be really tedious. Also, any change to the 
-requirements leads to a substantial rewrite or even 
-complete refactoring of the code.
+Para este tipo de trabajo, una {\bf expresión regular} 
+o un {\bf regex} es una herramienta mucha más poderosa
+y expresiva. La siguiente es una manera de extraer letras usando
+el criterio descrito anteriormente: 
 
-For this type of work, {\bf regular expressions} or 
-{\bf regexes}  are a much more powerful and expressive tool. 
-Here's one way to extract letters using the criteria 
-described above:
 
 \begin{verbatim}
-> my $string = "yellow submarine";
+> my $cadena = "yellow submarine";
 yellow submarine
-> say ~$0 if $string ~~ / l (.) w .*? rin /;
+> say ~$0 if $cadena ~~ / l (.) w .*? rin /;
 o
 \end{verbatim}
 
-Don't worry if you don't understand this example; 
-hopefully it will be clear very soon.
+No te preocupes si no entiendes este ejemplo;
+afortunadamente todo se aclarará muy pronto.
 
 \index{operator!smart match}
 \index{smart match operator}
-The \verb'~~' operator is called the smart match operator. It is 
-a very powerful relational operator that can be used for 
-many advanced comparison tasks. In this case, it checks whether 
-the {\tt \$string} variable on its left ``matches''  
-the funny expression on its right, i.e., as a first 
-approximation, whether the expression on the right describes 
-the string (or part of it). 
+El operador \verb|~~| se conoce como el operador de coincidencia
+inteligente. Es un operador de relación muy poderoso que puede
+usarse para tareas de comparación más avanzadas. En este caso, 
+el operador chequea si la variable {\tt \$cadena} a su izquierda
+``coincide`` con la expresión a su derecha, i.e., como una 
+primera aproximación, si la expresión a su derecha describe la 
+cadena de texto (o parte de la misma).
 
 \index{pattern}
-The \verb'/ l (.) w .*? rin /' part is called a regex pattern and means: 
-the letter ``l'', followed by any single character (the dot) to be 
-captured (thanks to the parentheses), followed by the letter ``w'', 
-followed by an unspecified number of characters, followed by the 
-substring ``rin''. Phew! All this in one single code line! Quite 
-powerful, isn't it? If the string matches the pattern, then 
-the match will return a true value and \verb'$0' will be 
-populated with the character to be captured---the letter ``o'' 
-in this case.
+La parte \verb|/ l (.) w .*? rin /| se llama un patrón de regex y puede
+describirse así: la letra ``l``, seguida por cualquier otro carácter (el
+punto) para ser capturado (gracias a los paréntesis), seguida por la
+letra ``w``, seguida por un número no específico de caracteres,
+seguida por la subcadena ``rin``. ¡Uff! ¡Todo esto en una sola línea
+de código! Bien poderoso, no lo crees? Si la cadena de texto coincide 
+con el patrón, entonces la coincidencia devolverá un valor verdadero y 
+la variable \verb|$0| será poblada con el carácter a ser capturado---
+la letra ``o`` en este caso.
 \index{capture}
 
-Unless specified otherwise (we will see how later), white space 
-is not significant within a regex pattern. So you can add spaces 
-within a pattern to separate its pieces and make your 
-intentions clearer.
+A menos que sea especificado (veremos cómo hacerlo luego),
+los espacios en blanco no son significantes dentro de un 
+patrón de regex. Así que puedes agregar espacios dentro de una patrón
+para separar sus piezas y hacer tus intenciones más claras.
 
-Most of the rest of this chapter will cover the basics of constructing 
-such regex patterns and using them. But the concept of 
-regexes is so crucial in Perl that we will also devote a full 
-chapter to this subject and some related matters (Chapter~\ref{regex_grammars}).
+La mayor parte de este capítulo discutirá los fundamentos de 
+la construcción de tales patrones de regex y cómo usarlos. 
+Pero el concepto de los regexes es tan crucial en Perl que 
+dedicaremos un capítulo completo a este tema y otros asuntos
+relacionados (Capítulo~\ref{regex_grammars}).
 
-The notion of regular expressions is originally a concept 
-stemming from the theory of formal languages. The first 
-uses of regular expressions in computing came from 
-Unix utilities, some of which still remain in wide use today, such as 
-{\tt grep}, created by Ken Thomson in 1973, {\tt sed} (ca. 1974), and 
-{\tt awk}, developed a few years later (in 1977) by Aho, Weinberger, and Kernighan. 
-Earlier versions of the Perl language in the 1980s included an 
-extended version of regular expressions, that has since 
-been imitated by many other recent languages. The difference, 
-though, is that regular expressions are deeply rooted within the 
-core of the Perl language, whereas most other languages have 
-adopted them as an add-on or a plug-in, often based or derived 
-on a library known as Perl Compatible Regular Expressions (PCRE).
+La noción de la expresiones regulares es originalmente un 
+concepto procedente de las teoría de lenguajes formales. 
+El primer uso de expresiones regulares en la computación fue 
+en las utilidades Unix, algunas de las cuales permanecen en 
+extenso uso hoy en día, tales como {\tt grep}, creada por Ken Thomson en 1973,
+{\tt sed} (ca. 1974), y {\tt awk}, desarrollada años más tarde (en 1977)
+por  Aho, Weinberger, and Kernighan. 
+Las versiones anteriores del lenguaje Perl en el decenio del 1980
+incluían una versión extendida de las expresiones regulares, que 
+ha sido desde tal entonces imitada por muchos otros lenguajes de
+programación. La diferencia, no obstante, es que las expresiones
+regulares están profundamente arraigadas en el núcleo del lenguaje
+Perl, mientras que los otros lenguajes las han adoptado como un
+add-on o plug-in, usualmente basado o derivado de una librería 
+conocida como Expresiones Regulares Compatible con Perl (PCRE 
+por sus siglas en inglés).
 \index{awk}
 \index{grep}
 \index{Thomson, Ken}
@@ -710,41 +714,43 @@ on a library known as Perl Compatible Regular Expressions (PCRE).
 \index{PCRE (Perl Compatible Regular Expressions)}
 \index{Perl Compatible Regular Expressions (PCRE)}
 
-The Perl regular expressions have extended these notions 
-so much that they have little to do with the original 
-language theory concept, so that 
-it has been deemed appropriate to stop calling them 
-\emph{regular expressions} and to speak about \emph{regexes}, 
-i.e., a sort of pattern-matching sublanguage that works 
-similarly to regular expressions.
+Las expresiones regulares de Perl han extendido estas nociones
+tanto que tienen muy poco que ver con el concepto original de 
+teoría de lenguaje , y por lo tanto se ha considerado 
+apropiado parar de llamarlas \emph{expresiones regulares}
+y hablar de \emph{regexes}, i.e., un tipo de sub-lenguaje
+de coincidencia de patrón que funciona de manera similar
+a las expresiones regulares.
 
-\section{Using Regexes}
+\section{Uso de los Regexes}
 \label{using_regexes}
 \index{smart match operator}
 
-A simple way to use a regex is to use the smart match operator 
-\verb'~~':
+Una manera simple de usar un regex es utilizar el operador
+de coincidencia inteligente \verb|~~|:
 \index{smart match operator}
 \index{operator!smart match}
 
 \begin{verbatim}
-say "Matched" if "abcdef" ~~ / bc.e /;     # -> Matched
+say "Coincidió" if "abcdef" ~~ / bc.e /;     # -> Coincidió
 \end{verbatim}
 %
 
-Here, the smart match operator compares the ``abcdef'' string 
-with the $/bc.e/$ pattern and reports a success, since, in 
-this case, the ``bc'' in the string matches the $bc$ part of 
-the pattern, the dot in the pattern matches any character in the string (and matches in this case $d$) and, finally, the $e$ of 
-the string matches the $e$ in the pattern.
+Aquí, el operador de coincidencia inteligente compara la 
+cadena de texto ``abcdef`` con el patrón $/bc.e/$ y reporta
+una comparación exitosa dado que, en este caso, ``bc`` en la
+cadena coincide con la parte $bc$ del patrón, el punto en el
+patrón coincide con cualquier carácter en la cadena (
+y coincidió en este caso con $d$) y, finalmente, la $e$ de la
+cadena coincide con la $e$ en el patrón.
 
 \index{stringify operator}
 \index{matched string}
-The part of the string that was matched is contained in the 
-\verb'$/' variable representing the {\bf match object}, which we 
-can stringify with the \verb'~' operator. We can make good 
-use of this to better visualize the part of the string 
-that was matched by the regex pattern:
+La parte de la cadena que coincidió es almacenada en la variable
+\verb|$/| que representa el {\bf objeto coincidencia}, el cual
+podemos convertir en una cadena de texto con el operador \verb|~|.
+Podemos hacer un buen uso de esto para visualizar la parte de la
+cadena que coincidió con el patrón de regex:
 
 \begin{verbatim}
 say ~$/ if "abcdef" ~~ / bc.e /;           # -> bcde
@@ -754,196 +760,210 @@ say ~$/ if "abcdef" ~~ / bc.e /;           # -> bcde
 
 \index{backtracking}
 
-The matching process might be described as follows (but please 
-note that this is a rough simplification): look 
-in the string (from left to right) for a character matching 
-the first atom (i.e., the first matchable item) of the 
-pattern; when found, see whether the second 
-character can match the second atom of the pattern, and so on. 
-If the entire pattern is used, then the regex is successful.
-If it fails during the process, start again from the position 
-immediately after the initial match point. (This is called 
-{\bf backtracking}). And repeat that until one of following 
-occurs:
+El proceso de coincidencia podría describirse en la siguiente
+forma (pero ten presente que esto una simplificación): busca en 
+la cadena de texto (desde izquierda a derecha) un carácter que 
+coincide con el primer átomo (i.e., el primer artículo de 
+coincidencia) del patrón; cuando se encuentra, busca si el segundo
+carácter puede coincidir el segundo átomo del patrón, etc. Si
+se usa el patrón entero, entonces el regex fue exitoso. Si falla
+durante el proceso, comienza nuevamente desde la posición 
+inmediatamente después del punto de coincidencia inicial. (
+Esto se conoce como {\bf vuelta atrás} o \emph{backtracking} en inglés).
+Y se repite hasta que uno de los siguientes casos ocurra:
 
 \begin{itemize}
-\item There is a successful match, in which case the process 
-ends and success is reported. 
-\item The string has been exhausted without finding a match, 
-in which case the regex failed.
+\item Hay una coincidencia exitosa. En este caso, el proceso
+finaliza y se reporta éxito. 
+\item La cadena de texto ha sido agotada sin encontrar la 
+coincidencia. En este caso, el regex falla.
 \end{itemize}
 
-Let us examine an example of backtracking:
+Examinemos un ejemplo de vuelta atrás:
 \begin{verbatim}
-say "Matched" if "abcabcdef" ~~ / bc.e /;  # -> Matched
+say "Coincidió" if "abcabcdef" ~~ / bc.e /;  # -> Coincidió
 \end{verbatim}
 %
-\index{backtracking}
-Here, the regex engine starts by matching ``bca'' with 
-$bc.$, but that initial match attempt fails, because the 
-next letter in the string, ``b,'' does not match the ``e'' 
-of the pattern. The regex engine backtracks and starts the 
-search again from the third letter (``c'') of the string. 
-It starts a new match on the fifth letter of the string 
-(the second ``b''), manages to match successfully ``bcde,'' and 
-exits with a successful status (without even looking for any 
-further match).
+% abcabcdef
+%  bc.e 
+% After bactracking
+% abcabcdef
+%     bc.e 
 
-If the string to be analyzed is contained in the \verb'$_' 
-topical variable, then the smart match operator is implicit 
-and the syntax is even simpler:
+\index{backtracking}
+En este ejemplo, el motor de regex comienza a coincidir 
+``bca`` con $bc.$, pero el atento coincidencia inicial falla,
+porque la siguiente letra en la cadena de texto, ``b``, no
+coincide con la ``e```del patrón. El motor de regex da vuelta
+atrás e inicia la búsqueda nuevamente desde la tercera letra (``c``)
+de la cadena. Comienza una nueva coincidencia en la quinta letra de
+la cadena (la segunda ``b``), logra coincidir exitosamente con
+``bcde`` y sale con un estado exitoso (sin buscar ninguna otra
+coincidencia).
+
+Si la cadena de texto a analizar está contenida en la 
+variable tópico \verb|$_|, entonces el operador de coincidencia
+inteligente es implícito y la sintaxis es aún más simple:
 \index{topical variable}
 
 \begin{verbatim}
-for 'abcdef' {                              # $_ now contains 'abcdef'
-    say "Matched" if / cd.f /;              # -> Matched
+for 'abcdef' {                                # $_ ahora contiene a 'abcdef'
+    say "Coincidió" if / cd.f /;              # -> Coincidió
 }
 \end{verbatim}
 %
 
-You might also use a method invocation syntax:
+También puedes usar una sintaxis de invocación de método:
 \index{match method}
 \index{method!match}
 \index{invocation!method}
 \index{method invocation}
 \begin{verbatim}
-say "Matched" if "abcdef".match(/ b.d.f /); # -> Matched
+say "Coincidió" if "abcdef".match(/ b.d.f /); # -> Coincidió
 \end{verbatim}
 %
 
-In all cases we have seen so far, we directly used a pattern 
-within a pair of $/$ slash delimiters. We can use other 
-delimiters if we prefix our pattern with the letter ``m'':
+En todos los casos que hemos visto hasta ahora, usamos 
+directamente un patrón dentro de un par de delimitadores de barra
+oblicua $/$. Podemos utilizar otros delimitadores si precedemos
+nuestro patrón con la letra ``m``:
 \index{regex!pattern delimiter}
 
 \begin{verbatim}
-say "Matched" if "abcdef" ~~ m{ bc.e };     # -> Matched
+say "Coincidió" if "abcdef" ~~ m{ bc.e };     # -> Coincidió
 \end{verbatim}
 %
 
-or:
+o:
 \begin{verbatim}
-say "Matched" if "abcdef" ~~ m! bc.e !;     # -> Matched
+say "Coincidió" if "abcdef" ~~ m! bc.e !;     # -> Coincidió
 \end{verbatim}
 %
 
-The ``m'' operator does not alter the way a regex works; it 
-only makes it possible to use delimiters other than slashes. 
-Said differently, the ``m'' prefix is the standard way to 
-introduce a pattern, but it is implicit and can be omitted 
-when the pattern is delimited with slashes. It is probably best 
-to use slashes, because that's what people commonly use and 
-recognize immediately, and to use other delimiters only when 
-the regex pattern itself contains slashes.
+El operador ``m`` no altera la manera en que un regex funciona;
+solo hace posible el uso de otros delimitadores (además de las
+barras oblicuas). Dicho diferentemente, el prefijo ``m`` es la
+manera estándar de introducir un patrón, pero es implícito y 
+puede omitirse cuando el patrón es delimitado por barras oblicuas.
+Es probablemente mejor usar barras oblicuas, porque es lo que la
+gente comúnmente utiliza y reconoce inmediatamente, y usar otros
+delimitadores solo cuando el patrón de regex contiene barras
+oblicuas.
 
-A pattern may also be stored in a variable (or, more 
-accurately, in a regex object), using the $rx//$ operator:
+Un patrón puede también almacenarse en una variable (o, más
+precisamente, en un objeto regex), usando el operador $rx//$:
 \index{rx regex operator}
 
 \begin{verbatim}
 my $regex = rx/c..f/;
-say "Matched" if 'abcdef' ~~ $regex;        # -> Matched
+say "Coincidió" if 'abcdef' ~~ $regex;        # -> Coincidió
 \end{verbatim}
 %
 
 
-\section{Building your Regex Patterns}
+\section{Cómo Construir tus Patrones Regex}
 \label{pattern}
 \index{pattern}
 
-It is now time to study the basic building blocks of a 
-regex pattern.
+Es ahora tiempo para estudiar los componentes básicos de 
+un patrón regex.
 
-\subsection{Literal Matching}
+\subsection{Coincidencia Literal}
 \index{literal matching}
 
-As you have probably figured out by now, the simplest case 
-of a regex pattern is a constant string. Matching a string 
-against such a regex is more or less equivalent to searching 
-for that string with the {\tt index} function:
+Como posiblemente ya has notado, el caso más simple de un
+patrón de regex es una cadena de texto constante. Coincidir
+una cadena de texto en contra de tal regex es más o menos 
+equivalente a una búsqueda de esa cadena con la función 
+{\tt index}:
 \index{index function}
 
 \begin{verbatim}
-my $string = "superlative";
-say "$string contains 'perl'." if $string ~~ /perl/;
-                               # -> superlative contains 'perl'.
+my $cadena = "superlative";
+say "$cadena contiene 'perl'." if $cadena ~~ /perl/;
+                               # -> superlative contiene 'perl'.
 \end{verbatim}
 %
 
 \index{index}
 \index{contains}
-Note however that, for such literal matches, the {\tt index} 
-function discussed earlier is likely to be slightly more 
-efficient than a regex on large strings. The {\tt contains} 
-method, which returns true if its argument is a substring of 
-its invocant, is also likely to be faster.
+Sin embargo nota que, para tales coincidencias literales, 
+la función {\tt index} discutida anteriormente será probablemente
+más eficiente que un regex con cadenas de texto largas. 
+El método {\tt contains}, el cual devuelve verdadero si su
+argumento es una subcadena de su invocante, es también probablemente
+más rápido.
 \index{invocant}
 
-Alphanumeric characters and the underscore \verb'_' are literal 
-matches. All other characters must either be escaped with a 
-backslash (for example \verb'\?' to match a question mark), 
-or included in quotes:
+Los caracteres alfanuméricos y la raya baja \verb|_| son coincidencias
+literales. Todos los otros caracteres deben escaparse con una barra
+invertida (por ejemplo \verb|\?| para coincidir con un signo de interrogación
+derecho) o incluirse dentro de comillas:
 
 \begin{verbatim}
-say "Success" if 'name@company.uk' ~~ / name@co /; # Fails to compile
-say "Success" if 'name@company.uk' ~~ / 'name@co' /;   # -> Success
-say "Success" if 'name@company.uk' ~~ / name\@co/ ;    # -> Success
-say "Success" if 'name@company.uk' ~~ / name '@' co /; # -> Success
+say "Éxito" if 'nombre@org.uk' ~~ / nombre@or /;      # Falla en la compilación
+say "Éxito" if 'nombre@org.uk' ~~ / 'nombre@or' /;    # -> Éxito
+say "Éxito" if 'nombre@org.uk' ~~ / nombre\@or/ ;     # -> Éxito
+say "Éxito" if 'nombre@org.uk' ~~ / nombre '@' org /; # -> Éxito
 \end{verbatim}
 %
 
 
-\subsection{Wildcards and Character Classes}
+\subsection{Comodines y Categorías de Caracteres}
 \index{character class}
 
-Regexes wouldn't be very useful if they could only do literal 
-matching. We are now getting to the more interesting parts.
+Los regexes no serían muy útiles si solo pudieran hacer 
+coincidencia literal. Ahora nos acercamos a las partes más 
+interesantes.
 
-In a regex pattern, some symbols can match not a specific character, 
-but a whole family of characters, such as letters, digits, etc. 
-They are called character classes.
+En un patrón de regex, algunos símbolos pueden coincidir no
+con un carácter específico, sino con una familia de caracteres,
+tales como letras, dígitos, etc. Estos símbolos se conocen como
+categorías de clases.
 
-We have already seen that the dot is a sort of wildcard 
-matching any single character of the target string:
+Ya hemos visto que el punto es un tipo de comodín que
+coincide con un solo carácter de la cadena de texto a
+coincidir:
 \index{wildcard character}
 
 \begin{verbatim}
-my $string = "superlative";
-say "$string contains 'pe.l'." if $string ~~ / pe . l /;
-                       # -> superlative contains 'pe.l'.
+my $cadena = "superlative";
+say "$cadena contiene 'pe.l'." if $cadena ~~ / pe . l /;
+                       # -> superlative contiene 'pe.l'.
 \end{verbatim}
 %
 
-The example above illustrates another feature of regexes: 
-whitespace is usually not significant within regex patterns 
-(unless specified otherwise with the $:s$ or $:sigspace$ 
-adverb, as we will see later).
+El ejemplo más arriba ilustra otra característica
+de los regexes: los espacios en blanco son usualmente
+no significantes dentro de los patrones de regex 
+(a menos que se especifiquen con el adverbio 
+$:s$ o $:sigspace$, como veremos más adelante).
 \index{whitespace in regexes}
 
-There are predefined character classes of the form \verb'\w'. 
-Its negation is written with an uppercase letter, \verb'\W'. 
-The \verb'\w' (``word character'') character class  
-matches one single alphanumeric character (i.e., among alphabetical 
-characters, digits, and the \verb'_' character). \verb'\W' will match 
-any other character. Note however that Perl is Unicode-compliant 
-and that, for example, letters of the Greek or Cyrillic alphabets or 
-Thai digits will be matched by \verb'\w':
+Hay categorías de caracteres predefinidas de la forma \verb|\w|.
+Su negación se escribe con una letra en mayúscula, \verb|\W|.
+El carácter de palabra \verb|\w| coincide con un solo carácter 
+alfanumérico (i.e., entre los caracteres alfanuméricos, dígitos,
+y el carácter \verb|_|). \verb|\W| coincidirá cualquier otra carácter
+que no sea un carácter de palabra. Nota, sin embargo, que Perl
+es compatible con Unicode y que, por ejemplo, letras del alfabeto
+griego o cirílico o dígitos tailandenses coincidirán con \verb|\w|:
 
 \begin{verbatim}
-say "Matched" if 'abcδ' ~~ / ab\w\w /;  # -> Matched
+say "Coincidió" if 'abcδ' ~~ / ab\w\w /;  # -> Coincidió
 \end{verbatim}
 %
 
-Here, the string was matched because, according to the 
-Unicode standard, \verb'δ' (``\textsc{Greek small letter 
-delta}'') is a letter and it therefore belongs to 
-the \verb'\w' character class.
+En este ejemplo, las cadenas de texto coincidieron porque, de 
+acuerdo al estándar Unicode, \verb|δ| (``\textsc{Greek small letter delta}'')
+es una letra y por lo tanto pertenece a la categoría de  
+clase \verb|\w|.
 
-Other common character classes include:
+Otras categorías de clase incluyen:
 \begin{itemize}
-\item \verb'\d' (digits) and \verb'\D' (non-digits)
-\item \verb'\s' (whitespace) and \verb'\S' (non-whitespace)
-\item \verb'\n' (newline) and \verb'\N' (non-newline).
+\item \verb|\d| (dígitos) y \verb|\D| (cualquier carácter menos un dígito)
+\item \verb|\s| (espacio en blanco) y \verb|\S| (cualquier carácter menos un espacio en blanco)
+\item \verb|\n| (línea nueva) y \verb|\N| (cualquier carácter menos una línea nueva).
 \end{itemize}
 
 \begin{verbatim}
@@ -951,87 +971,93 @@ say ~$/ if 'Bond 007' ~~ /\w\D\s\d\d\d/;  # -> "nd 007"
 \end{verbatim}
 %
 
-Here, we've matched ``nd 007'', because we have found one 
-word character (n), followed by a non digit (``d''), followed 
-by a space, followed by three digits.
+Aquí, coincidimos con ''nd 007'', porque encontramos un
+carácter de palabra (''n''), seguido por un un carácter que 
+no es un dígito (``d``), seguido por un espacio en blanco,
+seguido por tres dígitos.
 
-You can also specify your own character classes by inserting 
-between \verb'<[ ]>' any number of single characters and 
-ranges of characters (expressed with two dots between the 
-end points), with or without whitespace. For example, a 
-character class for a hexadecimal digit might be:
+También puedes especificar tus propias categorías de caracteres
+al insertar entre \verb|<[ ]>| cualquier número de caracteres
+individuales y rangos de caracteres (expresado con dos puntos 
+entre los puntos extremos), con o sin espacio en blanco. Por 
+ejemplo, una categoría de caracteres para dígitos hexadecimales
+podría lucir así:
 \begin{verbatim}
 <[0..9 a..f A..F]>
 \end{verbatim}
 
-You can negate such a character class by inserting a ``-'' after 
-the opening angle bracket. For example, a string is not a 
-valid hexadecimal integer if it contains any character not 
-in \verb'<[0..9a..fA..F]>', i.e., any character matched by the 
-negated hexadecimal character class:
+Puedes negar cualquier categoría de caracteres al insertar un 
+``-`` después de la comilla angular izquierda. Por ejemplo,
+una cuerda no es un entero hexadecimal válido si contiene
+cualquier carácter que no está en \verb'<[0..9a..fA..F]>', i.e.m
+cualquier carácter que coincide con la categoría de caracteres
+de hexadecimales negada:
 \index{negated character class}
 
 \begin{verbatim}
-say "Not an hex number" if $string ~~ /<-[0..9 a..f A..F]>/;
+say "No un número hex" if $cadena ~~ /<-[0..9 a..f A..F]>/;
 \end{verbatim}
 
-Please note that you generally don't need to escape 
-nonalphanumerical characters in your character classes:
+Por favor nota que generalmente no tienes que escapar
+caracteres que no son alfanuméricos en tus categorías de 
+caracteres:
 
 \begin{verbatim}
 say ~$/  if "-17.5" ~~ /(<[\d.-]>+)/; # -> -17.5
 \end{verbatim}
 
-In this example, we use the ``+'' quantifier that we'll discuss 
-in the next section, but the point here is that you don't need 
-to escape the dot and the dash within the character class 
-definition.
+En este ejemplo, usamos el cuantificador ''+'' que discutiremos
+en la siguiente sección, pero el punto aquí es que no necesitas
+escapar el punto y la barra oblicua dentro de la definición de
+categoría de caracteres.
 
-\subsection{Quantifiers}
+\subsection{Cuantificadores}
 \index{quantifier}
 
-A quantifier makes a preceding atom\footnote{The 
-word \emph{atom} means a single character or several 
-characters or other atoms grouped together (by a set of 
-parentheses or square brackets).} match not exactly once, 
-but rather a specified or variable number of times.  For 
-example \verb'a+' matches one or more ``a'' characters. In 
-the following code, the \verb'\d+' matches one or more 
-digits (three digits in this case):
+Un cuantificador hace que un átomo\footnote{
+La palabra \emph{átomo} se refiere a un carácter 
+individual o varios caracteres u otros átomos
+agrupados juntos (por un conjunto de paréntesis 
+o corchetes).} precedente coincida no solamente 
+una vez, sino un específico o variable número de
+veces. Por ejemplo, \verb|a+| coincide una o más
+caracteres ''a''. En el siguiente código, \verb|\d+| 
+coincide con uno o más dígitos (tres dígitos en este caso):
 
 \begin{verbatim}
 say ~$/ if 'Bond 007' ~~ /\w\D\s\d+/;  # -> "nd 007"
 \end{verbatim}
 %
 
-The predefined quantifiers include:
+Los cuantificadores predefinidos incluyen:
 \begin{itemize}
-\item $+$: one or more times;
-\item $*$: zero or more times;
-\item $?$: zero or one match.
+\item $+$: una o más veces;
+\item $*$: cero o más veces;
+\item $?$: cero o un coincidencia.
 \end{itemize}
 
 \index{greedy quantifier}
 \index{quantifier!greedy}
-The $+$ and $*$ quantifiers are said to be \emph{greedy}, 
-which means that they match as many characters as they 
-can. For example:
+Los cuantificadores $+$ and $*$ se dice que son \emph{voraces}
+(o \emph{greedy} en inglés), lo que significa que ellos
+coinciden con tantos caracteres como sea posible. Por ejemplo:
 
 \begin{verbatim}
 say ~$/ if 'aabaababa' ~~ / .+ b /;     # -> aabaabab
 \end{verbatim}
 %
 
-Here, the \verb'.+' matches as much as it possibly can 
-of the string, while still being able to match the final ``b''. 
-This is often what you want, but not always. Perhaps your 
-intention was to match all letters until the first ``b''. In 
-such cases, you would use the \emph{frugal} (nongreedy) 
-versions of those quantifiers, which are obtained by suffixing 
-them with a question mark: $+?$ and $*?$. A frugal quantifier 
-will match as much as it has to for the overall regex to succeed, 
-but not more than that. To match all letters until the first $b$, 
-you could use:
+Aquí, \verb|.+| coincide con tanto de la cadena de texto
+como sea posible, mientras que es capaz de coincidir con
+la final ''b''. Usualmente esto es lo que deseas, pero 
+siempre. Quizás tu intención era coincidir con todas las letras
+hasta la primera ``b``. En tales casos, usarías las versiones
+\emph{frugales} (no voraz) de estos cuantificadores, los cuales
+se obtienen al  precederlos con un signo interrogación derecho:
+$+?$ y $*?$. Un cuantificador frugal coincidirá con tanto como
+sea posible para que el regex sea exitoso pero no más que eso.
+Para coincidir con todas las letras hasta la primera $b$, podrías
+usar:
 \index{frugal quantifier}
 \index{quantifier!frugal}
 
@@ -1040,46 +1066,46 @@ say ~$/ if 'aabaababa' ~~ / .+? b /;     # -> aab
 \end{verbatim}
 %
 
-You can also specify a range ({\tt min..max}) for the number of 
-times an atom may be matched. For example, to match an 
-integer smaller than 1,000:
+También podrías especificar un rango ({\tt min..max}) para el 
+número de veces que un átomo debe coincidir. Por ejemplo, para 
+coincidir con un entero menor que 1,000:
 \index{range quantifier}
 \index{quantifier!range}
 
 \begin{verbatim}
-say 'Is a number < 1,000' if $string ~~ / ^ \d ** 1..3 $ /;
+say 'Es un número < 1,000' if $cadena ~~ / ^ \d ** 1..3 $ /;
 \end{verbatim}
 %
 
-This matches one to three digits. The \verb'^' and \verb'$' 
-characters are anchors representing the beginning and the 
-end of the string and will be covered in the next section.
+Esto coincide con uno a tres dígitos. Los caracteres \verb|^|
+y \verb|$| son anclas que representan el inicio y el final
+de la cadena de texto y los discutiremos en la siguiente
+sección.
 
-For matching an exact number of times, just replace the 
-range with a single number:
+Para coincidir un número exacto de veces, solo reemplaza el 
+rango con un número individual:
 \index{quantifier!exact number of times}
 
 \begin{verbatim}
-say 'Is a 3-digit number' if $num ~~ / ^ \d ** 3 $ /;
+say 'Es un número de 3 dígitos' if $num ~~ / ^ \d ** 3 $ /;
 \end{verbatim}
 %
 
-\subsection{Anchors and Assertions}
+\subsection{Anclas y Aserciones}
 \index{anchor}
 \index{regex!anchor}
 \index{assertion}
 
+Algunas veces, coincidir con una subcadena no es suficientemente
+bueno; quieres coincidir con la cadena de texto completa, 
+o quieres que la coincidencia ocurra al comienzo o al final de la cadena,
+o en algún lugar específico dentro de la cadena. Las anclas y las 
+aserciones hacen posible especificar donde la coincidencia debe
+ocurrir. Necesitan coincidir exitosamente para que el regex completo
+para tener éxito, pero no consumen los caracteres mientras la 
+coincidencia ocurre.
 
-Sometimes, matching a substring is not good enough; you  
-want to match the whole string, or you want the match to occur 
-at the beginning or at the end of the string, or at some 
-other specific place within the string. Anchors and assertions 
-make it possible to specify where the match should occur. 
-They need to match successfully in order for the whole 
-regex to succeed, but they do not use up characters 
-while matching.
-
-\subsubsection{Anchors}
+\subsubsection{Anclas}
 
 \index{start of string anchor}
 \index{end of string anchor}
@@ -1097,7 +1123,7 @@ say "$string equals 'perl'" if $string ~~ /^perl$/;     # (No output)
 \end{verbatim}
 
 All three regexes above fail because, even though 
-\verb'$string' contains the ``perl'' substring, the 
+\verb|$string| contains the ``perl'' substring, the 
 substring is neither at the start, nor at the end of 
 the string.
 
@@ -1106,7 +1132,7 @@ the string.
 \index{anchor!start of line}
 \index{anchor!end of line}
 In the event that you are handling multiline strings, you might 
-also use the \verb'^^' start of line and \verb'$$' end of line anchors.
+also use the \verb'^^' start of line and \verb|$$| end of line anchors.
 
 There are some other useful anchors, such as the \verb'<<' 
 start of word (or word left boundary) and \verb'>>' end 
