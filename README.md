@@ -20,13 +20,13 @@ ser encontrada en [Think Perl 6](http://greenteapress.com/wp/think-perl-6/).
 - [x] Capítulo 04: Bucles, Condicionales y Recursión
 - [x] Capítulo 05: Subrutinas Fructuosas
 - [x] Capítulo 06: Iteración
-- [ ] Capítulo 07: Cadenas de texto **TEP**
-- [ ] Capítulo 08: Caso Práctico: Juego de palabras **TEP**
+- [x] Capítulo 07: Cadenas de texto
+- [ ] Capítulo 08: Caso Práctico: Juego de palabras
 - [x] Capítulo 09: Arrays y Listas
 - [x] Capítulo 10: Hashes
-- [ ] Capítulo 11: Caso Práctico: Selección de Estructura de Dato
+- [ ] Capítulo 11: Caso Práctico: Selección de una Estructura de Dato
 - [x] Capítulo 12: Clases y Objetos
-- [ ] Capítulo 13: Regexes y Grammars
+- [ ] Capítulo 13: Regexes y Grammars **TEP**
 - [ ] Capítulo 14: Programación Funcional en Perl
 - [x] Capítulo 15: Algunos Últimos Consejos
 - [ ] Apéndice A:  Soluciones a los Ejercicios

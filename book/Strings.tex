@@ -678,7 +678,7 @@ la letra ``o`` en este caso.
 \index{capture}
 
 A menos que sea especificado (veremos cómo hacerlo luego),
-los espacios en blanco no son significantes dentro de un 
+los espacios en blanco no son significativos dentro de un 
 patrón de regex. Así que puedes agregar espacios dentro de una patrón
 para separar sus piezas y hacer tus intenciones más claras.
 
@@ -934,8 +934,8 @@ say "$cadena contiene 'pe.l'." if $cadena ~~ / pe . l /;
 %
 
 El ejemplo más arriba ilustra otra característica
-de los regexes: los espacios en blanco son usualmente
-no significantes dentro de los patrones de regex 
+de los regexes: los espacios en blanco usualmente
+no son significativos dentro de los patrones de regex 
 (a menos que se especifiquen con el adverbio 
 $:s$ o $:sigspace$, como veremos más adelante).
 \index{whitespace in regexes}
@@ -1112,75 +1112,77 @@ coincidencia ocurre.
 \index{anchor!start of string}
 \index{anchor!end of string}
 
-The most commonly used anchors are the \verb'^' start of 
-string and \verb'$' end of string anchors:
+Las anclas más usadas comúnmente son \verb|^| (inicio de la
+cadena de texto) y \verb|$| (final de la cadena de texto):
 
 \begin{verbatim}
-my $string = "superlative";
-say "$string starts with 'perl'" if $string ~~ /^perl/; # (No output)
-say "$string ends with 'perl'" if $string ~~ /perl$/;   # (No output)
-say "$string equals 'perl'" if $string ~~ /^perl$/;     # (No output)
+my $cadena = "superlative";
+say "$cadena comienza con 'perl'" if $cadena ~~ /^perl/; # (No salida)
+say "$cadena termina con 'perl'" if $cadena ~~ /perl$/;  # (No salida)
+say "$cadena es igual a 'perl'" if $cadena ~~ /^perl$/;  # (No salida)
 \end{verbatim}
 
-All three regexes above fail because, even though 
-\verb|$string| contains the ``perl'' substring, the 
-substring is neither at the start, nor at the end of 
-the string.
+Los tres regexes más arriba fallan porque, aunque 
+la \verb|$cadena| contiene la subcadena ``perl``, la
+subcadena no se encuentra al inicio, ni al final de 
+la cadena de texto.
 
 \index{start of line anchor}
 \index{end of line anchor}
 \index{anchor!start of line}
 \index{anchor!end of line}
-In the event that you are handling multiline strings, you might 
-also use the \verb'^^' start of line and \verb|$$| end of line anchors.
+En el evento de que tengas que manejar cadenas de texto con líneas
+múltiples, podrías usar las anclas \verb|^^| (inicio de línea) y \verb|$$| 
+(final de línea).
 
-There are some other useful anchors, such as the \verb'<<' 
-start of word (or word left boundary) and \verb'>>' end 
-of word (or word right boundary) anchors.
+Existen otras anclas útiles, como las anclas \verb|<<| (inicio de palabra 
+o borde izquierdo de palabra) y \verb|>>| (final de palabra o
+borde derecho de palabra).
 \index{anchor!word boundary}
 \index{anchor!start of word}
 \index{anchor!end of word}
 \index{anchor!left word boundary}
 \index{anchor!right word boundary}
 
-\subsubsection{Look-Around Assertions}
+\subsubsection{Aserciones Look-Around}
 
 \index{look-around assertion}
 \index{assertion!look around}
 \index{assertion!look before}
 \index{assertion!look after}
 
-\emph{Look-around assertions} make it possible to 
-specify more complex rules: for example, match ``foo'', 
-but only if preceded (or followed) by ``bar'' (or not 
-preceded or not followed by ``bar''):
-
+Las \emph{aserciones look-around} (o "miral alrededor") hacen posible especificar 
+reglas más complejas: por ejemplo,  coincidir ``foo`` pero solo
+si es precedida (o seguida) por ``bar`` (o ni precedida ni
+seguida por ``bar``):
 \begin{verbatim}
-say "foobar" ~~ /foo <?before bar>/; # -> foo (lookahead assertion)
-say "foobaz" ~~ /foo <?before bar>/; # -> Nil (regex failed)
-say "foobar" ~~ /<?after foo> bar/;  # -> bar (lookbehind assertion)
+say "foobar" ~~ /foo <?before bar>/; # -> foo (aserción lookahead)
+say "foobaz" ~~ /foo <?before bar>/; # -> Nil (regex fallido)
+say "foobar" ~~ /<?after foo> bar/;  # -> bar (aserción lookbehind)
 \end{verbatim}
 %
 \index{negative look-around assertion}
 \index{assertion!negative look around}
-Using an exclamation mark instead of a question mark transforms 
-these look-around assertion into negative assertions. For example:
+Al usar un signo de exclamación derecho en lugar de un signo de
+interrogación derecho transforma estas aserciones look-around 
+en aserciones negativas. Por ejemplo:
 
 \begin{verbatim}
 say "foobar" ~~ /foo <!before baz>/; # -> foo 
-say "foobaz" ~~ /foo <!before baz>/; # -> Nil (regex failed)
-say "foobar" ~~ /<!after foo> bar/;  # -> Nil (regex failed)
+say "foobaz" ~~ /foo <!before baz>/; # -> Nil (regex fallido)
+say "foobar" ~~ /<!after foo> bar/;  # -> Nil (regex fallido)
 \end{verbatim}
 %
-I assume that the examples above are rather clear. Look into the 
-documentation 
+Asume que los ejemplos anteriores demostraron el concepto 
+claramente. Si quieres saber, dirígete a la documentación
 (\url{https://docs.perl6.org/language/regexes#Look-around_assertions}) 
-if you need further details. 
+para detalles adicionales. 
 
-\subsubsection{Code Assertions}
+\subsubsection{Aserciones de Código}
 
-You can also include a code assertion \verb'<?{...}>', which 
-will match if the code block returns a true value:
+También puedes incluir una aserción de código \verb|<?{...}>|,
+la cual coincidirá si el bloque de código devuelve un valor
+verdadero:
 \index{code assertion}
 \index{assertion!code}
 
@@ -1190,8 +1192,9 @@ will match if the code block returns a true value:
 \end{verbatim}
 
 \index{assertion!negative code}
-A negative code assertion \verb'<!{...}>' will 
-match unless the code block returns a true value:
+Una aserción de código negativa \verb|<!{...}>| 
+coincidirá siempre y cuando el bloque no devuelve
+un valor verdadero:
 \begin{verbatim}
 > say ~$/ if /\d\d <!{$/ == 42}>/ for <A12 B34 C42 D50>
 12
@@ -1199,91 +1202,91 @@ match unless the code block returns a true value:
 50
 \end{verbatim}
 
-Code assertions are useful to specify conditions that 
-cannot easily be expressed as regexes. 
+Las aserciones de código son útiles para especificar 
+condiciones que no pueden expresarse fácilmente como
+regexes.
 
-They can also be used to display something, for example 
-for the purpose of debugging a regex by printing out 
-information about partial matches:
+De igual manera, pueden usarse para mostrar algo, por ejemplo
+para el propósito de depurar un regex al imprimir información
+sobre las coincidencias parciales:
 
 \begin{verbatim}
-> say "Matched $/" if "A12B34D50" ~~ /(\D) <?{ say ~$0}> \d\d$/;
+> say "Coincidió $/" if "A12B34D50" ~~ /(\D) <?{ say ~$0}> \d\d$/;
 A
 B
 D
-Matched D50
+Coincidió D50
 \end{verbatim}
 
-The output shows the various attempted matches that 
-failed (``A'' and ``B'') before the backtracking 
-process ultimately led to success (``D50'' at the end 
-of the string).
+La salida muestra los múltiples atentos de coincidencia
+que fallaron (``A'' y ``B'') antes que el proceso de vuelta atrás 
+condujera al éxito (``D50'' al final de la cadena).
 
-However, code assertions are in fact rarely needed for 
-such simple cases, because you can very often just add 
-a simple code block for the same purpose:
+No obstante, las aserciones de código son raramente necesarias
+para casos simples, porque siempre puedes añadir un bloque simple de
+código con el mismo propósito:
 %
 \begin{verbatim}
-> say "Matched $/" if "A12B34D50" ~~ /(\D) { say ~$0} \d\d$/;
+> say "Coincidió $/" if "A12B34D50" ~~ /(\D) { say ~$0} \d\d$/;
 \end{verbatim}
-This code produces the same output, and there is no need 
-to worry about whether the block returns a true value.
+Este código produce la misma salida, sin preocuparnos si el 
+bloque devuelve un valor verdadero.
 
-
-\subsection{Alternation}
+\subsection{Alternancia}
 \index{alternation}
 
-Alternations are used to match one of several alternatives.
+La alternancias se usan para coincidir una de varias alternativas.
 
-For example, to check whether a string represents one of the 
-three base image colors (in JPEG and some other image formats), 
-you might use:
+Por ejemplo, para chequear sin una cadena de texto representa uno 
+de los tres colores básicos de un una imagen (en JPEG y algunos otros
+formatos), podrías usar:
 
 \begin{verbatim}
-say 'Is a JPEG color' if $string ~~ /^ [ red | green | blue ] $/;
+say 'Es un color JPEG' if $cadena ~~ /^ [ rojo | verde | azul ] $/;
 \end{verbatim}
 %
 
 \index{first-match alternation}
-There are two forms of alternations. First-match alternation 
-uses the \verb'||' operator and stops on the first alternative 
-that matches the pattern:
+Existen dos formas de alternancias. La alternancia de primera
+coincidencia (\emph{first-match}) usa el operador \verb|||| y para en la primera
+alternativa que coincide con el patrón:
 
 \begin{verbatim}
 say ~$/ if "abcdef" ~~ /ab || abcde/;       # -> ab
 \end{verbatim}
 %
 
-Here, the pattern matches ``ab'', without trying to match 
-any further, although there would be an arguably ``better'' 
-(i.e., longer) match with the other alternative. When using 
-this type of alternation, you have to think carefully about 
-the order in which you put the various alternatives, 
-depending on what you need to do.
+En este ejemplo, el patrón coincide con ``ab`` sin tener que
+coincidir más adelante, aunque habría una coincidencia 
+presumiblemente ``mejor`` (i.e., más larga) con la otra alternativa.
+Cuando se usa este tipo de alternación, tienes que pensar 
+cuidadosamente acerca del orden en el cual pones las múltiples
+alternativas, dependiendo en lo que necesitas hacer.
 
 \index{longest-match alternation}
-The longest-match alternation uses the \verb'|' operator 
-and will try all the alternatives and match the longest one:
+La alternancia de coincidencia más larga (\emph{longest-match}) usa 
+el operador \verb||| e intentará con todas las alternativas y 
+coincidirá con la más larga:
 
 \begin{verbatim}
 say ~$/ if "abcdef" ~~ /ab | abcde/;        # -> abcde
 \end{verbatim}
 %
 
-Beware, though, that this will work as explained only if 
-the alternative matches all start on the same position 
-within the string:
+Sin embargo, ten presente que esto funcionará como se explicó
+más arriba solo si la coincidencias alternativas comienzan 
+en la misma posición dentro de la cadena de texto:
 
 \begin{verbatim}
 say ~$/ if "abcdef" ~~ /ab |  bcde/;        # -> ab
 \end{verbatim}
 %
 
-Here, the match on the leftmost position wins (this is 
-a general rule with regexes).
+Aquí, la coincidencia con la posición más a la izquierda 
+triunfa (esta es una regla general con los regexes).
 
 
-\subsection{Grouping and Capturing}
+\subsection{Grupos y Capturas }
 \index{grouping}
 \index{capturing}
 \index{parentheses!grouping and capturing}
@@ -1292,72 +1295,72 @@ a general rule with regexes).
 \index{square bracket}
 \index{square bracket operator}
 
-Parentheses and square brackets can be used to group 
-things together or to override precedence:
+Los paréntesis y los corchetes pueden usarse para agrupar
+cosas o para anular la precedencia:
 
 \begin{verbatim}
-/ a || bc /      # matches 'a' or 'bc'
-/ ( a || b ) c / # matches 'ac' or 'bc'
-/ [ a || b ] c / # Same: matches 'ac' or 'bc', non-capturing grouping
-/ a b+ /         # Matches an 'a' followed by one or more 'b's
-/ (a b)+ /       # Matches one or more sequences of 'ab'
-/ [a b]+ /       # Matches one or more sequences of 'ab', non-capturing
-/ (a || b)+ /    # Matches a sequence of 'a's and 'b's(at least one)
+/ a || bc /      # Coincide con 'a' o 'bc'
+/ ( a || b ) c / # Coincide con 'ac' o 'bc'
+/ [ a || b ] c / # Igual: coincide con 'ac' o 'bc', grupo sin captura
+/ a b+ /         # Coincide con una 'a' seguida por una 'b' o más
+/ (a b)+ /       # Coincide con una o más secuencias de 'ab'
+/ [a b]+ /       # Coincide con una o más secuencias 'ab', sin captura
+/ (a || b)+ /    # Coincide con una secuencia de 'a' y 'b's (al menos una)
 \end{verbatim}
 %
 
 \index{capture}
-The difference between parentheses and square brackets is 
-that parentheses don't just group things together, 
-they also capture data: they make the string matched within 
-the parentheses available as a special variable (and also 
-as an element of the resulting match object):
+La diferencia entre los paréntesis y los corchetes es que los
+paréntesis no solo agrupan las cosas, sino que capturan datos:
+ellos permiten que la cadena de texto que
+coincide dentro de los paréntesis esté disponible como una 
+variable especial (y también como un elemento del objeto
+de coincidencia resultante): 
+
 
 \begin{verbatim}
-my $str =  'number 42';
-say "The number is $0" if $str ~~ /number\s+ (\d+) /;  # -> The number is 42
+my $cad =  'número 42';
+say "El número es $0" if $cad ~~ /número\s+ (\d+) /;  # -> El número es 42
 \end{verbatim}
 %
 
 \index{numbered capture}
 \index{capture!numbered}
-Here, the pattern matched the \verb'$str' string and the 
-part of the pattern within parentheses was captured into 
-the \verb'$0' special variable. Where there are several 
-parenthesized groups, they are captured into variables 
-named \verb'$0', \verb'$1',  \verb'$2', etc. (from 
-left to right counting the open parentheses):
+En este ejemplo, el patrón coincidió con la cadena de 
+texto \verb|$cad| y la parte del patrón dentro de los 
+paréntesis fue capturada en la variable especial \verb|$0|.
+Donde hay varios grupos con paréntesis, las capturas se
+encuentran en las variables \verb|$0|, \verb|$1|, \verb|$2|, etc.
+(contando los paréntesis abiertos de la izquierda a derecha)
 
 \begin{verbatim}
 say "$0 $1 $2" if "abcde" ~~ /(a) b (c) d (e)/;       # -> a c e
-# or: say "$/[0..2]" if "abcde" ~~ /(a) b (c) d (e)/; # -> a c e
+# o: say "$/[0..2]" if "abcde" ~~ /(a) b (c) d (e)/; # -> a c e
 \end{verbatim}
 %
 
-The \verb'$0', \verb'$1', etc. variables are actually a 
-shorthand for \verb'$/[0]', \verb'$/[1]', the first and 
-second items of the matched 
-object in list context, so that printing  
-\verb'"The number is $/[0]"' would have had the same 
-effect. 
+Las variables \verb|$0|, \verb|$1|, etc. son actualmente atajos
+para \verb|$/[0]|, \verb|$/[1]|, el primer y segundo elemento del
+objeto de coincidencia en un contexto de lista, así que imprimir
+\verb|"El número es $/[0]"| tendría el mismo efecto.
 
-As noted, the parentheses perform two roles in regexes: 
-they group regex elements and they capture what is matched 
-by the subregex within parentheses. If you want only the 
-grouping behavior, use square brackets
-\verb'[ ... ]' instead:
+Como se indicó, los paréntesis tienen dos roles en los regexes:
+ellos agrupan elementos de regex y capturan lo que coincide 
+con el subregex dentro de los paréntesis. Si solo deseas el 
+comportamiento de agrupamiento, usa los corchetes
+\verb|[ ... ]|:
 
 \begin{verbatim}
 say ~$0 if 'cacbcd' ~~ / [a||b] (c.) /;   # -> cb
 \end{verbatim}
 %
 
-Using square brackets when there is no need to capture 
-text has the advantage of not cluttering the \verb'$0', 
-\verb'$1', \verb'$2', etc. variables, and it is likely 
-to be slightly faster.
+El uso de los corchetes cuando la captura de texto no
+es necesaria tiene la ventaja de no contaminar las
+variables \verb|$0|, \verb|$1|, \verb|$2|, etc. y es 
+poco más rápido.
 
-\subsection{Adverbs (a.k.a. Modifiers)}
+\subsection{Adverbios (o  Modificadores)}
 \label{adverb}
 \index{adverb}
 \index{regex!adverb}
@@ -1365,12 +1368,12 @@ to be slightly faster.
 \index{adverb!:ignorecase}
 \index{adverb!:i}
 
-Adverbs modify the way the regex engine works. They often have a 
-long form and a shorthand form.
+Los adverbios modifican la manera en que el motor de regex funciona.
+Usualmente tiene una forma larga y una forma corta.
 
-For example, the \verb':ignorecase' (or \verb':i') adverb 
-tells the compiler to ignore the distinction between upper 
-case and lower case: 
+Por ejemplo, el adverbio \verb|:ignorecase| (or \verb|:i|)
+le dice al compilador que ignore la distinción entre letras
+mayúsculas y letras minúsculas: 
 \index{case!lower}
 \index{case!upper}
 \index{lower case}
@@ -1386,12 +1389,12 @@ True
 
 \index{so function}
 \index{function!so}
-The \verb'so' built-in used here coerces its argument (i.e., 
-the value returned by the regex match expression) into 
-a Boolean value. 
+La función integrada \verb|so| usada aquí coacciona su argumento 
+(i.e., el valor devuelto por la expresión de coincidencia de regex)
+a un valor Booleano.
 
-If placed before the pattern, an adverb applies to the 
-whole pattern:
+Si se coloca en frente del patrón, el adverbio aplica al patrón
+entero:
 
 \begin{verbatim}
 > say so 'AB' ~~ m:i/ ab/;
@@ -1399,8 +1402,8 @@ True
 \end{verbatim}
 %
 
-The adverb may also be placed later in the pattern and affects 
-in this case only the part of the regex that comes afterwards:
+El adverbio también puede colocarse después en el patrón y afectar
+en este caso solo la parte del regex posterior al mismo:
 
 \begin{verbatim}
 > say so 'AB' ~~ /a :i b/;
@@ -1412,9 +1415,10 @@ True
 
 \index{adverb!:sigspace}
 \index{adverb!:s}
-I said earlier that whitespace is usually not significant 
-in regex patterns. The \verb':sigspace' or \verb':s' adverb 
-makes whitespace significant in a regex:
+Anteriormente dije que los espacios en blanco no son usualmente
+significativos en los patrones de regex. El adverbio \verb|:sigspace|
+o \verb|:s| hace que los espacios en blanco sean significativos en 
+un regex:
 
 \begin{verbatim}
 > say so 'ab' ~~ /a+ b/;
@@ -1426,14 +1430,15 @@ True
 \end{verbatim}
 %
 
-Instead of searching for just one match and returning a 
-match object, the \verb':global' or \verb':g' adverb tells
-the compiler to search for every non-overlapping match 
-and return them in a list:
+En lugar de buscar por solo una coincidencia y devolver
+un objeto de coincidencia, el adverbio \verb|:global| 
+o \verb|:g| le dice al compilador que busque cada
+coincidencia que no esté superpuesta y las devuelva
+en una lista:
 
 \begin{verbatim}
-> say "Word count = ", $/.elems if "I have a dream" ~~ m:g/ \w+/;
-Word count = 4
+> say "Conteo de palabras = ", $/.elems if "I have a dream" ~~ m:g/ \w+/;
+Conteo de palabras = 4
 > say ~$/[3];
 dream
 \end{verbatim}
@@ -1441,153 +1446,154 @@ dream
 
 \index{adverb!:ratchet}
 \index{adverb!:r}
-These are the most commonly used adverbs. Another adverb, 
-\verb':ratchet' or \verb':r', tells the regex engine 
-not to backtrack and is very important for some specific 
-uses, but we will come back to it in a later chapter (see 
-section~\ref{subrules}).
+Estos son los adverbios más usados comúnmente. Otro adverbio,
+\verb|:ratchet| o \verb|:r|, le dice al motor de regex que 
+no vuelva atrás y es muy importante para usos específicos, 
+pero regresaremos a esto en otro capítulo (ver 
+sección~\ref{subrules}).
 
-\subsection{Exercises on Regexes}
+\subsection{Ejercicios con  Regexes}
 \label{regex_exercises}
 
-As a simple exercise, write some regexes to match and capture:
+Como un ejercicio simple, escribe algunos regexes para coincidir
+y capturar:
 
 \begin{itemize}
-\item A succession of 10~digits within a longer string;
-\item A valid octal number (octal numbers use only 
-digits 0 to 7);
-\item The first word at the start of a string (for the 
-purpose of these small exercises, the word 
-separator may be deemed to be a space, but you might do 
-it without this assumption);
-\item The first word of a string starting with an ``a'';
-\item The first word of a string starting with a lower case vowel;
-\item A French mobile telephone number (in France, mobile 
-phone numbers have 10~digits and start with ``06'' or ``07''); 
-assume the digits are consecutive (no spaces);
-\item The first word of a string starting with a vowel in 
-either upper- or lowercase;
-\item The first occurrence of a double letter (the
-same letter twice in a row);
-\item The second occurrence of a double letter;
- 
+\item Una sucesión de 10~dígitos dentro de otra cadena de texto más larga;
+\item Un número octal válido (números en el sistema octal solo usan los
+dígitos del 0 al 7);
+\item La primera palabra al inicio de una cadena de texto (para el 
+propósito de estos pequeños ejercicios, el separador de palabra 
+puede considerarse un espacio, pero  podrías hacerlo sin esta suposición);
+\item La primera palabra de una cadena de texto que comienza con una ``a'';
+\item La primera palabra de una cadena de texto que comienza con una letra
+minúscula;
+\item Un número telefónico francés (en Francia, los números telefónicos
+tienen 10~dígitos y comienzan con ``06`` o ``07``); puedes asumir que los
+dígitos son consecutivos (sin espacios);
+\item La primera palabra de una cadena de texto que comienza con una vocal 
+en mayúscula o minúscula; 
+\item La primera ocurrencia de una letra doble (la misma letra dos veces);
+\item La segunda ocurrencia de una letra doble;
 \end{itemize}
 
-Solution: \ref{sol_regex_exercises}
+Solución: \ref{sol_regex_exercises}
  
 
-\section{Putting It All Together}
+\section{Combinando Todas las Piezas}
 
-This section is intended to give a few examples using 
-several of the regex features we have seen for solving practical 
-problems together.
+La intención de esta sección es proveerte con algunos ejemplos 
+usando varias de las características de los regexes que hemos
+visto para resolver problemas prácticos.
 
-\subsection{Extracting Dates}
+\subsection{Extracción de Fechas}
 \label{extracting_dates}
 \index{extracting!dates}
 \index{date!extraction}
 
-Assume we have a string containing somewhere a 
-date in the YYYY-MM-DD format:
+Asume que tenemos una cadena de texto que contiene en
+alguna parte una fecha en el formato YYYY-MM-DD:
 
 \begin{verbatim}
-my $string = "Christmas : 2016-12-25.";
+my $cadena = "Christmas : 2016-12-25.";
 \end{verbatim}
 %
 
 \index{TIMTOWTDI}
-As mentioned earlier, one of the mottos in Perl is ``There 
-is more than one way to do it'' (TIMTOWTDI). The various 
-examples below should illustrate that principle quite well 
-by showing several different ways to retrieve the date in 
-the string:
+Como mencionamos anteriormente, uno de los lemas en Perl es
+``Hay más de una forma para hacer algo`` (TIMTOWTDI). Los ejemplos
+múltiples más abajo deberían ilustrar este principio bastante 
+bien al mostrar varias maneras diferentes para extraer la fecha
+en la cadena:
 
 \begin{itemize}
 
-\item Using a character class (digits and dash):
+\item Uso de una categoría de caracteres (dígitos y guión):
 
 \begin{verbatim}
-say ~$0 if $string ~~ /(<[\d-]>+)/;        # -> 2016-12-25
+say ~$0 if $cadena ~~ /(<[\d-]>+)/;        # -> 2016-12-25
 \end{verbatim}
 %
 
-\item Using a character class and a quantifier to avoid 
-matching some small numbers elsewhere in the string if any:
+\item Uso de una categoría de caracteres y un cuantificador
+para evitar coincidir con algunos números pequeños 
+en otra parte de la cadena si existen:
 
 \begin{verbatim}
-say ~$0 if $string ~~ /(<[\d-]> ** 10)/;   # -> 2016-12-25
+say ~$0 if $cadena ~~ /(<[\d-]> ** 10)/;   # -> 2016-12-25
 \end{verbatim}
 %
 
-\item Using a more detailed description of the date format:
+\item Uso de una descripción más detallada del formato de la fecha:
 \begin{verbatim}
-say ~$/ if $string ~~ /(\d ** 4 \- \d\d \- \d\d)/;
+say ~$/ if $cadena ~~ /(\d ** 4 \- \d\d \- \d\d)/;
 \end{verbatim}
 %
 
-\item The same regex, but using an additional grouping to avoid 
-repetition of the \verb'\- \d\d' sub-pattern: 
+\item El mismo regex, pero usando un agrupamiento adicional 
+para evitar la repetición del subpatrón \verb|\- \d\d|:
 
 \begin{verbatim}
-say ~$/[0] if $string ~~ /(\d ** 4 [\- \d\d] ** 2 )/; 
+say ~$/[0] if $cadena ~~ /(\d ** 4 [\- \d\d] ** 2 )/; 
 \end{verbatim}
 %
 
-\item Capturing the individual elements of the date:
+\item Captura de elementos individuales de la fecha:
 \begin{verbatim}
-$string ~~ /(\d ** 4) \- (\d\d) \- (\d\d)/;
-my ($year, $month, $day) = ~$0, ~$1, ~$2;
+$cadena ~~ /(\d ** 4) \- (\d\d) \- (\d\d)/;
+my ($año, $mes, $día) = ~$0, ~$1, ~$2;
 \end{verbatim}
 %
 \index{stringification}
 \index{tilde}
-Note that using the tilde as a prefix above leads 
-\verb'$year', \verb'$month', and \verb'$day' to be 
-populated with strings. Assuming you want these variables 
-to contain integers instead, you might \emph{nummify} them, i.e., 
-coerce them to numeric values using the prefix + operator:
+Nota que el uso de la tilde como un prefijo más arriba
+causa que \verb|$año|, \verb|$mes|, y \verb|$día| son
+pobladas con cadenas de texto. Asumiendo que quieras
+que estas variables contengan números enteros, podrías 
+usar coacción para convertirlas a valores numéricos usando el operador
+prefijo +:
 \index{nummification}
 \begin{verbatim}
-$string ~~ /(\d ** 4) \- (\d\d) \- (\d\d)/;
-my ($year, $month, $day) = +$0, +$1, +$2;
+$cadena ~~ /(\d ** 4) \- (\d\d) \- (\d\d)/;
+my ($año, $mes, $día) = +$0, +$1, +$2;
 \end{verbatim}
 %
  
 
-\item Using subpatterns as building blocks:
+\item Uso de subpatrones como componentes básicos:
 \begin{verbatim}
-my $y = rx/\d ** 4/;
+my $a = rx/\d ** 4/;
 my $m = rx/\d ** 2/;
 my $d = rx/\d ** 2/;
-$string ~~ /(<$y>) \- (<$m>) \- (<$d>)/;
-my ($year, $month, $day) = ~$0, ~$1, ~$2;
+$cadena ~~ /(<$y>) \- (<$m>) \- (<$d>)/;
+my ($año, $mes, $día) = ~$0, ~$1, ~$2;
 \end{verbatim}
 %
 
-Using subpatterns as building blocks is a quite efficient 
-way of constructing step-by-step complicated regexes, but 
-will see in Chapter~\ref{regex_grammars} even better ways 
-of doing this type of things.
+El uso de subpatrones como componentes básicos es una manera
+bastante eficiente de construir un regex complicado paso a
+paso, pero como veremos en en Capítulo~\ref{regex_grammars}
+mejores maneras de hacer este tipo de cosas.
 \index{subpattern}
 
-\item We could improve the \verb'$m' (month) sub-pattern so 
-that it matches only ``01'' to ``12'' and thus 
-verify that it matches a valid month number:
+\item Podríamos mejorar el subpatrón \verb'$m' (mes) 
+para que coincida solo con ``01`` al ``12`` y así 
+verificar que solo coincida con un número de mes válido:
 \index{month number validation}
 
 \begin{verbatim}
-my $m = rx {   1 <[0..2]>    # 10 to 12
-            || 0 <[1..9]>    # 01 to 09
+my $m = rx {   1 <[0..2]>    # 10 a 12
+            || 0 <[1..9]>    # 01 a 09
            };
 \end{verbatim}
 %
 
-As you can see, using comments and whitespace helps 
-make the regex's intent clearer.
+Como puedes ver, el uso de comentarios y espacios en blanco
+facilita que la intención del regex sea más claro.
 
-Another way of achieving the same goal is to use a 
-code assertion to check that the value is numerically 
-between 1 and 12:
+Otra forma de lograr la misma meta es usar una aserción de
+código para chequear que el valor se encuentre numéricamente
+entre 1 y 12:
 \index{code assertion}
 
 \begin{verbatim}
@@ -1595,377 +1601,380 @@ my $m = rx /\d ** 2 <?{ 1 <= $/ <= 12 }> /;
 \end{verbatim}
 
 \index{day number validation}
-As an exercise, you could try to validate that the \verb'$d' 
-(day) subpattern falls within the \verb'01' to \verb'31' 
-range. Try to use both validation techniques outlined just 
-above.
+Como un ejercicio, podrías intentar validar que el 
+subpatrón \verb|$d| (día) cubra los números en el rango
+\verb|01| y \verb|31|. Intenta usar ambas técnicas de validación
+discutidos anteriormente.
 
 \end{itemize}
 
-The \verb'$/' match object has the {\tt prematch} and 
-{\tt postmatch} methods for extracting what comes before 
-and after the matched part of the string:
+El objeto de coincidencia \verb|$/| tiene los métodos 
+{\tt prematch} y {\tt postmatch} para extraer lo que 
+viene antes y después de la parte que coincidió en la 
+cadena de texto:
 \index{prematch}
 \index{postmatch}
 
 \begin{verbatim}
-$string ~~ /(\d ** 4) \- (\d\d) \- (\d\d)/;
+$cadena ~~ /(\d ** 4) \- (\d\d) \- (\d\d)/;
 say $/.prematch;                   # -> "Christmas : "
 say $/.postmatch;                  # -> "."
 \end{verbatim}
 %
 
-As an exercise, try to adapt the above regexes for various 
-other date formats (such as DD/MM/YYYY or 
-YYYY~MM,~DD) and test them. If you're trying with 
-the YYYY~MM,~DD format, please remember that spaces are 
-usually not significant in a regex pattern, so you may need 
-either to specify explicit spaces (using for example the \verb'\s' 
-character class) or to employ the \verb':s' adverb to make 
-whitespace significant). 
+Como un ejercicio, intenta adaptar los regexes anteriores
+para varios formatos de fecha (tales como DD/MM/YYYY o 
+YYYY~MM,~DD) y pruébalos. Si intentas con el formato
+YYYY~MM,~DD, por favor recuerda que los espacios no son
+usualmente significativos en un patrón de regex, así que 
+tendrías que especificar espacios en blanco explícitos
+(con el uso de la categoría de caracteres \verb|\s|) o 
+utilizar el adverbio \verb|:s| para hacer los espacios
+significativos.
 \index{:s adverb}
 \index{character class}
 
-\subsection{Extracting an IP Address}
+\subsection{Extracción de una dirección IP}
 \index{extracting!IP address}
 \index{IP address!extraction}
 
-Assume we have a string containing an IP-v4 address 
-somewhere. IP addresses are most often written in the 
-dot-decimal notation, which consists of four octets of 
-the address expressed individually in decimal numbers and 
-separated by periods, for example {\tt 17.125.246.28}.
+Asumamos que tenemos una cadena de texto que contiene
+una dirección IP-v4 en algún lugar. Las direcciones IP
+son usualmente escritas en la notación de punto decimal,
+la cual consiste de cuatro octetos de la dirección expresados
+individualmente en números decimales y separados por puntos,
+por ejemplo {\tt 17.125.246.28}.
 \index{octet}
 
-For the purpose of these examples, our sample target string 
-will be as follows:
+Para el propósito de estos ejemplos, nuestra muestra de
+cadena de texto será la siguiente:
 
 \begin{verbatim}
-my $string = "IP address: 17.125.246.28;";
+my $cadena = "IP address: 17.125.246.28;";
 \end{verbatim}
 %
 
-Let's now try a few different ways to capture the IP address 
-in that string, in the same way as we just did for the dates:
-
+Ahora intentemos diferentes maneras de capturar la dirección
+IP en esa cadena, en la misma manera que lo hicimos con las 
+fechas:
+s
 \begin{itemize}     
 
-\item Using a character class:
+\item Uso de una categoría de caracteres:
 \index{character class}
 
 \begin{verbatim}
-say ~$0 if $string ~~ /(<[\d.]>+)/;        # -> 17.125.246.28
+say ~$0 if $cadena ~~ /(<[\d.]>+)/;        # -> 17.125.246.28
 \end{verbatim}
 %
 
-\item Using a character class and a quantifier (note that 
-each octet may have one to three digits, so the total number 
-of characters may vary from 7 to 15):
+\item Uso de una categoría de caracteres y un cuantificador (
+nota que cada octeto puede tener de uno a tres dígitos, así que 
+el total de números de caracteres puede variar de 7 a 15):
 \index{quantifier}
 
 \begin{verbatim}
-say ~$0 if $string ~~ /(<[\d.]> ** 7..15)/;  
+say ~$0 if $cadena ~~ /(<[\d.]> ** 7..15)/;  
 \end{verbatim}
 %
 
-\item Using a more detailed description of the IP format:
+\item Uso de una descripción más detallada del formato IP:
 \begin{verbatim}
-say ~$/ if $string ~~ /([\d ** 1..3 \.] ** 3 \d ** 1..3 )/;
+say ~$/ if $cadena ~~ /([\d ** 1..3 \.] ** 3 \d ** 1..3 )/;
 \end{verbatim}
 %
 
-\item Using subpatterns as building blocks:
+\item Uso de subpatrones como componentes básicos:
 \index{octet}
 \index{subpattern}
 \begin{verbatim}
-my $octet = rx/\d ** 1..3/;
-say ~$/ if $string ~~ /([<$octet> \.] ** 3 <$octet>)/;
+my $octeto = rx/\d ** 1..3/;
+say ~$/ if $cadena ~~ /([<$octeto> \.] ** 3 <$octeto>)/;
 \end{verbatim}
 %
 
-\item The maximal value of an octet is 255. We can 
-refine somewhat the definition of the \verb'$octet' 
-subpattern:
+\item El valor máximo de un octeto es 255. Podemos definir
+nuevamente la definición del subpatrón \verb|$octeto|:
 \begin{verbatim}
-my $octet = rx/<[1..2]>? \d ** 1..2/;
-say ~$/ if $string ~~ /([<$octet> \.] ** 3 <$octet>)/;
+my $octeto = rx/<[1..2]>? \d ** 1..2/;
+say ~$/ if $cadena ~~ /([<$octeto> \.] ** 3 <$octeto>)/;
 \end{verbatim}
 %
-With this definition of the \verb'$octet' pattern, the 
-regex would match any number of one or two digits, or a 
-three-digit number starting with digits 1 to 2.
+Con esta definición del subpatrón \verb|$octeto|,
+el regex podría coincidir con cualquier número de uno 
+o dos dígitos, o un número de tres dígitos comenzando con
+los dígitos del 1 al 2.
 
 \index{octet}
-\item But that is not good enough if we really want to check 
-that the IP address is valid (for example, it would erroneously 
-accept 276 as a valid octet). The definition of the 
-\verb'$octet' subpattern can be further refined to 
-really match only authorized values:
+\item Pero esto no es suficientemente bueno si realmente 
+queremos chequear que la dirección IP es válida (por ejemplo,
+podría aceptar a 276 como un octeto válido). La definición
+del subpatrón \verb|$octeto| puede ser redefinida más
+exhaustivamente para coincidir solo con valores
+autorizados: 
 
 \begin{verbatim}
-my $octet = rx { (    25 <[0..5]>        # 250 to 255
-                   || 2  <[0..4]> \d     # 200 to 249
-                   || 1  \d ** 2         # 100 to 199
-                   || \d ** 1..2         # 0 to 99 
+my $octeto = rx { (   25 <[0..5]>       # 250 a 255
+                   || 2  <[0..4]> \d     # 200 a 249
+                   || 1  \d ** 2         # 100 a 199
+                   || \d ** 1..2         # 0 a 99 
                  )
                };
-say ~$/ if $string ~~ /([<$octet> \.] ** 3 <$octet>)/;
+say ~$/ if $cadena ~~ /([<$octeto> \.] ** 3 <$octeto>)/;
 \end{verbatim}
 %
 
-This definition of \verb'$octet' illustrates once more how 
-the abundant use of whitespace and comments can help make 
-the intent clearer.
+Esta definición de \verb|$octeto| ilustra una vez más cómo
+el uso abundante de espacios en blanco y comentarios ayudan
+a hacer la intención más clara.
 
-\item We could also use 
-a code assertion to limit the value of an \verb'$octet' to 
-the \verb'0..255' range:
+\item Podríamos usar una aserción de código para limitar el
+valor de un \verb|$octeto| al rango \verb|0..255|:
 \index{assertion!code}
 \index{code assertion}
 
 \begin{verbatim}
-my $octet = = rx{(\d ** 1..3) <?{0 <= $0 <= 255 }> };
-say ~$/ if $string ~~ /([<$octet> \.] ** 3 <$octet>)/;
+my $octeto = = rx{(\d ** 1..3) <?{0 <= $0 <= 255 }> };
+say ~$/ if $cadena ~~ /([<$octeto> \.] ** 3 <$octeto>)/;
 \end{verbatim}
 %
 
 \end{itemize}
 
 
-\section{Substitutions}
+\section{Substituciones}
 \label{substitutions}
 \index{substitution}
 
-Replacing part of a string with some other substring is a 
-very frequent requirement in string handling. This might be 
-needed for spelling corrections, data reformatting, removal 
-of personal information from data, etc. 
+El reemplazo de una parte de una cadena de texto con otra 
+subcadena es un requerimiento muy frecuente en el manejo
+de cadenas de texto. Esto podría ser necesario para la
+corrección de errores ortográficos, formateo de datos, 
+remoción de información personal de los datos, etc.
 
-\subsection{The {\tt subst} Method}
+\subsection{El Método {\tt subst}}
 \index{subst method}
 
-Perl has a {\tt subst} method which can replace some text with 
-some other text:
+Perl tiene un método {\tt substr} el cual reemplaza algún
+texto con otro texto:
 
 \begin{verbatim}
-my $string = "abcdefg";
-$string = $string.subst("cd", "DC");          # -> abDCefg
+my $cadena = "abcdefg";
+$cadena = $cadena.subst("cd", "DC");          # -> abDCefg
 \end{verbatim}
 
-The first argument to this method is the search part, and 
-can be a literal string, as in the example above, or a regex:
+El primer argumento de este método es la parte de búsqueda, 
+y puede ser una cadena de texto literal, como en el ejemplo
+más arriba, o un regex:
 
 \begin{verbatim}
-my $string = "abcdefg";
-$string = $string.subst(/c \w+ f/, "SUBST");  # -> abSUBSTg
+my $cadena = "abcdefg";
+$cadena = $cadena.subst(/c \w+ f/, "SUBST");  # -> abSUBSTg
 \end{verbatim}
 
-\subsection{The {\tt s/search/replace/} Construct}
+\subsection{La construcción {\tt s/búsqueda/reemplazo/}}
 \index{s/// operator}
 \index{substitution operator}
 
-The most common way to perform text substitution 
-in Perl is the \verb's/search/replace/' construct, which 
-is quite concise, plays well within the general regex syntax, 
-and has the advantage of enabling in-place substitution.
+La manera más común de realizar una substitución de texto en Perl
+es con la construcción \verb|s/búsqueda/reemplazo/|, la cual es
+bien concisa, funciona muy bien con la sintaxis general de los regexes,
+y tiene la ventaja de habilitar la substitución \emph{in situ}.
 
-This is an example of the standard syntax for this type 
-of substitution:
+Esto es un ejemplo de la sintaxis estándar para este tipo de
+substitución:
 
 \begin{verbatim}
-my $string = "abcdefg";
-$string ~~ s/ c \w+ f /SUBST/;                # -> abSUBSTg
+my $cadena = "salviavodas";
+$cadena ~~ s/ v \w+ o /VAVI/;                # -> salVAVIdas
 \end{verbatim}
 
-Here, the search part is a regex and the replacement 
-part is a simple string (no quotation marks needed).
+Aquí, la parte de búsqueda es un patrón de regex y el reemplazo
+es una simple cadena de texto (las comillas no son necesarias).
 
-If the input string is contained in the \verb'$_' topical variable,
-you don't  need to use the smart match operator:
+Si la cadena de texto de entrada se encuentra en la variable tópica
+\verb|$_|, no necesitas usar el operador de coincidencia inteligente:
 \index{smart match operator}
 
 \begin{verbatim}
-$_ = "abcdefg";
-s/c \w+ f/SUBST/;                             # -> abSUBSTg
+$_ = "salviavodas";
+s/ v \w+ o /VAVI/;                             # -> salVAVIdas
 \end{verbatim}
 %
 
-The delimiters don't need to be slashes (and this can be quite 
-useful if either the search or the replacement contain slashes):
+Los delimitadores no tienen que ser barras oblicuas (y esto puede 
+bastante útil si la búsqueda o el reemplazo contiene barras oblicuas):
 \index{delimiter}
 
 \begin{verbatim}
-my $str = "<c>foo</c> <a>foo</a>";
-$str ~~ s!'<a>foo</a>'!<a>bar</a>!;           # -> <c>foo</c> <a>bar</a>
+my $cad = "<h2>Tema</h2> <h1>Subtema</h1>";
+$cad ~~ s!'<h1>Subtema</h1>'!<h3>Subtema</h3>! 
+
+# $cad es ahora: <h2>Tema</h2> <h3>Subtema</h3>
 \end{verbatim}
 %
 
-Unless specified otherwise (with an adverb), the substitution 
-is done only once, which helps to prevent unexpected results:
+
+A menos que se especifique lo contrario (con un adverbio), la
+substitución se realiza una sola vez, lo cual ayuda a prevenir
+resultados inesperados:
 
 \begin{verbatim}
-$_ = 'There can be twly two';
-s/tw/on/;                     # Replace 'tw' with 'on' once
-.say;                         # There can be only two
+$_ = 'Hay caince casas.';
+s/ca/qu/;                     # Reemplaza 'ca' con 'qu' una sola vez
+.say;                         # Hay quince casas.
 \end{verbatim}
 %
-If the substitution were done throughout the string, ``two'' 
-would have been replaced by ``ono'', clearly not the expected 
-result.
+Si la substitución se hubiese hecho en la cadena de texto completa,
+''casas'' se hubiese reemplazado con ''qusas'', que claramente
+no era el resultado esperado.
 
-\subsection{Using Captures}
+\subsection{Uso de Capturas}
 \index{capture}
 
-If the regex on the lefthand side contains captures, the 
-replacement part on the righthand side can use the \verb'$O', 
-\verb'$1', \verb|$2|, etc. variables on the right side to insert 
-captured substrings in the replacement text. A typical 
-example of that is date reformatting:
+Si el regex en el lado izquierdo contiene capturas, el 
+reemplazo en el lado derecho puede usar las variables
+\verb|$0|, \verb|$1|, \verb|$2|, etc. en el lado derecho para 
+insertar subcadenas capturadas en el texto de reemplazo. Un 
+ejemplo típico de eso es el reformateo de fechas:
 
 \begin{verbatim}
-my $string = "Xmas = 2016-12-25";
-$string ~~ s/(\d ** 4) \- (\d\d) \- (\d\d)/$2-$1-$0/;
-                    # $string is now: Xmas = 25-12-2016
+my $cadena = "Xmas = 2016-12-25";
+$cadena ~~ s/(\d ** 4) \- (\d\d) \- (\d\d)/$2-$1-$0/;
+                    # $cadena es ahora: Xmas = 25-12-2016
 \end{verbatim}
 %
 
-\subsection{Adverbs}
+\subsection{Adverbios}
 \label{regex_adverbs}
 \index{adverb}
 \index{modifier}
 
-The adverbs discussed above (Section~\ref{adverb}) can be 
-used with the substitution operator. 
+Los adverbios discutidos más arriba (Sección~\ref{adverb})
+pueden usarse con el operador de substitución. 
 
-The modifiers most commonly used in substitutions are the 
-{\tt :ignorecase} (or {\tt :i}) and {\tt :global} (or 
-{\tt :g}) adverbs. They work just as described in 
-Subsection~\ref{adverb} of the section on regexes 
-and matching. 
+Los modificadores más usados comúnmente en substituciones
+son los adverbios {\tt :ignorecase} (o {\tt :i}) y 
+{\tt :global} (o {\tt :g}). Ellos funcionan como lo describimos
+en la Subsección~\ref{adverb} de la sección sobre regexes 
+y coincidencia.
 
-The one specific point to be made here is that substitutions 
-are usually done only once. But with the {\tt :global} (or 
-{\tt :g}) adverb, they will be done throughout the whole 
-string:
+El punto que quiero hacer aquí es que las substituciones se hacen
+usualmente solo una vez. Pero con el adverbio 
+{\tt :global} (o {\tt :g}), se harán en toda la cadena de texto:
 
 \begin{verbatim}
-my $string = "foo bar bar foo bar";
-$string ~~ s:g/bar/baz/;  # string is now "foo baz baz foo baz"                    
+# Sin substitución global:
+my $cad = "...y tan a su gusto, a su caballo...";
+$cad ~~ s/su/mi/;  # $cad es ahora: "...y tan a mi gusto, a su caballo..."
+
+# Con substitución global:
+my $cad = "...y tan a su gusto, a su caballo...";
+$cad ~~ s:g/su/mi/;  # $cad es ahora: "...y tan a mi gusto, a mi caballo..."
+                    
 \end{verbatim}
 %
 \index{substitution}
 
 
-\section{Debugging}
+\section{Depuración de Programas}
 \index{debugging}
 \index{traversal}
 \index{is-reverse}
 
-When you use indices to traverse the values in a sequence,
-it is tricky to get the beginning and end of the traversal
-right.  Here is a subroutine that is supposed to compare two
-words and return {\tt True} if one of the words is the reverse
-of the other, but it contains two errors:
+Cuando usas los índices para recorrer los valores en una secuencia,
+es un poco difícil conseguir el inicio y el final del recorrido 
+correctamente. Aquí tenemos una subrutina que está supuesta a 
+comparar dos palabras y devolver {\tt True} si una de las palabras
+es la inversa de la otras, pero contiene dos errores:
 
 \begin{verbatim}
-# ATTENTION, watch out: code with errors
-sub is-reverse(Str $word1, Str $word2) {
-    return False if $word1.chars != $word2.chars;
+# ADVERTENCIA, ten cuidado: código con errores
+sub es-inversa(Str $palabra1, Str $palabra2) {
+    return False if $palabra1.chars != $palabra2.chars;
     
     my $i = 0;
-    my $j = $word2.chars;
+    my $j = $palabra2.chars;
 
     while $j > 0 {
-        return False if substr($word1, $i, 1) ne substr($word2, $j, 1);
+    	say '$i = ', $i, ' $j = ', $j;
+        return False if substr($palabra1, $i, 1) ne substr($palabra2, $j, 1);
         $i++; $j--;
     }
     return True;
 }
-say is-reverse "pots", "stop";
+say es-inversa "pots", "stop";
+
 
 \end{verbatim}
 %
-The first postfix {\tt if} statement checks whether the words 
-are the same length.  If not, we can return {\tt False} 
-immediately. Otherwise, for the rest of the subroutine, 
-we can assume that the words are the same length.  
-This is an example of the guardian pattern described 
-in Section~\ref{guardian} (p.~\pageref{guardian}).
+La primera sentencia sufijo {\tt if} chequea si las palabras
+tienen la misma longitud. Si no, podemos devolver {\tt False}
+inmediatamente. De lo contrario, por el resto de la subrutina, 
+podemos asumir que las dos palabras tienen la misma longitud.
+Este es un ejemplo del patrón guardián descrito en la 
+Sección~\ref{guardian} (p.~\pageref{guardian}).
 \index{guardian pattern}
 \index{pattern!guardian}
 \index{index}
 
-{\tt \$i} and {\tt \$j} are indices: {\tt \$i} traverses 
-{\tt \$word1} forward while {\tt \$j} traverses {\tt \$word2} 
-backward.  If we find two letters that don't match, we 
-can return {\tt False} immediately. If we get through the 
-whole loop and all the letters match, we return {\tt True}.
+{\tt \$i} y {\tt \$j} son los índices: {\tt \$i} 
+recorre {\tt \$palabra1} hacia adelante mientras {\tt \$j}
+recorre {\tt \$palabra2} hacia atrás. Si encontramos dos letras
+que no coinciden, podemos devolver {\tt False} inmediatamente.
+Si logramos pasar a través del bucle y todas las letras
+coinciden, devolvemos {\tt True}.
 
-If we test this function with the words ``stop'' and 
-``pots'', we expect the return value {\tt True}, but we get 
-{\tt False} instead. So, what's wrong here?
+Si probamos esta función con las palabras ''stop'' y ''pots'',
+esperamos el valor de retorno {\tt True}, pero obtenemos 
+{\tt False} en lugar de eso. Así que, cuál es el problema?
 \index{False!special value}
 \index{True}
 
-With this kind of code, the usual suspect is a possible 
-blunder in the management of indices (especially perhaps 
-an off-by-one error). For debugging this kind of error, 
-the first move might be to print the values of the indices 
-immediately before the line where they are used:
+Con este tipo de código, el sospechoso usual es un posible error
+en el manejo de los índices (quizás un error de un solo número).
+Para depura este tipo de error, el primer paso podría ser la
+impresión de los valores de los índices inmediatamente 
+antes de las línea donde se usan:
 \index{off-by-one error}
 
 \begin{verbatim}
-sub is-reverse(Str $word1, Str $word2) {
-    return False if $word1.chars != $word2.chars;
-    
-    my $i = 0;
-    my $j = $word2.chars;
+sub es-inversa(Str $palabra1, Str $palabra2) {
+	return False if $palabra1.chars != $palabra2.chars;
 
-    while $j > 0 {
-        say '$i = ', $i, ' $j = ', $j;
-        return False if substr($word1, $i, 1) ne substr($word2, $j, 1);
-        $i++; $j--;
-    }
-    return True;
+	my $i = 0;
+	my $j = $palabra2.chars;
+
+	while $j > 0 {
+		say '$i = ', $i, ' $j = ', $j;
+		return False if substr($palabra1, $i, 1) ne substr($palabra2, $j, 1);
+		$i++; $j--;
+	}
+	return True;
 }
 \end{verbatim}
 %
-Now when we run the program again, we get more information:
+Ahora cuando ejecutemos el programa nuevamente, obtenemos
+más información:
 
 \begin{verbatim}
 $i = 0 $j = 4
 False
 \end{verbatim}
 %
-The first time through the loop, the value of {\tt \$j} is 4,
-which is out of range for the string \verb"'pots'".
-The index of the last character is 3, so the
-initial value for {\tt \$j} should be {\tt \$word2.chars - 1}.
+La primera vez a través del bucle, el valor de {\tt \$j} es 4,
+el cual está fuera de rango para la cadena de texto \verb|'pots'|.
+El índice del último carácter es 3,  así que el valor inicial para
+{\tt \$j} debería ser {\tt \$palabra2.chars - 1}.
 \index{out-of-range error}
 
-Note that in the event that this was still not enough for us to 
-spot the out-or-range error, we could have gone one step 
-further and printed the letters themselves, and we would 
-have seen that we did not get the last letter of the second 
-word.
+Nota que en el evento de no haber sido suficiente para rastrear 
+el error de fuera de rango, podríamos haber ido un paso más allá
+e imprimir las letras. Al hacer esto, hubiésemos visto que no
+obteníamos la última letra de la segunda palabra.
 
-If we fix that error and run the program again, we get:
-
-\begin{verbatim}
-$i = 0 $j = 3
-$i = 1 $j = 2
-$i = 2 $j = 1
-True
-\end{verbatim}
-%
-This time we get the right answer, but it looks like the 
-loop only ran three times, which is suspicious: it seems 
-that the program did not compare the last letter of the 
-first word (indexed {\tt \$i = 3}) with the last letter of 
-the second word (indexed {\tt \$j = 0}).  
-
-We can confirm this by running the subroutine with the 
-following arguments: ``stop'' and ``lots'', which displays:
+Si arreglamos el error y ejecutamos el programa nuevamente,
+obtenemos:
 
 \begin{verbatim}
 $i = 0 $j = 3
@@ -1974,104 +1983,123 @@ $i = 2 $j = 1
 True
 \end{verbatim}
 %
+Esta vez obtenemos la repuesta correcta, pero parece ser
+que el bucle solo se ejecutó tres veces, lo cual es sospechoso:
+parece que el programa no comparó la última letra de la 
+primera palabra (indexada {\tt \$i = 3}) con la última letra de
+la segunda palabra (indexada {\tt \$j = 0}).
 
-This is obviously wrong, ``lots'' is not the reverse of 
-``stop'', the subroutine should return {\tt False}. So we 
-have another bug here.
+Podemos confirmar esto al ejecutar la subrutina con los siguientes
+argumentos: ``stop'' y ``lots'', lo cual muestra:
 
-To get a better idea of what is
-happening, it is useful to draw a state diagram.  During the first
-iteration, the frame for \verb"is_reverse" is shown in
-Figure~\ref{fig.state4}.  \index{state diagram} \index{diagram!state}
+\begin{verbatim}
+$i = 0 $j = 3
+$i = 1 $j = 2
+$i = 2 $j = 1
+True
+\end{verbatim}
+%
+
+Esto es obviamente incorrecto, dado que ``lots`` no es la inversa de
+``stop``, la subrutina debería devolver {\tt False}. Así que tenemos
+otro \emph{bug} en nuestras manos.
+
+Para tener una mejor idea de lo que está pasando, es útil dibujar 
+un diagrama de estado. Durante la primera iteración, el cuadro para
+\verb|es-inversa| se muestra en la figura~\ref{fig.state4}. 
+\index{state diagram} \index{diagram!state}
 
 \begin{figure}
 \centerline
 {\includegraphics[scale=0.5]{figs/state6.pdf}}
-\caption{State diagram.}
+\caption{Diagrama de estado.}
 \label{fig.state4}
 \end{figure}
 
-We took some license by arranging the variables in the frame
-and adding dotted lines to show that the values of {\tt \$i} 
-and {\tt \$j} indicate characters in {\tt \$word1} and 
-{\tt \$word2}.
+Tomamos ciertas libertades para acomodar las variables en
+el cuadro y agregar líneas punteadas para mostrar que los valores de
+{\tt \$i} y {\tt \$j} indican caracteres en {\tt \$palabra1} y
+{\tt \$palabra2}.
 
-Starting with this diagram, run the program on paper, changing 
-the values of {\tt \$i} and {\tt \$j} during each iteration. 
-Find and fix the second error in this function.
+Comienza con este diagrama, ejecuta el programa en papel, 
+cambia los valores de {\tt \$i} y {\tt \$j} durante cada iteración.
+Encuentra y arregla el segundo error en esta función.
 
-Solution: \ref{sol_isreverse}.
+Solución: \ref{sol_isreverse}.
 \label{isreverse}
 \index{is-reverse}
 
 
-\section{Glossary}
+\section{Glosario}
 
 \begin{description}
 
-\item[Object] Something a variable can store.  For now,
-you can use ``object'' and ``value'' interchangeably.
+\item[Objecto] Algo que una variable puede almacenar. 
+Por el momento, puedes usar ``objeto`` y ``valor`` indistintamente.
 \index{object}
 
-\item[Sequence] An ordered collection of
-values where each value is identified by an integer index.
+\item[Secuencia] Una colección ordenada de valores donde cada valor
+es identificado por un índice entero.
 \index{sequence}
 
-\item[Item] One of the values in a sequence.
+\item[Artículo] Uno de los valores en una secuencia.
 \index{item}
 
-\item[Index] An integer value used to select an item in
-a sequence, such as a character in a string.  In Perl
-indices start from 0.
+\item[Índice] Un valor entero que se usa para seleccionar un
+artículo en una secuencia, tal como un carácter en un cadena 
+de texto. En Perl, los índices comienzan desde el 0.
 \index{index}
 
-\item[Slice] A part of a string specified by a range of indices.
+\item[Rebanada] Una parte de una cadena de texto especificada por un
+rango de índices.
 \index{slice}
 
-\item[Empty string] A string with no characters and length 0, represented
-by two quotation marks.
+\item[Cadena de texto vacía] Una cadena de texto sin caracteres y con longitud 0,
+representada por dos comillas.
 \index{empty string}
 
-\item[Traverse] To iterate through the items in a sequence,
-performing a similar operation on each.
+\item[Recorrer] Iterar a través de los artículos de una secuencia,
+realizando una operación similar en cada uno de ellos.
 \index{traversal}
 
 \index{search}
-\item[Search] A pattern of traversal that stops
-when it finds what it is looking for.
+\item[Búsqueda] Una patrón de recorrido que para cuando encuentra
+lo que está buscando.
 \index{search!pattern}
 \index{pattern!search}
 
 \index{counter}
-\item[Counter] A variable used to count something, usually initialized
-to zero and then incremented.
+\item[Contador] Una variable que se usa para contar algo, usualmente
+inicializada a cero y posteriormente incrementada.
 
 \index{regular expression}
-\item[Regular expressions] A computing sublanguage derived 
-from the formal language theory.
+\item[Expresiones  regulares] Un sublenguaje de computación
+derivado de la teoría de lenguajes formales.
 
 \index{pattern}
-\item[Pattern] A sequence of characters using a special 
-syntax to describe from left to right the content that 
-is intended to be matched within a target string.
+\item[Patrón] Una secuencia de caracteres con sintaxis especial
+que describen de izquierda a derecha el contenido que se intenta
+coincidir dentro de una cadena de texto en particular.
 
 \index{regex}
-\item[Regexes] A pattern-matching sublanguage of Perl~6 
-derived from regular expressions.
+\item[Regexes] Un sublenguaje de coincidencia de patrón de Perl~6
+derivado de las expresiones regulares.
 
 \index{backtracking}
-\item[Backtracking] The process by which when a given attempt 
-to match a string fails, the regex engine abandons part of 
-the current match attempt, goes back into the string, and 
-tries to see if it can find another route to a successful 
-match. The backtracking process eventually stops as soon 
-as a successful match succeeds, or ultimately when all 
-possible match possibilities have failed.
+\item[Vuelta atrás] El proceso por el cual,
+dado un intento de coincidencia fallido en una cadena de texto, el motor de regex 
+abandona parte del intento de coincidencia actual, vuelve atrás
+en la cadena de texto, e intenta nuevamente para ver si puede
+encontrar una nueva ruta a una coincidencia exitosa. 
+El proceso de vuelta atrás eventualmente para tan pronto una
+coincidencia exitosa ocurre, o finalmente cuando todas las 
+coincidencias posibles fallan. Este proceso se conoce como
+\emph{backtracking} en inglés.
 
 \end{description}
 
 
-\section{Exercises}
+\section{Ejercicios}
 
 
 \begin{exercise}
@@ -2080,16 +2108,17 @@ possible match possibilities have failed.
 \index{method!count}
 \index{index function}
 
-Write a subroutine that uses the {\tt index} function in a 
-loop to count the number of ``a'' characters in \verb"'banana'",
-as we did in Section~\ref{counter}. Modify it to count 
-any letter in any word passed as arguments to the subroutine.
+Escribe una subrutina que use la función {\tt index}  en un bucle
+para contar el número de caracteres ``a`` en \verb|`banana`| como 
+hicimos en la Sección~\ref{counter}. Modifícala para contar
+cualquier letra en cualquier palabra pasadas como argumentos 
+a la subrutina.
 
-Write another subroutine counting a given letter in a given 
-word using the {\tt substr} function.
+Escribe otra subrutina para contar una letra dada en una 
+palabra dada usando la función {\tt substr}.
 \index{substr function}
 
-Solution: \ref{sol_count_a}
+Solución: \ref{sol_count_a}
 \end{exercise}
 
 
@@ -2098,36 +2127,38 @@ Solution: \ref{sol_count_a}
 \label{islower}
 \index{lower case!character class}
 \index{character class}
-The \verb'<[a..z]>' character class matches any lower case 
-character (only plain ASCII lower case characters, not 
-Unicode characters). The following subroutine:
+La categoría de caracteres \verb|<[a..z]>| coinciden con cualquier
+carácter en minúscula (solo caracteres ASCII en minúscula, no caracteres
+Unicode). La siguiente subrutina:
 
 \begin{verbatim}[fontshape=up]
-sub is-lower (Str $char) { 
+sub es-minúscula (Str $char) { 
     return so $char ~~ /^<[a..z]>$/
 }
 \end{verbatim}
 
-should return {\tt True} if its argument is an ASCII lower case 
-letter and {\tt False} otherwise. Test that it works as 
-expected (and amend it if needed). The {\tt so} function 
-coerces the result of the regex match into a Boolean value.
+debería devolver {\tt True} si su argumento es una letra ASCII
+en minúscula y de lo contrario, {\tt False}. Asegúrate de que 
+funcione como se espera (y arréglala si es necesario). La 
+función {\tt so} coacciona el resultado de la coincidencia de regex 
+en un valor Booleano.
 
-The following subroutines use the {\tt is-lower} subroutine 
-and are all {\em intended} to check 
-whether a string contains any lowercase letters, but at 
-least some of them are wrong.  Analyze each subroutine by hand, 
-determine whether it is correct, and describe what it 
-actually does (assuming that the parameter is a string). Then 
-test them with various input strings to check whether your 
-analysis was correct.
+Las siguientes subrutinas usan la subrutina {\tt es-minúscula}
+y su trabajo es chequear si una cadena de texto contiene 
+letras en minúsculas, pero algunas de ellas no funcionan 
+adecuadamente. Analiza cada subrutina manualmente, 
+determina si funciona bien, y describe lo que actualmente
+hace (puedes asumir que el parámetro es una cadena de texto).
+Después, pruébalas todas con varias cadenas de texto para chequear
+si tu análisis estaba en lo cierto.
 
 \begin{verbatim}[fontshape=up]
-# ATTENTION: some of the subroutines below are wrong
+# ADVERTENCIA: algunas de las siguientes subrutinas
+#              no funcionan correctamente.
 
-sub any_lowercase1(Str $string){
-    for $string.comb -> $char {
-        if is-lower $char {
+sub cualquier_minúscula1(Str $cadena){
+    for $cadena.comb -> $char {
+        if es-minúscula $char {
             return True;
         } else {
             return False;
@@ -2135,9 +2166,9 @@ sub any_lowercase1(Str $string){
     }
 }
 
-sub any_lowercase2(Str $string){
-    for $string.comb -> $char {
-        if is-lower "char" {
+sub cualquier_minúscula2(Str $cadena){
+    for $cadena.comb -> $char {
+        if es-minúscula "char" {
             return True;
         } else {
             return False;
@@ -2145,58 +2176,58 @@ sub any_lowercase2(Str $string){
     }
 }
 
-sub any_lowercase3(Str $string){
+sub cualquier_minúscula3(Str $cadena){
     my $flag;
-    for $string.comb -> $char {
-        $flag =  is-lower $char;
+    for $cadena.comb -> $char {
+        $flag =  es-minúscula $char;
     }
     return $flag;
 }
 
-sub any_lowercase4(Str $string){
-    my $flag = False;
-    for $string.comb -> $char {
-        $flag = $flag or is-lower $char;
+sub cualquier_minúscula4(Str $cadena){
+    my $bandera = False;
+    for $cadena.comb -> $char {
+        $bandera = $bandera or es-minúscula $char;
     }
-    return $flag;
+    return $bandera;
 }
 
-sub any_lowercase5(Str $string){
+sub cualquier_minúscula5(Str $cadena){
     my $flag = False;
-    for $string.comb -> $char {
-        if is-lower $char {
+    for $cadena.comb -> $char {
+        if es-minúscula $char {
             $flag = True;
         }
     }
     return $flag;
 }
 
-sub any_lowercase6(Str $string){
-    for $string.comb -> $char {
-        if is-lower $char {
+sub cualquier_minúscula6(Str $cadena){
+    for $cadena.comb -> $char {
+        if es-minúscula $char {
             return 'True';
         }
     }
     return 'False';
 }
 
-sub any_lowercase7(Str $string){
-    for $string.comb -> $char {
-        return True if is-lower $char;
+sub cualquier_minúscula7(Str $cadena){
+    for $cadena.comb -> $char {
+        return True if es-minúscula $char;
     }
     return False;
 }
 
-sub any_lowercase8(Str $string){
-    for $string.comb -> $char {
-        return False unless is-lower $char;
+sub cualquier_minúscula8(Str $cadena){
+    for $cadena.comb -> $char {
+        return False unless es-minúscula $char;
     }
     return True;
 }
 
-sub any_lowercase9(Str $string){
-    for $string.comb -> $char {
-        if not is-lower $char {
+sub cualquier_minúscula9(Str $cadena){
+    for $cadena.comb -> $char {
+        if not es-minúscula $char {
             return False;
         }
     return True;
@@ -2204,7 +2235,7 @@ sub any_lowercase9(Str $string){
 }
 \end{verbatim}
 
-Solution: \ref{sol_islower}.
+Solución: \ref{sol_islower}.
 
 \end{exercise}
 
@@ -2215,25 +2246,29 @@ Solution: \ref{sol_islower}.
 \index{Caesar cipher}
 
 \label{rotate}
-A Caesar cipher is a weak form of encryption that involves 
-``rotating'' each letter by a fixed number of places.  To 
-rotate a letter means to shift it through the alphabet, 
-wrapping around to the beginning if necessary, so ``A'' 
-rotated by 3 is ``D'' and ``Z'' rotated by 1 is ``A.''
+Un cifrado César es una forma débil de cifrado que involucra
+la ``rotación`` de cada letra por un número fijo de posiciones.
+La rotación de una letra se refiere a su desplazamiento a través
+del alfabeto, y puede envolverse alrededor si es necesario, 
+así que ``A`` rotada por 3 corresponde a ``D`` y ``Z`` rotada por
+1 corresponde a ``A``.
 
-To rotate a word, rotate each letter by the same amount.
-For example, ``cheer'' rotated by 7 is ``jolly'' and ``melon'' rotated
-by -10 is ``cubed.''  In the movie {\em 2001: A Space Odyssey}, the 
-ship computer is called HAL, which is IBM rotated by -1.
+Para rotar una palabra, rota cada letra por el mismo número de posiciones.
+For ejemplo, ``educar`` rotada por 7 es ``lkbjhy`` y ``carta`` rotada por 
+-10  es ``sqhjq``. (Para el cifrado, usamos solo caracteres del alfabeto
+básico latino ISO.) En la película
+{\em 2001: A Space Odyssey}, la computadora de la nave se llama 
+HAL, que es una rotación de IBM por -1.
 
-Write a function called \verb"rotate-word"
-that takes a string and an integer as parameters, and returns
-a new string that contains the letters from the original string
-rotated by the given amount.  
+Escribe una función llamada \verb|rotar-palabra| que toma una cadena de texto
+y un número entero como parámetros, y devuelve una nueva cadena que 
+contiene las letras de la cadena original rotadas por el monto dado.
 
-You might want to use the built-in functions {\tt ord}, which 
-converts a character to a numeric code (Unicode code point), and 
-{\tt chr}, which converts such numeric codes back to characters:
+
+Podrías querer utilizar las funciones integradas {\tt ord}, 
+la cual convierte un carácter a su código numérico (Unicode code point),
+y {\tt char}, la cual convierte tales código numérico devuelta los
+caracteres:
 \index{ord function}
 \index{chr function}
 \index{function!ord}
@@ -2247,8 +2282,8 @@ c
 \end{verbatim}
 %
 
-Letters of the alphabet are encoded in alphabetical
-order, so for example:
+Las letras del alfabeto están codificadas en orden 
+alfabético, así que por ejemplo:
 \index{alphabetic order}
 
 \begin{verbatim}[fontshape=up]
@@ -2256,24 +2291,24 @@ order, so for example:
 2
 \end{verbatim}
 
-because \verb"'c'" is the second letter after \verb"'a'" in 
-the alphabet.  But beware: the numeric codes for upper case 
-letters are different.
+dado que \verb|'c'| es la segunda letra después de \verb|'a'|
+en el alfabeto. Pero ten pendiente: los códigos numéricos para
+las letras mayúsculas son diferentes.
 \index{upper case}
 \index{case!upper}
 
 \index{rot13}
-Potentially offensive jokes on the internet are sometimes 
-encoded in ROT13, which is a Caesar cipher with rotation 13. 
-Since 13 is half the number of letters in our alphabet, 
-applying rotation 13 twice returns the original word, 
-so that the same procedure can be used for both encoding 
-and decoding in rotation 13. If you are not
-easily offended, find and decode some of these jokes. (ROT13 
-is also used for other purposes, such as weakly hiding the 
-solution to a puzzle.) 
+Bromas en la Internet que tienen el potencial de ser ofensivas
+son algunas veces codificadas en ROT13, el cual es un cifrado 
+César con rotación 13. Dado que 13 es la mitad del número de letras
+en nuestro alfabeto, la aplicación de una rotación por 13 devuelve la
+palabra original, así que el mismo procedimiento puede usarse
+para cifrar y descifrar en rotación 13. Si no te ofendes fácilmente,
+encuentra y descifra algunas de estas bromas. (ROT13 se usa también 
+para otros propósitos, tales como ocultar débilmente la solución de
+un acertijo.)
 
-Solution: \ref{sol_rotate}.
+Solución: \ref{sol_rotate}.
 
 \end{exercise}
 
