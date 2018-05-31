@@ -1,87 +1,86 @@
 
 
 
-\chapter{Regexes and Grammars}
+\chapter{Regexes y Gramáticas}
 \label{regex_grammars}
 \index{regex}
 \index{regular expression}
 \index{grammar}
 
-Regular expressions or regexes were introduced in
-Sections~\ref{regex} to \ref{substitutions}. You might want to review
-those sections before reading this chapter if you don't
-remember much about regexes. You don't need to remember the details of
-everything we covered earlier and we will explain again briefly
-specific parts of the functionality that we will be using, but you are
-expected to understand generally how regexes work.
+Las expresiones regulares o regexes fueron introducidas en las
+Secciones~\ref{regex} a \ref{substitutions}. Es recomendable que leas
+esas secciones nuevamente antes de leer este capítulo si no 
+recuerdas mucho sobre los regexes. No necesitas recordar los detalles
+de todo lo que discutimos anteriormente y explicaremos de nuevo, aunque
+brevemente, las partes específicas de la funcionalidad que usaremos,
+pero se espera que entiendas cómo los regexes funcionan en general.
 
-\section{A Brief Refresher}
+\section{Una Breve Actualización}
 
 \index{pattern}
-Regexes, as we have studied 
-them so far, are about string exploration using patterns. 
-A pattern is a sequence of (often special) characters that 
-is supposed to describe a string or part of a string. A 
-pattern matches a string if a correspondence can be found 
-between the pattern and the string. 
+Los regexes, como los estudiamos hasta ahora, tratan sobre
+la exploración de cadenas de texto usando patrones. 
+Un patrón es una secuencia de caracteres (usualmente especiales)
+que describen una cadena de texto o parte de una 
+cadena de texto. Un patrón coincide con una cadena de texto si existe
+una correspondencia entre el patrón y la cadena de texto.
 
-For example, the 
-following code snippet searches the string for the letter 
-``a'', followed by any number (but at least one) of letters 
-``b'' or ``c'', followed by zero or more digits followed by
-a ``B'' or a ``C'':
+Por ejemplo, el siguiente fragmento de código inspecciona la 
+cadena de texto y trata de encontrar la letra ``a``, seguida por 
+cualquier número (pero por lo menos una) de letras ``b`` o ``c``,
+seguida por cero o más dígitos seguidos por una ``B`` o una ``C``:
 
 \begin{verbatim}
-my $str = "foo13abbccbcbcbb42Cbar";
-say ~$/ if $str ~~ /a <[bc]>+ (\d*) [B|C]/;  # -> abbccbcbcbb42C
+my $cad = "foo13abbccbcbcbb42Cbar";
+say ~$/ if $cad ~~ /a <[bc]>+ (\d*) [B|C]/;  # -> abbccbcbcbb42C
 say ~$0;                                     # -> 42
 \end{verbatim}
 
 \index{smart match operator}
 \index{operator!smart match}
-This code uses the \verb'~~' smart match operator to 
-check whether the \verb'$str' string matches the 
-\verb'/a <[bc]>+ (\d*) [B|C]/' pattern. Remember that 
-spaces are usually not significant in a regex pattern 
-(unless specified otherwise).
+Este fragmento de código usa el operador de coincidencia 
+inteligente \verb|~~| para chequear si la cadena \verb|$cad|
+coincide con el patrón \verb'/a <[bc]>+ (\d*) [B|C]/'. Recuerda
+que los espacios en blanco no son usualmente significativos en 
+un patrón de regex (a menos que se especifiquen).
 \index{pattern}
 
-The pattern is made of the following components:
+El patrón está compuesto por los siguientes componentes:
+
 \begin{itemize}
 
-\item \verb'a': a literal match of letter ``a''
+\item \verb'a': una coincidencia literal de la letra ``a''
 
 \index{character class}
-\item \verb'<[bc]>+': the \verb'<[bc]>' is a character class 
-meaning letter ``b'' or ``c''; the \verb'+' quantifier 
-says characters matching the character class ``b'' or ``c'' 
-can be repeated one or more times
+\item \verb'<[bc]>+': el átomo \verb'<[bc]>' es una categoría de caracteres
+que se refiere a la letra ``b`` o ``c``; el cuantificador \verb|+|
+dicta que los caracteres que coinciden con la categoría de caracteres
+``b`` o ``c`` pueden repetirse una o más veces.
 
 \index{quantifier}
 \index{capture!regex}
-\item \verb'(\d*)': the \verb'\d' atom is a digit character 
-class, the \verb'*' quantifier means 0 or more occurrences 
-of the previous atom, and the enclosing parentheses request 
-a capture of these digits (if any) into the \verb'$0' 
-variable (a special variable that is really a shortcut 
-for \verb'$/[0]')
+\item \verb'(\d*)': el átomo \verb|\d| es una categoría de caracteres
+que son dígitos, el cuantificador \verb|*| significa 0 o más ocurrencias
+del átomo anterior, y los paréntesis requieren una captura
+de estos dígitos (si existen) en la variable \verb|$0| (una variable especial
+que es realmente un atajo para \verb|$/[0]|)
+
 
 \index{alternation}
-\item \verb'[B|C]': \verb'B|C' is an alternation (either 
-a ``B'' or a ``C''), and the square brackets regroup this 
-alternation into one subpattern (and also enable proper 
-precedence).
+\item \verb'[B|C]': \verb'B|C' es una alternación (una ``B`` o un ``C``),
+y los corchetes reagrupan esta alternación en un (y también habilita 
+precedencia adecuada).
 \index{subpattern}
 
 \end{itemize}
 
 \index{match object}
-If the match is successful (as is the case in this example), 
-the result is stored into the \emph{match object}, \verb'$/'.
-Printing \verb'~$/' displays a stringified version of the 
-match object. And printing \verb'$0' (or \verb'$/[0]') 
-displays the capture (part of the match that is between 
-parentheses, in this case the number ``42'').
+Si la coincidencia es exitosa (como en este ejemplo), 
+el resultado se almacena en el \emph{objeto de coincidencia},
+\verb|$/|. La impresión de \verb|~$/| muestra una versión en
+cadena de texto del objeto de coincidencia. Y la impresión de \verb|$0|
+(o \verb|$/[0]|) muestra la captura (la porción de la coincidencia
+entre los paréntesis, en este caso el número ``42``).
 \index{capture}
 \index{regex!capture}
 \index{match object}
@@ -90,36 +89,41 @@ parentheses, in this case the number ``42'').
 \index{parsing}
 \index{lexical analysis}
 \index{grammatical analysis}
-This is what might be called low-level matching: pattern 
-recognition is done mostly at the individual character level.
-Perl~6 offers ways to group and name regex patterns so that 
-these individual patterns can then be used as building 
-blocks for higher level matching: recognizing words and 
-sequences of words (rather than just characters), for the 
-purpose of performing what is called lexical analysis 
-(or {\bf lexing}) and grammatical analysis (or {\bf parsing}) 
-on a piece of text. 
+Esto es lo que se llama coincidencia a un bajo nivel:
+el reconocimiento del patrón se hace mayormente al nivel
+individual de un carácter. Perl~6 ofrece varias maneras de 
+agrupar y nombrar los patrones de regex para que estos
+patrones individuales puedan utilizarse posteriormente 
+como componentes básicos para coincidencia a un alto nivel:
+el reconocimiento de palabras y secuencias de palabras (más
+que caracteres), para el propósito de hacer lo que se conoce
+como análisis léxico (o {\bf lexing}) y análisis gramático
+(o {\bf parsing}) en una pieza de texto.
+
+% parse => parsear
+% parsing => parseado
 
 \index{Perl 6 grammar}
-This chapter is mostly devoted to this higher type 
-of matching, leading to the creation of full-fledged grammars 
-that can analyze structured text such as XML or HTML texts, 
-JSON or YAML documents, or even computer programs: Perl~6 
-programs are actually parsed using a Perl~6 grammar written 
-in Perl~6.
+Este capítulo está mayormente dedicado este tipo de 
+coincidencia, que conduce a la creación de gramáticas completas
+que analizan textos estructurados tales como textos XML o HTML, 
+documentos JSON o YAML, o hasta programas de computadora: 
+los programas de Perl~6 son actualmente analizados sintácticamente
+usando una gramática de Perl~6 escrita en Perl~6.
 
 \index{grammar}
-Grammars are a very important topic in computer science, 
-but, obviously, most programmers don't commonly write 
-full-fledged grammars for parsing programming languages. 
-However, writing a simple grammar and a simple parser 
-might be, or perhaps should be, a much more common task. 
+Las gramáticas son un tema muy importante en la ciencia de
+la computación pero, obviamente, no todos los programadores
+escriben gramáticas completas para analizar sintácticamente
+lenguajes de programación. No obstante, la escritura de una
+gramática simple y un analizador sintáctico simple podría
+ser, o quizás debería ser, una actividad mucho más común.
 
-Quite often, people spend a lot of effort at deciphering a 
-simple configuration file with low-level techniques, whereas 
-writing a simple parser might be a lot easier and much more 
-efficient. Perl~6 offers all the tools to do that 
-very easily.
+A menudo, la gente invierte demasiado esfuerzo en el descifrado
+de archivos simples de configuración con técnicas de bajo nivel,
+mientras que la escritura de un simple analizador sintáctico
+podría ser mucho más fácil y mucho más eficiente. Perl~6
+ofrece todas las herramientas para hacer eso muy fácilmente.
 \index{configuration file}
 
 \index{domain-specific language (DSL)}
@@ -127,28 +131,29 @@ very easily.
 \index{sub-language}
 \index{slang}
 
-Sometimes, you also need to develop a domain-specific 
-language (DSL), i.e., a usually relatively small sublanguage 
-(a.k.a. \emph{slang}) adapted to a specific field of 
-knowledge (scientific, engineering, business, art, or other) 
-with its own conventions, symbols, operators, and so on. 
-With a grammar and Perl's ability to create its own operators, 
-you can often express specialized knowledge within the 
-terminology framework of subject-matter experts.
+Algunas veces, también necesitas desarrollar un lenguaje 
+de dominio específico (DSL por sus siglas en inglés), i.e.,
+un sublenguaje relativamente pequeño (también conocido como una
+jerga) adaptado a un campo específico del conocimiento
+(ciencia, ingeniería, negocios, arte, u otro) con sus propias
+convenciones, símbolos, operadores, etc. Con una gramática y la 
+habilidad de Perl para crea sus propios operadores, puedes usualmente
+expresar conocimiento especializado dentro del marco de terminología
+de los expertos de una área del conocimiento en particular.
 
-\section{Declarative Programming}
+\section{Programación Declarativa}
 
 \index{declarative programming}
 \index{programming!declarative}
-Both regexes and grammars are examples of yet another programming 
-paradigm that we haven't really explored so far: {\bf declarative 
-programming}. This is a programming model in which, contrary 
-to ordinary imperative or procedural programming, you don't 
-state how to do something and don't choose your control flow. 
-Rather, you specify a set of definitions, rules, properties, 
-and possibly some constraints and actions, and let the program 
-apply those to derive some new information about the input 
-data. 
+Los regexes y las gramáticas son ejemplos de aún otro tipo
+de paradigma de programación que no hemos explorado hasta ahora:
+{\bf programación declarativa}. Este es un modelo de programación
+en el cual, contrario a la programación imperativa o procedimental,
+tú no indicas cómo hacer algo ni tampoco eliges tu flujo de control.
+En lugar de eso, tú especificas un conjunto de definiciones, reglas,
+propiedades, y posiblemente algunas restricciones y acciones, y dejas
+al programa aplicar estas definiciones para derivar nueva información
+sobre los datos de entrada.
 
 \index{programming!declarative}
 \index{programming!logic}
@@ -160,13 +165,13 @@ data.
 \index{Bison}
 \index{makefile}
 
-This form of programming is widely used in logic programming 
-(e.g., Prolog), artificial intelligence, expert systems, 
-data analysis, database query languages (e.g., SQL), text and 
-source code recognition (e.g., Lex and Flex), program 
-compilation (e.g., Yacc or Bison), configuration management, 
-makefiles, and also in some ways functional programming.
-
+Esta forma de programación se usa extensivamente en la
+programación lógica (e.g., Prolog), inteligencia artificial,
+sistemas expertos, análisis de datos, lenguajes para
+consultar de bases de datos (e.g., SQL), reconocimiento de
+texto y código fuente (e.g., Lex y Flex), compilación de
+programas (e.g., Yacc o Bison), manejo de configuraciones, 
+makefiles, y también de alguna forma, programación funcional.
 
 
 \section{Captures}
@@ -792,8 +797,8 @@ used in conjunction with a grammar.
 
 The grammar is quite simple and is looking for two decimal numbers 
 separated by an infix arithmetic operator. If there is a 
-match, \verb'$/<num>' (or \verb'$<num>' for short) will refer to an 
-array containing the two numbers (and \verb'$/<operation>' 
+match, \verb|$/<num>| (or \verb|$<num>| for short) will refer to an 
+array containing the two numbers (and \verb|$/<operation>| 
 will contain the arithmetic operator).
 
 \index{parse method}
