@@ -2,88 +2,91 @@
 %
 % \chapter{Introduction to the Second part of this book}
 
-Now that you have reached the end of the first part 
-of this book, you should non longer be a pure beginner. 
-By now, you should be able to go through the official 
-Perl~6 documentation (\url{https://docs.perl6.org}) 
-and find your way. 
+Ahora que has alcanzado el final de la primera parte 
+de este libro, ya no deberías sentirte un principiante.
+Ahora, deberías ser capaz de leer (y escudriñar) la 
+documentación oficial de Perl~6 (\url{https://docs.perl6.org})
+y encontrar tu camino.
 
-There are many more things to say about programming. 
-The next three chapters will be devoted to more 
-advanced concepts and new programming paradigms, including:
+Hay muchas cosas que decir acerca de la programación.
+Los siguientes tres capítulos se dedicaran a conceptos
+más avanzados y a nuevos paradigmas de programación,
+incluyendo:
 \begin{description}
 
-\item[Object-oriented programming] We will describe how 
-we can construct our own types and methods, which 
-is a way to extend the language.
+\item[Programación Orientada a Objetos] Describiremos 
+cómo construir nuestros propios tipos y métodos, lo cual
+es una manera de extender el lenguaje.
 
-\item[Using grammars] This is a form of declarative 
-programming in which you define axioms and rules 
-and derive knowledge from these; grammars are a 
-very powerful way to analyze textual content and 
-are used to transform program source code into 
-executable statements.
+\item[Uso de gramáticas] Esta es una forma de programación
+declarativa en la cual defines axiomas y reglas y derivas
+conocimientos de estos; las gramáticas son una forma muy
+poderosa de analizar contenido textual y se usan para 
+transformar el código fuente de un programa en sentencias
+que se pueden ejecutar.
 
-\item[Functional programming] This is yet another programming 
-paradigm in which computation is expressed as the 
-evaluation of mathematical functions.
+\item[Programación funcional] Este es aún otro tipo de paradigma 
+de programación en el cual una computación se expresa como
+la evaluación de funciones matemáticas.
 \end{description}
 
-Each of these chapters probably deserves a full 
-book in its own right (and might have one some day), 
-but we hope to tell you enough about them to get you 
-going. In my opinion, every programmer should know 
-about these powerful concepts in order to be able 
-to select the best way to solve a given problem.
+Cada uno de estos capítulos probablemente merece un
+libro completo (y podrían tener uno en el futuro) 
+pero esperamos decirte lo suficiente acerca
+de ellos para ponerte en marcha. En mi opinión,
+cada programador debería saber sobre estos conceptos 
+poderosos para ser capaz de seleccionar la mejor forma
+de resolver un problema en particular.
 
-Perl~6 is a multiparadigm language, so we can 
-really cover these topics in terms of the Perl~6 
-language. A number of subjects that we have 
-introduced in previous chapters should lead you 
-easily into these new ideas, and this is the 
-reason why I think it is possible to properly cover 
-them with just one chapter for each of these subjects.
+Perl~6 es un lenguaje multiparadigmático, así que 
+podemos cubrir estas disciplinas usando el lenguaje Perl~6.
+Un número de temas que introducimos en los
+capítulos anteriores deberían facilitar la fácil
+adquisición de estas nuevas ideas, y esta es la 
+razón por la cual pienso que es posible cubrirlas
+apropiadamente solo con un capítulo para cada una de
+estas disciplinas.
 
-There will be far fewer exercises in the second part, 
-because we expect you by now to be able to think up 
-your own exercises and make your own experiments for 
-yourself. And there will be only very few suggested solutions, 
-because we are getting at a level where there is really not  
-one right solution, but many possible ways to tackle 
-a problem.
+Habrán menos ejercicios en la segunda parte, 
+porque esperamos por ahora que ya eres capaz de idear 
+tus propios ejercicios y hacer tus propios experimentos.
+Y habrán solo algunas soluciones sugeridas, porque 
+nos estamos acercando a un nivel donde no existe una 
+única solución correcta, sino muchas maneras de 
+enfrentar y resolver un problema.
 
-Concerning the Perl language, we have covered a lot of 
-material, but, as I warned from the very beginning, 
-this is far from exhaustive. The following are among 
-the topics that we have not covered (and will not cover); 
-you might want to explore the documentation on them 
-yourself:
+Con respecto al lenguaje Perl, hemos cubierto muchísimo 
+material, pero, como te advertí al principio, estos
+estos dista de ser exhaustivo. Los siguientes son los temas
+que no cubrimos (y no cubriremos); podrías desear explorar
+la documentación por ti mismo:
 
 \begin{description}
-\item[Concurrent programming] Today's computers have 
-multiple processors or multicore processors; Perl~6 
-offers various ways of taking advantage of these to 
-run computing processes in parallel in order to 
-improve performance and reduce run time; see 
+\item[Programación concurrente] Las computadoras de hoy en día
+poseen procesadores múltiples o procesadores con múltiples
+núcleos; Perl~6 ofrece varias formas de tomar ventaja de estos
+para ejecutar procesos de computación en paralelo para así 
+mejorar el rendimiento y reducir el tiempo de ejecución; ver
 \url{https://docs.perl6.org/language/concurrency} 
 for more details.
 
-\item[Exception handling] Managing situations where 
-something goes wrong is an important part of 
-programming. Perl~6 offers various mechanisms to 
-handle such situations. See \url{https://docs.perl6.org/language/exceptions} 
-for more details.
+\item[Manejo de excepciones] El manejo de situaciones
+cuando algo no funciona correctamente es una parte 
+importante de la programación. Perl~6 ofrece varios
+mecanismos para el manejo de tales situaciones.
+Ver \url{https://docs.perl6.org/language/exceptions} 
+para más detalles.
 
-\item[Interprocess communication:] Programs often have to 
-run other programs and to communicate with them. See 
+\item[Comunicación entre procesos:] Programas usualmente tienen
+que ejecutar otros programas y comunicarse con los mismos. Ver 
 \url{https://docs.perl6.org/language/ipc}.
 
-\item[Modules] How to create, use, and distribute Perl~6 
-modules. See \url{https://docs.perl6.org/language/modules}.
+\item[Módulos] Cómo crear, usar, y distribuir módulos de
+Perl~6. Ver \url{https://docs.perl6.org/language/modules}.
 
-\item[Native calling interface] How to call libraries 
-that are written in other programming languages and 
-follow the C calling conventions. 
-See \url{https://docs.perl6.org/language/nativecall}
+\item[Intefaz para llamadas nativas] Cómo llamar librerías que están
+escritas en otros lenguajes de programación y seguir las
+convenciones de llamadas del lenguaje C.
+Ver \url{https://docs.perl6.org/language/nativecall}
 
 \end{description}

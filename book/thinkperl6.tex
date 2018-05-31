@@ -31,13 +31,12 @@
 \usepackage{upquote}
 \usepackage{appendix}
 \usepackage[bookmarks]{hyperref}
-\usepackage[english]{babel}
+\usepackage[spanish,english]{babel}
 \usepackage[mathletters]{ucs}
 \usepackage[utf8x]{inputenc}
 \usepackage{fancyvrb}
 \usepackage{pdfpages}
 %\usepackage{moreverb}
-
 
 
 \title{Piensa en Perl 6}
@@ -67,12 +66,15 @@
 \newif\ifplastex
 \plastexfalse
 
+% Change the word ´Chapter´ to ´Capítulo´
+\addto\captionsenglish{\renewcommand{\chaptername}{Capítulo}}
+
 \begin{document}
+
+\frontmatter
 
 % insert cover page
 \includepdf{thinkperl6_cover.pdf} 
-
-%\frontmatter
 
 % PLASTEX ONLY
 \ifplastex
@@ -267,7 +269,7 @@ con Allen B. Downey}
 \input{data_struct_selection}
 
 
-\part{Moving Forward}
+\part{Hacia Adelante}
 
 \include{intro_part_2}
 
