@@ -174,193 +174,199 @@ programas (e.g., Yacc o Bison), manejo de configuraciones,
 makefiles, y también de alguna forma, programación funcional.
 
 
-\section{Captures}
+\section{Capturas}
 
 \index{capturing}
-As we noted in the regex examples at the beginning of this 
-chapter, round parentheses not only group things together, 
-but also {\bf capture} data: they make the string matched 
-by the subpattern within the parentheses available as a 
-special variable:
+Como explicamos en los ejemplos de regex al comienzo de este 
+capítulo, los paréntesis no solo agrupan cosas sino que también
+{\bf capturan} datos: ellos hacen que la cadena de texto que 
+coincide con el subpatrón dentro de los paréntesis se 
+encuentre disponible dentro de una variable especial:
 \index{subpattern}
 
 \begin{verbatim}
-my $str =  'number 42';
-say "Number is $0" if $str ~~ /number \s+ (\d+) /;  # -> Number is 42
+my $cad =  'número 42';
+say "El número es $0" if $cad ~~ /número \s+ (\d+) /;  # -> El número es 42
 \end{verbatim}
 %
 
 \index{numbered capture}
 \index{capture!numbered}
-Here, the pattern matched the \verb'$str' string, and the 
-part of the pattern within parentheses was captured in 
-the \verb'$0' special variable. Where there are several 
-parenthesized groups, they are captured in variables 
-named \verb'$0', \verb'$1',  \verb'$2', etc. (from 
-left to right):
+Aquí, el patrón coincidió la cadena de texto \verb|$cad|,
+y la parte del patrón dentro de los paréntesis fue capturada
+en la variable especial \verb|$0|. Si hay varios grupos 
+con paréntesis, ellos serán capturados en las variables
+\verb|$0|, \verb|$1|, \verb|$2|, etc. (de izquierda a derecha):
 
 \begin{verbatim}
 say "$0 $1 $2" if "abcde" ~~ /(a) b (c) d (e)/;       # -> a c e
 \end{verbatim}
 %
 
-This is fine for simple captures, but the numbering of 
-captures can become tedious if there are many captures and 
-somewhat complicated when there are nested parentheses in 
-the pattern:
+Esto funciona muy bien con capturas simples, pero el 
+número de capturas puede volverse tedioso si hay 
+muchas capturas y algo complicado cuando hay paréntesis
+anidados en el patrón:
 
 \begin{verbatim}
 if 'abc' ~~ / ( a (.) (.) ) / {
-    say "Outside: $0";                   # Outside: abc
-    say "Inside: $0[0] and $0[1]";       # Inside: b and c
+    say "Fuera: $0";                   # Fuera: abc
+    say "Dentro: $0[0] y $0[1]";       # Dentro: b and c
 }
 \end{verbatim}
 
-When it gets complicated, it is often better to use another 
-feature called \emph{named captures}. The standard way to 
-name a capture is as follows:
+Cuando se vuelve complicado, es usualmente mejor usa
+otra características conocida como \emph{capturas nombradas}.
+La manera estándar de nombra una captura es de la siguiente forma:
 \index{named!capture}
 \index{capture!named}
 
 \begin{verbatim}
-if 'abc;%' ~~ / $<capture_name> = \w+ / {
-    say ~$<capture_name>;                # abc
+if 'abc;%' ~~ / $<nombre_de_captura> = \w+ / {
+    say ~$<nombre_de_captura>;                # abc
 }
 \end{verbatim} 
 
-The use of the named capture, \verb'$<capture_name>', 
-is a shorthand for accessing the \verb'$/' match object as 
-a hash, in other words: \verb"$/{ 'capture_name' }" or 
-\verb'$/<capture_name>'.
+El uso de la captura nombrada, \verb|$<nombre_de_captura>|,
+es un atajo para acceder el objeto de coincidencia \verb|$/|
+como un hash, en otras palabras: \verb|$/{ 'nombre_de_captura' }|
+o \verb|$/<nombre_de_captura>|.
 \index{match object}
 
-Named captures can be nested using regular capture group syntax:
+Las capturas nombradas pueden anidarse usando la sintaxis regular
+de captura de grupo:
 
 \begin{verbatim}
-if 'abc' ~~ / $<overall>=( a $<part1>=(.) $<part2>=(.) ) / {
-    say "Overall: $<overall>";           # Overall: abc
-    say "Part 1: $<overall><part1>";     # Part 1: b
-    say "Part 2: $<overall><part2>";     # Part 2: c
+if 'abc' ~~ / $<todo>=( a $<parte1>=(.) $<parte2>=(.) ) / {
+    say "Todo: $<todo>";                # Todo: abc
+    say "Parte 1: $<todo><parte1>";     # Parte 1: b
+    say "Parte 2: $<todo><parte2>";     # Parte 2: c
 }
 \end{verbatim} 
 
 \index{match object}
-Assigning the match object to a hash gives you easy programmatic 
-access to all named captures:
+Asignar el objeto de coincidencia a un hash ofrece acceso programático 
+fácil a todas las capturas nombradas:
 
 \begin{verbatim}
-if 'abc' ~~ / $<overall>=( a $<part1>=(.) $<part2>=(.) ) / {
-    my %capture = $/.hash;    
-    say ~%capture<overall>;              # -> abc
-    for kv %capture<overall> -> $key, $val {
-        say $key, " ", ~$val;            # -> part2 c \n part1 b
+if 'abc' ~~ / $<todo>=( a $<parte1>=(.) $<parte2>=(.) ) / {
+    my %captura = $/.hash;    
+    say ~%captura<todo>;                   # -> abc
+    for kv %captura<todo> -> $clave, $val {
+        say $clave, " ", ~$val;            # -> parte2 c \n parte1 b
     }
 }
 \end{verbatim} 
 
-But you might as well do the same thing directly on the 
-match object without having to perform an extra hash 
-assignment:
+Pero podrías hacer la misma cosa directamente en el objeto de
+coincidencia sin tener que hacer una asignación de hash extra:
 
 \begin{verbatim}
-if 'abc' ~~ / $<overall>=( a $<part1>=(.) $<part2>=(.) ) / {
-     say "Overall: $<overall>";          # -> Overall: abc
-    for kv %<overall> -> $key, $val {
-        say $key, " ", ~$val;            # -> part2 c \n part1 b
+if 'abc' ~~ / $<todo>=( a $<parte1>=(.) $<parte2>=(.) ) / {
+    say "Todo: $<todo>";                # -> Todo: abc
+    for kv %<todo> -> $clave, $val {
+        say $clave, " ", ~$val;          # -> parte2 c \n parte1 b
     }
 }
 \end{verbatim}
 
-Remember that, in the above code, \verb'$<overall>' is 
-really a shortcut for  \verb'$/<overall>', i.e., for a 
-hash type of access to the \verb'$/' match object.
+Recuerda que, en el código más arriba, \verb|$<todo>| es
+realmente un atajo para \verb|$/<todo>|, i.e., para un
+tipo de acceso hash al objeto de coincidencia \verb|$/|.
 
-There is, however, a more convenient way to get named 
-captures which is discussed in the next section.
+No obstante, existe una manera más conveniente de obtener
+capturas nombradas la cual discutimos en la siguiente sección.
 
-\section{Named Rules (a.k.a. Subrules)}
+\section{Reglas Nombradas (o Subreglas)}
 \label{subrules}
 \index{subrule}
 \index{named!rule}
 \index{named!regex}
 \index{named!token}
 
-It is possible to store pieces of regexes into \emph{named rules}. The following example uses a named regex, which 
-is one of the kinds of named rules, to match a text line:
+Es posible almacenar piezas de regexes dentro 
+de \emph{reglas nombradas}. El ejemplo siguiente usa un
+regex nombrado, el cual es un tipo de reglas nombradas, 
+para coincidir con una línea de texto:
 
 \begin{verbatim}
-my regex line { \N* \n }  # any number of characters other 
-                          # than new line, followed by 1 new line
-if "abc\ndef" ~~ /<line> def/ {
-    say "First line: ", $<line>.chomp;      # First line: abc
+my regex línea { \N* \n }  # cualquier número de caracteres excepto
+			 # una nueva línea, seguida por 1 nueva línea 
+
+if "abc\ndef" ~~ /<línea> def/ {
+    say "Primera línea: ", $<línea>.chomp;      # Primera línea: abc
 }
 \end{verbatim} 
 
-Notice that the syntax with a block of code is akin 
-to a subroutine or method definition. This is not a 
-coincidence; we will see that named rules are very 
-similar to methods. Notably, rules can call 
-each other (or even sometimes call themselves 
-recursively) just like methods and subroutines, and we will see 
-that this is a very powerful and expressive feature.
+Nota que la sintaxis con un bloque de código se parece
+a la definición de una subrutina o un método. Esto no es una
+casualidad; veremos que las reglas nombradas son muy similares
+a los métodos. Notablemente, las reglas pueden llamarse unas
+a las otras (o hasta algunas veces ellas mismas de forma
+recursiva) al igual que los métodos y las subrutinas,
+y también veremos que esto es una característica muy poderosa
+y expresiva.
 \index{recursive rules}
 
 \index{named!regex}
-A named regex can be declared with 
-\verb'my regex name { regex body }', and called with 
-{\tt <name>}. 
+Un regex nombrado puede declararse con 
+\verb|my regex nombre { cuerpo del regex }|, y 
+llamarse con {\tt <nombre>}.
 
-As you can see in the example above, a successful named 
-regex creates a named capture with the same name. If you 
-need a different name for the capture, you can do this 
-with the syntax {\tt <capturename=regexname>}. In this 
-example, we call the same named regex twice and, 
-for convenience, use a different name to distinguish 
-the two captures:
+Como puedes ver en el ejemplo más arriba, un regex
+nombrado que es exitoso crea una captura nombrada 
+con el mismo nombre. Si necesitas un nombre diferente
+para la captura, puedes hacer esto con la siguiente
+sintaxis {\tt <nombre-captura=nombre-regex>}. En este
+ejemplo, llamamos el mismo regex nombrado dos veces y,
+por conveniencia, usamos un nombre diferente para distinguir
+las dos capturas:
 \index{named!capture}
 
 \begin{verbatim}
-my regex line { \N* \n }
-if "abc\ndef\n" ~~ / <first=line> <second=line> / {
-    say "First line: ", $<first>.chomp;   # -> First line: abc
-    say "Second line: ", $<second>.chomp; # -> Second line: def
-    print $_.chomp for $<line>.list;      # -> abc  def
+my regex línea { \N* \n }
+if "abc\ndef\n" ~~ / <primera=línea> <segunda=línea> / {
+    say "Primera línea: ", $<primera>.chomp;   # -> Primera línea: abc
+    say "Segunda línea: ", $<segunda>.chomp;   # -> Segunda línea: def
+    print $_.chomp for $<línea>.list;          # -> abc  def
 }
 \end{verbatim}
 
-Here, we have used {\tt chomp} method calls to remove 
-the new line characters from the captures. There is in 
-fact a way to match on the new line character but exclude 
-it from the capture:
+En este ejemplo, usamos las invocaciones del método {\tt chomp}
+para remover el carácter de nueva línea de las capturas. Existe
+de hecho una manera para coincidir con el carácter de nueva línea
+pero excluirla de la captura:
+
 \begin{verbatim}
-my regex line { \N* )> \n }
-if "abc\ndef\n" ~~ / <first=line> <second=line> / {
-    say "First line: ", ~$<first>;       # -> First line: abc
-    say "Second line: ", ~$<second>;     # -> Second line: def
-    print $<line>.list;                  # -> abc  def
+my regex línea { \N* )> \n }
+if "abc\ndef\n" ~~ / <primera=línea> <segunda=línea> / {
+    say "Primera línea: ", ~$<primera>;   # -> Primera línea: abc
+    say "Segunda línea: ", ~$<segunda>;   # -> Segunda línea: def
+    print $<línea>.list;                  # -> abc  def
 }
 \end{verbatim}
 
-This relatively little-known token, "\verb')>'," marks 
-the endpoint of the match's overall capture. Anything 
-after it will participate to the match but will not 
-be captured by the named regex. Similarly, the "\verb'<)'" 
-token indicates the start of the capture.
+Este poco conocido token, \verb|")>"|, marca el punto final de
+la captura completa de una coincidencia. Cualquier cosa después
+del token participará en la coincidencia pero no será 
+capturado por el regex nombrado. Similarmente, el token 
+\verb|")>"| indica el inicio de la captura.
 
-Named regexes are only one form (and probably not the 
-most common) of the named rules, which 
-come in three main flavors:
+Los regexes nombrados son solo una forma (y probablemente no la
+más común) de las reglas nombradas, que vienen en tres sabores
+distintos:
+
 \begin{itemize}
-\item Named regex, in which the regex behaves like ordinary 
-regexes
+\item Regexes nombrados, en la cual el regex se comporta como
+los regexes ordinarios
 \index{ratchet}
 \index{adverb!:ratchet}
 \index{backtracking}
 \index{token}
 \index{named!regex}
-\item Named tokens, in which the regex has an implicit 
-{\tt :ratchet} adverb, which means that there is no 
-backtracking
+\item Tokens nombrados,  en la cual el regex tiene un adverbio
+{\tt :ratchet} implícito, lo cual significa que no hay vuelta
+atrás
 \index{named!token}
 \index{ratchet}
 \index{adverb!:ratchet}
@@ -368,122 +374,122 @@ backtracking
 \index{sigspace}
 \index{adverb!:sigspace}
 \index{named!rule}
-\item Named rules, in which the regex has an implicit 
-{\tt :ratchet} adverb, just as named tokens, and also 
-an implicit {\tt :sigspace} adverb, which means that 
-whitespace within the pattern (or, more specifically, 
-between word characters) is not ignored
+\item Reglas nombradas, en la cual el regex tiene un adverbio
+{\tt :ratchet} implícito, como los tokens nombrados, y también
+un adverbio {\tt :sigspace} nombrado, lo cual significa que los
+espacios en blanco dentro del patrón (o, más específicamente, entre
+los caracteres de palabra) no son ignorados
 \end{itemize}
 
-In the two examples above, we did not need the regexes 
-to backtrack. We could (and probably should) have used 
-a named token instead of a named regex:
+En los dos ejemplos arriba, no necesitamos que los regexes
+volvieran atrás. Podríamos (y probablemente deberíamos)
+haber usado un token nombrado en lugar de un regex nombrado:
 
 \begin{verbatim}
-my token line { \N* \n }
-if "abc\ndef" ~~ /<line> def/ {
-    say "First line: ", $<line>.chomp;    # First line: abc
+my token línea { \N* \n }
+if "abc\ndef" ~~ /<línea> def/ {
+    say "Primera línea: ", $<línea>.chomp;    # Primera línea: abc
 }
 \end{verbatim} 
 
-But, for a rule to match, we would have to remove the 
-space from \emph{within the pattern}:
+Pero, para que una regla coincida, tendríamos que remover 
+el espacio desde \emph{dentro del patrón}:
 
 \begin{verbatim}
-my rule line { \N*\n }
-if "abc\ndef" ~~ /<line> def/ {
-    say "First line: ", $<line>.chomp;    # First line: abc
+my rule línea { \N*\n }
+if "abc\ndef" ~~ /<línea> def/ {
+    say "Primera línea: ", $<línea>.chomp;    # Primera línea: abc
 }
 \end{verbatim} 
 
-Collectively, these three types of named rules are usually 
-referred to as \emph{rules}, independently of the specific 
-keyword used for their definition.
+Independientemente de la palabra clave específica usada
+para sus definiciones, es usual referirse a estos tres tipos
+de reglas nombradas colectivamente como {\tt reglas}.
 \index{rule}
 
-Remember the various regexes we experimented for 
-extracting dates from a string in 
-Subsection~\ref{extracting_dates} 
-(p.~\pageref{extracting_dates})? The last example 
-used subpatterns as building blocks for constructing 
-the full pattern. We could now rewrite it, with the 
-added feature of recognizing multiple date formats, as 
-follows:
+Recuerdas los varios regexes con los cuales
+experimentamos para extraer las fechas de una cadena de
+texto en la Subsección~\ref{extracting_dates} 
+(p.~\pageref{extracting_dates})? El último ejemplo
+usó subpatrones como componentes básicos para 
+construir el patrón completo. Podríamos ahora escribirlo,
+con la característica añadida para reconocer formatos de
+fecha múltiples, en la siguiente manera:
 \index{date format}
 \index{subpattern}
 
 \index{matching a date}
 \begin{verbatim}
-my $string = "Christmas : 2016-12-25.";                                         
-my token year { \d ** 4 }                                        
-my token month {   
+my $cadena = "Christmas : 2016-12-25.";                                         
+my token año { \d ** 4 }                                        
+my token mes {   
     1 <[0..2]>                            # 10 to 12                     
     || 0 <[1..9]>                         # 01 to 09                     
 };
-my token day { (\d ** 2) <?{1 <= $0 <= 31 }> }  
-my token sep { '/' || '-' } 
-my rule date {  <year> (<sep>) <month> $0 <day> 
-                || <day> (<sep>) <month> $0 <year> 
-                || <month>\s<day>',' <year>
+my token día { (\d ** 2) <?{1 <= $0 <= 31 }> }  
+my token separador { '/' || '-' || '.' } 
+my rule fecha {  <año> (<separador>) <mes> $0 <día> 
+                || <día> (<separador>) <mes> $0 <año> 
+                || <mes>\s<día>',' <año>
 }                         
 
-if $string ~~ /<date>/ {
-    say ~$/;                              # -> 2016-12-25
-    say "Day\t= "   , ~$/<date><day>;     # -> 25
-    say "Month\t= " , ~$/<date><month>;   # -> 12
-    say "Year\t= "  , ~$/<date><year>;    # -> 2016
+if $cadena ~~ /<fecha>/ {
+    say ~$/;                           # -> 2016-12-25
+    say "Día\t= " , ~$/<fecha><día>;   # -> 25
+    say "Mes\t= " , ~$/<fecha><mes>;   # -> 12
+    say "Año\t= " , ~$/<fecha><año>;   # -> 2016
 }          
 \end{verbatim} 
 
-The first four named tokens define the basic building 
-blocks for matching the year, the month, the day, and 
-possible separators. Then, the {\tt date}  
-named rule uses these building blocks to define an 
-alternation between three possible date formats.
+Los primeros cuatro tokens nombrados definen los componentes
+básicos para coincidir con el año, el mes, el día, y los posibles
+separados. Después, la regla nombrada {\tt fecha} usa los 
+componentes básicos para definir una alternancia entre los 
+posibles tres formatos de fecha.
 \index{token}
 \index{rule}
 
 \index{date!validation}
-This code checks that the day in the month is between 0 and 31 
-and that the month is between 01 and 12, and this is 
-probably sufficient to recognize dates in a 
-text in most cases, but this would match ``2016-11-31'' 
-as a date, although November only has 30~days. We may want 
-to be a little bit stricter about valid dates and prevent 
-that by adding a negative code assertion to the {\tt date} 
-named rule:
+Este código chequea que el día en el mes esté entre 1 y 31
+y que el mes esté entre 01 y 12, y esto es probablemente
+suficiente para reconocer fechas en un texto en la 
+mayoría de los casos, pero esto coincidiría con ``2016-11-31''
+aunque Noviembre tiene solo 30~días. Podemos ser un poco
+más estricto sobre las fechas válidas y prevenir eso al
+agregar una inserción de código negativa a la regla nombrada
+{\tt fecha}:
+
 \index{code assertion}
 \index{assertion!code}
 
 \begin{verbatim}
-my rule date { [    <year> (<sep>) <month> $0 <day> 
-                 || <day> (<sep>) <month> $0 <year> 
-                 || <month>\s<day>',' <year>
-               ] <!{ $<day> > 30 and $<month> ==  2|4|6|9|11}>
-}                         
+my rule fecha { [ <año> (<separador>) <mes> $0 <día> 
+		|| <día> (<separador>) <mes> $0 <año> 
+		|| <mes>\s<día>',' <año>
+		] <!{ $<día> > 30 and $<mes> == 2|4|6|9|11} >
+}
+                        
 \end{verbatim}
 
-
-This is better, but we can still match an invalid date 
-such as ``2016-02-30''. 
+Esto es mejor, pero todavía podemos coincidir con una fecha 
+inválida tal como ``2016-02-30''.
 
 \begin{exercise}
 \label{february_rule}
 %
-As an exercise, change the code 
-assertion to reject a ``Feb. 30'' date. If you feel 
-courageous, you might even want to check the number of 
-days in February depending on whether the date occurs in 
-a leap year. You may also want to try to define and test 
-other date formats. Solution: \ref{sol_february_rule}
+Como un ejercicio, cambia la aserción de código para
+rechazar una fecha como ``Feb. 30``. Si te sientes
+valiente, podrías hasta querer chequear el número de días
+en febrero dependiendo si la fecha ocurre en un año bisiesto.
+También podrías intentar definir y probar otros
+formatos de fecha. Solución: \ref{sol_february_rule}
 \end{exercise}
 \index{leap year}
 \index{February!number of days}
 \index{date format}
 
-Rules can (and usually should) be grouped in 
-grammars; that's in fact what they have been designed 
-for.
+Las reglas pueden (y usualmente deberían) agruparse en 
+gramáticas; esa es la razón por la cual fueron diseñadas.
 
 \section{Grammars}
 \index{grammar}
