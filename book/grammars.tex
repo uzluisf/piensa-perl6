@@ -491,231 +491,235 @@ formatos de fecha. Solución: \ref{sol_february_rule}
 Las reglas pueden (y usualmente deberían) agruparse en 
 gramáticas; esa es la razón por la cual fueron diseñadas.
 
-\section{Grammars}
+\section{Gramáticas}
 \index{grammar}
 
-Grammars are a powerful tool used to analyze textual data 
-and often to return data structures that have been 
-created by interpreting that text.
+Las gramáticas son una herramienta poderosa que se utilizan
+para analizar datos textuales y usualmente devuelven 
+estructuras de datos que se crean al interpretar dichos textos.
 
-For example, any Perl~6 program is parsed and executed 
-using a Perl~6 grammar written in Perl~6, and you could write a grammar 
-for parsing (almost) any other programming language. 
-To tell the truth, programmers rarely 
-write grammars for parsing programming languages. But 
-grammars are very useful for performing many tasks 
-that are much more common than parsing programs.
-
+Por ejemplo, cualquier programa de Perl~6 se analiza sintácticamente
+y se ejecuta usando una gramática de Perl~6 escrita en Perl~6, 
+y podrías escribir una gramática para analizar sintácticamente
+(casi) cualquier otro lenguaje de programación. Para ser honesto,
+los programadores raramente escriben gramáticas analizar sintácticamente
+lenguajes de programación. No obstante, las gramáticas son muy útiles para
+realizar muchas tareas que son mucho más comunes que analizar
+programas sintácticamente.
 \index{parsing!HTML}
 \index{parsing!XML}
 \index{HTML parsing}
 \index{XML parsing}
 
-If you ever tried to use regexes for analyzing a piece 
-of HTML (or XML) text\footnote{Don't try to do it. Now, 
-I warned you: just don't do it.}, you 
-probably found out that this is quickly becoming next 
-to impossible, except perhaps for the most simple 
-HTML data. For analyzing any piece of such data, you 
-need an actual parser which, in turn, will usually be 
-based on an underlying grammar.
+Si alguna vez intentaste usar regexes para analizar una
+pieza de texto HTML (o XML)\footnote{No intentes hacerlo.
+Ya te lo advertí: no lo hagas.}, probablemente encontraste
+que se volvió casi imposible, excepto quizás por las datos
+de HTML más fáciles. Para analizar cualquier pieza de tal
+datos, necesitas un analizador sintáctico el cual, por su parte,
+estará basado en una gramática.
 
-If you didn't like grammar in school, don't let that 
-scare you off grammars. Perl~6 grammars are nothing complicated; 
-they just allow you to group named rules, just as classes 
-allow you to group methods of regular code.
+Si no te gustó la gramática en la escuela, no dejes que eso te 
+intimide. Las gramáticas de Perl~6 no son complicadas; ellas solo
+te permiten agrupar reglas nombradas, en la misma forma que las clases
+te permiten agrupar métodos de código regular.
 
 \index{namespace}
 \index{parse method}
 \index{fileparse method}
 \index{grammar!methods}
 \index{actions!class}
-A grammar creates a namespace and is introduced with the 
-keyword {\tt grammar}. It usually groups a number of 
-named rules, in the same way a class groups 
-a number of methods. A grammar is actually a class that 
-inherits from the {\tt Grammar} superclass, which provides 
-methods such as {\tt parse} to analyze a string and 
-{\tt .parsefile} to analyze a file. Moreover, you can 
-actually write some methods in a grammar, and even import 
-some roles. And, as we shall see, grammars are often 
-associated with some {\bf actions classes} or 
-{\bf actions objects}.
+Una gramática crea un espacio de nombres (del inglés \emph{namespace})
+y se introduce con la palabra clave {\tt grammar}. Usualmente
+agrupa un número de reglas nombradas, en la misma manera que
+una clase agrupa un número de métodos. Una gramática es 
+actualmente una clase que hereda de la superclase {\tt Grammar},
+la cual provee métodos tales como {\tt parse} para analizar
+sintácticamente una cadena de texto y {\tt .parsefile} para
+analizar un archivo. Además, puedes actualmente escribir 
+algunos métodos en una gramática, e incluso importar algunos
+roles. Y, como veremos, las gramáticas son usualmente 
+asociadas con algunas {\bf clases de acciones} o 
+{\bf objetos de acciones}.
 
 \index{TOP rule}
 \index{parsing}
-Unless told otherwise, the parsing methods will look for 
-a default rule named ``TOP'' (which may be a named regex, 
-token, or rule) to start the parsing. The date parsing rules 
-used above might be assembled into a grammar as follows:
+A menos que se diga lo contrario, los métodos de análisis
+sintáctico buscarán una regla nombrada por defecto llamada 
+``TOP`` (la cual puede ser un regex nombrado, un token, o una 
+regla) para comenzar el análisis. Las reglas de análisis 
+sintáctico de una fecha que usamos más arriba pueden
+ensamblarse en una gramática de la siguiente manera:
 
 \index{grammar!date}
 \label{dategrammar}
 \begin{verbatim}
-grammar My-date {
+grammar Mi-fecha {
     rule TOP { \s*? 
-               [    <year> (<sep>) <month> $0 <day>
-                 || <day> (<sep>) <month> $0 <year> 
-                 || <month>\s<day>',' <year>                     
+               [    <año> (<separador>) <mes> $0 <día>
+                 || <día> (<separador>) <mes> $0 <año> 
+                 || <mes>\s<día>',' <año>                     
                ] \s* 
-               <!{ ($<day> > 30 and $<month> ==  2|4|6|9|11)}>  
+               <!{ ($<día> > 30 and $<mes> ==  2|4|6|9|11)}>  
              }
-    token year  { \d ** 4 }                                        
-    token month {  1 <[0..2]> || 0 <[1..9]> }                
-    token day   { (\d ** 2) <?{1 <= $0 <= 31 }> }  
-    token sep   { '/' || '-' } 
+    token año   { \d ** 4 }                                        
+    token mes   {  1 <[0..2]> || 0 <[1..9]> }                
+    token día   { (\d ** 2) <?{1 <= $0 <= 31 }> }  
+    token separador   { '/' || '-' || '.' } 
 }                         
 
-for " 2016/12/25 ", " 2016-02-25 ", " 31/04/2016 " -> $string {
-	my $matched = My-date.parse($string);
-	say ~$matched if defined $matched;
+for " 2016/12/25 ", " 2016-02-25 ", " 31/04/2016 " -> $cadena {
+	my $coincidencia = Mi-fecha.parse($cadena);
+	say ~$coincidencia if defined $coincidencia;
 }
 \end{verbatim}
 
-This will print out:
+Esto imprimirá:
 \begin{verbatim}
  2016/12/25
  2016-02-25
 \end{verbatim}
 
 \index{code assertion}
-The code assertion within the ``TOP'' rule prevents invalid 
-dates such as ``31/04/2016'' from being matched; you would 
-need to add some code for handling the end of February dates,
-as we did in the solution to the previous exercise (see 
-Subsection~\ref{sol_february_rule}) if this is important. You may 
-want to do it as an exercise.
+La aserción de código dentro de la regla ``TOP`` previene que 
+fechas como ``31/04/2016'' coincidan; necesitarías añadir más
+código para manejar los finales de las fechas de Febrero, 
+como hicimos en la solución del ejercicio anterior (ver
+la Subsección~\ref{sol_february_rule}) si esto es importante. 
+Podrías querer hacerlo como un ejercicio.
 
-Besides that, this code is not very different from our 
-earlier code, but there are a few changes that are 
-significant.
+Además de eso, este código no es tan diferente de nuestro
+código anterior, pero hay algunos cambios que son significativos.
 
 \index{namespace}
 \index{lexical scope}
 \index{my!declarator}
 
-I renamed the {\tt date} rule as {\tt TOP} because this 
-is the default name searched by {\tt parse} for the top-level 
-rule. A grammar creates its own namespace and 
-lexical scope, and I no longer need to declare the rules 
-with the {\tt my} declarator (which is required for
-rules declared outside of a grammar). 
+Nombré la regla {\tt fecha} como {\tt TOP} porque este
+es el nombre por defecto que el método {\tt parse} busca
+para la regla en el nivel superior. Una gramática crea su 
+propio espacio de nombres y ámbito lexical, y ya no necesito
+declarar las reglas con el declarador {\tt my} (el cual se 
+requiere para las reglas que se declaran fuera de una 
+gramática).
 \index{grammar}
 
-Within a grammar, the order in which the rules are 
-defined is generally not relevant, so that I could define 
-the {\tt TOP} rule first, even though it uses tokens 
-that are defined afterwards (which again would have not 
-been possible with rules used outside a grammar). This is 
-important because, within a grammar, you can have many rules 
-that call each other (or rules that call themselves 
-recursively), which would be impractical if the order of 
-the rule definitions mattered.
+Dentro de una gramática, el orden en el cual las reglas
+se definen es usualmente irrelevante, así que yo podría 
+definir la regla {\tt TOP} primero, aún si usa los tókenes
+que se definen después (lo cual no habría sido posible con las
+reglas usadas fuera de una gramática). Esto es importante 
+porque, dentro de una gramática, puedes tener reglas que se llaman
+unas a las otras (o reglas que se llaman a ellas mismas de forma
+recursiva), lo cual no sería práctico si el orden de las definiciones
+de las reglas fuera importara.
 \index{recursive rules}
 
 
 \index{parse method}
 \index{subparse method}
-If you're parsing the input string with the {\tt .parse} method,
-the {\tt TOP} rule is automatically anchored to the start and end 
-of the string, which means that the grammar has to match 
-the whole string to be successful. This is why we had to 
-add patterns for spaces at the beginning and at the end of 
-our {\tt TOP} rule to match our strings which have some 
-spaces before and after the date itself. There is another 
-method, \emph'.subparse', which does not have to reach the 
-end of the string to be successful, but we would still need to 
-have the space pattern at the beginning of the rule.
+Si analizas la cadena de texto de entrada con el método
+{\tt .parse}, la regla {\tt TOP} es automáticamente anclada
+al inicio y al final de la cadena de texto, lo que significa que
+la gramática tiene que coincidir con la cadena de texto 
+completa para ser exitosa. Esta es la razón por la cual
+tuvimos que añadir patrones para los espacios en blanco al
+inicio y al final de nuestra regla {\tt TOP} para coincidir 
+con nuestras cadenas de texto que tienen espacios en blanco
+antes y después de la fecha. Existe otro método, \emph{.subspace},
+el cual no tiene que alcanzar el final de la cadena de texto
+para ser exitoso, pero todavía debemos tener el patrón 
+para los espacios en blanco al inicio de la regla.
 
-\section{Grammar Inheritance}
+\section{Herencia de una Gramática}
 \index{inheritance!grammar}
 \index{grammar!inheritance}
 \index{grammar!Message}
 
-A grammar can inherit from another grammar, just as a 
-class can inherit from another class.
+Una gramática puede heredar de otra gramática, 
+de la misma manera en que una clase puede 
+heredar de otra clase.
 
-Consider this very simple (almost simplistic) grammar 
-for parsing a mail message:
+Considera esta gramática simple (casi simplista) para 
+analizar sintácticamente un correo electrónico:
 
 \begin{verbatim}
-grammar Message {
-    rule  TOP    { <greet> $<body>=<line>+? <end> }
-    rule greet    { [Hi||Hello||Hey] $<to>=\S+? ',' }
-    rule end      { Later dude ',' $<from>=.+ }
-    token line    { \N* \n}
+grammar Mensaje {
+    rule  TOP       { <saludo> $<cuerpo>=<línea>+? <final> }
+    rule  saludo    { [Saludos||Hola||Hey] $<a>=\S+? ',' }
+    rule  final     { Nos vemos luego ',' $<desde>=.+ }
+    token línea     { \N* \n}
 }
 \end{verbatim}
 
-We can test it with the following code:
+Podemos probarla con el siguiente código:
 
 \begin{verbatim}
-my $msg = "Hello Tom,
-I hope you're well and that your car is now repaired.
-Later dude, Liz";
+my $msg = "Saludos Tomás,
+Espero que todo esté bien y que hayas reparado tu carro.
+Nos vemos luego, Liz";
 
-my $matched = Message.parse($msg);
-if defined $matched { 
-    say "Greeting \t= ", ~$matched<greet>.chomp;
-    say "Addressee\t= $matched<greet><to>";
-    say "Author   \t= $matched<end><from>";
-    say "Content  \t= $matched<body>";
+my $coincidencia = Mensaje.parse($msg);
+if defined $coincidencia { 
+    say "Saludo 	 \t= ", ~$coincidencia<saludo>.chomp;
+    say "Destinatario\t= $coincidencia<saludo><a>";
+    say "Autor   	\t= $coincidencia<final><desde>";
+    say "Contenido   \t= $coincidencia<cuerpo>";
 }
 \end{verbatim}
 
-This will print out the following:
+Esto imprimirá lo siguiente:
 
 \begin{verbatim}
-Greeting        = Hello Tom,
-Addressee       = Tom
-Author          = Liz
-Content         = I hope you're well and that your car is now repaired.
+Saludo 	= Saludos Tomás,
+Destinatario   = Tomás
+Autor          = Liz
+Contenido      = Espero que todo esté bien y que hayas reparado tu carro.
 \end{verbatim}
 
-Suppose now that we want a similar grammar for parsing 
-a more formal message and we figure out that we could 
-reuse part of the {\tt Message} grammar. We can have our 
-new child grammar inherit from the existing parent:
+Ahora supón que queremos una gramática similar para analizar
+un mensaje más formal y notamos que podemos reutilizar parte
+de la gramática {\tt Mensaje}. Podemos tener nuestra propia
+gramática hija que hereda de la gramática padre:
 
 \index{grammar!Message}
 \index{grammar!FormalMessage}
 \begin{verbatim}
-grammar FormalMessage is Message {
-    rule greet { [Dear] $<to>=\S+? ',' }
-    rule end { [Yours sincerely|Best regards] ',' $<from>=.+ }
+grammar MensajeFormal is Mensaje {
+    rule saludo { [Estimad[a|o]] $<a>=\S+? ',' }
+    rule final  { [Sinceramente|Cordiales saludos] ',' $<desde>=.+ }
 }
 \end{verbatim}
 
-The {\tt is Message} trait in the header tells Perl that 
-{\tt FormalMessage} should inherit from the {\tt Message} grammar. 
-Only two rules, {\tt greet} and {\tt end}, need to be 
-redefined; the others (the {\tt TOP} rule 
-and the {\tt line} token) will be inherited from the 
-{\tt Message} grammar.
+El rasgo {\tt is Mensaje} en la cabecera le dice a Perl que 
+{\tt MensajeFormal} debería heredar de la gramática {\tt Mensaje}.
+Solo dos reglas, {\tt saludo} y {\tt final}, necesitan ser
+definirse nuevamente; las otras (la regla {\tt TOP} y el token
+{\tt línea}) serán heredadas desde la gramática {\tt Mensaje}.
 \index{grammar inheritance}
 
-Let's try some code to run it:
+Veamos si funciona:
 
 \begin{verbatim}
-my $formal_msg = "Dear Thomas,
-enclosed is our invoice for June 2016.
-Best regards, Elizabeth.";
-my $matched2 = FormalMessage.parse($formal_msg);
-if defined $matched2 { 
-    say "Greeting \t= ", ~$matched2<greet>.chomp;
-    say "Addressee\t= $matched2<greet><to>";
-    say "Author   \t= $matched2<end><from>";
-    say "Content  \t= $matched2<body>";
+my $mens_formal = "Estimado Tomás,
+dentro se encuentra nuestro factura para junio 2016.
+Sinceramente, Elizabeth.";
+my $coincid2 = MensajeFormal.parse($mens_formal);
+if defined $coincid2 { 
+    say "Saludo \t= ", ~$coincid2<saludo>.chomp;
+    say "Destinatario\t= $coincid2<saludo><a>";
+    say "Autor   \t= $coincid2<final><desde>";
+    say "Contenido  \t= $coincid2<cuerpo>";
 }
 \end{verbatim}
 
-This will print:
+Esto imprimirá:
 
 \begin{verbatim}
-Greeting        = Dear Thomas,
-Addressee       = Thomas
-Author          = Elizabeth.
-Content         = enclosed is our invoice for June 2016.
+Saludo 	= Estimado Tomás,
+Destinatario   = Tomás
+Autor          = Elizabeth.
+Contenido      = dentro se encuentra nuestro factura para junio 2016.
 \end{verbatim}
 
 \section{Actions Objects}
