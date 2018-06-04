@@ -722,7 +722,7 @@ Autor          = Elizabeth.
 Contenido      = dentro se encuentra nuestro factura para junio 2016.
 \end{verbatim}
 
-\section{Actions Objects}
+\section{Objetos de Acciones}
 
 \index{actions!object}
 \index{actions!class}
@@ -732,63 +732,64 @@ Contenido      = dentro se encuentra nuestro factura para junio 2016.
 \index{match object}
 \label{actions_object}
 
-A successful grammar match gives you a parse tree of 
-match objects (objects of \verb'Match' type). This tree 
-recapitulates all the individual 
-``submatches'' that contributed to the overall match, so 
-it can quickly become very large and complicated. 
-The deeper that match tree gets, and the more branches in 
-the grammar there are, the harder it becomes to navigate the 
-match tree to get the information you are actually 
-interested in.
+Una coincidencia de gramática exitosa te da un árbol de análisis
+sintáctico de objetos de coincidencia (objetos del tipo \verb|Match|).
+Este árbol recapitula toda las "subcoincidencias" individuales que
+contribuyeron a la coincidencia en su totalidad, para que
+así pueda volverse muy larga y complicada. Lo más profundo
+que el árbol de coincidencia se convierte, y mientras más ramas en 
+la gramática, se vuelve más difícil navegar el árbol de 
+coincidencia para obtener información que te interesa.
 
 \index{named!rule}
 \index{abstract syntax tree (AST)}
 \index{AST, abstract syntax tree}
-To avoid the need for diving deep into a match tree, you 
-can supply an actions object. After each successful match 
-of a named rule in your grammar, it tries to call a method 
-with the same name as the grammar rule, giving it the 
-newly created match object as a positional argument. 
-If no such method exists, it is skipped. (Action methods 
-are sometimes also called reduction methods.) If it exists, 
-the action method is often used to construct an \emph{abstract 
-syntax tree (AST)}, i.e., a data structure presumably 
-simpler to explore and to use than the match object tree, 
-or it can do any other thing deemed to be useful.
+Para evitar la necesidad de adentrarse en un árbol de coincidencia,
+puedes proveer un objeto de acciones. Después de cada coincidencia
+exitosa de una regla nombrada de tu gramática, el objeto de acciones
+intenta invocar un método con un nombre similar a la regla de gramática,
+dándole el objeto de coincidencia recién creado como un argumento de posición.
+Si tal método no existe, se salta. (Los métodos de una acción son 
+algunas veces llamados métodos de reducción). Si existe, 
+el método de acción es usualmente usado para construir 
+un \emph{árbol de sintaxis abstracta} (AST por sus siglas en inglés),
+i.e., una estructura de datos presumiblemente más simple de 
+explorar y de usar que un árbol de objeto de coincidencia, 
+o puede hacer cualquier otra cosa considerada necesaria.
 
-In this somewhat simplistic example of a basic arithmetic  
-calculator, the actions don't try to build a complete AST, but simply 
-do the bulk of the calculation work between the various tokens
-matched by the grammar:
+En este ejemplo algo simplista de una calculadora de operaciones
+aritméticas básica, las acciones no tratan de construir un AST 
+completo, pero simplemente hacen que el grupo de cálculo funcione
+entre los varios tókenes que coinciden con la gramática:
 \index{arithmetic calculator}
 \index{grammar!arithmetic calculator}
 
 \begin{verbatim}
-grammar ArithmGrammar {
-    token TOP { \s* <num> \s* <operation> \s* <num> \s*}
-    token operation { <[^*+/-]> }
-    token num { \d+ | \d+\.\d+ | \.\d+ }
+grammar GramAritmética {
+    token TOP { \s* <número> \s* <operación> \s* <número> \s*}
+    token operación { <[^*+/-]> }
+    token número { \d+ | \d+\.\d+ | \.\d+ }
 }
-class ArithmActions {
+
+class AccionesAritm {
     method TOP($/) {
-        given $<operation> {
-            when '*' { $/.make([*] $/<num>)}
-            when '+' { $/.make([+] $<num>)}
-            when '/' { $/.make($<num>[0] / $<num>[1]) }
-            when '-' { $/.make([-] $<num>) }
-            when '^' { $/.make($<num>[0] ** $<num>[1]) }
+        given $<operación> {
+            when '*' { $/.make([*] $/<número>)}
+            when '+' { $/.make([+] $<número>)}
+            when '/' { $/.make($<número>[0] / $<número>[1]) }
+            when '-' { $/.make([-] $<número>) }
+            when '^' { $/.make($<número>[0] ** $<número>[1]) }
         }
     }
 }
 for '   6*7  ', '46.2 -4.2', '28+ 14.0 ',
     '70 * .6 ', '126   /3', '6.4807407 ^ 2' -> $op {
-        my $match = ArithmGrammar.parse($op, :actions(ArithmActions));
-        say "$match\t= ", $match.made;
+        my $coinc = GramAritmética.parse($op, :actions(AccionesAritm));
+        say "$coinc\t= ", $coinc.made;
 }
 \end{verbatim}
 
-This prints the following output:
+Esto imprime lo siguiente:
 
 \begin{verbatim}
    6*7          = 42
@@ -799,44 +800,45 @@ This prints the following output:
 6.4807407 ^ 2   = 42.00000002063649
 \end{verbatim}
 
-The aim of this example is not to describe how to implement 
-a basic calculator (there are better ways to do that, we'll 
-come back to that), but only to show how actions may be 
-used in conjunction with a grammar.
+El objetivo de este ejemplo no es describir cómo implementar una
+calculadora básica (hay maneras mejores de hacer eso, regresaremos
+a esto más tarde), pero solo mostrar cómo las acciones pueden usarse
+en conjunción con una gramática.
 \index{arithmetic calculator}
 
-The grammar is quite simple and is looking for two decimal numbers 
-separated by an infix arithmetic operator. If there is a 
-match, \verb|$/<num>| (or \verb|$<num>| for short) will refer to an 
-array containing the two numbers (and \verb|$/<operation>| 
-will contain the arithmetic operator).
+La gramática es bien simple y busca por dos números decimales separados
+por un operador aritmético infijo. Si hay una coincidencia, 
+\verb|$/<número>| (o \verb|$<número>| para ser breve) hará referencia
+a un array que contiene los dos números (y \verb|$/operación| almacenará
+el operador aritmético).
 
 \index{parse method}
 \index{actions!object}
 \index{actions!class}
-The {\tt parse} 
-method is called with an {\tt actions:} named argument, 
-the {\tt ArithmActions} class, which tells Perl which 
-actions object to use with the grammar. In this example, we 
-don't really pass an action object, but simply the name 
-of the actions class (actually a type object), 
-because there is no need to instantiate an object. In 
-other cases, for example if there was a need to initialize 
-or somehow use some object attributes, we would need to pass 
-an actual object that would have to be constructed beforehand.
+El método {\tt parse} se invoca con un argumento nombrado {\tt actions:},
+la clase {\tt  AccionesAritm}, que le dice a Perl cual objeto de
+acciones debe utilizar con la gramática. En este ejemplo, actualmente no pasamos
+un objeto de acciones, pero simplemente el nombre de la clase
+de acciones (actualmente un tipo de objeto), porque no hay 
+necesidad de instanciar un objeto. En otros casos, por ejemplo si
+hubiese una necesidad de inicializar o de algún modo usar
+algunos atributos de un objeto, necesitaríamos pasar un 
+objeto actual que tendría que ser construido con antelación.
 
 \index{TOP rule}
 \index{make method}
 \index{AST, abstract syntax tree}
 \index{made method}
-Whenever the {\tt TOP} rule succeeds, the {\tt TOP} method 
-of class {\tt ArithmActions} is invoked with the match 
-object for the current rule as the argument.  This method 
-calls the {\tt make} method on the match object, implicitly 
-populates the AST, and returns the result of the actual 
-arithmetic operation between the two numbers. Then, the 
-{\tt made} method in the caller code (within the 
-{\tt for} loop) returns that result that was set by {\tt make}.
+
+Siempre que la regla {\tt TOP} es exitosa, el método {\tt TOP}
+de la clase {\tt AccionesAritm} es invocado con el objeto de
+coincidencia para la regla actual como el argumento. Este método
+llama al método {\tt make} sobre el objeto de coincidencia, 
+implícitamente puebla el AST, y devuelve el resultado de la
+operación aritmética entre los dos números. Después, el método
+{\tt make} en el código de la construcción que hace la llamada 
+(dentro del bucle {\tt for}) devuelve el resultado que fue asignado
+por {\tt make}.
 
 \section{A grammar for Parsing JSON}
 \index{JSON grammar}
@@ -1295,28 +1297,30 @@ Phone numbers:
 (mobile 123 456-7890)
 \end{verbatim}
 
-\section{Inheritance and Mutable Grammars}
+\section{Herencia y Gramáticas Mutables}
 
 \index{grammar!subclassing}
 \index{grammar!mutable}
 \index{grammar!inheritance}
-The capacity for a grammar to inherit from another one opens 
-the door to very rich possibilities in terms of 
-extending the Perl~6 language itself. It is possible, for 
-example in the context of a module or a framework, to ``subclass'' 
-the standard Perl grammar, i.e., to write a new child grammar that 
-inherits from the standard Perl grammar, but adds a new 
-feature, overloads an operator, or modifies some other syntax 
-element, and to run this program with the same Perl~6 compiler,
-but with this locally modified grammar.
+La capacidad de una gramática de heredar de otra abre la
+puerta para muchas posibilidades en términos de la extensión
+del lenguaje Perl~6. Es posible, por ejemplo en el contexto de
+un módulo o una framework, crear una ``subclase`` de la 
+gramática estándar de Perl~6, i.e., para escribir una nueva
+gramática hija que hereda de la gramática estándar de Perl~6, pero
+agrega una nueva característica, sobrecarga un operador, o modifica
+algún otro elemento sintáctico, y ejecuta este programa con el 
+mismo compilador de Perl~6, pero con una gramática modificada
+localmente.
 
-This means that it is actually possible to dynamically extend 
-the language for new needs, often without even changing the compiler 
-or the virtual machine. These are however advanced topics that 
-are more geared towards language gurus than to beginners. So 
-we only mention these exciting possibilities with the hope of 
-whetting your appetite and pushing you to study these further, 
-but will not dwell further on them in this book.
+Esto significa que es actualmente posible extender el lenguaje 
+dinámicamente para necesidades nuevas, usualmente sin cambiar
+el compilador o la máquina virtual. No obstante, estos son temas
+avanzados que están dedicados más a los gurús del lenguaje 
+que a los principiantes. Así que solo mencionamos estas posibilidades
+grandiosas con la esperanza de estimular tu apetito y empujarte a
+que los estudies en más detalles, pero no hablaremos en más detalle
+sobre ellos en este libro.
 \index{extending the language}
 
 \section{Debugging}
