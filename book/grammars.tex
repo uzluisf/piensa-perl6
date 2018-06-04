@@ -1323,263 +1323,273 @@ que los estudies en más detalles, pero no hablaremos en más detalle
 sobre ellos en este libro.
 \index{extending the language}
 
-\section{Debugging}
+\section{Depuración de Programas}
 
-Writing grammars is a lot of fun, but it can also be difficult 
-or even tedious when you start.
+La escritura de gramáticas es muy divertido, pero también difícil
+o hasta tedioso cuando comienzas.
 \index{fun}
 
-When you started to practice programming with this book, you probably 
-made a lot of small mistakes that initially prevented your 
-programs from compiling and running, or from doing what 
-you expected. With practice, however, you hopefully gradually 
-made fewer errors and spent less time chasing bugs.
+Cuando comenzaste a practicar la programación con este libro,
+probablemente cometiste muchos pequeños errores que inicialmente
+previnieron que tus programas se compilaran y se ejecutaran, o
+hicieran lo que querías. Con la práctica, sin embargo, con suerte
+cometiste menos errores gradualmente y gastaste menos tiempo 
+persiguiendo errores.
 
-When you begin to learn grammars (and to a lesser extent regexes), 
-you may feel like you are starting again at square one. Even 
-very good programmers often make silly mistakes when they start 
-writing grammars. It is a different programming paradigm, and 
-it requires a new learning phase.
+
+Cuando comienzas a aprender sobre gramáticas (y en menor medida regexes),
+puedes sentirte que estás nuevamente en el punto de partida. Inclusive
+programadores muy buenos usualmente cometen errores absurdos cuando
+comienzan a escribir gramáticas. Es un diferente paradigma de programación,
+y requiere una nueva fase de aprendizaje.
 \index{grammar!debugging}
 
 \index{testing}
-In this case, small is beautiful. Start with small regexes and 
-small rules, and with small test input. Test individual regexes 
-or rules under the REPL, and add them to your code only when 
-you're confident that they do what you want.
+En este caso, pequeño es hermoso. Inicia con regexes pequeños y reglas pequeñas,
+y con una pequeña entrada de prueba. Prueba los regexes o las reglas individuales
+en el REPL, y agrégalos a tu código solo cuando estás confiado
+de que hacen lo que deseas.
 
-Write test cases at the same time as your code (or actually even 
-before you write the code), and make sure that you pass all the 
-relevant tests before moving on. And add new tests when you add 
-new rules.
+Escribe casos de prueba al mismo tiempo que escribe tu código 
+(o actualmente hasta antes de escribir tu código), y asegúrate de
+que pasen todos las pruebas relevantes antes de seguir adelante.
+Y agrega nuevas pruebas al agregar reglas nuevas.
 
-One standard debugging technique is to add print statements 
-to the code in order to figure out various information about 
-the state of the program (such as the value of variables, the 
-flow of execution of the program, etc.). You can also do that 
-with regexes and grammars.
 
-Let's take the example of the very simple grammar for 
-matching dates of Section~\ref{dategrammar} and let's suppose 
-that you have written this grammar:
+Una técnica de depuración estándar es agregar sentencias de 
+impresión al código para inquirir información sobre el estado
+del programa (tal como el valor de variables, el flujo de
+ejecución del programa, etc.). También puedes hacer eso con
+los regexes y las gramáticas.
+
+Tomemos el ejemplo de la gramática simple para coincidir
+con las fechas de la Sección~\ref{dategrammar} y supongamos
+que escribiste esta gramática:
 
 \begin{verbatim}
-grammar My-Date {
-    token TOP { \s* <year> '-' <month> '-' <day> }
-    token year  { \d ** 4 }                                        
-    token month {  1 <[0..2]> || 0 <[1..9]> }                
-    token day   { (\d ** 2) <?{1 <= $0 <= 31 }> }  
+grammar Mi-Fecha {
+    token TOP { \s* <año> '-' <mes> '-' <día> }
+    token año  { \d ** 4 }                                        
+    token mes  {  1 <[0..2]> || 0 <[1..9]> }                
+    token día  { (\d ** 2) <?{1 <= $0 <= 31 }> }  
 }                         
-my $string = " 2016-07-31 ";
-say so My-Date.parse($string);                 # -> False
+my $cadena = " 2016-07-31 ";
+say so Mi-Fecha.parse($cadena);                 # -> False
 \end{verbatim}
 
-This test fails.
+Esta prueba falla.
 
-At this point, it has already become a bit difficult to figure 
-out why the grammar fails (unless we have thoroughly tested 
-each of the three tokens before building the grammar, but 
-let's assume for the sake of this discussion that we haven't).
-Let's try not to randomly change things here or there and see 
-if it works better; we would be likely to spend hours doing 
-that and probably not get anywhere. Let's be more methodical.
+A esta altura, ya se ha vuelto un poco difícil de inquirir
+por qué la gramática falla (a menos que hayamos probado cada
+uno de los tres tókenes antes de construir la gramática,
+pero en aras de esta discusión asumamos que no lo hemos hecho).
+Intentemos no cambiar aleatoriamente cosas aquí o allá y observar
+si funciona; podríamos investir horas haciendo eso y probablemente
+no llegaríamos a ninguna parte. Seamos más metódicos.
 
-Let's first test the building-block tokens, {\tt year}, 
-{\tt month}, and {\tt day}. We've seen before that 
-the {\tt parse} method looks \emph{by default} for the {\tt TOP} 
-rule in the grammar, but you can specify another rule, and 
-that's what we need here. We can test these tokens individually:
+Primero probemos los tókenes básicos, {\tt año}, {\tt mes}, y {\tt día}.
+Hemos visto anteriormente que el método {\tt parse} busca por defecto
+la regla {\tt TOP} en la gramática, pero puedes especificar otra 
+regla si así deseas, y eso es lo que necesitamos aquí. 
+Podemos probar estos tókenes individualmente:
 
 \begin{verbatim}
-say so My-Date.parse("2016", :rule<year>);    # -> True
-say so My-Date.parse("07",   :rule<month>);   # -> True
-say so My-Date.parse("31",   :rule<day>);     # -> True
+say so Mi-Fecha.parse("2016", :rule<año>);    # -> True
+say so Mi-Fecha.parse("07",   :rule<mes>);    # -> True
+say so Mi-Fecha.parse("31",   :rule<día>);    # -> True
 \end{verbatim}
 
-These three tokens seem to work fine. At this point, you 
-might be guessing where the problem is, but let's assume 
-you don't.
+Estos tres tókenes parecen funcionar apropiadamente. En este punto,
+podrías adivinar dónde se encuentra el problema, pero 
+asumamos que no sabes.
 
-We need to debug the ``TOP'' token. We can just use the common 
-debugging method of printing where we are at various stages 
-of the program. You can insert a print statement block 
-in a named rule. Let's try to change the TOP token to this:
+Necesitamos depurar el token ``TOP``. Podemos usar el método común
+de depuración de imprimir donde estamos a varias etapas del
+programa. Puedes insertar una sentencia de impresión en
+una regla nombrada. Intentemos cambiar el token TOP a esto:
 
 \begin{verbatim}
-    token TOP { \s* <year>  { say "matched year"; }
-                '-' <month> { say "matched month";}
-                '-' <day>   { say "matched day";  }
+    token TOP { \s* <año> { say "año coincidido"; }
+                '-' <mes> { say "mes coincidido";}
+                '-' <día> { say "día coincidido";  }
               }
 \end{verbatim}
- 
-This displays the following output:
+
+Esto muestra la siguiente salida:
 
 \begin{verbatim}
-matched year
-matched month
-matched day
+año coincidido
+mes coincidido
+día coincidido
 \end{verbatim}
 
-So, even the ``TOP'' token seems to work almost to the end. At 
-this point, we should be able to figure out that we lack 
-final spacing in the ``TOP'' token. 
 
-So either we should add an optional spacing at the end of 
-the token:
+Incluso el token ``TOP`` parecen funcionar hasta el final. 
+En este punto, deberíamos ser capaz de deducir que nos falta
+el espacio final en el token ``TOP``.
+
+Así que podríamos agregar un espacio adicional al final del
+token:
 
 \begin{verbatim}
-token TOP { \s* <year> '-' <month> '-' <day> \s*}
+token TOP { \s* <año> '-' <mes> '-' <día> \s*}
 \end{verbatim}
 
-or change it to a rule:
+o cambiar la regla:
 
 \begin{verbatim}
-rule TOP { \s* <year> '-' <month> '-' <day> }
+rule TOP { \s* <año> '-' <mes> '-' <día> }
 \end{verbatim}
 
-or it was possibly the test string that was wrong (because 
-it wasn't supposed to have spaces) and needed to be fixed.
+o era posible probar la cadena de texto que era incorrecta (porque
+no podría tener espacios) y por lo tanto, necesitaba ser arreglada.
 
-If you have an actions class, you can also add print statements 
-to the actions methods.
+Si tiene una clase de acciones, también puedes agregar sentencias de
+impresión a los métodos de acciones.
 \index{actions!class}
 
 \index{debugger}
 \index{debugger!stepping through a regex}
-Remember also that the Perl debugger (see 
-Section~\ref{perl-debugger}) can be very helpful. We 
-briefly showed in Subsection~\ref{regex-debugging} 
-(p.~\pageref{regex-debugging}) how to go step by step 
-through a regex match. Most of what has been described 
-there also applies to debugging grammars.
+Igualmente recuerda que el depurador de Perl~6 (ver 
+la Sección~\ref{perl-debugger}) puede ser muy útil. 
+Brevemente mostramos en la Subsección~\ref{regex-debugging} 
+(p.~\pageref{regex-debugging}) cómo recorrer una coincidencia
+de regex paso a paso. La mayor parte de lo que se describió 
+ahí también aplica a la depuración de gramáticas.
 
 \index{debugger!debugging grammars}
-Finally, there is a very good module, \verb'Grammar::Tracer', for 
-debugging regexes and grammars (\url{https://github.com/jnthn/grammar-debugger/}), that works with Rakudo. If you add:
+Finalmente, vale la pena mencionar que existe un buen módulo, \verb|Grammar::Tracer|, 
+para la depuración de regexes y gramáticas (\url{https://github.com/jnthn/grammar-debugger/}), 
+que funciona con Rakudo. Si agregas:
 
 \begin{verbatim}
 use Grammar::Tracer;
 \end{verbatim}
 \index{Grammar::Tracer}
 
-to your program, then any grammar within the lexical scope will 
-print out debugging information about the rules which tried to 
-match, those which succeeded and those which failed.
+a tu programa, entonces cualquier gramática dentro del ámbito lexical
+imprimirá información de depuración sobre las reglas con la cual
+intentó coincidir, aquellas que fueron exitosas y aquellas que 
+fallaron.
 
-You can also use the following:
+Puedes también usar lo siguiente:
 
 \begin{verbatim}
 use Grammar::Debugger;
 \end{verbatim}
 \index{Grammar::Debugger}
 
-to do the same thing step by step. Just type ``h'' at the 
-prompt for a list of available commands.
+para hacer lo mismo paso a paso. Solo escribe ``h`` en la 
+prompt para la lista de comandos disponibles.
 
 
-\section{Glossary}
+\section{Glosario}
 
 \begin{description}
 
 \index{grammar}
-\item[Grammar] A high level tool for performing lexical and 
-grammatical analysis of structured text. In Perl~6, 
-a grammar is more specifically a namespace containing a 
-collection of named rules aimed at this type of analysis.
+\item[Gramática] Una herramienta de alto nivel para realizar
+análisis léxico y gramático de un texto estructurado. En Perl~6, 
+una gramática es específicamente un espacio de nombres que 
+contiene una colección de reglas nombradas destinada a este 
+tipo de análisis.
 
 \index{lexing}
-\item[Lexing] Performing a lexical analysis of a source text, and especially dividing it into ``words'' or tokens.
+\item[Análisis semántico] El proceso en el cual se realiza
+un análisis léxico de texto fuente, y especialmente dividirlo
+en ``palabras`` o tókenes.
 
 \index{parsing}
-\item[Parsing] Performing a grammatical analysis of a source text, 
-and especially assembling words or tokens into sentences or 
-expressions and statements that make some semantic sense. 
+\item[Análisis sintáctico] El proceso en el cual se realiza un
+análisis gramático de un texto fuente, y especialmente se ensamblan
+palabras o tókenes en expresiones y sentencias que 
+tienen sentido semántico.
 
 \index{declarative programming}
 \index{programming!declarative}
-\item[Declarative programming] a programming model where you 
-specify definitions, rules, properties, and constraints, rather 
-than statements and instructions, and let the program derive 
-new knowledge from these definitions and rules. Regexes and 
-grammars are examples of declarative programming.
+\item[Programación declarativa] Un modelo de programación donde
+especificas definiciones, reglas, propiedades, y restricciones, 
+en lugar de sentencias e instrucciones, y dejas al programa derivar
+conocimiento nuevo de estas definiciones y reglas.  Los regexes
+y las gramáticas son ejemplos de la programación declarativa.
 
 \index{match object}
-\item[Match object] in Perl~6, an object (of type {\tt Match}), 
-usually noted \verb'$/', which contains (sometimes very) 
-detailed information about what was successfully matched 
-by a regex or a grammar. The \verb'$/' match object will be 
-set to {\tt Nil} if the match failed.
+\item[Objeto de coincidencia] En Perl~6, un objeto (de tipo {\tt Match}),
+denotado usualmente por \verb|$/|, el cual contiene información 
+(algunas veces muy) detalla sobre lo que coincidió exitosamente
+con un regex o una gramática. El objeto de coincidencia \verb|$/|
+se le asignará {\tt Nil} si la coincidencia falla.
 
 \index{capture}
-\item[Capture] the fact that parts of the target string that 
-are matched by a regex (or a grammar) can be retrieved through 
-the use of a number of dedicated special variables.
+\item[Captura] El hecho por el cual partes de una cadena de texto
+que coinciden con un regex (o una gramática) pueden extraerse
+a través del uso de un número de variables especiales.
 
 \index{rule}
-\item[Rule] in broad terms, named rules are regexes that use a 
-method syntax and are usually stored in a grammar. More specifically, 
-one category of these named rules (along with named regexes and 
-tokens).
+\item[Regla] En términos generales, las reglas nombradas son regexes
+que usan una sintaxis de método y usualmente se almacenan en una
+gramática. Más específicamente, una categoría de estas reglas nombradas
+(en conjunto con los regexes nombrados y los tókenes).
 
 \index{AST, abstract syntax tree}
 \index{abstract syntax tree (AST)}
 \index{AST, abstract syntax tree}
-\item[Abstract syntax tree (AST):] a data structure often 
-summarizing the match object and used for further exploitation 
-of the useful data. The match object is populated automatically 
-by Perl, whereas the AST contains information deemed useful and 
-explicitly inserted by the programmer.
+\item[Árbol de sintaxis abstracta(AST):] Una estructura de datos
+que usualmente resume el objeto de coincidencia y se usa para la
+explotación de datos útiles. El objeto de coincidencia es poblado 
+automáticamente por Perl, donde ek AST contiene información considerada
+útil y explícitamente insertada por el programador.
 
 \index{actions!class}
-\item[actions class] a class used in conjunction with a grammar 
-to perform certain actions when a grammar rule matches 
-something in the input data. If a method with the same name 
-as a rule in the grammar exists in the actions class, it will 
-be called whenever the rule matches.
+\item[Clases de acciones] Una clase usada en conjunción con una gramática
+para realizar ciertas acciones cuando una regla de una gramática coincide
+con algo en los datos de entrada. Si un método con el mismo nombre
+de una regla en la gramática existe en la clase de acciones,
+entonces será invocado siempre que la regla coincide.
 
 \end{description}
 
-\section{Exercise: A Grammar for an Arithmetic Calculator}
+\section{Ejercicio: Una Gramática para una Calculadora Aritmética}
 \label{calculator}
 \index{calculator}
 \index{calculator!grammar}
 \index{grammar!arithmetic calculator}
 \index{arithmetic calculator}
 
-The arithmetic calculator presented in Section~\ref{actions_object} 
-above is very simplistic. In particular, it can parse simple 
-arithmetic expressions composed of two operands separated by 
-one infix operator, but not much more than that.
+La calculadora aritmética presentada en la Sección~\ref{actions_object}
+más arriba es muy simple. En particular, puede analizar sintácticamente
+expresiones aritméticas compuestas de dos operandos separados
+por un operador infijo, pero no mucho más.
 
-We would like to be able to parse more complicated arithmetic 
-expressions. The calculator should also be able to handle:
+Nos gustaría ser capaz de analizar expresiones aritméticas complicadas.
+La calculadora debería también ser capaz de manejar:
 \begin{itemize}
-\item Expressions with several different operators (among the four 
-basic arithmetic operators) and multiple operands
-\item Standard precedence rules between operators (for example,
-multiplications should be performed prior to additions)
+\item Expresiones con varios operadores diferentes (entre los
+cuatro operadores aritméticos básicos) y operandos múltiples
+\item Reglas estándares de precedencia entre los operadores (por ejemplo,
+las multiplicaciones deben hacerse antes que las adiciones)
 \index{precedence}
-\item Parentheses to override usual precedence rules
+\item Paréntesis anulan las reglas usuales de precedencia
 \index{parentheses}
 \index{parentheses!overriding precedence rule}
 \end{itemize}
 
-These are a few examples of expressions the calculator should 
-parse and compute correctly:
+Estos son algunos ejemplos de expresiones que la calculadora
+debería analizar sintácticamente y calcular correctamente:
 \index{parse}
 \begin{verbatim}
 3 + 4 + 5;
-3 + 4 * 5;   # result should be 23
-(3 + 4) * 5; # result should be 35 
+3 + 4 * 5;   # resultado debería ser 23
+(3 + 4) * 5; # resultado debería ser 35 
 \end{verbatim}
 
 \begin{exercise}
-Your mission, \verb'[Dan|Jim]', should you choose to accept it, 
-is to write such a grammar. As usual, should you fail, the 
-Government shall deny any knowledge of your actions class.
+Tu misión, \verb'[Juan|Salomé]', así elijas aceptarla, es escribir
+tal gramática. Como es usual, si fallas, el Gobierno debería negar
+cualquier conocimiento de tu clase de acciones.
 \index{actions!class}
 
-There are many possible ways to accomplish this; the solution 
-presented in Section~\ref{sol_calculator} is only one of them.
+Hay varias maneras posibles de lograr esto; la solución 
+presentada en la Sección~\ref{sol_calculator} es solo una de ellas.
 \end{exercise}
 
