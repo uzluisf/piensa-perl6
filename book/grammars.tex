@@ -840,31 +840,32 @@ operación aritmética entre los dos números. Después, el método
 (dentro del bucle {\tt for}) devuelve el resultado que fue asignado
 por {\tt make}.
 
-\section{A grammar for Parsing JSON}
+\section{Una Gramática para Analizar JSON}
 \index{JSON grammar}
 \index{grammar!JSON}
 \index{parsing!JSON}
 
-JSON (\emph{JavaScript Object Notation}) is an 
-open-standard format for text data derived from 
-the object notation in the JavaScript programming language. 
-It has become one of the commonly used standards for 
-serializing data structures, which makes it possible, for 
-example, to exchange them between different platforms and 
-different programming languages, to send them over a network, 
-and to store them permanently in files on disks.
+JSON (\emph{JavaScript Object Notation}) es un formato 
+estándar-abierto para datos textuales derivado de la
+notación de objeto en el lenguaje de programación JavaScript.
+Se ha convertido en uno de los estándares más usado para
+serializar estructuras de datos, lo cual hace posible, por
+ejemplo, el intercambio de las mismas entre plataformas diferentes
+y lenguajes de programación diferentes, para enviarlas a través 
+de la red, y almacenarlas permanentemente en archivos en los
+discos.
 
-\subsection{The JSON Format}
+\subsection{El Formato JSON}
 \index{JSON!format}
 \index{JSON!object}
 \index{JSON!array}
 
-The JSON format is quite simple and is composed of two types 
-of structural entities:
+El formato JSON es bien simple y está compuesto de dos tipos
+de entidades estructurales:
 \begin{itemize}
-\item Objects or unordered lists of name-value pairs 
-(basically corresponding to hashes in Perl);
-\item Arrays, or ordered lists of values.
+\item Objetos o listas desordenadas de pares nombre-valor
+(básicamente correspondiente a los hashes en Perl);
+\item Arrays, o una listas ordenadas de valores.
 \end{itemize}
 
 \index{JSON!base types}
@@ -872,330 +873,338 @@ of structural entities:
 \index{JSON!Boolean}
 \index{JSON!number}
 \index{JSON!value}
-Values can be either (recursively) objects or arrays 
-as defined just above, or basic data types, which are: 
-strings, numbers, Boolean (true or false), and \emph{null} 
-(empty value or undefined value). A string is a sequence 
-of Unicode characters between quotation marks, and numbers 
-are signed decimal numbers that may contain a fractional 
-part and may use exponential ``E'' notation.
+Los valores pueden ser objetos o arrays como se definieron anteriormente,
+o tipos básicos de datos, tales como: cadenas de texto, números, Booleano (
+verdadero o falso), y \emph{null} (valor vacío o valor indefinido).
+Una cadena de texto es una secuencia de caracteres Unicode entre 
+comillas, y los números son números decimales con signo que pueden contener
+una parte fraccional y pueden usar la notación ``E`` de exponentes.
 
-\subsection{Our JSON Sample}
+
+\subsection{Nuestra Muestra de JSON}
+
 \index{JSON!sample}
 
-To illustrate the format description above and for the 
-purpose of our tests, we will use an example borrowed from 
-the Wikipedia article on JSON 
-(\url{https://en.wikipedia.org/wiki/JSON}), which is a 
-possible JSON description of a person:
+Para ilustrar la descripción del formato más arriba y para
+el propósito de utilizar nuestras pruebas, usaremos un ejemplo
+tomado del artículo de Wikipedia sobre JSON
+(\url{https://es.wikipedia.org/wiki/JSON}), el cual es una
+posible descripción de una persona. Esta será nuestra cadena
+de texto de JSON:
 
 \begin{verbatim}
+my $cadena-JSON = '
 {
-  "firstName": "John",
-  "lastName": "Smith",
-  "isAlive": true,
-  "age": 25,
-  "address": {
-    "streetAddress": "21 2nd Street",
-    "city": "New York",
-    "state": "NY",
-    "postalCode": "10021-3100"
-  },
-  "phoneNumbers": [
-    {
-      "type": "home",
-      "number": "212 555-1234"
-    },
-    {
-      "type": "office",
-      "number": "646 555-4567"
-    },
-    {
-      "type": "mobile",
-      "number": "123 456-7890"
-    }
+  "nombre": "Juan",
+  "apellido": "Duarte",
+  "estaVivo": true,
+  "edad": 25,
+  "direccion": {
+    "calle": "21 2nd Street",
+	"ciudad": "New York",
+	"estado": "NY",
+	"codigoPostal": "10021-3100"
+   },
+   "numerosTelefono": [
+     {
+       "tipo": "hogar",
+       "numero": "212 555-1234"
+     },
+     {
+       "tipo": "oficina",
+       "numero": "646 555-4567"
+     },
+     {
+       "tipo": "movil",
+       "numero": "123 456-7890"
+     }
   ],
-  "children": [],
-  "spouse": null,  
-  "Bank-account": {
-    "credit": 2342.25
+  "infantes": [],
+  "esposa": null,  
+  "cuentaBancaria": {
+  "credito": 2342.25
+  }
 }
+';
 \end{verbatim}
 
 \index{JSON!number}
-Compared to the Wikipedia example, we've added a 
-\verb'Bank-account' object to provide the possibility 
-of testing JSON noninteger numbers.
+Comparado con el ejemplo de Wikipedia, hemos agregado
+un objeto \verb|cuentaBancaria| para proveer la posibilidad
+de probar los números no enteros de JSON.
  
-\subsection{Writing the JSON Grammar Step by Step}
+\subsection{Escribiendo la Gramática de JSON Paso a Paso}
 
-Let's take each of the JSON entities in turn and handle 
-them with rules.
+Tomaremos cada una de las entidades de JSON por turno y 
+las manejaremos con reglas.
 
-\subsubsection{Numbers}
+\subsubsection{Números}
 \index{JSON!number}
 
-The example JSON document above only has integers and decimal 
-numbers, but we need to be able to recognize numbers such 
-as ``17,'' ``-138.27,'' ``1.2e-3,'' ``.35,'' etc. We can 
-use the following token to do so:
+El ejemplo del documento JSON más arriba solo tiene números enteros
+y decimales, pero debemos de ser capaz de reconocer números
+como ``17,'' ``-138.27'', ``1.2e-3'', ``.35'', etc. Podemos usar el
+siguiente token para hacer eso:
 
 \begin{verbatim}
-token number {
-    [\+|\-]?              # optional sign
-    [ \d+ [ \. \d+ ]? ]   # integer part and optional fractional part
-      | [ \. \d+ ]        # or only a fractional part
-    [ <[eE]> [\+|\-]? \d+ ]?    # optional exponent
+token número {
+    [\+|\-]?              # signo (+/-) opcional
+    [ \d+ [ \. \d+ ]? ]   # parte entera y parte fraccional opcional
+      | [ \. \d+ ]        # o solo parte fraccional
+    [ <[eE]> [\+|\-]? \d+ ]?    # exponente opcional
 }
 \end{verbatim}
 
-\subsubsection{JSON Strings}
+\subsubsection{Cadenas de Texto JSON}
 \index{JSON!string}
 \index{double quote}
 
-There are many possible patterns to define a string. For 
-our sample JSON document, the following rule will be 
-sufficient:
+Existen muchos patrones para definir una cadena de texto. 
+Para nuestro documento JSON, la siguiente reglas será suficiente:
 
 \begin{verbatim}
-token string {
+token cadena {
     \" <[ \w \s \- ' ]>+ \" 
 }
 \end{verbatim}
 
-This will match a double-quoted sequence of alphanumeric 
-characters, spaces, dashes, and apostrophes.
+Esto coincidirá con una secuencia entre comillas dobles de
+caracteres alfanuméricos, espacios, guiones, y apóstrofos.
 
-For a real JSON parser, a rule using a negative character 
-class excluding anything that cannot belong to a string 
-might be better, for example:
+Para una analizador sintáctico real de JSON, una regla que usa
+una categoría negativa de caracteres excluyendo cualquier cosa que
+no pertenece a una cuerda podría ser mejor, por ejemplo:
 
 \begin{verbatim}
-token string {
+token cadena {
     \" <-[\n " \t]>* \"
 }
 \end{verbatim}
 
-i.e., a double-quoted sequence of any characters other than 
-double quotes, newlines, and tabulations.
+i.e., una secuencia entre doble comillas de caracteres excepto 
+comillas dobles, nuevas líneas y tabuladores.
 
-You might want to study the JSON standards\footnote{Since 
-JSON is actually not completely standardized, I will not provide 
-a specific link; look it up and make up your mind.} to figure out 
-exactly what is accepted or forbidden in a JSON string. 
-For our purposes, the first rule above will be sufficient.
+Podrías desear estudiar los estándares de JSON\footnote{
+Dado que JSON no está completamente estandarizado, no proveeré
+un enlace específico; búscalo y decide.} para averiguar 
+exactamente lo que es aceptado o prohibido en una cadena de texto
+de JSON. Para nuestros propósitos, la primera regla más arriba será
+suficiente.
 
-\subsubsection{JSON Objects}
+\subsubsection{Objetos JSONs}
 \index{JSON!object}
 \index{key-value pair}
 \index{JSON!value}
 \index{curly bracket}
 
-JSON objects are lists of key-value pairs. Lists are 
-delimited by curly braces and pairs separated by 
-commas. A key-value pair is a string followed by a colon, 
-followed by a value (to be defined later). This can be 
-defined as follows:
+Los objetos JSON son listas de pares clave-valor. Las listas
+son delimitadas por llaves y los pares son separados por comas.
+Un par clave-valor es una cadena de texto seguida por dos puntos,
+seguido por un valor (lo definiremos más adelante). Esto puede 
+definirse de la siguiente manera:
 
 \begin{verbatim}
-rule object     { '{'  <pairlist> '}' }
-rule pairlist   { [<pair> [',' <pair>]*] }
-rule pair       { <string> ':' <value>  }
+rule objeto     { '{'  <listaPar> '}' }
+rule listaPar   { [<par> [',' <par>]*] }
+rule par        { <cadena> ':' <valor>  }
 \end{verbatim}
 
 \index{modified quantifier}
-We can use a regex feature that we haven't seen yet, the 
-quantifier modifier, to simplify the {\tt pairlist} 
-rule. To more easily match things like comma-separated 
-values, you can tack on a \verb'%' modifier to any of 
-the regular quantifiers to specify a separator that must 
-occur between each of the matches. So, for example 
-\verb"/a+ % ','/" will match ``a'' or ``a,a'', or 
-``a,a,a'', etc.
+Podemos ahora usar una característica de regex que no hemos
+visto. Esta es el modificador de cuantificador, que podemos
+usar para simplificar la regla {\tt listaPar}. Para coincidir
+con cosas como valores separados por comas más fácilmente, 
+puedes agregar un modificador \verb|%| a cualquiera de los
+cuantificadores regulares para especificar un separador
+que debe ocurrir entre cada una de las coincidencias. Así 
+que, por ejemplo, \verb|/a+ % ','/| coincidirá con ``a`` o ``a,a``,
+o ``a,a,a``, etc.
 
-Thus, the {\tt pairlist} rule can be rewritten as follows:
 
-\begin{verbatim}
-rule pairlist   {<pair> + % \,}
-\end{verbatim}
-
-or:
+Por lo tanto, la regla {\tt listaPar} puede escribirse de la 
+siguiente manera:
 
 \begin{verbatim}
-rule pairlist   {<pair> * % \,}
+rule listaPar   {<par> + % \,}
 \end{verbatim}
 
-if we accept that a {\tt pairlist} may also be empty.
+o:
 
-\subsubsection{JSON Arrays}
+\begin{verbatim}
+rule listaPar   {<par> * % \,}
+\end{verbatim}
+
+si aceptamos que una {\tt listaPar} puede estar también vacía.
+
+\subsubsection{Arrays JSON}
 \index{JSON!array}
 
-Arrays are comma-separated lists of values between square 
-brackets:
+Los arrays son listas de valores separados por comas entre corchetes:
 
 \begin{verbatim}
-rule array       { '[' <valueList> ']'}
-rule valueList {  <value> * % \, }
+rule array       { '[' <listaValor> ']'}
+rule listaValor  {  <valor> * % \, }
 \end{verbatim}
 
-Here, we again used the modified quantifier shown 
-just above.
+Aquí, también usamos el modificador de cuantificador 
+que mostramos más arriba.
 
-\subsubsection{JSON Values}
+\subsubsection{Valores JSON}
 \index{JSON!value}
 
-Values are objects, arrays, string, numbers, Booleans 
-(true or false), or \emph{null}:
+Los valores son objetos, arrays, cadenas de texto, números,
+Booleanos (true or false), o \emph{null}:
 
 \begin{verbatim}
-token value { | <object> | <array> | <string> | <number> 
+token valor { | <objeto> | <array> | <cadena> | <número> 
               | true     | false   | null 
 }
 \end{verbatim}
 
-\subsection{The JSON Grammar}
+\subsection{La Gramática de JSON}
 \index{JSON!grammar}
 
-We have defined all the elements of the JSON grammar; we 
-only need to declare a grammar and to add a {\tt TOP} rule 
-to complete it:
+Hemos definido todos los elementos de la gramática de JSON;
+solo necesitamos declarar una gramática y agregar una regla
+{\tt TOP} para completarla:
 
 \begin{verbatim}
-grammar JSON-Grammar {
-    token TOP      { \s* [ <object> | <array> ] \s* }
-    rule object    { '{' \s* <pairlist> '}' \s* }
-    rule pairlist  {  <pair> * % \, }
-    rule pair      {  <string>':' <value> }
-    rule array     { '[' <valueList> ']'}
-    rule valueList {  <value> * % \, }
-    token string   {  \" <[ \w \s \- ' ]>+ \"  }
-    token number   { 
-      [\+|\-]?  
-      [ \d+ [ \. \d+ ]? ] | [ \. \d+ ]  
-      [ <[eE]> [\+|\-]? \d+ ]?
-    }
-    token value    { <object> | <array> | <string> | <number> 
-                     | true   | false   | null 
-    }
+grammar Gramática-JSON {
+	token TOP        { \s* [ <objeto> | <array> ] \s* }
+	rule objeto      { '{' \s*  <listaPar> '}' \s* }
+	rule listaPar    { <par> * % \, }
+	rule par  		 { <cadena>':' <valor> }
+	rule array       { '[' <listaValor> ']'}
+	rule listaValor  {  <valor> * % \, }
+	token cadena 	 { \" <[ \w \s \- ' ]>+ \" }
+	token número 	 {
+		[\+|\-]?
+		[ \d+ [ \. \d+ ]? ] | [ \. \d+ ]
+		[ <[eE]> [\+|\-]? \d+ ]?
+	}
+	token valor 	{ 
+		| <objeto> | <array> | <cadena> | <número> 
+		| true     | false   | null 
+	}
 }
 \end{verbatim}
 
-We can now test the grammar with our sample JSON string 
-and try to print the match object:
+Podemos ahora probar la gramática con nuestra muestra de 
+cadena de texto de JSON y tratar de imprimir el objeto de
+coincidencia:
 
 \begin{verbatim}
-my $match = JSON-Grammar.parse($JSON-string);
-say ~$match if $match;
+my $coinc = Gramática-JSON.parse($cadena-JSON);
+say ~$coinc if $coinc;
 \end{verbatim}
 \index{parse}
 
-This produces the following output:
+Esto produce la siguiente salida:
 
 \begin{verbatim}
 {
-  "firstName": "John",
-  "lastName": "Smith",
-  "isAlive": true,
-  "age": 25,
-  "address": {
-    "streetAddress": "21 2nd Street
-    "city": "New York",
-    "state": "NY",
-    "postalCode": "10021-3100"
-  },
-  "phoneNumbers": [
-    {
-      "type": "home",
-      "number": "212 555-1234"
-    },
-    {
-      "type": "office",
-      "number": "646 555-4567"
-    },
-    {
-      "type": "mobile",
-      "number": "123 456-7890"
-    }
-  ],
-  "children": [],
-  "spouse": null,
-  "Bank-account": {
-        "credit": 2342.25
-  }
+  "nombre": "Juan",
+  "apellido": "Duarte",
+  "estaVivo": true,
+  "edad": 25,
+  "direccion": {
+  "calle": "21 2nd Street",
+"ciudad": "New York",
+"estado": "NY",
+"codigoPostal": "10021-3100"
+},
+"numerosTelefono": [
+{
+"tipo": "hogar",
+"numero": "212 555-1234"
+},
+{
+"tipo": "oficina",
+"numero": "646 555-4567"
+},
+{
+"tipo": "movil",
+"numero": "123 456-7890"
+}
+],
+"infantes": [],
+"esposa": null,  
+"cuentaBancaria": {
+"credito": 2342.25
+}
 }
 \end{verbatim}
 
-The sample JSON document has been fully matched. This 
-JSON grammar works perfectly on it, and takes less than 
-20~lines of code. If you think about it, this is 
-really powerful. Test it for yourself. Try to change 
-the grammar in various places to see if it still works. 
-You could also try to introduce errors into the JSON 
-document (for example to remove a comma between two values 
-of a list) and the match should no longer occur (or, at least, 
-should not be the same).
+La muestra del documento JSON ha coincidido completamente.
+Esta gramática de JSON funciona perfectamente, y toma menos
+de 20~líneas de código. Si piensas, esto es realmente poderoso.
+Pruébalo por ti mismo. Trata de cambiar la gramática en varios
+lugares para ver si aún funciona. También podrías tratar
+de introducir errores en el documento JSON (por ejemplo la remoción
+de una coma entre dos valores de una lista) y la coincidencia
+no ocurrirá (o, por lo menos, no debería ser la misma).
 
-You may object that this grammar covers only a subset 
-of JSON. This is sort of true, but not really: it is almost complete. 
-True, I would not recommend using this grammar 
-in a production environment for parsing JSON documents, 
-because it has been built only for pedagogical purposes 
-and may not comply with every single fine detail of the JSON 
-standards.
+Puedes objetar que esta gramática cubre solo un subconjunto de JSON.
+Hay algo verdad en eso, pero no realmente: esta gramática está casi 
+completa. Aún así, yo no recomendaría el uso de esta gramática
+en un entorno de producción para analizar documentos JSON,
+ya que fue construida con propósitos pedagógicos y puede no cumplir
+con cada detalle final de los estándares de JSON.
 
-Take a look at the grammar of the Perl~6 {\tt JSON::Tiny} 
-module (\url{https://github.com/moritz/json}), which can 
-parse any valid JSON document. It is not much more 
-complicated than what we have shown here (except for the use 
-of proto regexes, a topic that we haven't covered here), and 
-it is not much longer, as it contains about 35~code lines.
+Mira la gramática del módulo {\tt JSON::Tiny} 
+(\url{https://github.com/moritz/json}) de Perl~6,
+el cual puede analizar cualquier documento de JSON válido.
+No es más complicado que lo que hemos mostrado aquí (excepto
+por el uso de regexes proto, un tema que cubrimos aquí),
+y no es más extenso, dado que solo contiene 35~líneas de
+código.
 
-\subsection{Adding Actions}
+\subsection{Agregando Acciones}
 \index{actions!object}
 \index{actions!class}
 \index{parse tree}
 
-The JSON grammar works fine, but printing out the tree of 
-parse objects just for our relatively small JSON document 
-will display about 300 lines of text, as 
-it provides all the details of everything that has been 
-matched, rule by rule and subpattern by subpattern. This 
-can be very useful in helping you to understand what the grammar does 
-(especially when it does not work as expected), but 
-exploring that tree to extract the data can be quite 
-tedious. You can use \emph{actions} to populate a simpler 
-tree structure (often called an abtract syntax tree) containing 
-only the information you really need. 
+La gramática de JSON funciona bien, pero la impresión
+del árbol de los objetos de análisis solo para un documento
+de JSON pequeño mostrará alrededor de 300 líneas de texto,
+dado que provee todos los detalles de lo que coincidió, 
+regla por regla y subpatrón por subpatrón. Esto es muy útil
+porque te ayuda a entender lo que la gramática hace (
+especialmente cuando no funciona como se esperaba), 
+pero explorar ese para extraer los datos puede ser tedioso.
+Puedes usar \emph{acciones} para poblar un árbol de estructura
+(usualmente llamado un árbol de sintaxis abstracta) más 
+simple que contiene solo la información que necesitas.
 \index{subpattern}
 
 \index{abstract syntax tree (AST)}
 \index{AST, abstract syntax tree}
-Let us add an actions class to build an abstract syntax tree 
-(AST):
+Agreguemos una clase de acciones para construir un árbol
+de sintaxis abstracta (AST):
 
 \begin{verbatim}
-class JSON-actions {
+class acciones-JSON {
     method TOP($/) {
         make $/.values.[0].made;
     };
-    method object($/) {
-        make $<pairlist>.made.hash.item;
+    method objeto($/) {
+        make $<listaPar>.made.hash.item;
     }
-    method pairlist($/) {
-        make $<pair>».made.flat;
+    method listaPar($/) {
+        make $<par>».made.flat;
     }
-    method pair($/) {
-        make $<string>.made => $<value>.made;
+    method par($/) {
+        make $<cadena>.made => $<value>.made;
     }
     method array($/) {
-        make $<valueList>.made.item;
+        make $<listaValor>.made.item;
     }
-    method valueList($/) {
-        make [$<value>.map(*.made)];
+    method listaValor($/) {
+        make [$<valor>.map(*.made)];
     }
-    method string($/) { make ~$0 }
-    method number($/) { make +$/.Str; }
-    method value($/) { 
+    method cadena($/) { make ~$0 }
+    method número($/) { make +$/.Str; }
+    method valor($/) { 
         given ~$/ {
             when "true"  {make Bool::True;}
             when "false" {make Bool::False;}
@@ -1207,94 +1216,97 @@ class JSON-actions {
 \end{verbatim}
 
 \index{named!capture}
-For this actions class to work, we need to make a small change 
-to the grammar. The {\tt value} method uses a {\tt val} named 
-capture to access its content; we need to add the relevant 
-named captures to the {\tt value} token:
+Para que esta clase de acciones funcione, necesitamos hacer un
+pequeño cambio a la gramática. El método {\tt value} usa una
+captura nombrada {\tt val} para acceder su contenido; necesitamos
+agregar la capturada nombrada relevante al token {\tt valor}:
 
 \begin{verbatim}
-token value { <val=object> | <val=array> | <val=string> 
-              | <val=number> | true | false | null
+token valor { <val=objeto> | <val=array> | <val=cadena> 
+              | <val=número> | true | false | null
 }
 \end{verbatim}
 
-We can now call our grammar with the following syntax:
+Ahora podemos llamar nuestra gramática con la
+siguiente sintaxis:
 
 \begin{verbatim}
-my $j-actions = JSON-actions.new();
-my $match = JSON-Grammar.parse($JSON-string, :actions($j-actions));
-say $match.made;
+my $j-acciones = acciones-JSON.new();
+my $coinc = Gramática-JSON.parse($cadena-JSON, :actions($j-acciones));
+say $coinc.made;
 \end{verbatim}
 
-Notice that, here, we've used an actions object rather than 
-simply the actions class, but this is just for the purpose of 
-showing how to do it; we could have used the class directly 
-as before.
+Observa que, aquí, hemos usado un objeto de acciones en lugar
+de simplemente una clase de acciones, pero esto es solo con 
+el propósito de mostrar cómo hacerlo; podríamos haber usado
+la clase directamente como antes.
 \index{actions!object}
 \index{actions!class}
 
 \index{abstract syntax tree (AST)}
 \index{AST, abstract syntax tree}
-The last statement in the above code prints out the AST. 
-We have reformatted the output to better show the 
-structure of the AST:
+La última sentencia en el código más arriba imprime el AST.
+Hemos reformateado la salida para mostrar mejor la estructura
+del AST:
+
 
 \begin{verbatim}
 {
-    Bank-account => {
-        credit => 2342.25
+    cuentaBancaria => {
+        credito => 2342.25
     }, 
-    address => {
-        city => New York, 
-        postalCode => 10021-3100, 
-        state => NY, 
-        streetAddress => 21 2nd Street
+    direccion => {
+        ciudad => New York, 
+        codigoPostal => 10021-3100, 
+        estado => NY, 
+        calle => 21 2nd Street
     }, 
-    age => 25, 
-    children => [], 
-    firstName => John, 
-    isAlive => True, 
-    lastName => Smith, 
-    phoneNumbers => [
-        {number => 212 555-1234, type => home} 
-        {number => 646 555-4567, type => office} 
-        {number => 123 456-7890, type => mobile}
+    edad => 25, 
+    infantes => [], 
+    nombre => Juan, 
+    estaVivo => True, 
+    appellido => Duarte, 
+    numerosTelefono => [
+        {numero => 212 555-1234, tipo => hogar} 
+        {numero => 646 555-4567, tipo => oficina} 
+        {numero => 123 456-7890, tipo => movil}
     ], 
-    spouse => (Any)
+    esposa => (Any)
 }
 \end{verbatim}
 
-In this case, the top structure is a hash (it could also have been 
-an array with a different JSON input string). We can now explore 
-this hash to find the data of interest to us. For example:
+En este caso, la estructura superior es un hash (también podría ser una array
+con una diferente cadena de texto de JSON). Podemos ahora explorar
+este hash para encontrar los datos que son interés para nosotros.
+Por ejemplo:
 \index{AST, abstract syntax tree}
 
 \begin{verbatim}
-say "Keys are: \n", $match.made.keys;
-say "\nSome values:";
-say $match.made{$_} for <firstName lastName isAlive>;
-say $match.made<address><city>;
-say "\nPhone numbers:";
-say $match.made<phoneNumbers>[$_]<type number> 
-    for 0..$match.made<phoneNumbers>.end;
+say "Las claves son: \n", $coinc.made.keys;
+say "\nAlgunos Valores:";
+say $coinc.made{$_} for <nombre apellido estaVivo>;
+say $coinc.made<direccion><ciudad>;
+say "\nNúmeros telefónicos:";
+say $coinc.made<numerosTelefono>[$_]<tipo número> 
+    for 0..$match.made<numerosTelefono>.end;
 \end{verbatim}
 
-This will display the following output:
+Esto mostrará la siguiente salida:
 
 \begin{verbatim}
-Keys are:
-(lastName Bank-account phoneNumbers children address age firstName spouse isAlive)
+Las claves son:
+(apellido cuentaBancaria numerosTelefono infantes direccion edad nombre esposa estaVivo)
 
-Some values:
-John
-Smith
+Algunos Valores:
+Juan
+Duarte
 True
 New York
 
-Phone numbers:
-(home 212 555-1234)
-(office 646 555-4567)
-(mobile 123 456-7890)
+Números telefónicos:
+(hogar 212 555-1234)
+(oficina 646 555-4567)
+(movil 123 456-7890)
 \end{verbatim}
 
 \section{Herencia y Gramáticas Mutables}
