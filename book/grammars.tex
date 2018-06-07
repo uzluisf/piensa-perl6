@@ -875,7 +875,7 @@ de entidades estructurales:
 \index{JSON!value}
 Los valores pueden ser objetos o arrays como se definieron anteriormente,
 o tipos básicos de datos, tales como: cadenas de texto, números, Booleano (
-verdadero o falso), y \emph{null} (valor vacío o valor indefinido).
+true o false), y \emph{null} (valor vacío o valor indefinido).
 Una cadena de texto es una secuencia de caracteres Unicode entre 
 comillas, y los números son números decimales con signo que pueden contener
 una parte fraccional y pueden usar la notación ``E`` de exponentes.
@@ -922,7 +922,7 @@ my $cadena-JSON = '
   "infantes": [],
   "esposa": null,  
   "cuentaBancaria": {
-  "credito": 2342.25
+    "credito": 2342.25
   }
 }
 ';
@@ -1053,7 +1053,7 @@ que mostramos más arriba.
 \index{JSON!value}
 
 Los valores son objetos, arrays, cadenas de texto, números,
-Booleanos (true or false), o \emph{null}:
+Booleanos (true o false), o \emph{null}:
 
 \begin{verbatim}
 token valor { | <objeto> | <array> | <cadena> | <número> 
@@ -1073,16 +1073,16 @@ grammar Gramática-JSON {
 	token TOP        { \s* [ <objeto> | <array> ] \s* }
 	rule objeto      { '{' \s*  <listaPar> '}' \s* }
 	rule listaPar    { <par> * % \, }
-	rule par  		 { <cadena>':' <valor> }
+	rule par         { <cadena>':' <valor> }
 	rule array       { '[' <listaValor> ']'}
 	rule listaValor  {  <valor> * % \, }
-	token cadena 	 { \" <[ \w \s \- ' ]>+ \" }
-	token número 	 {
+	token cadena 	 { \" ( <[ \w \s \- ' ]>+ ) \" }
+	token número     {
 		[\+|\-]?
 		[ \d+ [ \. \d+ ]? ] | [ \. \d+ ]
 		[ <[eE]> [\+|\-]? \d+ ]?
 	}
-	token valor 	{ 
+	token valor      { 
 		| <objeto> | <array> | <cadena> | <número> 
 		| true     | false   | null 
 	}
@@ -1108,30 +1108,30 @@ Esto produce la siguiente salida:
   "estaVivo": true,
   "edad": 25,
   "direccion": {
-  "calle": "21 2nd Street",
-"ciudad": "New York",
-"estado": "NY",
-"codigoPostal": "10021-3100"
-},
-"numerosTelefono": [
-{
-"tipo": "hogar",
-"numero": "212 555-1234"
-},
-{
-"tipo": "oficina",
-"numero": "646 555-4567"
-},
-{
-"tipo": "movil",
-"numero": "123 456-7890"
-}
-],
-"infantes": [],
-"esposa": null,  
-"cuentaBancaria": {
-"credito": 2342.25
-}
+    "calle": "21 2nd Street",
+    "ciudad": "New York",
+    "estado": "NY",
+    "codigoPostal": "10021-3100"
+  },
+  "numerosTelefono": [
+    {
+      "tipo": "hogar",
+      "numero": "212 555-1234"
+    },
+    {
+      "tipo": "oficina",
+      "numero": "646 555-4567"
+    },
+    {
+      "tipo": "movil",
+      "numero": "123 456-7890"
+    }
+  ],
+  "infantes": [],
+  "esposa": null,  
+  "cuentaBancaria": {
+    "credito": 2342.25
+  }
 }
 \end{verbatim}
 
@@ -1194,7 +1194,7 @@ class acciones-JSON {
         make $<par>».made.flat;
     }
     method par($/) {
-        make $<cadena>.made => $<value>.made;
+        make $<cadena>.made => $<valor>.made;
     }
     method array($/) {
         make $<listaValor>.made.item;
@@ -1217,9 +1217,10 @@ class acciones-JSON {
 
 \index{named!capture}
 Para que esta clase de acciones funcione, necesitamos hacer un
-pequeño cambio a la gramática. El método {\tt value} usa una
+pequeño cambio a la gramática. El método {\tt valor} usa una
 captura nombrada {\tt val} para acceder su contenido; necesitamos
-agregar la capturada nombrada relevante al token {\tt valor}:
+agregar las capturadas nombradas relevante al token {\tt valor}
+en la gramática:
 
 \begin{verbatim}
 token valor { <val=objeto> | <val=array> | <val=cadena> 
