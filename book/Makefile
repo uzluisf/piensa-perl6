@@ -1,13 +1,16 @@
 
 ### Input file
 FILENAME = thinkperl6
+OUTPUT_NAME = thinkperl6
 
 all: tmpDir/$(FILENAME).pdf
 
 ### Compilation flags for pdflatex
 PDFLATEX_FLAGS  = -halt-on-error\
+				  -interaction=batchmode\
 				  -output-format pdf\
-				  -output-directory tmpDir
+				  -output-directory tmpDir\
+				  -jobname=$(OUTPUT_NAME)
 TEXINPUTS = .:tmpDir/
 TEXMFOUTPUT = tmpDir
 
@@ -26,4 +29,4 @@ tmpDir/$(FILENAME).pdf: tmpDir/$(FILENAME).aux
 # the directory tmpDir/ created during the compilation process.
 
 clean:
-	rm -rf tmpDir/
+	rm -rfv tmpDir/
