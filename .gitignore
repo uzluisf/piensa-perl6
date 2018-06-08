@@ -5,3 +5,4 @@ book/*.out
 book/*.synctex.gz
 book/*.toc
 book/*.pdf
+book/tmpDir/*
