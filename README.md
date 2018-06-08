@@ -9,6 +9,27 @@ Traducción por Luis F. Uceta.
 La versión original en inglés por Laurent Rosenfeld con Allen Downey puede
 ser encontrada en [Think Perl 6](http://greenteapress.com/wp/think-perl-6/).
 
+### Cómo crear el PDF
+
+El directorio `book` contiene los archivos LATEX necesarios para
+compilar el libro. Para recompilar el libro, ejecuta el siguiente
+comando dentro de dicho directorio:
+```
+make
+```
+Este comando creará el directorio `tmpDir` donde se encuentra el
+PDF (thinkperl6.pdf) del libro. 
+
+> Nota: La posibilidad de una compilación exitosa incrementa si tiene una instalación
+> casi completa de una distribución reciente de Tex Live.
+
+Para eliminar todos los archivos intermedios (incluyendo el PDF)
+que resultan del proceso de compilación, ejecuta:
+```
+make clean
+```
+Si deseas mantener el PDF, debes moverlo a un directorio diferente antes
+de ejecutar `make clean`.
 
 ### Progreso
 
@@ -27,7 +48,7 @@ ser encontrada en [Think Perl 6](http://greenteapress.com/wp/think-perl-6/).
 - [ ] Capítulo 11: Caso Práctico: Selección de una Estructura de Dato
 - [x] Capítulo 12: Clases y Objetos
 - [x] Capítulo 13: Regexes y Grammars
-- [ ] Capítulo 14: Programación Funcional en Perl
+- [ ] Capítulo 14: Programación Funcional en Perl **TEP**
 - [x] Capítulo 15: Algunos Últimos Consejos
 - [ ] Apéndice A:  Soluciones a los Ejercicios
 

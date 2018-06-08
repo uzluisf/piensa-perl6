@@ -1076,7 +1076,7 @@ grammar Gramática-JSON {
 	rule par         { <cadena>':' <valor> }
 	rule array       { '[' <listaValor> ']'}
 	rule listaValor  {  <valor> * % \, }
-	token cadena 	 { \" ( <[ \w \s \- ' ]>+ ) \" }
+	token cadena     { \" ( <[ \w \s \- ' ]>+ ) \" }
 	token número     {
 		[\+|\-]?
 		[ \d+ [ \. \d+ ]? ] | [ \. \d+ ]
