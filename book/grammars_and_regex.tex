@@ -1,0 +1,1615 @@
+
+
+
+\chapter{Regexes y Gramáticas}
+\label{regex_grammars}
+\index{regex}
+\index{regular expression}
+\index{grammar}
+
+Las expresiones regulares o regexes fueron introducidas en las
+Secciones~\ref{regex} a \ref{substitutions}. Es recomendable que leas
+esas secciones nuevamente antes de leer este capítulo si no 
+recuerdas mucho sobre los regexes. No necesitas recordar los detalles
+de todo lo que discutimos anteriormente y explicaremos de nuevo, aunque
+brevemente, las partes específicas de la funcionalidad que usaremos,
+pero se espera que entiendas cómo los regexes funcionan en general.
+
+\section{Una Breve Actualización}
+
+\index{pattern}
+Los regexes, como los estudiamos hasta ahora, tratan sobre
+la exploración de cadenas de texto usando patrones. 
+Un patrón es una secuencia de caracteres (usualmente especiales)
+que describen una cadena de texto o parte de una 
+cadena de texto. Un patrón coincide con una cadena de texto si existe
+una correspondencia entre el patrón y la cadena de texto.
+
+Por ejemplo, el siguiente fragmento de código inspecciona la 
+cadena de texto y trata de encontrar la letra ``a``, seguida por 
+cualquier número (pero por lo menos una) de letras ``b`` o ``c``,
+seguida por cero o más dígitos seguidos por una ``B`` o una ``C``:
+
+\begin{lstlisting}
+my $cad = "foo13abbccbcbcbb42Cbar";
+say ~$/ if $cad ~~ /a <[bc]>+ (\d*) [B|C]/;  # -> abbccbcbcbb42C
+say ~$0;                                     # -> 42
+\end{lstlisting}
+
+\index{smart match operator}
+\index{operator!smart match}
+Este fragmento de código usa el operador de coincidencia 
+inteligente \verb|~~| para chequear si la cadena \verb|$cad|
+coincide con el patrón \verb'/a <[bc]>+ (\d*) [B|C]/'. Recuerda
+que los espacios en blanco no son usualmente significativos en 
+un patrón de regex (a menos que se especifiquen).
+\index{pattern}
+
+El patrón está compuesto por los siguientes componentes:
+
+\begin{itemize}
+
+\item \verb'a': una coincidencia literal de la letra ``a''
+
+\index{character class}
+\item \verb'<[bc]>+': el átomo \verb'<[bc]>' es una categoría de caracteres
+que se refiere a la letra ``b`` o ``c``; el cuantificador \verb|+|
+dicta que los caracteres que coinciden con la categoría de caracteres
+``b`` o ``c`` pueden repetirse una o más veces.
+
+\index{quantifier}
+\index{capture!regex}
+\item \verb'(\d*)': el átomo \verb|\d| es una categoría de caracteres
+que son dígitos, el cuantificador \verb|*| significa 0 o más ocurrencias
+del átomo anterior, y los paréntesis requieren una captura
+de estos dígitos (si existen) en la variable \verb|$0| (una variable especial
+que es realmente un atajo para \verb|$/[0]|)
+
+
+\index{alternation}
+\item \verb'[B|C]': \verb'B|C' es una alternación (una ``B`` o un ``C``),
+y los corchetes reagrupan esta alternación en un (y también habilita 
+precedencia adecuada).
+\index{subpattern}
+
+\end{itemize}
+
+\index{match object}
+Si la coincidencia es exitosa (como en este ejemplo), 
+el resultado se almacena en el \emph{objeto de coincidencia},
+\verb|$/|. La impresión de \verb|~$/| muestra una versión en
+cadena de texto del objeto de coincidencia. Y la impresión de \verb|$0|
+(o \verb|$/[0]|) muestra la captura (la porción de la coincidencia
+entre los paréntesis, en este caso el número ``42``).
+\index{capture}
+\index{regex!capture}
+\index{match object}
+
+\index{lexing}
+\index{parsing}
+\index{lexical analysis}
+\index{grammatical analysis}
+Esto es lo que se llama coincidencia a un bajo nivel:
+el reconocimiento del patrón se hace mayormente al nivel
+individual de un carácter. Perl~6 ofrece varias maneras de 
+agrupar y nombrar los patrones de regex para que estos
+patrones individuales puedan utilizarse posteriormente 
+como componentes básicos para coincidencia a un alto nivel:
+el reconocimiento de palabras y secuencias de palabras (más
+que caracteres), para el propósito de hacer lo que se conoce
+como análisis léxico (o {\bf lexing}) y análisis gramático
+(o {\bf parsing}) en una pieza de texto.
+
+% parse => parsear
+% parsing => parseado
+
+\index{Perl 6 grammar}
+Este capítulo está mayormente dedicado este tipo de 
+coincidencia, que conduce a la creación de gramáticas completas
+que analizan textos estructurados tales como textos XML o HTML, 
+documentos JSON o YAML, o hasta programas de computadora: 
+los programas de Perl~6 son actualmente analizados sintácticamente
+usando una gramática de Perl~6 escrita en Perl~6.
+
+\index{grammar}
+Las gramáticas son un tema muy importante en la ciencia de
+la computación pero, obviamente, no todos los programadores
+escriben gramáticas completas para analizar sintácticamente
+lenguajes de programación. No obstante, la escritura de una
+gramática simple y un analizador sintáctico simple podría
+ser, o quizás debería ser, una actividad mucho más común.
+
+A menudo, la gente invierte demasiado esfuerzo en el descifrado
+de archivos simples de configuración con técnicas de bajo nivel,
+mientras que la escritura de un simple analizador sintáctico
+podría ser mucho más fácil y mucho más eficiente. Perl~6
+ofrece todas las herramientas para hacer eso muy fácilmente.
+\index{configuration file}
+
+\index{domain-specific language (DSL)}
+\index{DSL (domain-specific language)}
+\index{sub-language}
+\index{slang}
+
+Algunas veces, también necesitas desarrollar un lenguaje 
+de dominio específico (DSL por sus siglas en inglés), i.e.,
+un sublenguaje relativamente pequeño (también conocido como una
+jerga) adaptado a un campo específico del conocimiento
+(ciencia, ingeniería, negocios, arte, u otro) con sus propias
+convenciones, símbolos, operadores, etc. Con una gramática y la 
+habilidad de Perl para crea sus propios operadores, puedes usualmente
+expresar conocimiento especializado dentro del marco de terminología
+de los expertos de una área del conocimiento en particular.
+
+\section{Programación Declarativa}
+
+\index{declarative programming}
+\index{programming!declarative}
+Los regexes y las gramáticas son ejemplos de aún otro tipo
+de paradigma de programación que no hemos explorado hasta ahora:
+{\bf programación declarativa}. Este es un modelo de programación
+en el cual, contrario a la programación imperativa o procedimental,
+tú no indicas cómo hacer algo ni tampoco eliges tu flujo de control.
+En lugar de eso, tú especificas un conjunto de definiciones, reglas,
+propiedades, y posiblemente algunas restricciones y acciones, y dejas
+al programa aplicar estas definiciones para derivar nueva información
+sobre los datos de entrada.
+
+\index{programming!declarative}
+\index{programming!logic}
+\index{programming!functional}
+\index{artificial intelligence}
+\index{database query language}
+\index{compilation}
+\index{Yacc}
+\index{Bison}
+\index{makefile}
+
+Esta forma de programación se usa extensivamente en la
+programación lógica (e.g., Prolog), inteligencia artificial,
+sistemas expertos, análisis de datos, lenguajes para
+consultar de bases de datos (e.g., SQL), reconocimiento de
+texto y código fuente (e.g., Lex y Flex), compilación de
+programas (e.g., Yacc o Bison), manejo de configuraciones, 
+makefiles, y también de alguna forma, programación funcional.
+
+
+\section{Capturas}
+
+\index{capturing}
+Como explicamos en los ejemplos de regex al comienzo de este 
+capítulo, los paréntesis no solo agrupan cosas sino que también
+{\bf capturan} datos: ellos hacen que la cadena de texto que 
+coincide con el subpatrón dentro de los paréntesis se 
+encuentre disponible dentro de una variable especial:
+\index{subpattern}
+
+\begin{lstlisting}
+my $cad =  'número 42';
+say "El número es $0" if $cad ~~ /número \s+ (\d+) /;  # -> El número es 42
+\end{lstlisting}
+%
+
+\index{numbered capture}
+\index{capture!numbered}
+Aquí, el patrón coincidió la cadena de texto \verb|$cad|,
+y la parte del patrón dentro de los paréntesis fue capturada
+en la variable especial \verb|$0|. Si hay varios grupos 
+con paréntesis, ellos serán capturados en las variables
+\verb|$0|, \verb|$1|, \verb|$2|, etc. (de izquierda a derecha):
+
+\begin{lstlisting}
+say "$0 $1 $2" if "abcde" ~~ /(a) b (c) d (e)/;       # -> a c e
+\end{lstlisting}
+%
+
+Esto funciona muy bien con capturas simples, pero el 
+número de capturas puede volverse tedioso si hay 
+muchas capturas y algo complicado cuando hay paréntesis
+anidados en el patrón:
+
+\begin{lstlisting}
+if 'abc' ~~ / ( a (.) (.) ) / {
+    say "Fuera: $0";                   # Fuera: abc
+    say "Dentro: $0[0] y $0[1]";       # Dentro: b and c
+}
+\end{lstlisting}
+
+Cuando se vuelve complicado, es usualmente mejor usa
+otra características conocida como \emph{capturas nombradas}.
+La manera estándar de nombra una captura es de la siguiente forma:
+\index{named!capture}
+\index{capture!named}
+
+\begin{lstlisting}
+if 'abc;%' ~~ / $<nombre_de_captura> = \w+ / {
+    say ~$<nombre_de_captura>;                # abc
+}
+\end{lstlisting} 
+
+El uso de la captura nombrada, \verb|$<nombre_de_captura>|,
+es un atajo para acceder el objeto de coincidencia \verb|$/|
+como un hash, en otras palabras: \verb|$/{ 'nombre_de_captura' }|
+o \verb|$/<nombre_de_captura>|.
+\index{match object}
+
+Las capturas nombradas pueden anidarse usando la sintaxis regular
+de captura de grupo:
+
+\begin{lstlisting}
+if 'abc' ~~ / $<todo>=( a $<parte1>=(.) $<parte2>=(.) ) / {
+    say "Todo: $<todo>";                # Todo: abc
+    say "Parte 1: $<todo><parte1>";     # Parte 1: b
+    say "Parte 2: $<todo><parte2>";     # Parte 2: c
+}
+\end{lstlisting} 
+
+\index{match object}
+Asignar el objeto de coincidencia a un hash ofrece acceso programático 
+fácil a todas las capturas nombradas:
+
+\begin{lstlisting}
+if 'abc' ~~ / $<todo>=( a $<parte1>=(.) $<parte2>=(.) ) / {
+    my %captura = $/.hash;    
+    say ~%captura<todo>;                   # -> abc
+    for kv %captura<todo> -> $clave, $val {
+        say $clave, " ", ~$val;            # -> parte2 c \n parte1 b
+    }
+}
+\end{lstlisting} 
+
+Pero podrías hacer la misma cosa directamente en el objeto de
+coincidencia sin tener que hacer una asignación de hash extra:
+
+\begin{lstlisting}
+if 'abc' ~~ / $<todo>=( a $<parte1>=(.) $<parte2>=(.) ) / {
+    say "Todo: $<todo>";                # -> Todo: abc
+    for kv %<todo> -> $clave, $val {
+        say $clave, " ", ~$val;          # -> parte2 c \n parte1 b
+    }
+}
+\end{lstlisting}
+
+Recuerda que, en el código más arriba, \verb|$<todo>| es
+realmente un atajo para \verb|$/<todo>|, i.e., para un
+tipo de acceso hash al objeto de coincidencia \verb|$/|.
+
+No obstante, existe una manera más conveniente de obtener
+capturas nombradas la cual discutimos en la siguiente sección.
+
+\section{Reglas Nombradas (o Subreglas)}
+\label{subrules}
+\index{subrule}
+\index{named!rule}
+\index{named!regex}
+\index{named!token}
+
+Es posible almacenar piezas de regexes dentro 
+de \emph{reglas nombradas}. El ejemplo siguiente usa un
+regex nombrado, el cual es un tipo de reglas nombradas, 
+para coincidir con una línea de texto:
+
+\begin{lstlisting}
+my regex línea { \N* \n }  # cualquier número de caracteres excepto
+			 # una nueva línea, seguida por 1 nueva línea 
+
+if "abc\ndef" ~~ /<línea> def/ {
+    say "Primera línea: ", $<línea>.chomp;      # Primera línea: abc
+}
+\end{lstlisting} 
+
+Nota que la sintaxis con un bloque de código se parece
+a la definición de una subrutina o un método. Esto no es una
+casualidad; veremos que las reglas nombradas son muy similares
+a los métodos. Notablemente, las reglas pueden llamarse unas
+a las otras (o hasta algunas veces ellas mismas de forma
+recursiva) al igual que los métodos y las subrutinas,
+y también veremos que esto es una característica muy poderosa
+y expresiva.
+\index{recursive rules}
+
+\index{named!regex}
+Un regex nombrado puede declararse con 
+\verb|my regex nombre { cuerpo del regex }|, y 
+llamarse con {\tt <nombre>}.
+
+Como puedes ver en el ejemplo más arriba, un regex
+nombrado que es exitoso crea una captura nombrada 
+con el mismo nombre. Si necesitas un nombre diferente
+para la captura, puedes hacer esto con la siguiente
+sintaxis {\tt <nombre-captura=nombre-regex>}. En este
+ejemplo, llamamos el mismo regex nombrado dos veces y,
+por conveniencia, usamos un nombre diferente para distinguir
+las dos capturas:
+\index{named!capture}
+
+\begin{lstlisting}
+my regex línea { \N* \n }
+if "abc\ndef\n" ~~ / <primera=línea> <segunda=línea> / {
+    say "Primera línea: ", $<primera>.chomp;   # -> Primera línea: abc
+    say "Segunda línea: ", $<segunda>.chomp;   # -> Segunda línea: def
+    print $_.chomp for $<línea>.list;          # -> abc  def
+}
+\end{lstlisting}
+
+En este ejemplo, usamos las invocaciones del método {\tt chomp}
+para remover el carácter de nueva línea de las capturas. Existe
+de hecho una manera para coincidir con el carácter de nueva línea
+pero excluirla de la captura:
+
+\begin{lstlisting}
+my regex línea { \N* )> \n }
+if "abc\ndef\n" ~~ / <primera=línea> <segunda=línea> / {
+    say "Primera línea: ", ~$<primera>;   # -> Primera línea: abc
+    say "Segunda línea: ", ~$<segunda>;   # -> Segunda línea: def
+    print $<línea>.list;                  # -> abc  def
+}
+\end{lstlisting}
+
+Este poco conocido token, \verb|")>"|, marca el punto final de
+la captura completa de una coincidencia. Cualquier cosa después
+del token participará en la coincidencia pero no será 
+capturado por el regex nombrado. Similarmente, el token 
+\verb|")>"| indica el inicio de la captura.
+
+Los regexes nombrados son solo una forma (y probablemente no la
+más común) de las reglas nombradas, que vienen en tres sabores
+distintos:
+
+\begin{itemize}
+\item Regexes nombrados, en la cual el regex se comporta como
+los regexes ordinarios
+\index{ratchet}
+\index{adverb!:ratchet}
+\index{backtracking}
+\index{token}
+\index{named!regex}
+\item Tokens nombrados,  en la cual el regex tiene un adverbio
+{\tt :ratchet} implícito, lo cual significa que no hay vuelta
+atrás
+\index{named!token}
+\index{ratchet}
+\index{adverb!:ratchet}
+\index{backtracking}
+\index{sigspace}
+\index{adverb!:sigspace}
+\index{named!rule}
+\item Reglas nombradas, en la cual el regex tiene un adverbio
+{\tt :ratchet} implícito, como los tokens nombrados, y también
+un adverbio {\tt :sigspace} nombrado, lo cual significa que los
+espacios en blanco dentro del patrón (o, más específicamente, entre
+los caracteres de palabra) no son ignorados
+\end{itemize}
+
+En los dos ejemplos arriba, no necesitamos que los regexes
+volvieran atrás. Podríamos (y probablemente deberíamos)
+haber usado un token nombrado en lugar de un regex nombrado:
+
+\begin{lstlisting}
+my token línea { \N* \n }
+if "abc\ndef" ~~ /<línea> def/ {
+    say "Primera línea: ", $<línea>.chomp;    # Primera línea: abc
+}
+\end{lstlisting} 
+
+Pero, para que una regla coincida, tendríamos que remover 
+el espacio desde \emph{dentro del patrón}:
+
+\begin{lstlisting}
+my rule línea { \N*\n }
+if "abc\ndef" ~~ /<línea> def/ {
+    say "Primera línea: ", $<línea>.chomp;    # Primera línea: abc
+}
+\end{lstlisting} 
+
+Independientemente de la palabra clave específica usada
+para sus definiciones, es usual referirse a estos tres tipos
+de reglas nombradas colectivamente como {\tt reglas}.
+\index{rule}
+
+Recuerdas los varios regexes con los cuales
+experimentamos para extraer las fechas de una cadena de
+texto en la Subsección~\ref{extracting_dates} 
+(p.~\pageref{extracting_dates})? El último ejemplo
+usó subpatrones como componentes básicos para 
+construir el patrón completo. Podríamos ahora escribirlo,
+con la característica añadida para reconocer formatos de
+fecha múltiples, en la siguiente manera:
+\index{date format}
+\index{subpattern}
+
+\index{matching a date}
+\begin{lstlisting}
+my $cadena = "Christmas : 2016-12-25.";                                         
+my token año { \d ** 4 }                                        
+my token mes {   
+    1 <[0..2]>                            # 10 to 12                     
+    || 0 <[1..9]>                         # 01 to 09                     
+};
+my token día { (\d ** 2) <?{1 <= $0 <= 31 }> }  
+my token separador { '/' || '-' || '.' } 
+my rule fecha {  <año> (<separador>) <mes> $0 <día> 
+                || <día> (<separador>) <mes> $0 <año> 
+                || <mes>\s<día>',' <año>
+}                         
+
+if $cadena ~~ /<fecha>/ {
+    say ~$/;                           # -> 2016-12-25
+    say "Día\t= " , ~$/<fecha><día>;   # -> 25
+    say "Mes\t= " , ~$/<fecha><mes>;   # -> 12
+    say "Año\t= " , ~$/<fecha><año>;   # -> 2016
+}          
+\end{lstlisting} 
+
+Los primeros cuatro tokens nombrados definen los componentes
+básicos para coincidir con el año, el mes, el día, y los posibles
+separados. Después, la regla nombrada {\tt fecha} usa los 
+componentes básicos para definir una alternancia entre los 
+posibles tres formatos de fecha.
+\index{token}
+\index{rule}
+
+\index{date!validation}
+Este código chequea que el día en el mes esté entre 1 y 31
+y que el mes esté entre 01 y 12, y esto es probablemente
+suficiente para reconocer fechas en un texto en la 
+mayoría de los casos, pero esto coincidiría con ``2016-11-31''
+aunque Noviembre tiene solo 30~días. Podemos ser un poco
+más estricto sobre las fechas válidas y prevenir eso al
+agregar una inserción de código negativa a la regla nombrada
+{\tt fecha}:
+
+\index{code assertion}
+\index{assertion!code}
+
+\begin{lstlisting}
+my rule fecha { [ <año> (<separador>) <mes> $0 <día> 
+		|| <día> (<separador>) <mes> $0 <año> 
+		|| <mes>\s<día>',' <año>
+		] <!{ $<día> > 30 and $<mes> == 2|4|6|9|11} >
+}
+                        
+\end{lstlisting}
+
+Esto es mejor, pero todavía podemos coincidir con una fecha 
+inválida tal como ``2016-02-30''.
+
+\begin{exercise}
+\label{february_rule}
+%
+Como un ejercicio, cambia la aserción de código para
+rechazar una fecha como ``Feb. 30``. Si te sientes
+valiente, podrías hasta querer chequear el número de días
+en febrero dependiendo si la fecha ocurre en un año bisiesto.
+También podrías intentar definir y probar otros
+formatos de fecha. Solución: \ref{sol_february_rule}
+\end{exercise}
+\index{leap year}
+\index{February!number of days}
+\index{date format}
+
+Las reglas pueden (y usualmente deberían) agruparse en 
+gramáticas; esa es la razón por la cual fueron diseñadas.
+
+\section{Gramáticas}
+\index{grammar}
+
+Las gramáticas son una herramienta poderosa que se utilizan
+para analizar datos textuales y usualmente devuelven 
+estructuras de datos que se crean al interpretar dichos textos.
+
+Por ejemplo, cualquier programa de Perl~6 se analiza sintácticamente
+y se ejecuta usando una gramática de Perl~6 escrita en Perl~6, 
+y podrías escribir una gramática para analizar sintácticamente
+(casi) cualquier otro lenguaje de programación. Para ser honesto,
+los programadores raramente escriben gramáticas analizar sintácticamente
+lenguajes de programación. No obstante, las gramáticas son muy útiles para
+realizar muchas tareas que son mucho más comunes que analizar
+programas sintácticamente.
+\index{parsing!HTML}
+\index{parsing!XML}
+\index{HTML parsing}
+\index{XML parsing}
+
+Si alguna vez intentaste usar regexes para analizar una
+pieza de texto HTML (o XML)\footnote{No intentes hacerlo.
+Ya te lo advertí: no lo hagas.}, probablemente encontraste
+que se volvió casi imposible, excepto quizás por las datos
+de HTML más fáciles. Para analizar cualquier pieza de tal
+datos, necesitas un analizador sintáctico el cual, por su parte,
+estará basado en una gramática.
+
+Si no te gustó la gramática en la escuela, no dejes que eso te 
+intimide. Las gramáticas de Perl~6 no son complicadas; ellas solo
+te permiten agrupar reglas nombradas, en la misma forma que las clases
+te permiten agrupar métodos de código regular.
+
+\index{namespace}
+\index{parse method}
+\index{fileparse method}
+\index{grammar!methods}
+\index{actions!class}
+Una gramática crea un espacio de nombres (del inglés \emph{namespace})
+y se introduce con la palabra clave {\tt grammar}. Usualmente
+agrupa un número de reglas nombradas, en la misma manera que
+una clase agrupa un número de métodos. Una gramática es 
+actualmente una clase que hereda de la superclase {\tt Grammar},
+la cual provee métodos tales como {\tt parse} para analizar
+sintácticamente una cadena de texto y {\tt .parsefile} para
+analizar un archivo. Además, puedes actualmente escribir 
+algunos métodos en una gramática, e incluso importar algunos
+roles. Y, como veremos, las gramáticas son usualmente 
+asociadas con algunas {\bf clases de acciones} o 
+{\bf objetos de acciones}.
+
+\index{TOP rule}
+\index{parsing}
+A menos que se diga lo contrario, los métodos de análisis
+sintáctico buscarán una regla nombrada por defecto llamada 
+``TOP`` (la cual puede ser un regex nombrado, un token, o una 
+regla) para comenzar el análisis. Las reglas de análisis 
+sintáctico de una fecha que usamos más arriba pueden
+ensamblarse en una gramática de la siguiente manera:
+
+\index{grammar!date}
+\label{dategrammar}
+\begin{lstlisting}
+grammar Mi-fecha {
+    rule TOP { \s*? 
+               [    <año> (<separador>) <mes> $0 <día>
+                 || <día> (<separador>) <mes> $0 <año> 
+                 || <mes>\s<día>',' <año>                     
+               ] \s* 
+               <!{ ($<día> > 30 and $<mes> ==  2|4|6|9|11)}>  
+             }
+    token año   { \d ** 4 }                                        
+    token mes   {  1 <[0..2]> || 0 <[1..9]> }                
+    token día   { (\d ** 2) <?{1 <= $0 <= 31 }> }  
+    token separador   { '/' || '-' || '.' } 
+}                         
+
+for " 2016/12/25 ", " 2016-02-25 ", " 31/04/2016 " -> $cadena {
+	my $coincidencia = Mi-fecha.parse($cadena);
+	say ~$coincidencia if defined $coincidencia;
+}
+\end{lstlisting}
+
+Esto imprimirá:
+\begin{lstlisting}
+ 2016/12/25
+ 2016-02-25
+\end{lstlisting}
+
+\index{code assertion}
+La aserción de código dentro de la regla ``TOP`` previene que 
+fechas como ``31/04/2016'' coincidan; necesitarías añadir más
+código para manejar los finales de las fechas de Febrero, 
+como hicimos en la solución del ejercicio anterior (ver
+la Subsección~\ref{sol_february_rule}) si esto es importante. 
+Podrías querer hacerlo como un ejercicio.
+
+Además de eso, este código no es tan diferente de nuestro
+código anterior, pero hay algunos cambios que son significativos.
+
+\index{namespace}
+\index{lexical scope}
+\index{my!declarator}
+
+Nombré la regla {\tt fecha} como {\tt TOP} porque este
+es el nombre por defecto que el método {\tt parse} busca
+para la regla en el nivel superior. Una gramática crea su 
+propio espacio de nombres y ámbito lexical, y ya no necesito
+declarar las reglas con el declarador {\tt my} (el cual se 
+requiere para las reglas que se declaran fuera de una 
+gramática).
+\index{grammar}
+
+Dentro de una gramática, el orden en el cual las reglas
+se definen es usualmente irrelevante, así que yo podría 
+definir la regla {\tt TOP} primero, aún si usa los tókenes
+que se definen después (lo cual no habría sido posible con las
+reglas usadas fuera de una gramática). Esto es importante 
+porque, dentro de una gramática, puedes tener reglas que se llaman
+unas a las otras (o reglas que se llaman a ellas mismas de forma
+recursiva), lo cual no sería práctico si el orden de las definiciones
+de las reglas fuera importara.
+\index{recursive rules}
+
+
+\index{parse method}
+\index{subparse method}
+Si analizas la cadena de texto de entrada con el método
+{\tt .parse}, la regla {\tt TOP} es automáticamente anclada
+al inicio y al final de la cadena de texto, lo que significa que
+la gramática tiene que coincidir con la cadena de texto 
+completa para ser exitosa. Esta es la razón por la cual
+tuvimos que añadir patrones para los espacios en blanco al
+inicio y al final de nuestra regla {\tt TOP} para coincidir 
+con nuestras cadenas de texto que tienen espacios en blanco
+antes y después de la fecha. Existe otro método, \emph{.subspace},
+el cual no tiene que alcanzar el final de la cadena de texto
+para ser exitoso, pero todavía debemos tener el patrón 
+para los espacios en blanco al inicio de la regla.
+
+\section{Herencia de una Gramática}
+\index{inheritance!grammar}
+\index{grammar!inheritance}
+\index{grammar!Message}
+
+Una gramática puede heredar de otra gramática, 
+de la misma manera en que una clase puede 
+heredar de otra clase.
+
+Considera esta gramática simple (casi simplista) para 
+analizar sintácticamente un correo electrónico:
+
+\begin{lstlisting}
+grammar Mensaje {
+    rule  TOP       { <saludo> $<cuerpo>=<línea>+? <final> }
+    rule  saludo    { [Saludos||Hola||Hey] $<a>=\S+? ',' }
+    rule  final     { Nos vemos luego ',' $<desde>=.+ }
+    token línea     { \N* \n}
+}
+\end{lstlisting}
+
+Podemos probarla con el siguiente código:
+
+\begin{lstlisting}
+my $msg = "Saludos Tomás,
+Espero que todo esté bien y que hayas reparado tu carro.
+Nos vemos luego, Liz";
+
+my $coincidencia = Mensaje.parse($msg);
+if defined $coincidencia { 
+    say "Saludo 	 \t= ", ~$coincidencia<saludo>.chomp;
+    say "Destinatario\t= $coincidencia<saludo><a>";
+    say "Autor   	\t= $coincidencia<final><desde>";
+    say "Contenido   \t= $coincidencia<cuerpo>";
+}
+\end{lstlisting}
+
+Esto imprimirá lo siguiente:
+
+\begin{lstlisting}
+Saludo 	= Saludos Tomás,
+Destinatario   = Tomás
+Autor          = Liz
+Contenido      = Espero que todo esté bien y que hayas reparado tu carro.
+\end{lstlisting}
+
+Ahora supón que queremos una gramática similar para analizar
+un mensaje más formal y notamos que podemos reutilizar parte
+de la gramática {\tt Mensaje}. Podemos tener nuestra propia
+gramática hija que hereda de la gramática padre:
+
+\index{grammar!Message}
+\index{grammar!FormalMessage}
+\begin{lstlisting}
+grammar MensajeFormal is Mensaje {
+    rule saludo { [Estimad[a|o]] $<a>=\S+? ',' }
+    rule final  { [Sinceramente|Cordiales saludos] ',' $<desde>=.+ }
+}
+\end{lstlisting}
+
+El rasgo {\tt is Mensaje} en la cabecera le dice a Perl que 
+{\tt MensajeFormal} debería heredar de la gramática {\tt Mensaje}.
+Solo dos reglas, {\tt saludo} y {\tt final}, necesitan ser
+definirse nuevamente; las otras (la regla {\tt TOP} y el token
+{\tt línea}) serán heredadas desde la gramática {\tt Mensaje}.
+\index{grammar inheritance}
+
+Veamos si funciona:
+
+\begin{lstlisting}
+my $mens_formal = "Estimado Tomás,
+dentro se encuentra nuestro factura para junio 2016.
+Sinceramente, Elizabeth.";
+my $coincid2 = MensajeFormal.parse($mens_formal);
+if defined $coincid2 { 
+    say "Saludo \t= ", ~$coincid2<saludo>.chomp;
+    say "Destinatario\t= $coincid2<saludo><a>";
+    say "Autor   \t= $coincid2<final><desde>";
+    say "Contenido  \t= $coincid2<cuerpo>";
+}
+\end{lstlisting}
+
+Esto imprimirá:
+
+\begin{lstlisting}
+Saludo 	= Estimado Tomás,
+Destinatario   = Tomás
+Autor          = Elizabeth.
+Contenido      = dentro se encuentra nuestro factura para junio 2016.
+\end{lstlisting}
+
+\section{Objetos de Acciones}
+
+\index{actions!object}
+\index{actions!class}
+\index{action!method}
+\index{reduction method}
+\index{parse tree}
+\index{match object}
+\label{actions_object}
+
+Una coincidencia de gramática exitosa te da un árbol de análisis
+sintáctico de objetos de coincidencia (objetos del tipo \verb|Match|).
+Este árbol recapitula toda las "subcoincidencias" individuales que
+contribuyeron a la coincidencia en su totalidad, para que
+así pueda volverse muy larga y complicada. Lo más profundo
+que el árbol de coincidencia se convierte, y mientras más ramas en 
+la gramática, se vuelve más difícil navegar el árbol de 
+coincidencia para obtener información que te interesa.
+
+\index{named!rule}
+\index{abstract syntax tree (AST)}
+\index{AST, abstract syntax tree}
+Para evitar la necesidad de adentrarse en un árbol de coincidencia,
+puedes proveer un objeto de acciones. Después de cada coincidencia
+exitosa de una regla nombrada de tu gramática, el objeto de acciones
+intenta invocar un método con un nombre similar a la regla de gramática,
+dándole el objeto de coincidencia recién creado como un argumento de posición.
+Si tal método no existe, se salta. (Los métodos de una acción son 
+algunas veces llamados métodos de reducción). Si existe, 
+el método de acción es usualmente usado para construir 
+un \emph{árbol de sintaxis abstracta} (AST por sus siglas en inglés),
+i.e., una estructura de datos presumiblemente más simple de 
+explorar y de usar que un árbol de objeto de coincidencia, 
+o puede hacer cualquier otra cosa considerada necesaria.
+
+En este ejemplo algo simplista de una calculadora de operaciones
+aritméticas básica, las acciones no tratan de construir un AST 
+completo, pero simplemente hacen que el grupo de cálculo funcione
+entre los varios tókenes que coinciden con la gramática:
+\index{arithmetic calculator}
+\index{grammar!arithmetic calculator}
+
+\begin{lstlisting}
+grammar GramAritmética {
+    token TOP { \s* <número> \s* <operación> \s* <número> \s*}
+    token operación { <[^*+/-]> }
+    token número { \d+ | \d+\.\d+ | \.\d+ }
+}
+
+class AccionesAritm {
+    method TOP($/) {
+        given $<operación> {
+            when '*' { $/.make([*] $/<número>)}
+            when '+' { $/.make([+] $<número>)}
+            when '/' { $/.make($<número>[0] / $<número>[1]) }
+            when '-' { $/.make([-] $<número>) }
+            when '^' { $/.make($<número>[0] ** $<número>[1]) }
+        }
+    }
+}
+for '   6*7  ', '46.2 -4.2', '28+ 14.0 ',
+    '70 * .6 ', '126   /3', '6.4807407 ^ 2' -> $op {
+        my $coinc = GramAritmética.parse($op, :actions(AccionesAritm));
+        say "$coinc\t= ", $coinc.made;
+}
+\end{lstlisting}
+
+Esto imprime lo siguiente:
+
+\begin{lstlisting}
+   6*7          = 42
+46.2 -4.2       = 42
+28+ 14.0        = 42
+70 * .6         = 42
+126   /3        = 42
+6.4807407 ^ 2   = 42.00000002063649
+\end{lstlisting}
+
+El objetivo de este ejemplo no es describir cómo implementar una
+calculadora básica (hay maneras mejores de hacer eso, regresaremos
+a esto más tarde), pero solo mostrar cómo las acciones pueden usarse
+en conjunción con una gramática.
+\index{arithmetic calculator}
+
+La gramática es bien simple y busca por dos números decimales separados
+por un operador aritmético infijo. Si hay una coincidencia, 
+\verb|$/<número>| (o \verb|$<número>| para ser breve) hará referencia
+a un array que contiene los dos números (y \verb|$/operación| almacenará
+el operador aritmético).
+
+\index{parse method}
+\index{actions!object}
+\index{actions!class}
+El método {\tt parse} se invoca con un argumento nombrado {\tt actions:},
+la clase {\tt  AccionesAritm}, que le dice a Perl cual objeto de
+acciones debe utilizar con la gramática. En este ejemplo, actualmente no pasamos
+un objeto de acciones, pero simplemente el nombre de la clase
+de acciones (actualmente un tipo de objeto), porque no hay 
+necesidad de instanciar un objeto. En otros casos, por ejemplo si
+hubiese una necesidad de inicializar o de algún modo usar
+algunos atributos de un objeto, necesitaríamos pasar un 
+objeto actual que tendría que ser construido con antelación.
+
+\index{TOP rule}
+\index{make method}
+\index{AST, abstract syntax tree}
+\index{made method}
+
+Siempre que la regla {\tt TOP} es exitosa, el método {\tt TOP}
+de la clase {\tt AccionesAritm} es invocado con el objeto de
+coincidencia para la regla actual como el argumento. Este método
+llama al método {\tt make} sobre el objeto de coincidencia, 
+implícitamente puebla el AST, y devuelve el resultado de la
+operación aritmética entre los dos números. Después, el método
+{\tt make} en el código de la construcción que hace la llamada 
+(dentro del bucle {\tt for}) devuelve el resultado que fue asignado
+por {\tt make}.
+
+\section{Una Gramática para Analizar JSON}
+\index{JSON grammar}
+\index{grammar!JSON}
+\index{parsing!JSON}
+
+JSON (\emph{JavaScript Object Notation}) es un formato 
+estándar-abierto para datos textuales derivado de la
+notación de objeto en el lenguaje de programación JavaScript.
+Se ha convertido en uno de los estándares más usado para
+serializar estructuras de datos, lo cual hace posible, por
+ejemplo, el intercambio de las mismas entre plataformas diferentes
+y lenguajes de programación diferentes, para enviarlas a través 
+de la red, y almacenarlas permanentemente en archivos en los
+discos.
+
+\subsection{El Formato JSON}
+\index{JSON!format}
+\index{JSON!object}
+\index{JSON!array}
+
+El formato JSON es bien simple y está compuesto de dos tipos
+de entidades estructurales:
+\begin{itemize}
+\item Objetos o listas desordenadas de pares nombre-valor
+(básicamente correspondiente a los hashes en Perl);
+\item Arrays, o una listas ordenadas de valores.
+\end{itemize}
+
+\index{JSON!base types}
+\index{JSON!string}
+\index{JSON!Boolean}
+\index{JSON!number}
+\index{JSON!value}
+Los valores pueden ser objetos o arrays como se definieron anteriormente,
+o tipos básicos de datos, tales como: cadenas de texto, números, Booleano (
+true o false), y \emph{null} (valor vacío o valor indefinido).
+Una cadena de texto es una secuencia de caracteres Unicode entre 
+comillas, y los números son números decimales con signo que pueden contener
+una parte fraccional y pueden usar la notación ``E`` de exponentes.
+
+
+\subsection{Nuestra Muestra de JSON}
+
+\index{JSON!sample}
+
+Para ilustrar la descripción del formato más arriba y para
+el propósito de utilizar nuestras pruebas, usaremos un ejemplo
+tomado del artículo de Wikipedia sobre JSON
+(\url{https://es.wikipedia.org/wiki/JSON}), el cual es una
+posible descripción de una persona. Esta será nuestra cadena
+de texto de JSON:
+
+\begin{lstlisting}
+my $cadena-JSON = '
+{
+  "nombre": "Juan",
+  "apellido": "Duarte",
+  "estaVivo": true,
+  "edad": 25,
+  "direccion": {
+    "calle": "21 2nd Street",
+	"ciudad": "New York",
+	"estado": "NY",
+	"codigoPostal": "10021-3100"
+   },
+   "numerosTelefono": [
+     {
+       "tipo": "hogar",
+       "numero": "212 555-1234"
+     },
+     {
+       "tipo": "oficina",
+       "numero": "646 555-4567"
+     },
+     {
+       "tipo": "movil",
+       "numero": "123 456-7890"
+     }
+  ],
+  "infantes": [],
+  "esposa": null,  
+  "cuentaBancaria": {
+    "credito": 2342.25
+  }
+}
+';
+\end{lstlisting}
+
+\index{JSON!number}
+Comparado con el ejemplo de Wikipedia, hemos agregado
+un objeto \verb|cuentaBancaria| para proveer la posibilidad
+de probar los números no enteros de JSON.
+ 
+\subsection{Escribiendo la Gramática de JSON Paso a Paso}
+
+Tomaremos cada una de las entidades de JSON por turno y 
+las manejaremos con reglas.
+
+\subsubsection{Números}
+\index{JSON!number}
+
+El ejemplo del documento JSON más arriba solo tiene números enteros
+y decimales, pero debemos de ser capaz de reconocer números
+como ``17,'' ``-138.27'', ``1.2e-3'', ``.35'', etc. Podemos usar el
+siguiente token para hacer eso:
+
+\begin{lstlisting}
+token número {
+    [\+|\-]?              # signo (+/-) opcional
+    [ \d+ [ \. \d+ ]? ]   # parte entera y parte fraccional opcional
+      | [ \. \d+ ]        # o solo parte fraccional
+    [ <[eE]> [\+|\-]? \d+ ]?    # exponente opcional
+}
+\end{lstlisting}
+
+\subsubsection{Cadenas de Texto JSON}
+\index{JSON!string}
+\index{double quote}
+
+Existen muchos patrones para definir una cadena de texto. 
+Para nuestro documento JSON, la siguiente reglas será suficiente:
+
+\begin{lstlisting}
+token cadena {
+    \" <[ \w \s \- ' ]>+ \" 
+}
+\end{lstlisting}
+
+Esto coincidirá con una secuencia entre comillas dobles de
+caracteres alfanuméricos, espacios, guiones, y apóstrofos.
+
+Para una analizador sintáctico real de JSON, una regla que usa
+una categoría negativa de caracteres excluyendo cualquier cosa que
+no pertenece a una cuerda podría ser mejor, por ejemplo:
+
+\begin{lstlisting}
+token cadena {
+    \" <-[\n " \t]>* \"
+}
+\end{lstlisting}
+
+i.e., una secuencia entre doble comillas de caracteres excepto 
+comillas dobles, nuevas líneas y tabuladores.
+
+Podrías desear estudiar los estándares de JSON\footnote{
+Dado que JSON no está completamente estandarizado, no proveeré
+un enlace específico; búscalo y decide.} para averiguar 
+exactamente lo que es aceptado o prohibido en una cadena de texto
+de JSON. Para nuestros propósitos, la primera regla más arriba será
+suficiente.
+
+\subsubsection{Objetos JSONs}
+\index{JSON!object}
+\index{key-value pair}
+\index{JSON!value}
+\index{curly bracket}
+
+Los objetos JSON son listas de pares clave-valor. Las listas
+son delimitadas por llaves y los pares son separados por comas.
+Un par clave-valor es una cadena de texto seguida por dos puntos,
+seguido por un valor (lo definiremos más adelante). Esto puede 
+definirse de la siguiente manera:
+
+\begin{lstlisting}
+rule objeto     { '{'  <listaPar> '}' }
+rule listaPar   { [<par> [',' <par>]*] }
+rule par        { <cadena> ':' <valor>  }
+\end{lstlisting}
+
+\index{modified quantifier}
+Podemos ahora usar una característica de regex que no hemos
+visto. Esta es el modificador de cuantificador, que podemos
+usar para simplificar la regla {\tt listaPar}. Para coincidir
+con cosas como valores separados por comas más fácilmente, 
+puedes agregar un modificador \verb|%| a cualquiera de los
+cuantificadores regulares para especificar un separador
+que debe ocurrir entre cada una de las coincidencias. Así 
+que, por ejemplo, \verb|/a+ % ','/| coincidirá con ``a`` o ``a,a``,
+o ``a,a,a``, etc.
+
+
+Por lo tanto, la regla {\tt listaPar} puede escribirse de la 
+siguiente manera:
+
+\begin{lstlisting}
+rule listaPar   {<par> + % \,}
+\end{lstlisting}
+
+o:
+
+\begin{lstlisting}
+rule listaPar   {<par> * % \,}
+\end{lstlisting}
+
+si aceptamos que una {\tt listaPar} puede estar también vacía.
+
+\subsubsection{Arrays JSON}
+\index{JSON!array}
+
+Los arrays son listas de valores separados por comas entre corchetes:
+
+\begin{lstlisting}
+rule array       { '[' <listaValor> ']'}
+rule listaValor  {  <valor> * % \, }
+\end{lstlisting}
+
+Aquí, también usamos el modificador de cuantificador 
+que mostramos más arriba.
+
+\subsubsection{Valores JSON}
+\index{JSON!value}
+
+Los valores son objetos, arrays, cadenas de texto, números,
+Booleanos (true o false), o \emph{null}:
+
+\begin{lstlisting}
+token valor { | <objeto> | <array> | <cadena> | <número> 
+              | true     | false   | null 
+}
+\end{lstlisting}
+
+\subsection{La Gramática de JSON}
+\index{JSON!grammar}
+
+Hemos definido todos los elementos de la gramática de JSON;
+solo necesitamos declarar una gramática y agregar una regla
+{\tt TOP} para completarla:
+
+\begin{lstlisting}
+grammar Gramática-JSON {
+	token TOP        { \s* [ <objeto> | <array> ] \s* }
+	rule objeto      { '{' \s*  <listaPar> '}' \s* }
+	rule listaPar    { <par> * % \, }
+	rule par         { <cadena>':' <valor> }
+	rule array       { '[' <listaValor> ']'}
+	rule listaValor  {  <valor> * % \, }
+	token cadena     { \"  <[ \w \s \- ' ]>+  \" }
+	token número     {
+		[\+|\-]?
+		[ \d+ [ \. \d+ ]? ] | [ \. \d+ ]
+		[ <[eE]> [\+|\-]? \d+ ]?
+	}
+	token valor      { 
+		| <objeto> | <array> | <cadena> | <número> 
+		| true     | false   | null 
+	}
+}
+\end{lstlisting}
+
+Podemos ahora probar la gramática con nuestra muestra de 
+cadena de texto de JSON y tratar de imprimir el objeto de
+coincidencia:
+
+\begin{lstlisting}
+my $coinc = Gramática-JSON.parse($cadena-JSON);
+say ~$coinc if $coinc;
+\end{lstlisting}
+\index{parse}
+
+Esto produce la siguiente salida:
+
+\begin{lstlisting}
+{
+  "nombre": "Juan",
+  "apellido": "Duarte",
+  "estaVivo": true,
+  "edad": 25,
+  "direccion": {
+    "calle": "21 2nd Street",
+    "ciudad": "New York",
+    "estado": "NY",
+    "codigoPostal": "10021-3100"
+  },
+  "numerosTelefono": [
+    {
+      "tipo": "hogar",
+      "numero": "212 555-1234"
+    },
+    {
+      "tipo": "oficina",
+      "numero": "646 555-4567"
+    },
+    {
+      "tipo": "movil",
+      "numero": "123 456-7890"
+    }
+  ],
+  "infantes": [],
+  "esposa": null,  
+  "cuentaBancaria": {
+    "credito": 2342.25
+  }
+}
+\end{lstlisting}
+
+La muestra del documento JSON ha coincidido completamente.
+Esta gramática de JSON funciona perfectamente, y toma menos
+de 20~líneas de código. Si piensas, esto es realmente poderoso.
+Pruébalo por ti mismo. Trata de cambiar la gramática en varios
+lugares para ver si aún funciona. También podrías tratar
+de introducir errores en el documento JSON (por ejemplo la remoción
+de una coma entre dos valores de una lista) y la coincidencia
+no ocurrirá (o, por lo menos, no debería ser la misma).
+
+Puedes objetar que esta gramática cubre solo un subconjunto de JSON.
+Hay algo verdad en eso, pero no realmente: esta gramática está casi 
+completa. Aún así, yo no recomendaría el uso de esta gramática
+en un entorno de producción para analizar documentos JSON,
+ya que fue construida con propósitos pedagógicos y puede no cumplir
+con cada detalle final de los estándares de JSON.
+
+Mira la gramática del módulo {\tt JSON::Tiny} 
+(\url{https://github.com/moritz/json}) de Perl~6,
+el cual puede analizar cualquier documento de JSON válido.
+No es más complicado que lo que hemos mostrado aquí (excepto
+por el uso de regexes proto, un tema que cubrimos aquí),
+y no es más extenso, dado que solo contiene 35~líneas de
+código.
+
+\subsection{Agregando Acciones}
+\index{actions!object}
+\index{actions!class}
+\index{parse tree}
+
+La gramática de JSON funciona bien, pero la impresión
+del árbol de los objetos de análisis solo para un documento
+de JSON pequeño mostrará alrededor de 300 líneas de texto,
+dado que provee todos los detalles de lo que coincidió, 
+regla por regla y subpatrón por subpatrón. Esto es muy útil
+porque te ayuda a entender lo que la gramática hace (
+especialmente cuando no funciona como se esperaba), 
+pero explorar ese para extraer los datos puede ser tedioso.
+Puedes usar \emph{acciones} para poblar un árbol de estructura
+(usualmente llamado un árbol de sintaxis abstracta) más 
+simple que contiene solo la información que necesitas.
+\index{subpattern}
+
+\index{abstract syntax tree (AST)}
+\index{AST, abstract syntax tree}
+Agreguemos una clase de acciones para construir un árbol
+de sintaxis abstracta (AST):
+
+\begin{lstlisting}
+class acciones-JSON {
+    method TOP($/) {
+        make $/.values.[0].made;
+    };
+    method objeto($/) {
+        make $<listaPar>.made.hash.item;
+    }
+    method listaPar($/) {
+        make $<par>».made.flat;
+    }
+    method par($/) {
+        make $<cadena>.made => $<valor>.made;
+    }
+    method array($/) {
+        make $<listaValor>.made.item;
+    }
+    method listaValor($/) {
+        make [$<valor>.map(*.made)];
+    }
+    method cadena($/) { make ~$0 }
+    method número($/) { make +$/.Str; }
+    method valor($/) { 
+        given ~$/ {
+            when "true"  {make Bool::True;}
+            when "false" {make Bool::False;}
+            when "null"  {make Any;}
+            default { make $<val>.made;}
+        }  
+   }
+}
+\end{lstlisting}
+
+\index{named!capture}
+Para que esta clase de acciones funcione, necesitamos hacer un
+pequeño cambio a la gramática. El método {\tt valor} usa una
+captura nombrada {\tt val} para acceder su contenido; necesitamos
+agregar las capturadas nombradas relevante al token {\tt valor}
+en la gramática:
+
+\begin{lstlisting}
+token valor { <val=objeto> | <val=array> | <val=cadena> 
+              | <val=número> | true | false | null
+}
+\end{lstlisting}
+
+También necesitamos añadir paréntesis de captura al token {\tt cadena}
+para que el método {\tt cadena} sea capaz de extraer la cadena de texto
+correspondiente:
+
+\begin{lstlisting}
+token cadena   {  \" ( <[ \w \s \- ' ]>+ ) \"  }
+\end{lstlisting}
+
+Ahora podemos llamar nuestra gramática con la siguiente sintaxis:
+
+\begin{lstlisting}
+my $j-acciones = acciones-JSON.new();
+my $coinc = Gramática-JSON.parse($cadena-JSON, :actions($j-acciones));
+say $coinc.made;
+\end{lstlisting}
+
+Observa que, aquí, hemos usado un objeto de acciones en lugar
+de simplemente una clase de acciones, pero esto es solo con 
+el propósito de mostrar cómo hacerlo; podríamos haber usado
+la clase directamente como antes.
+\index{actions!object}
+\index{actions!class}
+
+\index{abstract syntax tree (AST)}
+\index{AST, abstract syntax tree}
+La última sentencia en el código más arriba imprime el AST.
+Hemos reformateado la salida para mostrar mejor la estructura
+del AST:
+
+
+\begin{lstlisting}
+{
+    cuentaBancaria => {
+        credito => 2342.25
+    }, 
+    direccion => {
+        ciudad => New York, 
+        codigoPostal => 10021-3100, 
+        estado => NY, 
+        calle => 21 2nd Street
+    }, 
+    edad => 25, 
+    infantes => [], 
+    nombre => Juan, 
+    estaVivo => True, 
+    appellido => Duarte, 
+    numerosTelefono => [
+        {numero => 212 555-1234, tipo => hogar} 
+        {numero => 646 555-4567, tipo => oficina} 
+        {numero => 123 456-7890, tipo => movil}
+    ], 
+    esposa => (Any)
+}
+\end{lstlisting}
+
+En este caso, la estructura superior es un hash (también podría ser una array
+con una diferente cadena de texto de JSON). Podemos ahora explorar
+este hash para encontrar los datos que son interés para nosotros.
+Por ejemplo:
+\index{AST, abstract syntax tree}
+
+\begin{lstlisting}
+say "Las claves son: \n", $coinc.made.keys;
+say "\nAlgunos Valores:";
+say $coinc.made{$_} for <nombre apellido estaVivo>;
+say $coinc.made<direccion><ciudad>;
+say "\nNúmeros telefónicos:";
+say $coinc.made<numerosTelefono>[$_]<tipo número> 
+    for 0..$match.made<numerosTelefono>.end;
+\end{lstlisting}
+
+Esto mostrará la siguiente salida:
+
+\begin{lstlisting}
+Las claves son:
+(apellido cuentaBancaria numerosTelefono infantes direccion edad nombre esposa estaVivo)
+
+Algunos Valores:
+Juan
+Duarte
+True
+New York
+
+Números telefónicos:
+(hogar 212 555-1234)
+(oficina 646 555-4567)
+(movil 123 456-7890)
+\end{lstlisting}
+
+\section{Herencia y Gramáticas Mutables}
+
+\index{grammar!subclassing}
+\index{grammar!mutable}
+\index{grammar!inheritance}
+La capacidad de una gramática de heredar de otra abre la
+puerta para muchas posibilidades en términos de la extensión
+del lenguaje Perl~6. Es posible, por ejemplo en el contexto de
+un módulo o una framework, crear una ``subclase`` de la 
+gramática estándar de Perl~6, i.e., para escribir una nueva
+gramática hija que hereda de la gramática estándar de Perl~6, pero
+agrega una nueva característica, sobrecarga un operador, o modifica
+algún otro elemento sintáctico, y ejecuta este programa con el 
+mismo compilador de Perl~6, pero con una gramática modificada
+localmente.
+
+Esto significa que es actualmente posible extender el lenguaje 
+dinámicamente para necesidades nuevas, usualmente sin cambiar
+el compilador o la máquina virtual. No obstante, estos son temas
+avanzados que están dedicados más a los gurús del lenguaje 
+que a los principiantes. Así que solo mencionamos estas posibilidades
+grandiosas con la esperanza de estimular tu apetito y empujarte a
+que los estudies en más detalles, pero no hablaremos en más detalle
+sobre ellos en este libro.
+\index{extending the language}
+
+\section{Depuración de Programas}
+
+La escritura de gramáticas es muy divertido, pero también difícil
+o hasta tedioso cuando comienzas.
+\index{fun}
+
+Cuando comenzaste a practicar la programación con este libro,
+probablemente cometiste muchos pequeños errores que inicialmente
+previnieron que tus programas se compilaran y se ejecutaran, o
+hicieran lo que querías. Con la práctica, sin embargo, con suerte
+cometiste menos errores gradualmente y gastaste menos tiempo 
+persiguiendo errores.
+
+
+Cuando comienzas a aprender sobre gramáticas (y en menor medida regexes),
+puedes sentirte que estás nuevamente en el punto de partida. Inclusive
+programadores muy buenos usualmente cometen errores absurdos cuando
+comienzan a escribir gramáticas. Es un diferente paradigma de programación,
+y requiere una nueva fase de aprendizaje.
+\index{grammar!debugging}
+
+\index{testing}
+En este caso, pequeño es hermoso. Inicia con regexes pequeños y reglas pequeñas,
+y con una pequeña entrada de prueba. Prueba los regexes o las reglas individuales
+en el REPL, y agrégalos a tu código solo cuando estás confiado
+de que hacen lo que deseas.
+
+Escribe casos de prueba al mismo tiempo que escribe tu código 
+(o actualmente hasta antes de escribir tu código), y asegúrate de
+que pasen todos las pruebas relevantes antes de seguir adelante.
+Y agrega nuevas pruebas al agregar reglas nuevas.
+
+
+Una técnica de depuración estándar es agregar sentencias de 
+impresión al código para inquirir información sobre el estado
+del programa (tal como el valor de variables, el flujo de
+ejecución del programa, etc.). También puedes hacer eso con
+los regexes y las gramáticas.
+
+Tomemos el ejemplo de la gramática simple para coincidir
+con las fechas de la Sección~\ref{dategrammar} y supongamos
+que escribiste esta gramática:
+
+\begin{lstlisting}
+grammar Mi-Fecha {
+    token TOP { \s* <año> '-' <mes> '-' <día> }
+    token año  { \d ** 4 }                                        
+    token mes  {  1 <[0..2]> || 0 <[1..9]> }                
+    token día  { (\d ** 2) <?{1 <= $0 <= 31 }> }  
+}                         
+my $cadena = " 2016-07-31 ";
+say so Mi-Fecha.parse($cadena);                 # -> False
+\end{lstlisting}
+
+Esta prueba falla.
+
+A esta altura, ya se ha vuelto un poco difícil de inquirir
+por qué la gramática falla (a menos que hayamos probado cada
+uno de los tres tókenes antes de construir la gramática,
+pero en aras de esta discusión asumamos que no lo hemos hecho).
+Intentemos no cambiar aleatoriamente cosas aquí o allá y observar
+si funciona; podríamos investir horas haciendo eso y probablemente
+no llegaríamos a ninguna parte. Seamos más metódicos.
+
+Primero probemos los tókenes básicos, {\tt año}, {\tt mes}, y {\tt día}.
+Hemos visto anteriormente que el método {\tt parse} busca por defecto
+la regla {\tt TOP} en la gramática, pero puedes especificar otra 
+regla si así deseas, y eso es lo que necesitamos aquí. 
+Podemos probar estos tókenes individualmente:
+
+\begin{lstlisting}
+say so Mi-Fecha.parse("2016", :rule<año>);    # -> True
+say so Mi-Fecha.parse("07",   :rule<mes>);    # -> True
+say so Mi-Fecha.parse("31",   :rule<día>);    # -> True
+\end{lstlisting}
+
+Estos tres tókenes parecen funcionar apropiadamente. En este punto,
+podrías adivinar dónde se encuentra el problema, pero 
+asumamos que no sabes.
+
+Necesitamos depurar el token ``TOP``. Podemos usar el método común
+de depuración de imprimir donde estamos a varias etapas del
+programa. Puedes insertar una sentencia de impresión en
+una regla nombrada. Intentemos cambiar el token TOP a esto:
+
+\begin{lstlisting}
+token TOP { \s* <año> { say "año coincidido"; }
+            '-' <mes> { say "mes coincidido";}
+            '-' <día> { say "día coincidido";  }
+}
+\end{lstlisting}
+
+Esto muestra la siguiente salida:
+
+\begin{lstlisting}
+año coincidido
+mes coincidido
+día coincidido
+\end{lstlisting}
+
+
+Incluso el token ``TOP`` parecen funcionar hasta el final. 
+En este punto, deberíamos ser capaz de deducir que nos falta
+el espacio final en el token ``TOP``.
+
+Así que podríamos agregar un espacio adicional al final del
+token:
+
+\begin{lstlisting}
+token TOP { \s* <año> '-' <mes> '-' <día> \s*}
+\end{lstlisting}
+
+o cambiar la regla:
+
+\begin{lstlisting}
+rule TOP { \s* <año> '-' <mes> '-' <día> }
+\end{lstlisting}
+
+o era posible probar la cadena de texto que era incorrecta (porque
+no podría tener espacios) y por lo tanto, necesitaba ser arreglada.
+
+Si tiene una clase de acciones, también puedes agregar sentencias de
+impresión a los métodos de acciones.
+\index{actions!class}
+
+\index{debugger}
+\index{debugger!stepping through a regex}
+Igualmente recuerda que el depurador de Perl~6 (ver 
+la Sección~\ref{perl-debugger}) puede ser muy útil. 
+Brevemente mostramos en la Subsección~\ref{regex-debugging} 
+(p.~\pageref{regex-debugging}) cómo recorrer una coincidencia
+de regex paso a paso. La mayor parte de lo que se describió 
+ahí también aplica a la depuración de gramáticas.
+
+\index{debugger!debugging grammars}
+Finalmente, vale la pena mencionar que existe un buen módulo, \verb|Grammar::Tracer|, 
+para la depuración de regexes y gramáticas (\url{https://github.com/jnthn/grammar-debugger/}), 
+que funciona con Rakudo. Si agregas:
+
+\begin{lstlisting}
+use Grammar::Tracer;
+\end{lstlisting}
+\index{Grammar::Tracer}
+
+a tu programa, entonces cualquier gramática dentro del ámbito lexical
+imprimirá información de depuración sobre las reglas con la cual
+intentó coincidir, aquellas que fueron exitosas y aquellas que 
+fallaron.
+
+Puedes también usar lo siguiente:
+
+\begin{lstlisting}
+use Grammar::Debugger;
+\end{lstlisting}
+\index{Grammar::Debugger}
+
+para hacer lo mismo paso a paso. Solo escribe ``h`` en la 
+prompt para la lista de comandos disponibles.
+
+
+\section{Glosario}
+
+\begin{description}
+
+\index{grammar}
+\item[Gramática] Una herramienta de alto nivel para realizar
+análisis léxico y gramático de un texto estructurado. En Perl~6, 
+una gramática es específicamente un espacio de nombres que 
+contiene una colección de reglas nombradas destinada a este 
+tipo de análisis.
+
+\index{lexing}
+\item[Análisis semántico] El proceso en el cual se realiza
+un análisis léxico de texto fuente, y especialmente dividirlo
+en ``palabras`` o tókenes.
+
+\index{parsing}
+\item[Análisis sintáctico] El proceso en el cual se realiza un
+análisis gramático de un texto fuente, y especialmente se ensamblan
+palabras o tókenes en expresiones y sentencias que 
+tienen sentido semántico.
+
+\index{declarative programming}
+\index{programming!declarative}
+\item[Programación declarativa] Un modelo de programación donde
+especificas definiciones, reglas, propiedades, y restricciones, 
+en lugar de sentencias e instrucciones, y dejas al programa derivar
+conocimiento nuevo de estas definiciones y reglas.  Los regexes
+y las gramáticas son ejemplos de la programación declarativa.
+
+\index{match object}
+\item[Objeto de coincidencia] En Perl~6, un objeto (de tipo {\tt Match}),
+denotado usualmente por \verb|$/|, el cual contiene información 
+(algunas veces muy) detalla sobre lo que coincidió exitosamente
+con un regex o una gramática. El objeto de coincidencia \verb|$/|
+se le asignará {\tt Nil} si la coincidencia falla.
+
+\index{capture}
+\item[Captura] El hecho por el cual partes de una cadena de texto
+que coinciden con un regex (o una gramática) pueden extraerse
+a través del uso de un número de variables especiales.
+
+\index{rule}
+\item[Regla] En términos generales, las reglas nombradas son regexes
+que usan una sintaxis de método y usualmente se almacenan en una
+gramática. Más específicamente, una categoría de estas reglas nombradas
+(en conjunto con los regexes nombrados y los tókenes).
+
+\index{AST, abstract syntax tree}
+\index{abstract syntax tree (AST)}
+\index{AST, abstract syntax tree}
+\item[Árbol de sintaxis abstracta(AST):] Una estructura de datos
+que usualmente resume el objeto de coincidencia y se usa para la
+explotación de datos útiles. El objeto de coincidencia es poblado 
+automáticamente por Perl, donde ek AST contiene información considerada
+útil y explícitamente insertada por el programador.
+
+\index{actions!class}
+\item[Clases de acciones] Una clase usada en conjunción con una gramática
+para realizar ciertas acciones cuando una regla de una gramática coincide
+con algo en los datos de entrada. Si un método con el mismo nombre
+de una regla en la gramática existe en la clase de acciones,
+entonces será invocado siempre que la regla coincide.
+
+\end{description}
+
+\section{Ejercicio: Una Gramática para una Calculadora Aritmética}
+\label{calculator}
+\index{calculator}
+\index{calculator!grammar}
+\index{grammar!arithmetic calculator}
+\index{arithmetic calculator}
+
+La calculadora aritmética presentada en la Sección~\ref{actions_object}
+más arriba es muy simple. En particular, puede analizar sintácticamente
+expresiones aritméticas compuestas de dos operandos separados
+por un operador infijo, pero no mucho más.
+
+Nos gustaría ser capaz de analizar expresiones aritméticas complicadas.
+La calculadora debería también ser capaz de manejar:
+\begin{itemize}
+\item Expresiones con varios operadores diferentes (entre los
+cuatro operadores aritméticos básicos) y operandos múltiples
+\item Reglas estándares de precedencia entre los operadores (por ejemplo,
+las multiplicaciones deben hacerse antes que las adiciones)
+\index{precedence}
+\item Paréntesis anulan las reglas usuales de precedencia
+\index{parentheses}
+\index{parentheses!overriding precedence rule}
+\end{itemize}
+
+Estos son algunos ejemplos de expresiones que la calculadora
+debería analizar sintácticamente y calcular correctamente:
+\index{parse}
+\begin{lstlisting}
+3 + 4 + 5;
+3 + 4 * 5;   # resultado debería ser 23
+(3 + 4) * 5; # resultado debería ser 35 
+\end{lstlisting}
+
+\begin{exercise}
+Tu misión, \verb'[Juan|Salomé]', así elijas aceptarla, es escribir
+tal gramática. Como es usual, si fallas, el Gobierno debería negar
+cualquier conocimiento de tu clase de acciones.
+\index{actions!class}
+
+Hay varias maneras posibles de lograr esto; la solución 
+presentada en la Sección~\ref{sol_calculator} es solo una de ellas.
+\end{exercise}
+

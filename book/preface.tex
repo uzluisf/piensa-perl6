@@ -1,0 +1,184 @@
+
+\chapter{Introducción}
+
+Bienvenido al arte de programación de computadoras y 
+al nuevo lenguaje Perl~6. Este será probablemente el primer
+libro publicado que usa Perl~6 (o uno de los primeros), 
+un lenguaje de programación poderoso, expresivo, maleable
+y altamente extensible. Pero este libro es menos acerca de
+Perl~6, y más sobre cómo aprender a escribir programas 
+de computadora. 
+
+Este libro está destinado a principiantes y no requiere ningún conocimiento
+previo de programación, aunque espera que aquellos con experiencia de 
+programación puedan aún así beneficiarse.
+
+\section*{El Objetivo de este Libro}
+
+El objetivo de este libro no es primariamente enseñar Perl~6,
+sino enseñar el arte de programación, usando el lenguaje Perl~6. 
+Después de haber completado el libro, con suerte deberías de ser capaz
+de escribir programas para resolver problemas relativamente difíciles en 
+Perl~6, pero mi objetivo principal es enseñar ciencia de la computación,
+programación de software, y resolución de problemas más que solamente
+enseñar el lenguaje Perl~6 por sí mismo.
+
+Esto significa que no abarcaré cada aspecto de Perl~6, pero
+solo un subconjunto (relativamente largo pero incompleto) del
+lenguaje. Este libro no pretende ser una referencia del lenguaje.
+
+No es posible aprender programación o aprender un nuevo
+lenguaje de programación solo con leer un libro;
+la práctica es esencial. Este libro contiene
+muchos ejercicios. Se te anima a que haga un esfuerzo real
+para hacerlos. Independiente a si eres capaz de resolver los 
+ejercicios, deberías mirar las soluciones en el Apéndice, dado
+que, muy a menudo, se sugieren varias soluciones con una extensa
+discusión en la materia y los asuntos relacionados. Algunas
+veces, la sección de solución del Apéndice introduce ejemplos
+de temas que serán cubiertos en el siguiente capítulo---y algunas 
+veces cosas que no se discutirá en otras partes del libro. Así que,
+para sacarle provecho a este libro, te sugiero a que trates de solucionar
+los ejercicios y revisar las soluciones e intentarlas.
+
+Hay más de mil ejemplos de código en este libro;
+estúdialos, asegúrate de entenderlos, y ejecútalos. Si es posible,
+trata de cambiarlos y observa que pasa. Es probable que aprendas mucho
+de este proceso.
+
+
+\section*{La Historia de este Libro}
+
+En el transcurso de los últimos tres a cuatro años,
+he traducido o adaptado al francés un número de tutoriales
+y artículos sobre Perl~6, y también he escrito algunos totalmente
+nuevos en francés.~\footnote{Ve por ejemplo 
+\url{http://perl.developpez.com/cours/\#TutorielsPerl6}.}
+Juntos, estos documentos representaban para el final del 2015
+entre 250 y 300 páginas de material sobre Perl~6. Para ese entonces,
+probablemente había hecho público más material en francés que todos
+los otros escritores juntos.
+
+A fines del 2015, comencé a sentir un documento de Perl~6 para principiantes
+era algo que faltaba que yo estaba dispuesto a llevar a cabo. Busqué alrededor
+y encontré que aparentemente no existía nada igual en inglés. 
+Me vino la idea que, después de todo, sería más útil escribir tal documento inicialmente
+en inglés, para dárselo a una audiencia más amplia. Así fue que comencé a 
+contemplar escribir una introducción para la programación de Perl~6 destinada
+a principiantes. En aquel entonces, mi idea era sobre un tutorial de 50- a 70-paǵinas
+y comencé a recopilar material e ideas en esta dirección.
+
+Entonces, algo pasó que cambió mis planes.
+
+En Diciembre del 2015, algunos amigos mío estaban contemplando
+traducir al francés \emph{Think Python, Second Edition} de Allen B. Downey\footnote{Ve \url{http://greenteapress.com/wp/think-python-2e/}.}. 
+Había leído una versión previa de ese libro y totalmente apoyé la idea
+de traducirlo\footnote{Lo sé, es acerca de Python, no Perl.
+Sin embargo, no creo en las ``guerras de lenguajes`` y pienso que todos
+debemos aprender de otros lenguajes; para mí, el lema de Perl, ``hay más de 
+una forma para hacer algo,`` también significa que hacerlo en Python (o cualquier
+otro lenguaje) es realmente una posibilidad aceptable.}. Como resultado,
+terminé como un co-traductor y el editor técnico de la traducción al francés de ese
+libro\footnote{Ve
+	\url{http://allen-downey.developpez.com/livres/python/pensez-python/}.}.
+
+Mientras trabaja en la traducción al francés del libro sobre Python
+de Allen, la idea se me ocurrió, en vez de escribir un tutorial
+sobre Perl~6, sería más útil hacer un ``traducción a Perl~6`` de 
+\emph{Think Python}. Debido a que estaba en contacto con Allen en 
+el contexto de la traducción al francés, yo le sugerí la idea a Allen, 
+quién acogió favorablemente la idea. Así fue como comencé a escribir este 
+libro a final de Enero del 2016, poco tiempo después de haber completado
+la traducción al francés de su libro sobre Python.
+
+De tal manera, este libro es mayormente un derivado de \emph{Think Python}
+de Allen, pero adaptado a Perl~6. Como sucedió, es también algo más que 
+una ``traducción a Perl~6`` del libro de Allen: con suficiente nuevo material,
+se ha convertido en un libro totalmente nuevo, con una gran deuda al 
+libro de Allen, pero aún nuevo libro por el cual tomo toda la responsabilidad.
+Cualquier error es mío, no de Allen.
+
+Mi esperanza es que esto será útil para la comunidad de Perl~6, y
+generalmente para la comunidad de código abierto (\emph{open source})
+y la comunidad de la programación de computadoras. En una entrevista,
+con \emph{LinuxVoice} (July 2015), Larry Wall, el creador de Perl~6, dijo:
+``Nosotros pensamos que Perl 6 se podrá aprender como un primer lenguaje.``
+!`Esperemos que este libro contribuya a  lograr este cometido!
+
+
+\section*{Reconocimientos}
+
+Realmente no sé cómo podría agradecerle a Larry Wall al nivel de gratitud
+que él se merece por haber creado Perl en primer lugar, y 
+Perl~6 más recientemente. Que seas bendecido por toda la eternidad, Larry.
+
+Y gracias a todos ustedes que fueron parte de esta aventura (en ningún orden en 
+particular), Tom, Damian, 
+chromatic, Nathan, brian, Jan, Jarkko, John, Johan, Randall, 
+Mark Jason, Ovid, Nick, Tim, Andy, Chip, Matt, Michael, Tatsuhiko, 
+Dave, Rafael, Chris, Stevan, Saraty, Malcolm, Graham, Leon, 
+Ricardo, Gurusamy, Scott y muchísimos otros.
+
+Todas mis gracias también a aquellos quienes creyeron
+en el proyecto de Perl~6 y que lo hicieron posible, incluyendo
+a aquellos que abandonaron en algún momento pero que contribuyeron
+por algún tiempo; sé que no fue siempre fácil.
+
+Muchas gracias a Allen Downey, quien amablemente apoyó la idea
+de adaptar su libro para Perl~6 y me ayudó en muchos aspectos,
+pero también se abstuvo de interferir en lo que yo ponía en este
+libro.
+
+Le agradezco sinceramente a la gente de O'Reilly quienes 
+aceptaron la idea de este libro y sugirieron muchas correcciones o 
+mejoras. Quiero agradecer especialmente a Dawn Schanafelt, mi editor de 
+O'Reilly, cuyos consejos han contribuido a hacer este un mejor libro.
+Muchas gracias también a Charles Roumeliotis, el editor de copia, y 
+Kristen Brown, la editora de producción, quien arregló muchos problemas
+tipográficos y faltas ortográficas.
+
+De antemano le doy gracias a todos los lectores quienes ofrecerán comentarios
+o someterán sugerencias o correcciones, al igual que palabras de aliento.
+
+Si ves algo que necesita ser corregido o que podría ser mejorado,
+por favor amablemente envía tus comentarios a 
+\url{think.perl6 (at) gmail.com}.
+% ...
+
+
+\section*{Lista de Contribuciones}
+
+% ...
+Me gustaría agradecer especialmente a Moritz Lenz y Elizabeth 
+Mattijsen, quienes revisaron los detalles en los borradores de este 
+libro y sugirieron un sin número de mejoras y correcciones.
+Liz invirtió mucho tiempo en una revisión detallada del contenido
+completo de este libro y le agradezco eternamente por sus numerosos
+y muy útiles comentarios. Gracias también a Timo Paulssen y ryanschoppe quienes
+también revisaron los primeros borradores y proveyeron algunos comentarios
+útiles. Muchísimas gracias también a Uri Guttman, quien revisó este libro
+y sugirió un gran número de pequeñas correcciones y mejoras un poco antes
+de la publicación.  
+
+Kamimura, James Lenz, y Jeff McClelland cada uno sometieron algunas correcciones
+en la lista de errata en el sitio web de O'Reilly. zengargoyle señaló un carácter
+falso en un regex y lo arregló en el repositorio Github del libro. zengargoyle
+también sugirió una aclaración en el capítulo acerca de la programación
+funcional. Otro James (segundo nombre que no conozco) sometió una errata
+al sitio web de O'Reilly. Mikhail Korenev sugirió correcciones precisas
+para tres muestras de código. Sébastien Dorey, Jean Forget, y Roland Schmitz 
+enviaron algunos e-mails sugiriendo algunas correcciones o mejoras útiles. 
+Luis F. Uceta señaló un error tipográfico en el texto en Github. Gil Magno 
+sugirió algunas correcciones directamente en el repositorio de Github.
+
+\clearemptydoublepage
+
+% TABLE OF CONTENTS
+\begin{latexonly}
+
+\tableofcontents
+
+\clearemptydoublepage
+
+\end{latexonly}
+

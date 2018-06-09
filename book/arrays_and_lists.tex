@@ -1,0 +1,2245 @@
+
+
+\chapter{Arrays y Listas}
+\label{arrays}
+
+Este capítulo presenta algunos de los tipos integrados
+de Perl más útiles, los arrays y las listas.
+
+
+\section{Las Listas y los Arrays Son Secuencias}
+\label{sequence}
+
+Al igual que las cadenas de texto, las {\bf listas} y los {\bf arrays}
+son secuencias de valores. En una cadena de texto, los valores son
+caracteres; en una lista o en un array, los valores pueden ser
+de cualquier tipo. Los valores en una lista o en un array se 
+conocen  como {\bf elementos} o algunas veces como {\bf artículos}.
+\index{list}
+\index{array}
+\index{type!list}
+\index{type!array}
+\index{element}
+\index{sequence}
+\index{item}
+
+Existen varias diferencias importantes entre las listas y los arrays.
+La principal de ellas es que las listas son colecciones ordenadas e inmutables
+de elementos: no puedes cambiar el número de elementos en una lista y tampoco puedes
+cambiar los elementos individuales tampoco. Los arrays, por el contrario,
+son variables y son generalmente mutables: puedes agregar elementos 
+a un array, o quizás removerlos. Y también puedes acceder los
+elementos individuales de un array y modificarlos. Para que esto sea
+posible, los arrays usualmente tienen un nombre (como cualquier otra variable)
+aunque algunos arrays son anónimos, lo que significa que no tienen 
+un nombre, pero aún tienen otras formas de acceso.
+
+Una lista es también efímera (al menos que se ha asignada a una
+variable o algo más): deja de existir tan pronto ha sido usada,
+usualmente tan pronto el flujo de ejecución del programa procede
+a la siguiente línea de código. Por el contrario, un array tiene
+alguna forma de persistencia: tú puedes usarlo en otras partes del
+programa si la variable que lo contiene aún está dentro del
+ámbito.
+
+Hay varias maneras de crear una lista nueva;
+la forma más simple es enumerar sus valores, separados
+por comas:
+\index{comma operator}
+\index{operator!comma}
+
+\begin{lstlisting}
+> 3, 4, 5
+(3 4 5)
+> say (3, 4, 5).WHAT;
+(List)
+say $_ for 1, 2, 3;
+1
+2
+3
+\end{lstlisting}
+%
+
+No necesitas usar paréntesis para crear una lista,
+pero son usualmente útiles para delimitar los valores,
+i.e., para estipular dónde comienza y dónde termina, y
+en algunos casos, anular la precedencia.
+
+Ya hemos usado listas en este libro. Si escribimos:
+
+\begin{lstlisting}
+> print "$_ " for 1, 3, 5, 9, "\n";
+1 3 5 9
+ >
+> print "$_ " for 1..10;
+1 2 3 4 5 6 7 8 9 10 >
+\end{lstlisting}
+
+estamos básicamente creando y usando una lista de números
+enteros (desde el punto de vista de la jerarquía de tipos en
+Perl; esta observación no es totalmente correcta para el segundo
+ejemplo, dado que \verb|1..10| es del tipo \emph{Range} y
+es transformado en el tipo \emph{Seq}. Sin embargo, esta 
+aproximación es suficientemente buena para nuestros 
+propósitos aquí).
+\index{range!type}
+\index{range!operator}
+
+Los arrays son variables cuyo nombre comienzan con
+el sigilo \verb|@|. Los arrays con nombres necesitan ser declarados
+antes de ser usados, como cualquier otra variable que hemos
+visto hasta ahora (excepto la variable tópico, \verb|$_|). 
+Una de las formas más fácil de crear un array es asignar una
+lista a una variable:
+\index{topical variable}
+\index{sigil}
+
+\begin{lstlisting}
+> my @dígitos_impares = 1, 3, 5, 7, 9;
+[1 3 5 7 9]
+> say @dígitos_impares.WHAT;
+(Array)
+> my @números_solo_dígito = 0..9;
+[0 1 2 3 4 5 6 7 8 9]
+\end{lstlisting}
+
+En el REPL de Perl, un array se muestra entre corchetes
+(\verb|[| y \verb|]|), mientras que las listas se muestran
+entre paréntesis.
+\index{REPL}
+\index{square bracket operator}
+\index{operator!square bracket}
+\index{bracket!square}
+
+Si los elementos no contienen caracteres de espacio, es bien útil
+construir una lista (y asignarla a cualquier array si es necesario)
+con el operador quote-word \verb|<...>|:
+\index{quote-word operator}
+
+\begin{lstlisting}
+> my @días-semana = <lun mar mie jue vie>;
+[lun mar mie jue vi]
+> my @fin-semana = <sab dom>;
+[sab dom]
+\end{lstlisting}
+
+La ventaja de este método es que no hay necesidad de separar los 
+elementos con comas y tampoco hay necesidad de insertar comillas
+cuando los elementos son cadenas de texto. Básicamente, el operador
+quote-word descompone su contenido por espacios en blanco y devuelve
+una lista de palabras, la cual puede ser entonces usada en un bucle
+o asignada a un array como en el ejemplo anterior.
+
+La mayoría de este capítulo será dedicado a los arrays. No obstante,
+ten presente que muchas de las funciones y operadores de los arrays
+que estudiaremos aquí también funcionan con listas (por lo menos
+todas aquellas que no violan la propiedad de inmutabilidad de las
+listas). 
+
+Los elementos de un array (o una lista) no necesitan ser del mismo
+tipo:
+
+\begin{lstlisting}
+> my @array-heterogeneo = 1, 2.3, pi, "str", (1, 2, 4);
+[1 2.3 3.14159265358979 str (1 2 4)]
+\end{lstlisting}
+
+Aquí, el array está compuesto por un entero, 
+un racional, un número con coma flotante (tipo {\tt Num}),
+una cadena de texto, y  una lista de tres enteros.
+Aunque esto podría no ser recomendado por la sanidad mental
+del programador quien tendría que usar un array con elementos
+tan heterogéneos, Perl no se queja: al final, depende de ti hacer 
+sentido de tus datos.
+
+El array anterior hasta contiene una lista de artículos. 
+Si iteras sobre los elementos de este array, por ejemplo con
+el bucle for, esta lista terminará como un elemento distinto;
+este elemento no será ``aplanado`` como tres elementos del
+array. Similarmente, {\tt elems} es un método que cuenta el
+número de artículos de un array (o de una lista). Al usarlo
+en el array anterior produce el siguiente resultado:
+
+\begin{lstlisting}
+> say @array-heterogeneo.elems;
+5
+\end{lstlisting}
+%
+
+Como puedes observar, la lista \verb|(1, 2, 4)| cuenta como
+un solo elemento en el array.
+
+Una lista dentro de otra es una lista {\bf anidada}.
+\index{nested list}
+\index{list!nested}
+
+Un array que carece de elementos se conoce
+como un array vacío; puedes crear un array vacío con
+paréntesis vacíos, \verb|()|:
+
+\begin{lstlisting}
+> my @vacío = ();
+[]
+\end{lstlisting}
+\index{empty list}
+\index{list!empty}
+
+Este código está realmente asignando una lista vacía al array.
+Pero esta sintaxis no es normalmente necesaria para crear un
+nuevo array vacío, dado que solo con declarar un array sin 
+definirlo tiene el mismo efecto:
+
+\begin{lstlisting}
+> my @vacío;
+[]
+\end{lstlisting}
+
+Así que el uso de paréntesis vacíos (i.e., en la asignación
+de una lista vacía) sería necesario para restaurar un
+array existente como un array vacío.
+
+\section{Los Arrays Son Mutables}
+\label{mutable}
+\index{list!element}
+\index{access}
+\index{index}
+\index{subscript}
+\index{bracket operator}
+\index{operator!bracket}
+\index{bracket!square}
+
+\index{index!starting at zero}
+\index{coercion}
+La sintaxis para acceder los elementos de un array o una lista
+usa el operador de corchetes. La expresión dentro de los corchetes
+especifica el índice o subíndice, el cual puede ser un 
+entero literal (o algún valor que puede ser coaccionado en un 
+entero), una variable que contiene un valor numérico,
+una lista o un rango de valores numéricos, una expresión o una pieza
+de código que devuelve un valor numérico, etc. Comparado con el
+comienzo de una array o una lista (de la misma 
+manera que los valores devueltos por la función {\tt index}),
+los índices comienzan en la posición 0. Así que, el primer elemento
+de un array tiene índice 0, el segundo tiene índice 1, etc. Por ejemplo:
+\index{zero, index starting at}
+
+
+\begin{lstlisting}
+say <sab dom>[1];             # -> sab (accediendo un elemento de la lista)
+my @días-semana = <lun mar mie jue vie>;   # asignando un array
+say "El tercer día es @días-semana[2]";    # -> El tercer día es mie
+\end{lstlisting}
+%
+
+También puedes usar rangos o listas de índices para acceder
+partes (o \emph{rebanadas}) de un array o una lista:
+\index{slice}
+\index{slice!operator}
+\index{operator!slice}
+\index{index!slice}
+\index{list!slice}
+\index{slice!list}
+\index{range}
+
+\begin{lstlisting}
+> my @dígitos-pares = 0, 2, 4, 6, 8;
+[0 2 4 6 8]
+> my @pequeños-dígitos_pares = @dígitos-pares[0..2];
+[0 2 4]
+> my @min-max-dígitos-pares = @dígitos-pares[0, 4]
+[0 8]
+\end{lstlisting}
+
+Si necesitas rebanadas en el orden opuesto, puedes usar
+la función {\tt reverse} para revertir el rango:
+
+\begin{lstlisting}
+> my @opuestos-pequeños-dígitos_pares = @dígitos-pares[reverse 0..2];
+[4 2 0]
+\end{lstlisting}
+
+o también puedes revertir los datos que resultan de la expresión
+de rebanadas:
+
+\begin{lstlisting}
+> my @opuestos-pequeños-dígitos_pares = reverse @dígitos-pares[0..2];
+[4 2 0]
+\end{lstlisting}
+
+A diferencia de las listas, los arrays son mutables. 
+Cuando el operador de corchetes aparece después de un array 
+en el lado izquierdo de una asignación, el operador identifica el
+elemento del array que será asignado:
+\index{mutability}
+
+\begin{lstlisting}
+> my @dígitos-pares = 0, 2, 2, 6, 8;   # Oops, error en el segundo 2
+[0 2 2 6 8]
+> @dígitos-pares[2] = 4; # arreglando el tercer elemento
+4
+> say @dígitos-pares
+[0 2 4 6 8]
+\end{lstlisting}
+%
+
+El tercer elemento de {\tt \@dígitos-pares}, el cual es (por error) 2,
+es ahora 4. Si el índice corresponde a un artículo que no existe aún
+en el array, el array se expandaré para incluir el nuevo elemento:
+
+\begin{lstlisting}
+> my @impares = 1, 3, 5;
+[1 3 5]
+> @impares[3] = 7;
+7
+> say @impares;
+[1 3 5 7]
+\end{lstlisting}
+
+\index{index!starting at zero}
+\index{item assignment}
+\index{assignment!item}
+\index{reassignment}
+
+\index{elems function or method}
+\index{end method}
+La función o método {\tt elems} devuelve el número
+de elementos de un array. La función o método {\tt end}
+devuelve el índice del último elemento de un array:
+
+\begin{lstlisting}
+my @nums = 1..5;      # -> [1 2 3 4 5]
+say @nums.elems;      # -> 5
+say elems @nums;      # -> 5
+say @nums.end;        # -> 4
+\end{lstlisting}
+
+El método {\tt end} devuelve el resultado del método 
+{\tt elems} menos uno porque, dado que los índices comienzan
+en la posición 0, el índice del último elemento es igual
+al número de elementos menos uno.
+\index{zero, index starting at}
+
+La función o método {\tt unique} devuelve una secuencia
+de elementos únicos en la lista de entrada o el array (
+i.e., el método devuelve la lista original si no hay valores
+duplicados):
+\index{unique function}
+\index{function!unique}
+
+\begin{lstlisting}
+> say < a b d c a f d g>.unique;
+(a b d c f g)
+\end{lstlisting}
+
+Si sabes que la entrada está ordenada (y que, por lo tanto,
+los duplicados son adyacentes), en vez de usar la función
+{\tt unique}, usa la función {\tt squish} debido a que termina
+siendo más eficiente. La función {\tt squish} remueve elementos
+duplicados y adyacentes.
+\index{squish function}
+\index{function!squish}
+
+Para saber si dos arrays son idénticos (estructuralmente 
+los mismos, con el mismo tipo y los mismos valores), usa 
+el operador de equivalencia {\tt eqv}. Para saber si los arrays
+contienen los elementos, usa el operador de coincidencia inteligente
+\verb|~~|. Entre dos arrays o listas, el operador de equidad numérica
+\verb|==| devolverá {\tt True} si los arrays tienen el mismo número 
+de elementos y de lo contrario, {\tt False}. Esto se debe a que
+\verb|==| coacciona sus argumentos a tipo numérico, así que compara
+el número de elementos:
+\index{eqv operator}
+\index{coercion}
+\index{equivalence operator}
+\index{operator!eqv}
+\index{smart match operator}
+\index{operator!smart match}
+\index{numeric equality operator}
+\index{operator!numeric equality}
+
+\begin{lstlisting}
+> my @pares1 = 0, 2, 4, 6, 8;
+[0 2 4 6 8]
+> my @pares2 = reverse 8, 6, 4, 2, 0;
+[0 2 4 6 8]
+> say @pares1 eqv @pares2;        # mismos elementos, misma estrutura
+True
+> say <1 2 3 4 5> eqv 1..5;       # mismos elementos, estructura diferente
+False
+> say <1 2 3 4 5> ~~ 1..5;        # mismos elementos, True
+True
+> my @array = 1..5;               
+[1 2 3 4 5]
+>  say <1 2 3 4 5> ~~ @array;     # mismos elementos, True
+True
+>  say <1 2 3 4 6> ~~ @array;     # no los mismos elementos
+False
+> say <1 2 3 4 5> == <5 6 7 8 9>; # compara el número de elementos
+True
+\end{lstlisting}
+
+La sentencia \verb'<1 2 3 4 5> eqv 1..5' devuelve \verb|False|, debido 
+a que aunque contienen los mismos elementos, los argumentos 
+son estructuralmente entidades diferentes (uno es una lista y 
+la otra es un rango).
+
+\section{Cómo Agregar o Remover Elementos de un Array}
+
+Hemos visto que la asignación de un elemento a un índice 
+que no existe expande el array. Existen otras formas de expandir
+un array.
+
+Perl tiene operadores para agregar elementos a un array, o remover
+un elemento del mismo:
+\index{pop function}
+\index{push function}
+\index{shift function}
+\index{unshift function}
+
+\begin{itemize}
+\item {\tt shift}: elimina el primer elemento del array y lo devuelve;
+\item {\tt pop}: elimina el último elemento del array y lo devuelve;
+\item {\tt unshift}: agrega un elemento o una lista de elementos al principio 
+del array;
+\item {\tt push}: agrega un elemento o una lista de elementos al final 
+del array;
+\end{itemize}
+
+Estos son algunos ejemplos sobre cada uno de ellos:
+
+\begin{lstlisting}
+> my @números = <2 4 6 7>;
+[2 4 6 7]
+> push @números, 8, 9;
+[2 4 6 7 8 9]
+> unshift @números, 0, 1;
+[0 1 2 4 6 7 8 9]
+> my $num = shift @números
+0
+> $num = pop @números
+9
+> say @números
+[1 2 4 6 7 8]
+\end{lstlisting}
+
+Como podrías esperar por ahora, estas subrutinas también
+tienen una sintaxis de invocación de método. Por ejemplo:
+\index{invocation!method}
+\index{method invocation}
+
+\begin{lstlisting}
+> my @números = <2 4 6 7>;
+[2 4 6 7]
+> @números.push(8, 9)
+[2 4 6 7 8 9]
+\end{lstlisting}
+
+No obstante, debes tener presente que si usas las funciones
+{\tt push} o {\tt unshift} con un array como argumento, 
+obtendrás algo diferente a lo que podrías esperar:
+
+\begin{lstlisting}
+> my @números = <2 4 6 7>;
+[2 4 6 7]
+> my @agregar-array = 8, 10;
+[8 10]
+> @números.push(@agregar-array);
+[2 4 6 7 [8 10]]
+\end{lstlisting}
+
+Como puedes observar, cuando \verb|@agregar-array| se agrega
+como una entidad al array \verb|@números|, \verb|@agregar-array|
+se convierte en un elemento nuevo del array original. Si lo que 
+quieres es agregar los elementos de \verb|@agregar-array| 
+al array original, puedes usar el método {\tt append} en vez 
+de {\tt push}:
+
+\begin{lstlisting}
+> my @números = <2 4 6 7>;
+[2 4 6 7]
+> @número.append(@agregar-array);
+[2 4 6 7 8 10]
+\end{lstlisting}
+
+O puedes usar el operador prefijo ``|``, el cual aplana
+el array añadido en una lista de argumentos:
+
+\begin{lstlisting}
+> my @números = <2 4 6 7>;
+[2 4 6 7]
+> @números.push(|@agregar-array);
+[2 4 6 7 8 10]
+\end{lstlisting}
+
+También existe el método {\tt prepend} que reemplaza 
+a {\tt unshift} para agregar elementos individuales 
+de un array al principio de otro array existente (
+en vez de añadir el array como una sola identidad).
+
+\section{Pilas y Colas}
+\label{stacks_queues}
+
+\index{stack}
+\index{queue}
+Las pilas (\emph{stacks} en inglés) y las colas ({\emph{queues} en inglés}) son 
+estructuras de datos muy usadas en la ciencia de la computación.
+
+\index{LIFO (last in / first out)}
+\index{last in / first out (LIFO)}
+Una pila es una estructura de datos de tipo LIFO (del inglés 
+\emph{Last In / First Out}, ``último en entrar, primero en salir``).
+Puedes pensar sobre una pila como un grupo de platos apilados. Cuando
+pones un plato limpio en la pila, usualmente lo pones en la parte superior;
+de igual manera cuando tomas un plato, lo toma de la parte superior.
+Así que el primer plato que tomas fue el último en ser añadido. Una pila
+en la ciencia de la computación implementa la misma idea: usas una pila
+cuando la primera pieza de dato que necesitas de una estructura de datos fue
+la última en ser añadida.
+
+\index{FIFO (first in / first out)}
+\index{first in / first out (FIFO)}
+Por el contrario, una cola (o fila) es una estructura de datos de tipo FIFO (
+del inglés \emph{First In / First Out}, ``primero en entrar, primero en
+salir``). Esta es la idea de personas esperando en línea para pagar en el
+supermercado. La primera persona en ser atendida es la primera
+persona que entra en la fila.
+
+Una pila puede ser implementada con un array y las funciones
+{\tt push} y {\tt pop}, las cuales agregan un elemento (o varios)
+al final de un array y remueven un elemento del final del array 
+respectivamente. Esta es una implementación bien simple de una pila:
+\index{pop function}
+\index{push function} 	
+\index{function!pop}
+\index{function!push}
+\label{stack_code}
+
+\begin{lstlisting}
+sub poner-en-pila (@pila, $new_elem) {
+	push @pila, $new_elem;
+}
+sub tomar-desde-pila (@pila) {
+    my $elem = pop @pila;
+    return $elem;
+}
+my @una-pila = 1, 2, 3, 4, 5;
+poner-en-pila @una-pila, 6;
+say @una-pila;
+say tomar-desde-pila @una-pila for 1..3;
+\end{lstlisting}
+
+Este ejemplo imprimirá esto:
+
+\begin{lstlisting}
+[1 2 3 4 5 6]
+6
+5
+4
+\end{lstlisting}
+
+\index{stack}
+Esta pila es simplista porque, por lo menos, una implementación
+más robusta debería hacer algo sensible cuando tratas de 
+{\tt tomar-desde-pila} cuando la pila está vacía. También sería
+sabio agregar signaturas a las subrutinas. En adición, podrías querer
+{\tt poner-en-pila} más de un elemento al mismo tiempo. Échale un
+vistazo a la solución sobre el ejercicio sobre colas más abajo
+(Subsección~\ref{sol_exercise_queue}) para descifrar cómo esta pila
+podría ser mejorada.
+\index{signature}
+\index{subroutine signature}
+
+Podrías obtener las mismas funciones usando las subrutinas
+{\tt unshift} y {\tt shift} en vez de {\tt push} y {\tt pop}.
+Los elementos será añadidos al principio del array y tomados
+desde el inicio, pero todavía tendrás el comportamiento LIFO.
+\index{shift function}
+\index{unshift function}
+\index{push function}
+\index{LIFO}
+
+\label{exercise_queue}
+Como ejercicio, trata de implementar una cola de tipo FIFO en el
+mismo modelo. Pista: probablemente quieres usar un array y las
+funciones {\tt unshift} y {\tt pop} (o las funciones 
+{\tt push} y {\tt shift}). Solución: \ref{sol_exercise_queue}.
+\index{queue}
+\index{shift function}
+\index{unshift function}
+\index{push function}
+\index{pop function}
+\index{FIFO}
+
+\section{Otras Formas de Modificar un Array}
+\label{modify_array}
+
+Las funciones {\tt shift} and {\tt pop} eliminan el primer
+y último elemento de un array respectivamente y devuelven
+ese elemento. Es posible casi hacer la misma operación
+con cualquier elemento de un array, usando el \emph{adverbio}
+{\tt delete}:
+
+\begin{lstlisting}
+my @frutas = <manzana banana fresa mango piña naranja>;
+my $removida = @frutas[2]:delete; 
+say $removida;  # -> fresa
+say @frutas;    # -> [<manzana banana (Any) mango piña naranja]
+\end{lstlisting}
+
+Nota que el tercer elemento (``fresa``) ha sido removido
+y devuelto, pero el array no ha sido reorganizado; la operación
+deja un tipo de ``hueco``, un artículo indefinido, en el medio
+del array. La sintaxis de los dos puntos (``:``) que se usa aquí es 
+el operador para un adverbio (discutimos adverbios en la 
+Sección~\ref{regex} sobre regexes); por el tiempo presente, puedes
+imaginarte este operador como un método especial que opera sobre un
+elemento de una colección de elementos.
+
+Hemos visto cómo rebanar un array para tomar varios elementos de
+un array o una lista al mismo tiempo. La misma sintaxis de 
+rebanar puede ser usada en el lado izquierdo de una asignación
+para modificar algunos elementos de un array:
+\index{slice!assignment}
+
+\begin{lstlisting}
+my @dígitos = <1 2 3 6 5 4 7 8 9>
+@dígitos[2..4] = 4, 5, 6
+say @dígitos;   # -> [1 2 4 5 6 4 7 8 9]
+\end{lstlisting}
+
+Por supuesto no puedes hacer esto con listas, debido a que
+las listas son inmutables.
+
+La función {\tt splice} puede ser considerada como la Navaja Suiza
+de los arrays. Esta función puede añadir, remover, y devolver varios 
+elementos de un array. La sintaxis general es como sigue:
+
+\begin{lstlisting}
+my @array_salida = splice @array_entrada, $inicio, $número_elems, @reemplazo;
+\end{lstlisting}
+%
+Los argumentos para {\tt splice} son el array de entrada, el
+índice del primer elemento sobre el cual se harán los cambios,
+el número de elementos afectados por la operación, y una lista
+de reemplazos para los elementos a ser removidos\footnote{
+Nota que la función {\tt splice} en arrays tiene casi la misma
+sintaxis que la función {\tt substr} en cadenas de texto. Esto
+hará más fácil entender y recordar la sintaxis.}. Por ejemplo, 
+para realizar la asignación de rebanada mostrada más arriba, es 
+posible hacer esto:
+
+\begin{lstlisting}
+my @dígitos = <1 2 3 6 5 4 7 8 9>
+my @dígitos_removidos = splice @dígitos, 3, 3, 4, 5, 6;
+say @dígitos_removidos;     # -> [6 5 4]
+say @dígitos;             # -> [1 2 3 4 5 6 7 8 9]
+\end{lstlisting}
+%
+Aquí, la sentencia {\tt splice} removió tres elementos (6, 5, 4)
+y los reemplazó con los reemplazos en los argumentos (4, 5, 6).
+También devolvió los artículos removidos, los cuales
+fueron almacenados en \verb|@dígitos_removidos|.
+El número de reemplazos no necesita ser igual al número de elementos
+removidos. En tal caso, el array crecerá o se reducirá. Por ejemplo,
+si no se proveen reemplazos, entonces {\tt splice} removerá y devolverá
+el número requerido de elementos y el array se reducirá por el
+mismo número:
+
+\begin{lstlisting}
+my @dígitos = 1..9;
+my @dígitos_removidos = splice @dígitos, 3, 2;
+say @dígitos_removidos;     # -> [4 5]
+say @dígitos;             # -> [1 2 3 6 7 8 9]
+\end{lstlisting}
+%
+
+Por el contrario, si el número de elementos a removerse es
+cero, no se removerá ningún elemento, un array vacío será
+devuelto, y los elementos en la lista de reemplazos será
+añadidos en el lugar correcto:
+
+\begin{lstlisting}
+my @dígitos = <1 2 3 6 4 7 8 9>;
+my @dígitos_removidos = splice @dígitos, 3, 0, 42;
+say @dígitos_removidos;     # -> []
+say @dígitos;             # -> [1 2 3 42 6 4 7 8 9]
+\end{lstlisting}
+%
+
+Asumiendo que la función {\tt shift} no existiera en Perl,
+tú podrías escribir una subrutina {\tt mi-shift} para 
+simularla:
+
+\begin{lstlisting}
+sub mi-shift (@array) {
+    my @resultado = splice @array, 0, 1;
+    return @resultado[0];
+}
+my @letras = 'a'..'j';
+my $letra = my-shift @letras;
+say $letra;             # -> a
+say @letras;            # -> [b c d e f g h i j]
+\end{lstlisting}
+
+Podrías levantar ina excepción si el array que se
+pasa a la función {\tt mi-shift} está vacío. Esto
+podría hacerse al modificar la subrutina de la siguiente
+manera:
+
+\begin{lstlisting}
+sub mi-shift (@array) {
+    die "No se puede remover elemento de una array vacío" unless @array;
+    my @resultado = splice @array, 0, 1;
+    return @resultado[0];
+}
+\end{lstlisting}
+%
+
+o al añadir un restricción al array en la 
+signatura de la subrutina:
+\index{signature}
+\index{subroutine signature}
+
+\begin{lstlisting}
+sub mi-shift (@array where @array > 0) {
+    my @resultado = splice @array, 0, 1;
+    return @resultado[0];
+}    
+\end{lstlisting}
+%
+
+La expresión \verb'@array > 0' evalúa a {\tt True} si el
+número de elementos del array es más que 0, i.e., básicamente,
+si no es un array vacío. Es equivalente a la expresión 
+\verb|@array.elems > 0|.
+
+\label{splice_exercise}
+Como ejercicio, escribe subrutinas usando \verb|splice|
+para simular las funciones integradas {\tt pop}, {\tt unshift}, 
+{\tt push}, y {\tt delete}. Solución: \ref{sol_splice_exercise}.
+
+
+\section{Cómo Recorrer una Lista}
+\index{list!traversal}
+\index{traversal!list}
+\index{for loop}
+\index{loop!for}
+\index{statement!for}
+
+La manera más común de recorrer los elementos de una lista
+o un array es con el bucle {\tt for}. La sintaxis para un 
+array es la misma que hemos usados en los capítulos
+anteriores para las listas:
+
+\begin{lstlisting}
+my @colores-inglés = <red orange yellow green blue indigo violet>;
+for @colores-inglés -> $color {
+    say $color;
+}
+\end{lstlisting}
+%
+Esto funciona bien si solo necesitas leer los elementos de
+la lista. Pero si quieres escribir o actualizar los elementos
+de un array, tú necesitas un bloque de doble punta. Por ejemplo,
+podrías usar la función {\tt tc} (``title case`` en inglés) para
+capitalizar la primera letra de cada palabra de un array:
+\index{tc function}
+
+\begin{lstlisting}
+my @colores-inglés = <red orange yellow green blue indigo violet>;
+for @colores-inglés <-> $color {$color = tc $color};
+say @colores-inglés;   # -> [Red Orange Yellow Green Blue Indigo Violet]
+\end{lstlisting}
+%
+Aquí la variable \verb|$color| del bucle es un \emph{apodo} 
+de lectura-escritura (``read-and-write`` en inglés)de 
+los elementos del array, así que cualquier cambio 
+que se hace a este apodo se refleja en el array. Esto funciona
+bien con arrays, pero no funcionaría con listas, debido a que 
+ellas son inmutables. Obtendrías el siguiente error al usarlo
+con una lista:
+
+\begin{lstlisting}
+> for <red orange yellow> <-> $color { $color = tc $color}
+Parameter '$color' expected a writable container, but got Str value...
+\end{lstlisting}
+
+También puedes usar la sintaxis de un bucle {\tt for}
+con la variable tópico \verb|$_|. Por ejemplo, esto usa la 
+función {\tt uc} (``upper case`` en inglés) para 
+capitalizar cada palabra del array anterior:
+\index{topical variable}
+\index{uc function or method}
+
+\begin{lstlisting}
+for @colores-inglés { 
+    $_ = $_.uc 
+}
+say @colores-inglés; # -> [RED ORANGE YELLOW GREEN BLUE INDIGO VIOLET]
+\end{lstlisting}
+%
+
+Algunas veces quieres recorrer un array y necesitas saber
+el índice de los elementos que estás visitando. Una forma
+común de hacer esto es con el operador de rango \verb|..|
+para iterar sobre los índices. Por ejemplo, para imprimir 
+el índice y el valor de cada elemento de un array:
+
+\begin{lstlisting}
+for 0..@colores-inglés.end -> $idx { 
+    say "$idx  @colores-inglés[$idx]"; 
+}
+\end{lstlisting}
+
+Esto es útil, por ejemplo, para recorrer dos (o más) arrays
+en paralelo:
+
+\begin{lstlisting}
+my @letras = 'a'..'e';
+my @números = 1..5;
+for 0..@letras.end -> $idx { 
+    say "@letras[$idx] -> @números[$idx]"; 
+}
+\end{lstlisting}
+%
+
+Esto imprimirá:
+\begin{lstlisting}
+a -> 1
+b -> 2
+c -> 3
+d -> 4
+e -> 5
+\end{lstlisting}
+
+No necesitas especificar el rango de índices tú mismo, dado que
+la función {\t keys} devolverá una lista de índices para un
+array o una lista:
+\index{keys function or method}
+
+\begin{lstlisting}
+for keys @colores-inglés -> $idx { 
+    say "$idx  @colores-inglés[$idx]"; 
+}
+\end{lstlisting}
+
+Otra forma de iterar sobre los índices y valores de un
+array es con el uso de la función o método 
+{\tt kv} (``keys values``-``llaves valores``) que
+devuelve el índice y el valor de cada elemento del array:
+\index{kv function or method}
+
+\begin{lstlisting}
+for @letras.kv -> $idx, $val { 
+    say "$idx $val";
+}
+\end{lstlisting}
+
+En un contexto de lista, \verb|@letters.kv| simplemente
+devuelve un secuencia entrelazada de índices y valores:
+
+\begin{lstlisting}
+my @letras = 'a'..'e';
+say @letras.kv;    # -> (0 a 1 b 2 c 3 d 4 e)
+\end{lstlisting}
+
+Es el bloque de doble punta con las variables de iteración
+que hace posible procesar un índice y una valor 
+a cada paso del bucle. Por supuesto, puedes tener 
+más de dos variables de iteración si es necesario.
+
+
+\section{Nuevas Construcciones de Repetición}
+\index{loop}
+
+Dado que el tema de este capítulo son los arrays y las 
+listas, es probablemente el tiempo perfecto para estudiar
+brevemente dos construcciones de repetición que hemos
+dejado a un lado hasta ahora.
+
+La primera usa la misma palabra clave {\tt for} usada
+anteriormente, pero con una sintaxis diferente para la iteración
+de variable(s):
+\index{for loop}
+
+\begin{lstlisting}
+my @letras = 'a'..'e';
+for @letras { 
+    say $^a-letra; 
+}
+\end{lstlisting}
+
+\index{placeholder}
+\index{placeholder!parameter}
+\index{twigil}
+\index{sigil}
+\index{self-declared parameter}
+El símbolo \verb|^| en la variable \verb|$^a-letra| es conocido
+como un \emph{twigil}, i.e., un tipo de sigilo secundario. 
+Cuando hay un twigil, el primer símbolo (en este caso, el signo
+\verb|$|) posee el mismo significado de los sigilos usuales (aquí, denota
+una variable escalar) y el segundo (aquí, \verb|^|) extiende la descripción
+de la variable y usualmente modifica su ámbito. En este caso
+específico, el segundo carácter especifica que la variable
+\verb|$^a-letter| es un \emph{parámetro marcador} o un 
+\emph{parámetro auto-declarado de posición}. Es decir, es un parámetro
+de posición del bloque actual que no necesita ser declarado en la 
+signatura.
+\index{signature}
+
+Si el bloque usa más de un marcador, ellos son asociados con la
+entrada de datos de acuerdo a su orden lexicográfico (alfabético):
+
+\begin{lstlisting}
+my @letras = 'a'..'e';
+for @letras.kv { 
+    say "$^a -> $^b"; 
+}
+\end{lstlisting}
+%
+Esto imprimirá:
+\begin{lstlisting}
+0 -> a
+1 -> b
+2 -> c
+3 -> d
+4 -> e
+\end{lstlisting}
+%
+
+Como vimos anteriormente, la función {\tt kv} devuelve
+una secuencia entrelazada de índices y valores. Dado
+que \verb|$^a| viene antes que \verb|$^b| en el orden
+alfabético, \verb|$^a| será atada al índice y \verb|$^b|
+al valor de cada pareja de la entrada de datos.
+
+Los marcadores pueden también ser usados en las
+subrutinas:
+
+\begin{lstlisting}
+> sub dividir { $^primero / $^segundo }
+sub dividir ($primero, $segundo) { #`(Sub|230787048) ... }
+> dividir 6, 4
+1.5
+\end{lstlisting}
+%
+
+Estos marcadores no se usan muy a menudo para recorrer arrays,
+pero veremos más adelante lo útiles
+que son en casos donde no sería muy práctico tener que declarar los
+parámetros.
+\index{placeholder}
+
+\index{loop!keyword}
+\index{loop!statement}
+\index{C-style loop}
+\label{C-style loop}
+La segunda construcción de repetición que quiero introducir
+aquí usa la palabra clave {\tt loop} y es similar
+al bucle for de stilo C (i.e., el bucle del lenguaje
+de programación C). En este tipo de bucle, tú declaras
+entre una pareja de paréntesis tres expresiones separadas
+por puntos y comas: el valor inicial de la variable de iteración,
+la condición por la cual el bucle debería terminar, y el cambio
+que se hace a la variable de iteración en cada iteración:
+
+\begin{lstlisting}
+loop (my $i = 0; $i < 5; $i++) {
+    say $i, " -> " ~ @letras[$i];
+}
+\end{lstlisting}
+%
+Para los bucles más comunes, el bucle {\tt for} visto anteriormente
+es más fácil de escribir y usualmente más eficiente que esta
+construcción. Esta construcción especial {\tt loop} debería 
+ser probablemente usada solo cuando la salida de una condición
+o el cambio que se hace a la variable de iteración es bien inusual
+y sería algo difícil de expresar en un bucle {\tt for} regular. 
+Como una excepción, la construcción {\tt loop} sin la especificación
+de tres partes es bien común  y hasta idiomática para hacer un bucle
+infinito:
+\index{infinite loop}
+\index{loop!infinite}
+\index{idiomatic}
+
+\begin{lstlisting}
+loop {
+    # haz algo
+    # termina si ...
+}
+\end{lstlisting}
+%
+
+
+\section{Asociaciones, Filtros y Reducciones}
+\label{map_filter}
+
+Al recorrer los elementos de un array (o una lista), lo que hemos
+hecho hasta ahora es procesar los elementos uno por uno con un 
+bucle. Ahora estudiaremos formas de procesar todos los elementos
+al mismo tiempo.
+
+\subsection{Reducir una Lista a un Valor}
+
+Para añadir todo los números en una lista, puedes usar 
+el bucle {\tt for} de la siguiente manera:
+
+\begin{lstlisting}
+sub agrega-todos (@números) {
+    my $total = 0;
+    for @números -> $x {
+        $total += $x;
+    }
+    return $total;
+}
+\end{lstlisting}
+%
+La variable {\tt \$total} es inicializada a0. Cada vez que el
+bucle itera, la variable {\tt \$x} consigue uno de los elementos
+de la lista y es agregada a {\tt \$total}. Mientra el bucle se ejecuta,
+{\tt \$total} acumula la suma de los elementos; una variable que 
+es usada de esta forma se conoce como un {\bf acumulador}.
+\index{accumulator!sum}
+
+Una operación que combina una secuencia de elementos en un
+solo valor es usualmente llamada una operación de reducción porque
+su efecto es {\bf reducir} todos los artículos a un solo elemento
+(esto es conocido como ``pliegues`` (del inglés \emph{folding})
+en otros lenguajes de programación). Estas ideas son derivadas de
+lenguajes de programación funcionales tal como LISP (cuyo nombre
+deriva de ``LISt Processing`` (procesamiento de listas)).
+\index{reduce pattern}
+\index{pattern!reduce}
+\index{traversal}
+
+Perl~6 tiene una función {\tt reduce}, la cual genera un solo
+valor "combinado" de la lista de valores. Esto se lleva a cabo 
+al aplicar de forma iterativa a cada artículo una
+función que sabe cómo combinar dos valores. El uso de la función
+{\tt reduce} para calcular la suma de los primeros 
+diez números luce así:
+
+\begin{lstlisting}
+> my $suma = reduce { $^a + $^b }, 1..10;
+55
+\end{lstlisting}
+
+?`Recuerdas la función \emph{factorial} de la Sección~\ref{for_loops}?
+Esta función usaba un bucle {\tt for} para calcular el producto de los
+primeros enteros hasta un cierto límite. Podría ser escrita de nuevo 
+usando la función {\tt reduce}:
+\index{factorial}
+\index{factorial!using the reduce function}
+
+\begin{lstlisting}
+sub factorial (Int $num) { 
+    return reduce { $^a * $^b }, 1..$num;
+}
+say factorial 10;   # -> 3628800
+\end{lstlisting}
+%
+De hecho, el código para calcular el factorial es tan corto
+con la función {\tt reduce} que se puede argumentar se ha vuelto
+innecesario escribir una subrutina para eso. Podrías solo
+poner el código ``en línea``:
+
+\begin{lstlisting}
+my $fact10 = reduce { $^a * $^b }, 1..10;     # -> 3628800
+\end{lstlisting}
+%
+
+Podemos hacer muchísimas cosas poderosas con esto, pero regresaremos
+a esto más tarde, debido a que requiere algunas características 
+sintácticas que no hemos visto todavía.
+
+\subsection{El Metaoperador de Reducción}
+
+Perl~6 tiene un operador de reducción, o más bien 
+un \emph{metaoperador} de reducción. Un operador usualmente
+trabaja con variables o valores; un metaoperador actúa sobre 
+otros operadores. Dada una lista y un operador, el metaoperador
+\verb|[...]| aplica de forma iterativa el operador 
+a todos los valores de la lista para producir un solo
+valor.
+\index{reduction operator}
+\index{metaoperator}
+
+Por ejemplo, el código siguiente también imprime la suma de todos
+los elementos de una lista:
+
+\begin{lstlisting}
+say [+] 1, 2, 3, 4;           # ->  10
+\end{lstlisting}
+
+Esto básicamente toma los primeros dos valores, los agrega,
+y agrega el resultado al siguiente valor, continuando 
+hasta que haya recorrido la lista completa. Actualmente,
+existe una forma de este operador, con una barra invertida 
+delante del operador, el cual devuelve los resultados 
+intermedios de la operación:
+
+\begin{lstlisting}
+say [\+] 1, 2, 3, 4;          # -> (1 3 6 10)
+\end{lstlisting}
+
+Este metaoperador puede usarse para transformar básicamente
+cualquier operador asociativo infijo\footnote{Un operador 
+\emph{infijo} es un operador que se coloca
+entre dos operandos.} en un operador de lista 
+que devuelve un solo valor.
+
+
+La función factorial puede escribirse de nuevo
+en la siguiente forma:
+\index{factorial}
+\index{factorial!using the reduction meta-operator}
+
+\begin{lstlisting}
+sub fact(Int $x){
+    [*] 1..$x; 
+}
+my $factorial = fact(10);     # -> 3628800
+\end{lstlisting}
+
+El metaoperador de reducción puede también ser usado con
+operadores de relación para chequear si los elementos de
+un array o una lista están en el orden numérico o alfabético
+correcto:
+
+\begin{lstlisting}
+say [<] 3, 5, 7;              # -> True
+say [<] 3, 5, 7, 6;           # -> False
+say [lt] <a c d f r t y>;     # -> True
+\end{lstlisting}
+
+\subsection{Asociando una Lista a Otra Lista}
+\index{map}
+
+Algunas veces tú quieres recorrer una lista mientras 
+construyes otra. Por ejemplo, la siguiente función toma una
+lista de cadenas de texto y devuelve una lista nueva que 
+contiene las cadenas de texto en letras mayúsculas:
+
+\begin{lstlisting}
+sub mayúsculas(@palabras){
+    my @resultado;
+    push @resultado, $_.uc for @palabras;
+    return @resultado;
+}
+my @palabras_minus = <one two three>;
+my @palabras_mayus = mayúsculas(@palabras_minus); # -> [ONE TWO THREE]
+\end{lstlisting}
+%
+La variable \verb|@resultado| es declarado como un array vacío;
+cada vez que el bucle itera, agregamos el siguiente el 
+siguiente elemento. Así que \verb|@resultado| es otro tipo de
+acumulador.
+\index{accumulator!list}
+
+Una operación como \verb|mayúsculas| es algunas veces conocida
+como un {\bf map} porque ``maps`` (asocia) una función (en este
+caso el método {\tt uc}) a cada elemento en una secuencia.
+\index{map pattern}
+\index{pattern!map}
+\index{filter pattern}
+\index{pattern!filter}
+
+Perl tiene una función {\tt map} que hace posible todo eso
+en solo una sentencia:
+
+\begin{lstlisting}
+my @palabras_minus = <one two three>;
+my @palabras_mayus = map { .uc }, @palabras_minus;      # -> [ONE TWO THREE]
+\end{lstlisting}
+%
+
+Aquí la función {\tt map} aplica el método {\tt uc} a cada
+elemento del array \verb|@palabras_minus| y los devuelve
+en el array \verb|@palabras_mayus|. Más precisamente, 
+la función {\tt map} asigna de forma iterativa cada elemento
+del array \verb|@palabras_minus| a la variable tópico \verb|$_|,
+aplica el bloque de código después de la palabra clave {\tt map}
+a \verb|$_| para crear nuevos valores, y devuelve una lista de estos
+valores.
+\index{map function}
+\index{topical variable}
+\index{map}
+
+Para generar una lista de números pares entre 1 y 10, podríamos
+usar el operador de rango para generar números entre 1 y 5
+y usar {\tt map} para multiplicarlos por dos:
+
+\begin{lstlisting}
+my @pares = map { $_ * 2 }, 1..5;  # -> [2 4 6 8 10]
+\end{lstlisting}
+%
+
+En vez de usar la variable tópico \verb|$_|, podríamos también
+usar la sintaxis del bloque puntiagudo con una variable de 
+iteración explícita:
+
+\begin{lstlisting}
+my @pares = map -> $num { $num * 2 }, 1..5;  # -> [2 4 6 8 10]
+\end{lstlisting}
+%
+
+o un bloque anónimo con una variable marcador:
+
+\begin{lstlisting}
+my @pares = map { $^num * 2 }, 1..5;  # -> [2 4 6 8 10]
+\end{lstlisting}
+%
+
+En vez de un bloque de código, el primer argumento para {\tt map}
+puede ser una referencia de código (una referencia de una
+subrutina):
+
+\begin{lstlisting}
+sub doble-raíz-más-uno (Numeric $x) { 
+    1 + 2 * sqrt $x;
+}
+my @resultados = map &doble-cuadrado-más-uno, 4, 16, 42;
+say @resultados;     # -> [5 9 13.9614813968157]
+\end{lstlisting}
+%
+\index{map}
+
+El nombre de la subrutina necesita ser precedido con el 
+sigilo {\tt \&} para clarificar que es un parámetro para 
+{\tt map} y no una llamada directa de la subrutina.
+\index{sigil}
+\index{ampersand sigil}
+
+Si el nombre del array a la izquierda y a la derecha de la 
+asignación es el mismo, entonces la modificación es hecha
+``en lugar,`` i.e., lo cual aparece ser como si el array original
+es modificado en el proceso.
+
+Esta es una función inmensamente poderosa y expresiva; regresaremos
+a ella más tarde.
+
+\subsection{Filtrando los Elementos de una Lista}
+
+Otra operación común de las listas es seleccionar algunos elementos
+de la lista y devolver una sublista. Por ejemplo, la siguiente
+función toma una lista de cadenas de texto y devuelve una lista
+que contiene solamente las cadenas de texto que contienen
+una vocal:
+
+\begin{lstlisting}
+sub contiene-vocal(Str $cadena) {
+    return True if $cadena ~~ /<[aeiouy]>/;
+}
+sub filtrar_palabras_con_vocales (@cadenas) {
+    my @cadena-retenida;
+    for @cadena -> $cad { 
+        push @cadena-retenida, $cad if contiene-vocal $cad;
+    }
+    return @cadena-retenida;
+}  
+\end{lstlisting}
+%
+
+La subrutina {\tt contiene-vocal} devuelve {\tt True} si 
+la cadena de texto contiene por lo menos una vocal (para 
+nuestro propósito, consideramos que ``y`` es una vocal).
+
+La subrutina \verb|filtrar_palabras_con_vocales| devolverá 
+una lista de cadenas de texto que contienen por lo menos
+una vocal.
+
+Una operación como la que \verb|filtrar_palabras_con_vocales| lleva
+a cabo es conocida como un {\bf filtro} (\emph{filter} en inglés) 
+porque selecciona algunos de los elementos y filtra el resto.
+\index{filter}
+
+Perl tiene una función llamada {\tt grep} que hace lo mismo
+en una sola sentencia:
+\index{grep}
+
+\begin{lstlisting}
+my @filtradas = grep { /<[aeiouy]>/ }, @entrada;
+\end{lstlisting}
+%
+
+El nombre de la función integrada {\tt grep} usada
+para filtrar algunas entradas viene del mundo de Unix,
+donde es una utilidad que filtra las líneas de una archivo
+de texto que coinciden con un patrón dado. 
+
+En el código de arriba, todas las cadenas de texto de 
+\verb|@entrada| serán comparadas contra el bloque {\tt grep},
+y aquellas que coinciden con el regex serán almacenadas
+en el array \verb|@filtradas|. Al igual que {\tt map},
+la función {\tt grep} asigna, de forma iterativa, cada elemento
+del array \verb|@entrada| a la variable tópico \verb|$_|, aplica 
+el bloque de código después de la palabra clave {\tt grep} a \verb|$_|, 
+y devuelve una lista de los valores para los cuales el bloque
+de código evalúa como verdadero. Aquí, el bloque de código es un 
+simple regex que se aplica a la variable \verb|$_|.
+
+Al igual que {\tt map}, podríamos haber usado una referencia
+de función como el primer argumento para {\tt grep}:
+
+\begin{lstlisting}
+my @filtradas = grep &contiene-vocal, @entrada;
+\end{lstlisting}
+%
+
+Para generar una lista de números pares entre 1 y 10, podríamos
+usar el operador de rango para generar números entre 1 y 10 y
+usar la función {\tt grep} para filtrar los números impares:
+
+\begin{lstlisting}
+my @pares = grep { $_ %% 2 }, 1..10;  # -> [2 4 6 8 10]
+\end{lstlisting}
+%
+
+\label{exercise_squares}
+Como ejercicio, escribe un programa usando la función
+{\tt map} para producir una array que contenga el cuadrado
+de los números de la lista de entrada y un programa que use 
+{\tt grep} para mantener solo los números de la lista de entrada
+que son cuadrados perfectos. Solución: \ref{sol_exercise_squares}.
+
+Muchas de las operaciones de listas pueden ser expresadas como una
+combinación de {\tt map}, {\tt grep}, y {\tt reduce}.
+\index{map}
+\index{grep}
+\index{reduce}
+
+\subsection{Funciones de Orden Superior y Programación Funcional}
+\label{array_functional_programming}
+\index{higher-order function}
+\index{functional programming}
+
+Además de sus utilidades inmediatas, las funciones {\tt map},
+{\tt grep}, y {\tt reduce} que usamos aquí  hacen algo 
+cualitativamente nuevo. Los argumentos de estas funciones 
+no son solo datos: su primer argumento es un bloque de
+código o una función. No solo estamos pasando los datos
+que tendrán que usar, pero también pasamos el código
+que procesará los datos.
+
+\index{reduce function}
+\index{map function} 
+\index{grep function}
+
+Las funciones {\tt reduce}, {\tt map}, y {\tt grep} son 
+usualmente conocidas como funciones de orden superior porque
+ellas no solo manipulan datos, sino que también otras funciones.
+Se puede pensar de estas funciones como funciones 
+genéricas abstractas---ellas realizan una operación puramente
+técnica: procesan los elementos de una lista y aplican 
+a cada de ellos un comportamiento definido en el bloque de
+código o la función del primer parámetro.
+
+Estas ideas están basadas en gran medida en la programación
+funcional, un paradigma de programación que es muy diferente
+a lo que hemos visto hasta ahora y que ha sido implementado
+históricamente en lenguajes tales como Lisp, Caml, Ocaml,
+Scheme, Erlang o Haskell. Perl~6 no es un lenguaje de 
+programación funcional en el mismo sentido que estos lenguajes,
+porque puede usar otros paradigmas de programación, pero 
+ha incorporado la mayoría de las funciones útiles. Por lo tanto,
+puedes usar el poder expresivo e inherente seguridad de este 
+modelo de programación sin estar forzado a hacerlo y
+cuando prefieres un modelo diferente. Y todo esto lo 
+puedes hacer sin tener que aprender una sintaxis
+totalmente nueva la cual puede lucir un poco asbtrusa 
+o hasta torpe.
+
+Esto es inmensamente útil y puede darte un increíble poder
+expresivo para resolver ciertos tipos de problema.
+Pero otros tipos de problemas podrían resolverse mejor
+con el modelo tradicional procedimental o imperativo,
+mientras que otros problemas se pueden beneficiar 
+de una perspectiva orientada a objetos. Perl~6 te deja
+elegir el modelo de programación que quieras usar, y hasta hace 
+posible la combinación de varios paradigmas en el mismo
+programa.
+
+La programación funcional es tan importante en mi opinión
+que he dedicado un capítulo completo de este libro a las
+capacidades de la programación funcional en Perl 
+(ver Capítulo~\ref{functional programming}). Antes de leer
+ese capítulo, asegúrate de leer la Subsección~\ref{functional_queue}
+en la sección de arrays y listas en el capítulo sobre las
+soluciones de los ejercicios.
+
+\section{Arrays de Tamaños Fijos y Tipados}
+\index{shaped array}
+\index{fixed-size array}
+\index{typed array}
+
+Por defecto, arrays pueden contener elementos de cualquier
+tipo, incluyendo elementos de diferentes tipos, y se pueden
+auto-extender según lo necesites. Perl se encargará de 
+los detalles innecesarios por ti, para que no preocupes
+por ellos. Esto es bien práctico pero viene con su costo:
+algunas operaciones de array pueden ser inesperadamente lentas,
+debido a que Perl puede tener que realizar un poco de limpieza
+entre bastidores, tales como gestionar la memoria, copiar un array 
+completo a la memoria, etc.  
+
+En algunos casos, sin embargo, es posible saber de antemano
+el tamaño de un array, y el tipo de sus elementos. Si Perl
+tiene esta información, podría ser capaz de funcionar más
+rápido y usar muchísima menos memoria. También esto podría 
+ayudar a prevenir errores sutiles.
+
+Para declarar el tipo de los elementos de un array, solo
+necesitas especificarlo cuando declaras el array. Por ejemplo,
+para declarar un array de números enteros:
+
+\begin{lstlisting}
+> my Int @números = 1..20;
+[1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20]
+> @números[7] = 3.5;     # ERROR
+Type check failed in assignment to @números; expected Int but got Rat
+  in block <unit> at <unknown file> line 1
+\end{lstlisting}
+%
+
+Del mismo modo, puedes declara el tamaño de un array. Arrays 
+con un tamaño fijo son conocidos como \emph{arrays moldeados} 
+(del inglés ``shaped arrays``). Hay doce meses en un año, así que 
+podrías decirle a Perl que tu array \verb|@meses| nunca tendrá 
+más de doce elementos:
+\index{shaped array}
+\begin{lstlisting}
+> my @meses[12] = 1..7;
+[1 2 3 4 5 6 7 (Any) (Any) (Any) (Any) (Any)]
+> say @meses.elems
+12
+> say @meses[3];
+4
+> say @meses[12];
+Index 12 for dimension 1 out of range (must be 0..11)
+\end{lstlisting}
+%
+
+Aquí, Perl destinó 12 ``espacios`` para el array, aunque los
+último cinco están actualmente indefinidos. Perl no necesita
+destinar memoria cuando tú definas el décimo artículo del array.
+Y Perl te dejará saber tu equivocación cuando accidentalmente 
+trates de acceder un elemento que está fuera de rango.
+\index{out-of-range error}
+
+La definición del tipo de elementos y el tamaño máximo del array
+puede conducir a un mayor rendimiento en términos de la
+velocidad de ejecución (al menos para algunas operaciones) y 
+reducir significativamente el consumo de memoria por el 
+programa, especialmente cuando se manipulan arrays grandes.
+
+\section{Arrays Multidimensionales}
+\index{multidimensional array}
+\index{array!multidimensional}
+\label{multidimensional_array}
+
+Los array que hemos visto hasta ahora han sido 
+de una sola dimensión. En algunos lenguajes, tales arrays
+son conocidos como vectores. Pero los arrays también 
+pueden ser multidimensionales (puedes llamarlos matrices).
+
+Por ejemplo, tú podrías usar un array de dos dimensiones 
+para almacenar una lista de empleados con sus respectivos
+salarios:
+
+\begin{lstlisting}
+> my @empleados;
+[]
+> @empleados[0;0] = "Liz";
+Liz
+> @empleados[0;1] = 3000;
+3000
+> @empleados[1] = ["Bob"; 2500];
+[Bob 2500]
+> @empleados[2] = ["Jack"; 2000];
+[Jack 2000]
+> @empleados[3] = ["Betty"; 1800];
+[Betty 1800]
+> say @empleados[1;1];
+2500
+> say @empleados[2];
+[Jack 2000]
+> say @empleados;
+[[Liz 3000] [Bob 2500] [Jack 2000] [Betty 1800]]
+\end{lstlisting}
+
+Es posible tener más de dos dimensiones. Por ejemplo, 
+podríamos tener un array con tres dimensiones para almacenar
+las temperaturas de un reactor químico, medidas en varios lugares
+identificados por sus coordinadas x, y y z:
+
+\begin{lstlisting}
+my @temp;
+@temp[1;3;4] = 80;
+\end{lstlisting}
+
+Sin embargo, para este tipo de datos, es mejor usar la estructura
+de datos que cubriremos en el siguiente capítulo, los hashes.
+
+Los arrays multidimensionales pueden también tener un tamaño fijo.
+Por ejemplo, esta puede ser la declaración de un array de dos dimensiones
+donde la primera dimensión es el mes del año y la segunda es el 
+número de días del mes:
+
+\begin{lstlisting}
+my @fecha[12, 31];
+\end{lstlisting}
+
+
+\section{Ordenando Arrays o Listas}
+\label{sorting}
+\index{sorting!data}
+
+El ordenamiento (\emph{sorting} en inglés) de datos es 
+una operación muy común en la ciencia de la computación.
+Perl tiene una función {\tt sort} que puede ordenar
+un array o una lista y devolver el resultado ordenado:
+\index{sort}
+\index{sort!function or method}
+\index{function!sort}
+
+\begin{lstlisting}
+say sort <4 6 2 9 1 5 11>;  # -> (1 2 4 5 6 9 11)
+\end{lstlisting}
+
+Existen varios tipos de ordenamiento. Los más comunes
+son los ordenamientos numérico y lexicográfico (o alfabético).
+Ellos difieren en la manera en que compara los elementos
+individuales a ser ordenados.
+\index{numeric sort}
+\index{alphabetic sort}
+\index{lexicographic sort}
+\index{sort!numeric}
+\index{sort!alphabetic}
+\index{sort!lexicographic}
+
+En el ordenamiento alfabético, tú debes comparar la primera
+letra de las palabras a ser comparadas; una palabra 
+que comienza con una ``a`` siempre vendrá antes que una palabra
+que comience con una ``b`` (o cualquier otra letra) en
+orden ascendente, sin importar el valor o número de los 
+otros caracteres. Tú necesitas comparar el segundo carácter
+de las dos palabras solo si el primer carácter de las palabras
+es el mismo.
+
+El ordenamiento numérico es muy diferente: el valor de
+interés es el valor total del número. Por ejemplo, si estamos
+ordenando números enteros, 11 es es mayor que 9 porque tiene 
+más dígitos. Sin embargo, el ordenamiento alfabético de 9 y 11
+considera a 11 menor que 9, porque el primer dígito es menor.
+
+Por lo tanto, el ordenamiento alfabético o lexicográfico de la
+lista de enteros anterior devuelve:
+
+\begin{lstlisting}
+(1 11 2 4 5 6 9)
+\end{lstlisting}
+
+La consecuencia es que, con muchos lenguajes de programación,
+cuando quieres ordenar datos, tú necesitas especificar qué
+tipo de ordenamiento quieres. Con datos consistentes (
+cada artículo del mismo tipo), Perl~6 es lo suficientemente
+astuto para encontrar qué tipo de ordenamiento es apto para
+tus necesidades. Así que, por ejemplo, este código hará
+el tipo de ordenamiento que esperas:
+
+\begin{lstlisting}
+say sort <ac a bc ab abc cb ca>; # ->(a ab abc ac bc ca cb)
+\end{lstlisting}
+
+Hasta con tipos de datos mezclados, {\tt sort} puede hacer 
+un gran trabajo al proveer un resultado que puede ser lo que
+esperas:
+
+\begin{lstlisting}
+say sort <1 b 11 5 cb 4 12 a ab abc 42 ac bc ca >;
+         # -> (1 4 5 11 12 42 a ab abc ac b bc ca cb)
+\end{lstlisting}
+
+Existen otros casos donde el simple uso de la función
+{\tt sort} fallará y no devolverá lo que probablemente
+esperas:
+
+\begin{lstlisting}
+say sort <a ab abc A bc BAC AC>; # -> (A AC BAC a ab abc bc)
+\end{lstlisting}
+%
+
+En este caso, {\tt sort} pone todas las cadenas de texto
+que comienzan con una letra mayúscula antes que cualquier 
+cadena de texto que comienza con una letra minúscula. Probablemente
+no deseas esto. Esto luce peor si las cadenas de texto usan
+caracteres ASCII extendidos:
+\index{case!lower}
+\index{case!upper}
+
+\begin{lstlisting}
+say sort <a ab àb abc Ñ A bc BAC AC>;
+        # -> (A AC BAC a ab abc bc Ñ àb)
+\end{lstlisting}
+%
+
+\index{sort!ASCIIbetical}
+La razón detrás de esto es que, al ordenar cadenas de texto,
+la función {\tt sort} usa la codificación numérica interna
+de las letras. Esto fue llamado alguna vez orden 
+"ASCIIbetical" (en contraste con orden alfabético),
+pero el término es ahora muy limitado y algo obsoleto,
+porque Perl~6 usa Unicode y no ASCII.
+
+Claramente, hay casos donde más técnicas avanzadas 
+de ordenamiento son necesarias.
+
+\section{Más Técnicas Avanzadas de Ordenamiento}
+\label{advanced_sort}
+\index{sorting!advanced}
+
+\index{sort}
+\index{sort!code object}
+\index{cmp operator}
+\index{operator!cmp}
+La rutina {\tt sort} típicamente toma dos argumentos,
+un objeto de código y una lista de artículos a ser ordenados,
+y devuelve una nueva lista ordenada. Si no se especifica un
+objeto de código, como en el ejemplo que vimos más arriba,
+el operador integrado de comparación {\tt cmp}
+se usa para comparar los elementos. Si el objeto de código
+es proveído, entonces se usa en la comparación,
+la cual informa a {\tt sort} cuál de los elementos
+debería estar primero en el orden final.
+
+Existen tres operadores integrados de comparación que pueden
+usarse para ordenar. Algunas veces son conocidos como los
+comparadores de tres sentidos porque ellos comparan sus operandos
+y devuelven un valor que informa si el primer operador debería
+ser considerado menor que, igual a o mayor que el segundo operador
+para el propósito de determinar el orden en que estos operadores
+deben ser ordenados.  El operador {\tt leg} coacciona sus argumentos
+a cadenas de texto y realiza una comparación lexicográfica. El operador
+\verb|<=>| coacciona sus argumentos a números (Real) y realiza una
+comparación numérica. El operador {\tt cmp} es el comparador ``inteligente``
+de tres sentidos, el cual compara cadenas de texto con semántica de 
+cadenas de texto y números con semántica de números.
+\index{coercion}
+
+La mayoría de nuestros simples ejemplos funcionó bien
+con cadenas de texto y números porque ellos implícitamente
+usaron el operador {\tt cmp} por defecto, el cual ``adivina``
+el tipo de comparación a realizarse.
+
+\index{three-way comparator}
+\index{leg operator}
+\index{cmp operator}
+\index{operator!cmp}
+\index{operator!leg}
+% TODO: get these entries working in plastex
+\ifplastex \else
+\index{<=> operator@\texttt{<=>} operator}
+\index{operator!<=> (numeric comparison)@\texttt{<=>} (numeric comparison)}
+\fi
+
+
+En otras palabras, esto:
+
+\begin{lstlisting}
+say sort <4 6 2 9 1 5 11>;  # -> (1 2 4 5 6 9 11)
+\end{lstlisting}
+
+es equivalente a esto:
+
+\begin{lstlisting}
+say sort { $^a cmp $^b }, <4 6 2 9 1 5 11>;
+     # -> (1 2 4 5 6 9 11)
+\end{lstlisting}
+
+\index{placeholder}
+El bloque de código usado aquí como el primer argumento
+de la función {\tt sort} usa los parámetros marcadores
+(parámetros auto-declarados de posición) los cuales
+vimos anteriormente en este capítulo. El operador
+{\tt cpm} recibe dos argumentos y le pasa a la
+función {\tt sort}  información sobre cuál de los 
+artículos debería aparecer primero en el orden 
+resultante.
+\index{cmp operator}
+\index{operator!cmp}
+
+\index{sort!reverse order}
+Si quieres ordenar en el orden inverso, podrías solo
+intercambiar el orden de los parámetros marcadores:
+
+\begin{lstlisting}
+say sort { $^b cmp $^a }, <4 6 2 9 1 5 11>;
+     # -> (11 9 6 5 4 2 1)
+\end{lstlisting}
+
+Ten presente que discutimos este ejemplo solo con el
+propósito de explicar algunas funciones de los 
+parámetros marcadores. Para ordenar el array que hemos
+presentado aquí en orden descendente, sería más fácil 
+obtener el mismo resultado con el siguiente código:
+
+\begin{lstlisting}
+say reverse sort <4 6 2 9 1 5 11>;  # -> (11 9 6 5 4 2 1)
+\end{lstlisting}
+\index{reverse}
+
+La razón por la cual {\tt sort} hace un trabajo tan grandioso
+hasta con una mezcla de cadenas de texto y números es porque 
+la función de comparación por defecto, {\tt cmp}, es muy astuta 
+y puede adivinar si debería realizar una comparación de orden
+lexicográfico u orden numérico al examinar sus argumentos.
+
+Si el ordenamiento se complica para {\tt cmp}, o generalmente
+cuando se requiere un ordenamiento específico o personalizado,
+entonces debes crear tu propia subrutina ad-hoc de comparación.
+\index{cmp operator}
+\index{operator!cmp}
+
+Por ejemplo, si tomamos de nuevo el ejemplo de las cadenas
+de texto con letras mayúsculas y minúsculas, podemos lograr un
+ordenamiento alfabético que no es sensible a la diferencia
+entre letras mayúsculas y minúsculas:
+\index{sort!case insensitive}
+
+\begin{lstlisting}
+say sort { $^a.lc cmp $^b.lc}, <a ab abc A bc BAC AC>;
+     # -> (a A ab abc AC BAC bc)
+\end{lstlisting}
+
+or this way:
+\begin{lstlisting}
+say sort { $^a.lc leg $^b.lc}, <a ab abc A bc BAC AC>;
+     # -> (a A ab abc AC BAC bc)
+\end{lstlisting}
+
+\index{lc function or method}
+\index{function!lc}
+\index{method!lc}
+\index{lower case!lc function}
+Cuando el bloque de código de comparación recibe sus dos 
+argumentos, el método {\tt lc} los convierte en letras
+minúsculas antes de realizar la comparación. Nota qu esto
+no tiene ningún impacto en el caso de la salida de texto,
+dado que la transformación a letra minúscula es local
+al bloque de código de comparación y no tiene impacto
+alguno en los datos manejados por {\tt sort}. Veremos
+en un rato que hay una manera más fácil y eficiente de
+realizar tal transformación antes de comparar los argumentos.
+
+Si la especificación de la comparación es muy complicada,
+podría ser necesario escribirla en una subrutina separada
+y dejar que {\tt sort} llame a esa subrutina. Supón que 
+tenemos una lista de cadenas de texto que están todas formadas
+por dígitos iniciales, los cuales son seguidos por un grupo
+de letras y posiblemente seguidos por otros caracteres irrelevantes,
+y queremos ordenar las cadenas de texto de acuerdo al grupo de
+letras que siguen los dígitos.
+
+Comencemos con escribir la subrutina de comparación:
+\index{comparison subroutine}
+\index{sort!comparison subroutine}
+
+
+\begin{lstlisting}
+sub mi_comp ($cad1, $cad2) {
+    my $cmp1 = $0 if $cad1 ~~ /\d+(\w+)/; 
+    my $cmp2 = $0 if $cad2 ~~ /\d+(\w+)/; 
+    return $cmp1 cmp $cmp2;
+}
+\end{lstlisting}
+
+Nada complicada: la subrutina toma dos argumentos, usa
+una regex para extraer el grupo de palabras de cada 
+argumento, y devuelve el resultado de las cadenas 
+extraídas a la función {\tt cmp}. En el mundo real,
+se necesitaría hacer algo si la extracción falla, pero,
+para nuestro propósito, asumiremos que esto no sucederá.
+\index{regex}
+\index{cmp operator}
+
+El ordenamiento es ahora bastante directo, solo 
+necesitamos pasar a la función {\tt sort} la
+función anterior:
+
+\begin{lstlisting}
+say sort &mi_comp, < 22ac 34bd 56aa3 12c; 4abc( 1ca 45bc >;
+     # -> (56aa3 4abc( 22ac 45bc 34bd 12c; 1ca)
+\end{lstlisting}
+
+Solo necesitamos preceder la subrutina de comparación
+con el sigilo ``\&`` y funcionará bien: las cadenas de texto
+son ordenadas de acuerdo a los grupos de letras que siguen los
+dígitos al inicio de cada cadena de texto.
+\index{sigil}
+\index{ampersand sigil}
+
+En todos los ejemplos anteriores, la subrutina de
+de comparación aceptó dos parámetros, los artículos
+a ser comparados. La función {\tt sort} puede funcionar
+con un objeto de código que toma un solo parámetro. En 
+tal caso, el objeto de código no es un bloque 
+de código de comparación, sino que es un objeto de código
+que implementa la transformación a ser aplicada a los
+artículos antes de usar la función de comparación por
+defecto {\tt cmp}. 
+\index{sort!transformation subroutine}
+\index{cmp operator}
+\index{operator!cmp}
+
+Por ejemplo, si tomamos una vez más el ejemplo de las cadenas
+de texto mezcladas con letras mayúsculas y minúsculas, 
+podemos lograr un ordenamiento alfabético que no es 
+sensible a la diferencia entre letras mayúsculas y minúsculas
+en una nueva forma:
+\index{sort!case insensitive}
+
+\begin{lstlisting}
+say sort { $_.lc }, <a ab abc A bc BAC AC>;
+     # -> (a A ab abc AC BAC bc)
+\end{lstlisting}
+
+Esto podría también escribirse con un parámetro marcador:
+\index{placeholder}
+
+\begin{lstlisting}
+say sort { $^a.lc }, <a ab abc A bc BAC AC>;
+     # -> (a A ab abc AC BAC bc)
+\end{lstlisting}
+
+En este ejemplo, debido a que el bloque de código
+de comparación toma un solo argumento, su tarea es
+transformar cada uno de los artículos a ser comparados
+antes de aplicar la función {\tt cmp}  a los argumentos.
+Esto no solo las cosas más simples, sino que también
+es probablemente más eficaz, especialmente si 
+el número de artículos a ser ordenados es grande y si
+la subrutina de transformación es relativamente costosa
+(en término de procesamiento): los valores transformados
+son actualmente almacenados en \emph{caché} (i.e.,
+almacenados en la memoria para uso repetido), de tal manera
+que la transformación se hace solamente una vez por cada artículo,
+a pesar de que la subrutina de comparación se llama muchas veces por
+cada artículo en un ordenamiento.
+\index{cache}
+
+De igual manera, podríamos ordenar los números de acuerdo 
+a sus valores absolutos:
+\index{abs function or method}
+\index{function!abs}
+\index{method!abs}
+
+\begin{lstlisting}
+say sort {$_.abs}, <4 -2 5 3 -12 42 8 -7>; # -> (-2 3 4 5 -7 8 -12 42)
+\end{lstlisting}
+
+El ejemplo ``más complejo`` con dígitos y letras que requiere
+una subrutina separada aplica la misma transformación
+a ambos argumentos. Como ejercicio, escribe un simple programa
+de ordenamiento que usa una subrutina de transformación y
+el operador de comparación por defecto {\tt cmp} sobre
+los artículos transformados. Solución: \ref{sol_sort_exercise}.
+\label{sort_exercise}
+\index{cmp operator}
+\index{sort}
+
+Sobra decir que los usos avanzados de la función {\tt sort}
+presentada en esta sección son solo más ejemplos del
+estilo de programación funcional. Las subrutinas de comparación
+y las subrutinas de transformación pueden pasarse como 
+argumentos a la función {\tt sort}, y generalmente, todas
+las funciones, las subrutinas, y los bloques de códigos
+usados aquí son funciones de orden superior o funciones
+de primera clase.
+\index{functional programming}
+
+\section{Depuración de Programas}
+\index{debugging}
+
+El uso descuidado de arrays ( y cualquier otros objetos
+mutables) puede conducir a largas horas de depuración. 
+Estas son algunas de las dificultades y las maneras de
+evitarlas:
+
+\begin{enumerate}
+
+\item Algunas de las funciones y métodos integrados de arrays
+modifican sus argumentos mientras otras no.
+
+Puede ser tentativo escribir código así:
+
+\begin{lstlisting}
+@array = splice @array, 1, 2, $nuevo-elem;   # INCORRECTO!
+\end{lstlisting}
+\index{splice function}
+
+La función {\tt splice} devuelve los elementos
+que ha eliminado del array, no el array en sí mismo,
+el cual es modificado ``en el lugar``.
+
+Antes de usar los métodos y operadores de arrays,
+deberías leer la documentación cuidadosamente y quizás
+probarlos en modo interactivo.
+
+Al recorrer un array, por ejemplo con {\tt for}
+o {\tt map}, la variable tópico \verb|$_| es
+un apodo para los elementos sucesivos del array,
+y no una copia de ellos. Esto significa que si
+cambias a \verb|$_|, el cambio sera reflejado en
+el array. Pueden haber casos donde este comportamiento
+es deseable y otros casos donde no importa lo que suceda
+con ellos (porque ya no necesitas el array original),
+pero esta técnica es propensa a errores y quizás debería
+evitarse (o por lo menos usarla con precaución).
+
+\begin{lstlisting}
+my @números = <1 2 3>;
+push @dobles, $_*=2 for @números;  # INCORRECTO (probablemente)
+say @números; # -> [2 4 6]
+\end{lstlisting}
+
+El error aquí es que la sentencia \verb|$_*=2| está
+modificando a \verb|$_|, así que el array \verb|@números|
+es también modificado, mientras que la intención era 
+ciertamente poblar los nuevos números en el array
+\verb|@dobles|, no modificar a \verb|@números|.
+
+El mismo código aplica a una lista literal en vez de 
+un array lo cual conduce a un error al tiempo de 
+ejecución, debido a que una lista es inmutable:
+
+\begin{lstlisting}
+> push @dobles, $_*=2 for <1 2 3>; # INCORRECTO (definitivamente)
+Cannot assign to an immutable value
+\end{lstlisting}
+
+La solución en este caso es bien fácil y consiste
+de usar una expresión que no modifique a \verb|$_|
+pero devuelva el valor deseado:
+
+\begin{lstlisting}
+push @dobles, $_ * 2 for @números; # OK
+\end{lstlisting}
+
+Lo mismo aplica a {\tt map}:
+
+\begin{lstlisting}
+my @números = <1 2 3>;
+say map { ++$_}, @números;          # INCORRECTO (probablemente)
+say @números; # -> [2 3 4]
+\end{lstlisting}
+%
+
+Otra vez, el uso de una expresión que no modifique a \verb|$_|
+pero que en cambio, devuelva el nuevo valor deseado arreglará
+el problema:
+
+\begin{lstlisting}
+my @números = <1 2 3>;
+say map { $_ + 1}, @números;        # -> (2 3 4)
+say @números; # -> [1 2 3]
+\end{lstlisting}
+%
+
+\end{enumerate}
+
+
+
+\section{Glosario}
+
+\begin{description}
+
+\item[Lista] Una secuencia inmutable de valores.
+\index{list}
+
+\item[Array] Una variable que contiene una secuencia mutable
+de valores.
+\index{list}
+
+\item[Elemento] Uno de los valores en una lista o array (
+o cualquier otra secuencia), también llamado artículos.
+\index{element}
+\index{item}
+
+\item[Array anidado] Un array que es un elemento de otro array.
+\index{nested list}
+
+\item[Acumulador] Una variable que se usa en un bucle 
+para agregar o acumular un resultado.
+\index{accumulator}
+
+\item[Reducir] Un patrón de procesamiento que recorre
+una secuencia y acumula los elementos en un solo
+resultado.
+\index{reduce pattern}
+\index{pattern!reduce}
+
+\item[Map] A processing pattern that traverses a 
+sequence and performs an operation on each element. 
+Also the name of a Perl built-in function that performs 
+such a processing pattern.
+\index{map pattern}
+\index{pattern!map}
+
+\item[Filtro] Un patrón de procesamiento que recorre una
+lista y selecciona los elementos que satisfacen una condición.
+{\tt grep} es una implementación de Perl de un filtro.
+\index{filter pattern}
+\index{pattern!filter}
+
+\item[Apodo] Una circunstancia donde un identificador
+se refiere directamente a alguna variable o valor, 
+de tal manera que un cambio del identificador
+se traduce en un cambio de la variable o valor. 
+Esto significa tener dos nombres para el mismo valor,
+contenedor u objeto.
+\index{alias}
+
+\end{description}
+
+
+\section{Ejercicios}
+\label{array_exercises}
+
+\begin{exercise}
+
+Escribe una subrutina llamada \verb|suma-anidada| que toma un
+array de arrays de enteros y añade todos los elementos de los
+arrays anidados. Por ejemplo:
+\label{nested_sum}
+
+\begin{lstlisting}
+my @AoA = [[1, 2], [3], [4, 5, 6]];
+say suma-anidada(@AoA);        # -> 21
+\end{lstlisting}
+
+Solución: \ref{sol_nested_sum}.
+
+\end{exercise}
+
+\begin{exercise}
+\label{cumulative}
+\index{cumulative sum}
+
+Escribe una subrutina llamada \verb|suma-acumula| que toma una lista
+de números y devuelve la suma acumulativa, es decir, una nueva lista
+donde la suma del elemento $i$th es la suma de los primeros elementos
+$i+1$ de la lista original. Por ejemplo:
+\label{cumsum}
+
+\begin{lstlisting}
+my @nums = [1, 2, 3, 4];
+say suma-acumula(@nums);           # -> [1, 3, 6, 10]
+\end{lstlisting}
+
+Solución: \ref{sol_cumsum}.
+
+\end{exercise}
+
+\begin{exercise}
+
+Escribe una subrutina llamada \verb|medio| que toma una lista y devuelve
+una lista nueva que contiene todos los elementos excepto el primero y el
+último. Por ejemplo:
+\label{middle}
+
+\begin{lstlisting}
+say medio(1, 2, 3, 4);      # -> (2, 3)
+\end{lstlisting}
+
+Solución: \ref{sol_middle}.
+
+\end{exercise}
+
+\begin{exercise}
+
+Escribe una subrutina llamada \verb|corta| que toma un
+array, lo modifica al remover el primer y último elemento y
+devuelve algo no útil. Por ejemplo:
+\label{chop}
+
+\begin{lstlisting}
+my @nums = 1, 2, 3, 4;
+corta(@nums);
+say @nums;                   # -> [2, 3]
+\end{lstlisting}
+
+Solución: \ref{sol_chop}.
+
+\end{exercise}
+
+
+\begin{exercise}
+Escribe una subrutina llamada \verb|está-ordenada| que toma
+una lista o un array de números como parámetro y devuelve {\tt True}
+si la lista está ordenada en orden ascendente y {\tt False} 
+de lo contrario. Por ejemplo:
+\label{is_sorted}
+\index{is-sorted}
+
+\begin{lstlisting}
+> está-ordenada (1, 2, 2);
+True
+> está-ordenada (1, 2, 1);
+False
+\end{lstlisting}
+
+Solución: \ref{sol_is_sorted}.
+
+\end{exercise}
+
+
+\begin{exercise}
+
+\label{is_anagram}
+\index{anagram}
+\index{is-anagram}
+Una palabra es un anagrama de otra si las dos tienen las mismas letras, 
+con el mismo número de apariciones, pero en un orden diferente.
+Escribe una subrutina llamada \verb|es-anagrama| que toma dos
+cadenas de texto y devuelve {\tt True} si son anagramas.
+
+Solución: \ref{sol_is_anagram}.
+
+\end{exercise}
+
+
+
+\begin{exercise}
+\label{has_duplicates}
+\index{duplicate}
+\index{has-duplicates}
+\index{uniqueness}
+
+Escribe una subrutina llamada \verb|tiene-duplicados| que toma
+una lista o un array  y devuelve {\tt True} si hay algún elemento
+que aparece más de una vez. La subrutina no debería
+modificar la entrada original.
+
+Solución: \ref{sol_has_duplicates}.
+
+\end{exercise}
+
+
+\begin{exercise}
+
+Este ejercicio es acerca de la Paradoja del Cumpleaños.
+Encuentra más información sobre esta paradoja aquí: 
+\url{https://es.wikipedia.org/wiki/Paradoja_del_cumpleaños}.
+\index{birthday paradox}
+\label{birthdays}
+
+Si hay 23 estudiantes en tu clase, cuál es la probabilidad
+de que dos estudiantes cumplan años el mismo día? 
+Puedes estimar esta probabilidad al generar muestras 
+aleatorias de los 23 cumpleaños y chequear por 
+cumpleaños duplicados. Pista: puedes generar cumpleaños 
+aleatorios con la funciones {\tt rand} y {\tt int}.
+\index{rand function}
+\index{function!rand}
+
+Solución: \ref{sol_birthdays}.
+
+\end{exercise}
+
+
+
+\begin{exercise}
+
+\label{push_unshift}
+Write a subroutine that reads the file \emph{words.txt} and builds
+a list with one element per word.  Write two versions of
+this function, one using the {\tt push} method and the
+other using the idiom {\tt unshift}.  Which one takes
+longer to run?  Why?
+\index{push function}
+\index{unshift function}
+
+Solución: \ref{sol_push_unshift}.
+
+
+\end{exercise}
+
+
+\begin{exercise}
+\label{bisection}
+\index{membership!bisection search}
+\index{bisection search}
+\index{search!bisection}
+\index{membership!binary search}
+\index{binary search}
+\index{search!binary}
+\index{half-interval search}
+
+Para chequear si una palabra está en nuestra lista 
+estándar de palabras, podrías chequear cada elemento
+por turno, pero sería lento porque buscaría a través 
+de las palabras en orden.
+
+Si las palabras están en orden alfabético (el cual es
+el caso en nuestra lista de palabras), podemos 
+acelerar las cosas con una \emph{búsqueda binaria},
+la cual es similar a lo que haces cuando buscas una
+palabra en el diccionario. Tú comienzas en alguna parte
+en el medio del diccionario y chequea si la palabra que
+estás buscando se encuentra antes que la palabra en
+el medio de la lista. Si esto sucede, busca en la 
+primera mitad de la lista del mismo modo. Por lo
+contrario, busca en la segunda mitad de la lista.
+
+De cualquier manera, tú reduces el tiempo de búsqueda
+por la mitad. Si la lista de palabras contiene 113,809 
+palabras, tomará alrededor de 17 pasos para encontrar la 
+palabra o concluir que la palabra no se encuentra en 
+la lista.
+
+Escribe una función llamada \verb|búsqueda-binaria|
+que toma una lista ordenada y un valor a encontrar en
+la lista. La función debe devolver si el valor
+se encuentra en la lista o no.
+\index{bisect}
+
+Solución: \ref{sol_bisection}
+
+\end{exercise}
+
+\begin{exercise}
+\index{reverse word pair}
+\label{reverse_pair}
+
+Dos palabras son una ``pareja de inversas`` si cada una es la
+inversa de la otra. Por ejemplo, ``depot`` y ``toped`` forman
+una pareja de inversas.; otro ejemplo incluye ``reward`` y ``drawer``,
+o ``desserts`` y ``stressed``.
+
+Escribe un programa que encuentra todas las parejas de inversas en 
+el archivo \emph{word.txt}.
+
+
+Solución: \ref{sol_reverse_pair}.
+
+\end{exercise}
+
+\begin{exercise}
+\index{interlocking words}
+\label{interlock}
+
+Dos palabras se ``entrelazan`` si al tomar letras alternadas de
+ambas palabras se forma una nueva palabra. Por ejemplo, ``shoe``
+y ``cold`` se entrelazan para formar la palabra ``schooled``.
+
+Escribe un programa que encuentre todos los pares de palabras
+que se entrelazan en el archivo \emph{word.txt}.
+Pista: !`no enumeres todas la parejas, hay demasiadas!
+
+Solución: \ref{sol_interlock}
+
+Crédito: este ejercicio fue inspirado por un ejemplo en \url{http://puzzlers.org}.
+
+\end{exercise}
+
+

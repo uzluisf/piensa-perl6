@@ -1,0 +1,506 @@
+\chapter{Algunos Consejos Finales}
+
+\begin{quote}
+\raggedleft 
+\emph{Todo el mundo sabe que la depuración es dos veces más difícil\\
+que escribir un programa en primer lugar. Así que si eres tan astuto\\
+como puedas cuando lo escribes, cómo podrás depurarlo? }\\
+--- Brian Kernighan, "The Elements of Programming Style".	
+\end{quote}
+% Everyone knows that debugging is twice as hard as writing \\ 
+% a program in the first place. So if you're as clever as you \\
+% can be when you write it, how will you ever debug it? }\\
+% --- Brian Kernighan, "The Elements of Programming Style".
+\index{Kernighan, Brian}
+
+\section{Hazlo Claro, Mantenlo Simple}
+
+Escribir un programa en la vida real no es lo misma cosa que 
+aprender el arte de la programación o aprender un nuevo lenguaje.
+
+Debido a que la meta de este libro es conducirte a aprender
+más conceptos avanzados o nueva sintaxis, usualmente he tratado
+de hacer las cosas de diferentes maneras. Pero esto no significa 
+que deberías tratar de empaquetar tu conocimiento más avanzado
+en cada uno de tus programas. Es todo lo opuesto.
+
+La regla de oro es ``KISS``: Keep It Simple, Stupid (Mantenlo Simple, Estúpido).
+El principio de ingeniería KISS (originado en el US NAVY alrededor de 1960)
+dice que la mayoría de sistemas funcionan mejor si se mantienen
+simples en lugar de complicados; por lo tanto la simplicidad
+debería ser una meta en el diseño y la complexidad innecesaria 
+debería evitarse. No obstante, esto no significa que deberías escribir 
+código simplista.
+\index{KISS: keep it simple, stupid}
+
+Como un ejemplo, si estás buscando un pedazo de cadena de texto
+literal dentro de una cadena, usa la función integrada {\tt index},
+en lugar de utilizar el armamento completo del motor de regex para eso.
+Similarmente, si sabes la posición y longitud del pedazo de 
+cadena de texto, usa la función {\tt substr}. Pero si necesitas una
+coincidencia más ``parcial`` (``fuzzy``) con quizás algunas alternativas o 
+una clase de caracteres, entonces un regex podría ser la herramienta
+indicada para eso.
+\index{index}
+\index{substr}
+\index{regex}
+
+Otro principio relacionado es ``YAGNI``: you aren't gonna need 
+it (no lo vas a necesitar). Este acrónimo viene de la escuela 
+de programación conocida como ``extreme programming`` (XP).
+Aunque no sigas todos los principios de XP, esta idea es
+válida y justificada: no agregues una funcionalidad hasta que 
+realmente la necesites.
+\index{YAGNI: you aren't gonna need it}
+
+Trata de hacer tus programas tan claros como sea posible,
+y tan simples como puedas. Usa conceptos más avanzados solo
+si es realmente necesario, pero no lo hagas solo con el propósito
+de presumir.  No trates de ser astuto o, por lo menos,
+no tan \emph{astuto}.
+
+Recuerda que el código no solo es usado por el compilador,
+sino que también por humanos. Piensa en ellos.
+
+Contempla sobre la persona que mantendrá tu código. 
+Como a algunas personas le gusta decir: ``Siempre escribe
+código como si la persona que termina manteniendo tu código
+es un psicópata violento que sabe donde vives.`` Y, si esto no te 
+convence, recuerda que la persona que mantenga tu código dentro de
+un año podría set tú. Para ese entonces, puede ser que no recuerdes cómo ese
+truco astuto que usaste realmente funciona.
+
+Una cita final de Edsger Dijkstra sobre el tema:
+``La simplicidad es un prerequisito para la fiabilidad.``
+\index{Dijkstra, Edsger}
+\index{simplicity}
+
+\section{Qué Hacer y Qué No Hacer}
+
+\begin{description}
+
+\item[No te repitas:] Evita la duplicación de código.
+Si tienes el mismo código en diferentes lugares de tu programa,
+entonces algo malo puede suceder. Quizás el código repetido
+puede ir dentro de un bucle o una subrutina separada,
+o a lo mejor en un módulo o una librería. Recuerda que copiar
+y pegar es una fuente de maldad.
+\index{DRY: don't repeat yourself}
+
+\item[No invente la rueda de nuevo:] Usa librerías y módulos
+existentes cuando puedas; es posible que hayan sido probadas
+y funcionarán mejor que el pequeño arreglo que escribirás.
+El ecosistema de Perl~6 tiene una gran colección de módulos
+de software (ver \url{modules.perl6.org})
+que crece día a día. Estos módulos  puedes utilizarlos
+en tus programas. 
+\index{reinventing the wheel}
+
+\item[Usa identificadores significativos] Si tus variables, métodos,
+clases, gramáticas, módulos, y programas tienen nombres sensibles
+que expresan claramente lo que son o lo que hacen,
+entonces tu código será más claro y podría necesitar menos
+comentarios. Nombres muy cortos como \verb|$i| o \verb|$n|
+son usualmente buenos para las variables del bucle, pero 
+todo lo demás necesita un nombre que explique el contenido 
+o el propósito. Nombres como \verb|$array| o \verb|%hash|
+se han usados a lo largo de este libro para indicar 
+con más claridad la naturaleza de la estructura de datos,
+pero se recomienda usarlos en programas en la vida real.
+Si tu hash contiene una colección de palabras, llámalo 
+\verb|%palabras| o \verb|%lista-palabras|, no \verb|%hash|.
+De cualquier modo, el sigilo \% ya indica que es un hash.
+\index{meaningful identifier}
+
+\item[Escribe comentarios útiles y evita los inútiles] Un 
+comentario como este:
+\begin{verbatim}
+my $count = 1;     # asigna 1 a $count
+\end{verbatim}
+es completamente inútil. En general, tus comentarios no deberían
+explica lo que tu código está haciendo o cómo lo está haciendo
+(esto debería ser obvio si tu código es claro), pero
+\emph{la razón por la cual estás haciendo eso}: quizás deberías
+hacer referencia a un teorema matemático, un ley de física, una
+decisión de diseño, o una regla de negocio.
+\index{comment}
+
+\item[Remueve código muerto y código de andamiaje]
+Al escribir código nuevo, puedes crear variables que no 
+usas en la versión final de tu código. Si esto sucede, 
+remuévelas; no las dejes distraer la atención de tu lector. 
+Si modificas un programa existente, limpia el lugar después
+de modificarlo. Recuerda la regla de los boy scouts: 
+deja el lugar mejor y más limpio de como lo encontraste.
+\index{dead code}
+\index{scaffolding}
+
+\item[Prueba agresivamente] Nadie puede escribir una pieza de
+código significante sin tener un número inicial de errores.
+Se cita a Edsger Dijkstra diciendo: ``Si la depuración 
+es el proceso de remover errores de software, entonces
+la programación debe ser el proceso de crearlos.``
+Lamentablemente es cierto. Aunque Dijkstra también dijo
+que ``las pruebas de software muestran la presencia, no la ausencia de
+errores,`` las pruebas de software son una parte esencial del
+desarrollo de software. Escribe planes de pruebas extensos, úsalos
+a menudo, y actualízalos a medida que la funcionalidad evoluciona.
+Ve la Sección~\ref{test_module} (p.~\pageref{test_module}) para algunas herramientas 
+de pruebas automatizadas.
+\index{test}
+\index{Dijkstra, Edsger}
+
+\item[Evita la optimización prematura] En las palabras de
+Donald Knuth: ``La optimización prematura es la fuente de todo lo 
+malvado (o por lo menos la mayoría) en la programación.``
+\index{premature optimization}
+\index{Knuth, Donald}
+
+\item[No uses números mágicos:] Considera esto:
+\begin{verbatim}
+my $tiempo-restante = 31536000;
+\end{verbatim}
+
+?`Qué es este número 31,536,000 que aparece de la nada?
+No hay manera de saber con solo mirar esta línea de código.
+Compáralo con esto:
+
+\begin{verbatim}
+my $segundosEnUnAño = 365 * 24 * 60 * 60;
+# ...
+my $tiempo-restante = $segundosEnUnAño;
+\end{verbatim}
+
+?`No es la segunda versión más clara?\footnote{Esta calculación se refiere al año \emph{común} (i.e. un calendario que no es bisiesto o año civil). No es la misma definición de otros
+anos astronómicos, los cuales más de un cuarto de día más largo.} Bueno, para
+ser sincero, sería mejor usar una constante en tal caso:
+\begin{verbatim}
+constant SEGUNDOS-POR-AÑO = 365 * 24 * 60 * 60;
+\end{verbatim}
+\index{magical number}
+\index{constant}
+
+\item[Evita valores hardcoded:] Los valores hard-coded 
+son malos. Si tienes que usar alguno, defínelos como 
+variables o constantes al comienzo de tu programa, y usa esas
+variables o constantes en vez. Los paths hard-coded de archivos
+son especialmente malos. Si tienes que usar algunos, usa
+algunas variables con paths relativos:
+\begin{verbatim}
+my $dir-base = '/path/a/datos/aplicacion';
+my $dir-entrada = "$dir-base/ENTRADA";
+my $dir-result = "$dir-base/RESULT";
+my $dir-temp = "$dir-base/TEMP";
+my $dir-log = "$dir-base/LOG";
+\end{verbatim}
+Por lo menos, si el path debe cambiar, solo tienes que cambiar
+la línea de código superior.
+\index{hard-coded value}
+
+\item[No ignore los errores devueltos por las subrutinas 
+o funciones integradas:] No todos los valores de retorno son
+útiles; por ejemplo, usualmente nos chequeamos el valor de retorno
+de una sentencia de impresión, pero eso es usualmente bueno porque
+no estamos interesados en el efecto secundario, el hecho de imprimir
+algo a la pantalla o a un archivo, en lugar de un valor de retorno.
+En la mayoría de los casos, necesites saber si algo malo pasó 
+para tomar los pasos necesarios para recuperarse de la 
+condición de error si es posible o abortar el programa con gracia
+(e.g., con un mensaje de error informativo) si el error 
+es muy serio para que el programa continúe.
+\index{error!ignoring}
+
+\item[Formatea tu código clara y consistentemente] 
+El compilador puede no importarle la indentación de código,
+pero eso es importante para los lectores humanos. El formato 
+de tu código debería ayudar a clarificar la estructura y 
+flujo de control de tus programas.
+\index{indentation}
+
+\item[Sé bueno y diviértete.]
+\index{fun}
+
+\end{description}
+
+\section{Usa Expresiones Idiomáticas}
+\index{idiom}
+
+Cualquier lenguaje tiene sus métodos de ``buenas prácticas``.
+Estas son las expresiones idiomáticas que los programadores con
+experiencia usan y se han convertido en las maneras preferidas 
+de hacer las cosas. Estos modismos son importantes. Ellos
+te protegen de inventar la rueda de nuevo. También son lo que
+los programadores con experiencia esperan leer; son familiares
+y te permiten enfocarte en el diseño de código en lugar de 
+atascarte en preocupaciones detalladas de código. Usualmente,
+formalizan patrones que evitan equivocaciones o errores comunes.
+
+Aunque Perl~6 es un lenguaje relativamente nuevo, un número de
+tales modismos se han perfeccionados a lo largo del tiempo. 
+Las siguientes son algunas de estas construcciones idiomáticas
+\footnote{Cuando se sugiere dos soluciones,
+	la segunda es usualmente la más idiomática.}.
+\index{idiomatic Perl~6}
+
+
+\begin{description}
+\item[Crear un hash de una lista de llaves y una lista de valores:] 
+\index{hash slice}
+
+Usando rebanadas (\emph{slices})
+\begin{verbatim}
+my %hash; %hash{@llaves} = @valores;
+\end{verbatim}
+
+Usando el operador \emph{zip} y un metaoperador con el constructor pareja:
+\index{zip operator}
+\index{metaoperator}
+\index{operator!zip}
+
+\begin{verbatim}
+my %hash = @llaves Z=> @valores;
+\end{verbatim}
+
+Para las pruebas existente, los valores de los hash solo necesitan ser 
+verdaderos. Esta es una buena manera de crear un hash de una lista de
+llaves:
+\begin{verbatim}
+my %existentes = @llaves X=> True;
+\end{verbatim}
+
+O, mejor aún, usa un set:
+\begin{verbatim}
+my $existentes = @llaves.Set;
+say "existe" if $existentes{$objeto};
+\end{verbatim}
+
+\item[Hacer los atributos mandatorios (o parámetros de la subrutina):]
+Esto es una forma buena de hacer un atributo mandatorio en una clase:
+\index{mandatory attribute}
+\begin{verbatim}
+has $.atr = die "El atributo 'atr' es mandatorio";
+\end{verbatim}
+Este código usa el mecanismo de valor por defecto: si un valor es 
+provisto, entonces el código para el valor por defecto no se ejecuta.
+Si no valor es provisto, entonces el código muere con el mensaje 
+de error apropiado. El mismo mecanismo puede usarse para los
+parámetros de las subrutinas.
+
+O puedes usar el rasgo \verb|is required|:
+
+\begin{verbatim}
+> class A { has $.a is required }; 
+> A.new;
+The attribute '$!a' is required, 
+but you did not provide a value for it.
+\end{verbatim}
+
+Hasta puedes pasar un mensaje con una explicación:
+
+\begin{verbatim}
+> class A { has $.a is required("Lo necesitamos") }; 
+> A.new;
+The attribute '$!a' is required because Lo necesitamos,
+but you did not provide a value for it.
+\end{verbatim}
+
+\item[Iterar sobre los subíndices de un array] La primera
+solución que viene a la mente podría ser:
+\index{end method}
+
+\begin{verbatim}
+for 0 .. @array.end -> $i {...}
+\end{verbatim}
+
+Eso está bien, pero esto es probablemente mejor:
+\index{keys function or method}
+
+\begin{verbatim}
+for @array.keys -> $i {...}
+\end{verbatim}
+
+\item[Iterar sobre los subíndices y valored de un array] 
+El método \verb|.kv|, en combinación con un bloque puntiagudo
+que toma dos parámetros, te permite fácilmente iterar sobre un
+array:
+\index{kv function or method}
+
+\begin{verbatim}
+for @array.kv -> $i, $valor {...}
+\end{verbatim}
+
+
+\item[Imprimir el número de artículos en un array] Dos posibles
+soluciones:
+\index{elems function or method}
+
+\begin{verbatim}
+say +@array; 
+# o:
+say @array.elems; 
+\end{verbatim}
+
+\item[Hacer algo cada tercera vez] Usa el operador de
+visibilidad \verb|%%| en la variable del bucle:
+\index{divisibility}
+\begin{verbatim}
+if $i %% 3 {...}  
+\end{verbatim}
+
+\item[Hacer algo cada \emph{n} vez:] Usa el operador de
+rango de derecha exclusiva:
+\index{range operator}
+
+\begin{verbatim}
+for 0 ..^ $n {...}
+# o, más simple:
+for ^$n {...} 
+\end{verbatim}
+
+\item[Divide una cadena de texto en palabras (dividiendo en espacio):]
+Un invocación de método sin un invocante explícito siempre usa 
+la variable tópico \verb|$_| como un invocante implícito. 
+Así que, asumiendo que la cadena de texto ha sido asignada
+a \verb|$_|:
+\index{split function or method}
+\index{words function or method}
+\index{topical variable}
+\index{invocant}
+
+\begin{verbatim}
+@palabras = .split(/\s+/);
+# o, más simple:
+@palabras = .words;
+\end{verbatim}
+
+\item[Un bucle infinito] Una sentencia de {\tt bucle} 
+sin paréntesis y sin argumentos se ejecuta indefinidamente:
+\index{infinite loop}
+\index{loop!infinite}
+
+\begin{verbatim}
+while True {...}
+# o, más idiomático:
+loop {...}   
+\end{verbatim}
+
+Por supuesto, el cuerpo de la sentencia {\tt bucle} 
+debe tener algún tipo de sentencia de flujo de control 
+para salir del bucle en un momento determinado.
+
+\item[Returnar los elementos únicos de una lista] El método
+{\tt unique} remueve los duplicados de la lista de entrada:
+\index{unique function}
+
+\begin{verbatim}
+return @array.unique;
+\end{verbatim}
+
+O, si sabes que la lista está ordenada, puedes usar la
+función {\tt squish} (la cual remueve los duplicados adyacentes).
+\index{squish function}
+
+\item[Añadir los elementos de una lista] Usa la función 
+{\tt reduce} o el metaoperador de reducción:
+\index{reduce function}
+\index{reduction operator}
+\index{sum function or method}
+
+\begin{verbatim}
+my $suma = @a.reduce(* + *);
+# o, más simple:
+my $suma = [+] @a;
+# o hasta más simple, usando la suma integrada:
+my $suma = @a.sum;  
+\end{verbatim}
+
+\item[Intercambiar dos variables] Usa la invocación
+mutante del método \verb|.=| con la función \verb|reverse|:
+\begin{verbatim}
+( $x, $y ) =   $y, $x;
+# o:
+( $x, $y ) .= reverse; # equivalente a: ($x, $y) = ($x, $y).reverse
+\end{verbatim}
+\index{swapping variables}
+
+\item[Generar enteros aleatorios entre 2 y 6] Usa el operador
+de rango \verb|..| y el método {\tt pick}:
+\index{pick function or method}
+\index{random number}
+\begin{verbatim}
+$z = 2 + Int(5.rand);
+# o, mejor:
+$z = (2..6).pick;
+\end{verbatim}
+
+\item[Contar progresivamente de 3 en 3 en un bucle infinito] Usa 
+el operador de secuencia con el operador whatever star ``*``
+y el operador puntiagudo:
+\index{whatever operator}
+\index{sequence operator}
+
+\begin{verbatim}
+for 3, * + 3 ... * -> $n {...}
+# o:
+for 3, 6, 9 ... * -> $n {...}    
+\end{verbatim}
+
+\item[Recorrer un rango de valores, ignorando los límites del rango:] Usa
+el operador de rango exclusivo:
+\index{range operator}
+
+\begin{verbatim}
+for ($comienzo+1) .. ($final-1) -> $i {...}
+# o, mejor:
+for $comienzo ^..^ $final -> $i {...}
+\end{verbatim}
+\end{description}
+
+\section{?`Qué sigue?}
+
+En un libro como este no se te puede decir todo sobre la
+programación ni sobre Perl~6. A esta altura, deberías saber cómo
+escribir un programa para resolver un problema de dificultad promedio,
+pero mucho se ha hecho en la última década para resolver problemas
+más complejos. Así que, hacia dónde deberíamos dirigirnos desde aquí?
+
+Lee libros sobre algoritmos. Muchos libros excelentes tratan el tema,
+pero especialmente recomiendo los siguientes dos (aunque deberías saber que no
+son fáciles):
+\begin{itemize}
+\item Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, 
+and Clifford Stein, \emph{Introduction to 
+Algorithms}, The MIT Press
+\item Donald Knuth, \emph{The Art of Computer Programming}, Addison Wesley 
+(many volumes, many editions).
+\end{itemize}
+
+Lee otros libros sobre programación, aún sus objetivos sean
+otros lenguajes de programación o no lenguaje en específico.
+Es probable que tengan una perspectiva diferente sobre varios
+temas; esto te ofrecerá una perspectiva diferente y quizás una
+mejor entendimiento, y complementará lo que leíste aquí.
+Lee tutoriales, artículos, blogs, y foros sobre programación.
+Participa cuando puedas. Lee la \emph{Introduction to Perl~6}
+la cual existe en ocho lenguajes diferentes al momento de
+escribir este libro (\url{http://perl6intro.com/}). Lee la
+documentación oficial de Perl~6 (\url{https://docs.perl6.org}).
+\index{Perl~6 documentation}
+
+Este libro tiene más de mil ejemplos de código, lo cual es mucho,
+pero podría ser no suficiente si quieres aprender mucho más.
+Debería leer muestras de código escritas por otros. Mira las 
+librerías o módulos de código abierto e intenta entender lo que 
+hace y cómo lo hacen. Intenta usarlas.
+
+Habiendo dicho eso, debería enfatizar que puedes leer tantos libros
+como quieras sobre la teoría de la natación, pero nunca aprenderás
+a nadar hasta que lo intentes. Lo mismo es cierto sobre aprender 
+a programar y aprender un lenguaje de programación. Escribe nuevo
+código. Modifica los ejemplos existentes y observa lo que pasa. 
+Intenta cosas nuevas. Continúa, sé valiente, sumérgete en la piscina
+y nada. El resultado es:  aprenderás al hacer.
+
+!`Aprender el arte de la programación es divertido. Disfrútalo!
+\index{fun}
+

@@ -1,0 +1,765 @@
+\chapter{La Forma del Programa}
+
+La meta de este libro es enseñarte a pensar como un científico de la 
+computación. Esta manera de pensar combina algunas de las mejores características
+de las matemáticas, la ingeniería, y las ciencias naturales. Al igual que los
+matemáticos, los científicos de la computación usan lenguajes formales para denotar
+ideas (específicamente computaciones). Al igual que los ingenieros, ellos diseñan cosas,
+ensamblan componentes en sistemas y evalúan las compensaciones entre las alternativas.
+Al igual que los científicos, ellos observan el comportamiento de sistemas complejos, 
+formulan hipótesis, y prueban las predicciones. 
+\index{problem solving}
+\index{formal language}
+
+La habilidad más importante de un científico de la computación
+es la {\bf resolución de problemas}. La resolución de problemas se refiere
+a la habilidad de formular problemas, pensar creativamente sobre las
+soluciones, y expresar una solución clara y precisamente. Como sucede, 
+el proceso de aprender a programar es una oportunidad excelente para practicar 
+las habilidades de resolución de problemas. Por esta razón, este capítulo se titula,
+ ``La Forma del Programa.``
+
+En un nivel, aprenderás a programar, la cual es una habilidad útil por sí misma.
+En otro nivel, aprenderás a usar la programación como un medio para un fin. 
+A medida que avancemos, este fin se volverá más claro.
+\index{programming}
+
+
+\section{?`Qué es un Programa?}
+
+Un {\bf programa} es una secuencia de instrucciones que especifica
+como realizar una computación. La computación podría involucrar 
+algo matemático, tal como resolver un sistema de ecuaciones o 
+encontrar las raíces de un polinomio, pero también puede ser algo
+simbólico, tal como buscar y reemplazar texto en un documento, o 
+algo gráfico, como el procesamiento de una imagen o la reproducción 
+de un video.
+\index{program}
+
+Los detalles lucen diferentes en lenguajes distintos, pero hay algunas
+instrucciones básicas que aparecen en casi todos los lenguajes:
+
+\begin{description}
+
+\item[Entrada] Obtener datos desde el teclado, un archivo, la red, 
+un sensor, un chip de GPS o algún otro dispositivo.
+\index{input}
+
+\item[Salida] Mostrar información en la pantalla, guardarla en un archivo,
+ enviarla a través de la red, actuar en un dispositivo mecánico,  etc.
+\index{output}
+
+\item[Matemática] Realizar operaciones matemáticas básicas tales como la adición y
+la multiplicación.
+
+\item[Ejecución condicional] Revisar ciertas condiciones y ejecutar el código 
+apropiadamente.
+\index{conditional!execution}
+
+\item[Repetición] Realizar alguna acción repetidamente, usualmente con alguna
+forma de variación.
+\index{repetition}
+
+\end{description}
+
+Lo creas o no, eso es todo. Cada programa que has usado, sin importar
+que tan complicado sea, está compuesto de instrucciones que lucen exactamente
+como estas. Por lo tanto, puedes imaginarte la programación como el 
+proceso de fragmentar una tarea grande y compleja en piezas más pequeñas
+las cuales se pueden ejecutar con una de estas operaciones básicas.
+\index{instruction}
+
+\index{abstraction}
+\index{subtask}
+Al usar o llamar estas piezas, es posible crear varios niveles
+de \emph{abstracción}. Probablemente te han dicho que las computadoras
+solamente usan 0s y 1s al nivel más fundamental; pero usualmente no 
+nos preocupamos acerca de esto. Cuando usamos un procesador de texto para
+escribir una carta o un reporte, estamos interesados en archivos con textos
+y algunas instrucciones de formato, y con comandos para cambiar el archivo o
+imprimirlo; afortunadamente, no tenemos que preocuparnos sobre los 0s y 1s; el
+procesador de texto nos ofrecemos una vista más general (archivos, comandos, etc,)
+que oculta todos los detalles insignificantes para el usuario. 
+
+
+Similarmente, cuando escribimos un programa, 
+usualmente usamos y/o creamos varias capas de abstracción, 
+para que, por ejemplo, una vez que hayamos creado una tarea pequeña 
+que consulta una base de datos y guarda la información relevante
+en la memoria, no tenemos que preocuparnos sobre los detalles técnicos
+de la tarea. Podemos usarla como una caja negra la cual realizará 
+la operación deseada para nosotros. La esencia de la programación es 
+en gran parte este arte de crear estas capas sucesivas de abstracción 
+de tal manera que realizar tareas de niveles más altos se vuelva 
+relativamente más fácil.
+\index{subtask}
+\index{black box}
+
+
+\section{Ejecutando Perl~6}
+\label{running_perl_6}
+
+Uno de los retos de comenzar con Perl~6 es que podrías tener que instalar
+Perl~6 y cualquier software relacionado en tu computadora. Si estás familiarizado
+con tu sistema operativo, y especialmente te sientes cómodo con shell o
+intérprete de comandos, no tendrás problemas instalando Perl~6. Para los 
+principiantes, puede ser un poco difícil aprender sobre la
+administración de sistema y programación al mismo tiempo.
+
+Para evitar ese problema, podrías comenzar ejecutando Perl~6 en
+el navegador. Podrías usar un motor de búsquedas para encontrar tal
+sitio. Por el momento, la forma más fácil es probablemente conectarse
+al sitio \url{https://glot.io/new/perl6}, donde puedes escribir código
+de Perl~6 en la ventana principal, ejecutarlo, y observar el resultado 
+en la ventana de salida más abajo.
+\index{Perl~6 in a browser}
+
+Tarde o temprano, sin embargo, tendrás que instalar Perl~6 en tu computadora.
+
+La manera más fácil de instalar Perl~6 en tu sistema es descargar 
+Rakudo Star (una distribución de Perl~6 que contiene el {\bf compilador}
+Rakudo de Perl~6, documentación y módulos útiles): sigue las instrucciones 
+para tu sistema operativo en
+\url{http://rakudo.org/how-to-get-rakudo/} y en 
+\url{https://perl6.org/downloads/}. 
+
+\index{Perl 6 version}
+Al momento de escribir este libro, la especificación más reciente del 
+lenguaje es Perl~6 version 6c (v6.c), y el lanzamiento más reciente disponible
+para la descarga es Rakudo Star 2016.07; los ejemplos en este libro deberían
+funcionar con esta versión. Puedes encontrar la versión instalada al ejecutar
+el siguiente comando en el intérprete de comandos de tu sistema operativo:
+\begin{verbatim}
+$ perl6 -v
+This is Rakudo version 2016.07.1 built on MoarVM version 2016.07
+implementing Perl 6.c.
+\end{verbatim}
+
+No obstante, deberías descargar e instalar las versión más reciente que puedas
+encontrar. La salida (advertencias, mensajes de errores, etc.) que obtendrás de tu versión de Perl
+podría en algunos casos diferir de la que se encuentra en este libro, pero estas diferencias
+deberían ser esencialmente cosméticas.
+
+Comparado con Perl~5, Perl~6 no es sólo una nueva versión de Perl.
+Es como la nueva hermana menor de Perl~5. Su objetivo no es reemplazar
+a Perl~5. Perl~6 es realmente un nuevo lenguaje de programación, con una sintaxis
+que es similar a las versiones anteriores de Perl (tal como Perl~5), pero considerablemente
+diferente. Al menos que se indique lo contrario, este libro es sobre Perl~6 solamente, no
+acerca de Perl~5 y versiones anteriores del lenguaje de programación Perl. Desde aquí adelante,
+cuando hablemos de \emph{Perl} sin ninguna cualificación, nos referimos a Perl~6.
+
+
+El {\bf interpretador} de Perl~6 es un programa que lee y  
+ejecuta código de Perl~6. Algunas veces se le llama REPL (por ``read, 
+evaluate, print, loop''). Dependiendo de tu entorno, 
+podría iniciar el interpretador al cliquear un ícono, o al 
+escribir {\tt perl6} en el intérprete de comandos.
+
+Cuando comience, deberías ver algo similar a esto:
+\index{interpreter}
+\index{REPL}
+
+\begin{verbatim}
+To exit type 'exit' or '^D'
+(Possibly some information about Perl and related software)
+> 
+\end{verbatim}
+%
+
+La última línea con {\tt >} es un {\bf prompt} que indica 
+que el REPL está listo para que entres código. Si escribes un 
+línea de código y presiona Enter, el interpretador muestra el resultado: 
+\index{prompt}
+
+\begin{lstlisting}
+> 1 + 1
+2
+>
+\end{lstlisting}
+%
+Puedes escribir {\tt exit} en el prompt de REPL para salir del REPL.
+
+Ahora estás listo para comenzar.
+De aquí en adelante, asumimos que sabes como iniciar el REPL de Perl~6 y 
+ejecutar código.
+
+
+\section{El Primer Programa}
+\label{hello}
+\index{Hello, World}
+
+Tradicionalmente, el primer programa que escribes en un nuevo lenguaje
+se llama ``Hello, World'' porque todo lo que hace es mostrar las palabras
+``Hello, World.''  En Perl~6, luce de la siguiente manera:
+
+\begin{lstlisting}
+> say "Hello, World";
+Hello, World
+>
+\end{lstlisting}
+%
+\index{say function or method}
+\index{function!say}
+Este es un ejemplo de lo que usualmente se conoce como una {\bf sentencia de impresión},
+aunque actualmente no imprime nada sobre el papel y ni siquiera usa la palabra clave
+{\tt print} 
+\footnote{Perl también tiene una función {\tt print},
+pero la función integrada {\tt say} es usada aquí 
+porque agrega un carácter de nueva línea a la salida.}
+(palabras claves son palabras que tienen un significado especial
+en el lenguaje y son usadas por el interpretador para reconocer la
+estructura del programa).
+La sentencia print muestra un resultado en la pantalla. En este caso, 
+el resultado son las palabra {\tt Hello World}.
+%
+Las comillas inglesas en el programa indican el comienzo y final
+del texto a ser mostrado; ellas no aparecen en el resultado.
+\index{quotation mark}
+\index{print statement}
+\index{statement!print}
+
+El punto y medio ``{\tt ;}'' al final de la línea indica
+que este es el final de la sentencia actual. Aunque un punto y medio
+no es técnicamente necesario al ejecutar código simple en el REPL, 
+es usualmente necesario cuando se escribe un programa con varias líneas
+de código, así que podrías ir acostumbrándote a finalizar instrucciones
+de código con un punto y medio.   
+\index{semi-colon}
+
+Otros lenguajes de programación podrían requerir paréntesis
+alrededor de la oración que se quiere mostrar, pero esto es usualmente 
+no necesario en Perl~6.
+
+\section{Operadores Aritméticos}
+\index{operator!arithmetic}
+\index{arithmetic operator}
+
+Después de ``Hello, World,'' el siguiente paso es aritmética. Perl~6 provee {\bf operadores}, los cuales son símbolos especiales que representan computaciones tales como adición y multiplicación.
+
+Los operadores {\tt +}, {\tt -}, {\tt *}, y {\tt /} realizan adición,, sustracción, multiplicación y división, como en los siguientes ejemplos en el REPL:
+
+\begin{lstlisting}
+> 40 + 2
+42
+> 43 - 1
+42
+> 6 * 7
+42
+> 84 / 2
+42
+\end{lstlisting}
+%
+
+Dado que usamos el REPL, no necesitamos una sentencia print explícita
+en estos ejemplos, debido a que el REPL automáticamente imprime el resultado de las sentencias. En un programa real, necesitarías una sentencia print para mostrar el resultado, como veremos más adelante. Similarmente, si ejecutas sentencias de Perl en el navegador mencionado en la sección~\ref{running_perl_6}, necesitarás una sentencia print para mostrar el resultado de estas operaciones.
+Por ejemplo:
+
+\begin{lstlisting}
+say 40 + 2;   # -> 42
+\end{lstlisting}
+
+
+Finalmente, el operador {\tt **} realiza potenciación; es decir que eleva un número a un exponente:
+
+\begin{lstlisting}
+> 6**2 + 6
+42
+\end{lstlisting}
+%
+En otros lenguages, el signo de intercalación (``\verb"^"'') o el acento circunflejo es usado para la potenciación, pero en Perl~6 se utiliza para otros propósitos.
+%
+\index{set}
+\index{set!operator}
+\index{operator!set}
+
+
+\section{Valores y Tipos}
+\label{values_and_types}
+\index{value}
+\index{type}
+\index{string}
+
+Un {\bf valor} es una de las cosas básicas con la cual un programa funciona,
+como una letra o un número. Entre algunos de los valores que hemos visto hasta ahora
+están {\tt 2}, {\tt 42}, y \verb'"Hello, World"'.
+
+Estos valores pertenecen a diferentes {\bf tipos}: 
+{\tt 2} es un número {\bf entero}, {\tt 40 + 2} es también un entero, 
+{\tt 84/2} es un número {\bf racional}, y  \verb"'Hello, World'" es una
+{\bf cadena de texto}, llamada así porque los caracteres que contiene están
+unidos juntos.
+\index{integer}
+\index{floating-point}
+
+Si no estás seguro del tipo que un valor tiene, Perl puede decirte:
+
+\begin{lstlisting}
+> say 42.WHAT;
+(Int)
+> say (40 + 2).WHAT;
+(Int)
+> say (84 / 2).WHAT;
+(Rat)
+> say (42.0).WHAT
+(Rat)
+> say ("Hello, World").WHAT;
+(Str)
+>
+\end{lstlisting}
+%
+En estas instrucciones, a {\tt .WHAT} se le conoce como un método 
+de introspección, el cual es un tipo de método que te dice de \emph{que}
+tipo la expresión precedente es. {\tt 42.WHAT} es un ejemplo de la sintaxis 
+del punto usada para la invocación de método: invoca el método integrado
+{\tt .WHAT} sobre la expresión ``42'' (el invocante) y provee la función {\tt say}
+con el resultado de esta invocación, que en este caso es el tipo de la expresión.
+\index{WHAT}
+\index{introspection}
+\index{string!type}
+\index{type!Str}
+\index{Int type}
+\index{type!Int}
+\index{rational!type}
+\index{type!Rat}
+\index{invocant}
+\index{invocation}
+
+No resulta sorprendente que los números enteros pertenecen al tipo
+{\tt Int}, las cadenas de texto pertenecen a {\tt Str}, y los números racionales
+pertenecen a {\tt Rat}. 
+
+Aunque {\tt 40 + 2} y {\tt 84 / 2} parecen arrojar el mismo resultado (42),
+la primera expresión devuelve un entero ({\bf Int}), y la segunda devuelve
+un número racional ({\bf Rat}). El número 42.0 es también un número racional.
+
+El tipo racional no es algo muy común en la mayoría de lenguajes de programación.
+Internamente, estos números se almacenan como dos enteros los cuales representan
+el numerador y el denominador (en sus términos más simples). Por ejemplo, el número
+17.3 podría ser almacenado como dos enteros, 173 y 10, lo cual significa que
+Perl está realmente almacenando la fracción $\frac{173}{10}$. Aunque esto no es 
+usualmente soportado (excepto para introspección o depuración), puedes accesar estos
+dos enteros con los métodos siguientes:
+
+\begin{lstlisting}
+> my $num = 17.3;
+17.3
+> say $num.WHAT;
+(Rat)
+> say $num.numerator, " ", $num.denominator; # say puede imprimir una lista
+173 10
+> say $num.nude;      # "nude" significa (nu)merator-(de)nominator
+(173 10) 
+\end{lstlisting}
+\index{numerator method}
+\index{method!numerator}
+\index{denominator method}
+\index{method!denominator}
+\index{nude method}
+\index{method!nude}
+%
+Esto puede parecer anecdótico, pero por razones más allá del
+ámbito de este libro, esto permite que Perl~6 pueda llevar a cabo 
+operaciones aritméticas sobre números racionales con un nivel 
+de precisión mucho mayor que en los lenguajes de programación más comunes.
+Por ejemplo, si intentas llevar a cabo la siguiente operación aritmética 
+\verb'0.3 - 0.2 - 0.1', con los lenguajes de programación más generales 
+(y dependiendo en la arquitectura de tu máquina), podrías obtener un resultado
+tal como -2.77555756156289e-17 (en Perl~5), 
+-2.775558e-17 (en C con gcc), o -2.7755575615628914e-17 
+(Java, Python~3, Ruby, TCL). No te preocupe acerca de estos valores si no
+los entiendes, digamos que son extremadamente pequeños, pero no son 0,
+mientras que, obviamente, el resultado debería ser realmente cero. En 
+Perl~6, el resultado es 0 (hasta el quinceavo dígito decimal):
+\begin{lstlisting}
+> my $result-should-be-zero = 0.3 - 0.2 - 0.1;
+0
+> printf "%.50f", $result-should-be-zero; # imprime 50 dígitos decimales
+0.00000000000000000000000000000000000000000000000000
+\end{lstlisting}
+%
+En Perl~6, podrías hasta comparar el resultado de la operación con 0:
+\begin{lstlisting}
+> say $result-should-be-zero == 0;
+True
+\end{lstlisting}
+%
+No hagas tal comparación con los lenguajes de programación más comunes;
+es posible que obtengas un resultado erróneo.
+
+?`Qué acerca de valores como \verb'"2"' y \verb'"42.0"'?
+Ellos parecen números, pero están en comillas inglesas como las 
+cadenas de texto.
+\index{quotation mark}
+
+\begin{lstlisting}
+> say '2'.perl; # perl devuelve una representación de Perl del invocante
+"2"
+> say "2".WHAT;
+(Str)
+> say '42'.WHAT;
+(Str)
+\end{lstlisting}
+%
+\index{invocant}
+
+Ellos son cadenas de texto porque están definidos dentro de comillas inglesas.
+Aunque Perl usualmente realizará las conversiones necesarias para ti, es generalmente
+buena práctica no usar comillas inglesas si tu valor está supuesto a ser un
+número.
+
+Cuando escribes un número entero largo, podrías estar tentado a usar comas
+entre grupos de dígitos, como en {\tt 1,234,567}. Esto no es un {\em entero}
+legal en Perl~6, pero sí es una expresión legal:
+
+\begin{lstlisting}
+> 1,234,567
+(1 234 567)
+>
+\end{lstlisting}
+%
+!`Eso es actualmente una lista de tres números enteros diferentes, 
+y no lo que esperábamos! 
+
+\begin{lstlisting}
+> say (1,234,567).WHAT
+(List)
+\end{lstlisting}
+
+Perl~6 interpreta {\tt 1,234,567} como una secuencia de tres números enteros
+separados por coma. Como veremos más adelante, la coma es un separador usado
+para construir listas.
+\index{comma}
+
+No obstante, puedes separar grupos de dígitos con una barra baja ``\verb"_"''
+para mejorar la legibilidad y para obtener un entero propio:
+\index{underscore character}
+
+\begin{lstlisting}
+> 1_234_567
+1234567
+> say 1_234_567.WHAT
+(Int)
+>
+\end{lstlisting}
+%
+
+\index{sequence}
+
+
+
+\section{Lenguajes Formales y Naturales}
+\index{formal language}
+\index{natural language}
+\index{language!formal}
+\index{language!natural}
+
+Los {\bf lenguajes naturales} son los lenguajes que las personas hablan,
+como el inglés, el español y el francés.  Ellos no fueron diseñados por personas
+(aunque la gente trata de imponer cierto orden sobre ellos); ellos evolucionaron
+naturalmente.
+
+Los {\bf lenguajes formales} son lenguajes que son diseñados por personas
+para aplicaciones específicas. Por ejemplo, la notación que los matemáticos 
+utilizan es un lenguaje formal que es particularmente buena para denotar relaciones
+entre números y símbolos. Los químicos usan un lenguaje formal para representar
+la estructura química de las moléculas. Y más importante:
+
+\begin{quote}
+{\bf Los lenguajes de programación son lenguajes formales que han sido diseñados
+para expresar computaciones.}
+\end{quote}
+
+Los lenguajes formales tienen usualmente {\bf reglas sintácticas} estrictas
+que gobiernan la estructura de las sentencias. Por ejemplo, en matemáticas la
+sentencia $3 + 3 = 6$ es sintácticamente correcta pero $3 + = 3 \$ 6$ no lo es.
+En química  $H_2O$ es una fórmula sintácticamente correcta, pero $_2Zz$ no lo es.
+\index{syntax}
+
+Las reglas sintácticas vienen en dos formas, pertenecientes a los {\bf tókenes} 
+y la {\bf estructura}. Los tókenes son los elementos básicos del lenguaje, 
+tales como las palabras, números, y elementos químicos. Uno de los problemas
+con $3 += 3 \$ 6$ es que \( \$ \) no es un token legal en matemáticas (
+al menos eso es lo que sé).  Similarmente, $_2Zz$ no es legal porque
+no hay elemento químico con la abreviación $Zz$.
+\index{token}
+\index{structure}
+
+La estructura es el segundo tipo de la regla sintáctica, la cual
+se concierne con la forma en que los tókenes son combinados. La ecuación
+$3 += 3$  es ilegal en matemáticas porque, aunque $+$ y $=$ son 
+tókenes legales, no puedes tenerlos uno detrás del otro. De manera similar,
+en una fórmula química, el subíndice que representa el número de átomos en un
+compuesto químico viene después del nombre del elemento, no antes.
+
+% Instead of using the original sentence in English,
+% I translated it to Spanish (using Spanish as the base language) so that the speaker has a better
+% understanding of the difference between tokens and structure.
+Esto es un@ oración en español bien e\$tructurada con t*kenes
+inválidos. En esta oración todos tókenes los válidos son, pero la
+inválida estructura es.
+
+Cuando lees una oración en español o una sentencia en un lenguaje
+formal, debes descifrar la estructura (aunque en en un lenguaje natural
+lo haces inconscientemente). Este proceso es conocido como {\bf análisis 
+sintáctico} ({\em parsing} en inglés).
+\index{parse}
+
+Aunque los lenguajes formales y naturales comparten muchas características en común
+---tókenes, estructura, y sintaxis---también hay algunas diferencias:
+\index{ambiguity}
+\index{redundancy}
+\index{literalness}
+
+\begin{description}
+
+\item[Ambigüedad] Los lenguajes naturales están llenos de ambigüedades,
+y las personas lidian con ellas a través del uso de contexto y cualquier
+información adicional. Los lenguajes formales son diseñados para no tener
+ambigüedades, de tal manera que cualquier oración tiene exactamente un solo
+significado.
+
+\item[Redundancia] Para compensar por las ambigüedades y reducir los malentendidos
+, los lenguajes naturales hacen uso de muchas redundancias. Como resultado,
+ellos tienden a ser verbosos. En cambio, los lenguajes formales son menos
+redundantes y más concisos.
+
+\item[Literalidad] Los lenguajes naturales están llenos de modismos
+y metáforas. Si decimos, ``Hablar por los codos,`` es probable que nadie
+está hablando por los codos literalmente (este modismo significa que una persona
+habla demasiado). Los lenguajes formales hacen referencias exactas a lo que quieren
+decir.
+
+\end{description}
+
+Debido a que todos crecemos hablando lenguajes naturales, es un poco 
+difícil ajustarse a los lenguajes formales. La diferencia entre un lenguaje formal
+y un lenguaje natural es como la diferencia entre la poesía y la prosa, pero
+más definida: \index{poetry} \index{prose}
+
+\begin{description}
+
+\item[Poesía] La palabras son usadas tanto pos sus sonidos como
+sus significados, y el poema completo crea un efecto o respuesta
+emocional. En este caso, la ambigüedad no es solo común sino usualmente
+deliberada. 
+
+\item[Prosa] El significado literal de las palabras es más importante, y la estructura
+contribuye más al significado. La prosa es más amena para el análisis que la poesía
+aunque es muchas veces aún ambigua.
+
+\item[Programas] El significado de un programa de computadora es literal y 
+no tiene ambigüedades. Dicho programa puede ser comprendido enteramente a través
+del análisis de los tókenes y la estructura.
+
+\end{description}
+
+Los lenguajes formales son mucho más densos que los lenguajes naturales,
+y por lo tanto se tarda más en leerlos. De igual manera, la estructura
+es importante y algunas veces, no siempre es eficiente leerlos de arriba
+hacia abajo o de izquierda a derecha. Por lo contrario, mejor aprende
+a parsear el programa en tu cabeza, identificando los tókenes e interpretando
+la estructura. Finalmente, los detalles importan. Pequeños errores en 
+la ortografía y la puntuación que no son de mucha importancia en los 
+lenguajes naturales, pueden hacer una gran diferencia en un lenguaje formal.
+
+
+\section{Depuración de Programas}
+\index{debugging}
+
+Los programadores cometen errores. A los errores de programación 
+se les conoce usualmente como {\bf bichos} ({\em bugs}) y el proceso 
+de eliminación de estos errores se llama {\bf depuración de programas} 
+({\em debugging}).
+\index{debugging}
+\index{bug}
+
+La programación, y especialmente la depuración de programas, algunas veces
+puede aflorar emociones fuertes. Si estás batallando con un error difícil, podrías
+sentirte enojada/o, avergonzada/o o desanimada/o.
+
+Existe evidencia que sugiere que las personas responden naturalmente
+a las computadoras como si fueran personas. Cuando funcionan adecuadamente,
+las consideramos nuestras compañeras, y cuando son obstinadas y groseras, 
+nosotros nos dirigimos hacia ellas de la misma manera que lo 
+haríamos con personas obstinadas y groseras\footnote{Reeves and Nass, {\it The Media
+    Equation: How People Treat Computers, Television, and New Media
+    Like Real People and Places}, (Center for the Study of Language and Information, 2003).)}.
+\index{debugging!emotional response}
+\index{emotional debugging}
+
+Prepararse de antemanos para lidiar con estas reacciones
+puede ser beneficioso. Una estrategia es tratar de pensar acerca
+de la computadora como si fuera un empleado con ciertas fortalezas,
+como la velocidad y la precisión, y con debilidades particulares 
+tales como la falta de empatía y la inhabilidad para comprender
+la perspectiva general.
+
+Tu trabajo es ser un buen gerente: encuentra maneras de tomar
+ventaja de las fortalezas y mitigar las debilidades. Y encontrar maneras
+de usar tus emociones para familiarizarte y envolverte con el problema
+sin dejar que tus reacciones interfieran con tu habilidad de trabajar 
+efectivamente. 
+
+Aprender a depurar puede ser frustrante, pero es una habilidad valiosa
+que será muy útil para muchas actividades más allá de la programación. 
+Al final de cada capítulo hay una sección, como esta, con sugerencias para la
+depuración. !`Espero que sean útiles!
+
+
+\section{Glosario}
+
+\begin{description}
+
+\item[Resolución de problemas]  El proceso de formular un problema, 
+encontrar una solución y expresarla adecuadamente.
+\index{problem solving}
+
+\item[Abstracción] Una manera de proveer una perspectiva de alto nivel
+de una tarea y ocultar los detalles técnicos con el propósito de hacer 
+la tarea más simple.
+
+\item[Interpretador]  Un programa que lee otro programa y lo ejecuta.
+\index{interpret}
+
+\item[Compilador]  Un programa que lee otro programa y lo transforma en código ejecutable
+de computadora; solía ser que había una gran diferencia entre lenguajes
+interpretados y lenguajes compilados, sin embargo esta distinción se ha vuelto
+más difusa en las últimas dos décadas.
+\index{compiler}
+
+\item[Prompt] El interpretador muestra caracteres en la pantalla para indicar 
+que está listo para recibir entrada de texto por el usuario.
+\index{prompt}
+
+\item[Program] Un conjunto de instrucciones que especifica una computación.
+\index{program}
+
+\item[Sentencia print]  Una instrucción que causa que el interpretador de Perl~6
+muestre un valor en la pantalla. 
+\index{print statement}
+\index{statement!print}
+
+\item[Operador]  Un símbolo especial que representa una simple computación como
+adición, multiplicación, o la concatenación de una cadena de texto.
+\index{operator}
+
+\item[Valor]  Una de las unidades básicas de dato, como un número o una
+cadena de texto, que un programa manipula.
+\index{value}
+
+\item[Tipo] Una categoría de valores. Los tipos que hemos visto hasta
+ahora son números enteros (tipo {\tt Int}), números racionales (tipo {\tt Rat}),
+y cadenas de texto (tipo {\tt Str}).
+\index{type}
+
+\item[Entero] Un tipo que representa valores enteros.
+\index{integer}
+
+\item[Racional] Un tipo que representa números con partes fraccionales. 
+Internamente, Perl almacena un racional como dos números enteros
+que representan respectivamente el numerador y denominador de una 
+fracción.
+\index{rational}
+
+\item[Cadena de texto] Un tipo que representa secuencias de caracteres.
+\index{string}
+
+\item[Lenguaje natural]  Cualquiera de los lenguajes que las 
+personas hablan y que han evolucionado naturalmente.
+\index{natural language}
+
+\item[Lenguaje formal]  Cualquiera de los lenguajes que las personas
+han diseñado para propósitos específicos tales como la representación de 
+ideas matemáticas o programas de computadoras; todos los lenguajes de programación
+son lenguajes formales.
+\index{formal language}
+
+\item[Token]  Uno de los elementos básicos de la estructura sintáctica de 
+un programa. El concepto es análogo a una palabra en un lenguaje natural.
+\index{token}
+
+\item[Sintaxis] Las reglas que dictan la estructura de un programa.
+\index{syntax}
+
+\item[Análisis sintáctico] Examinar un programa y analizar su estructura sintáctica.
+\index{parse}
+
+\item[Bicho] Un error en un programa.
+\index{bug}
+
+\item[Depuración] El proceso por el cual se encuentran y corrigen errores de programación.
+\index{debugging}
+
+\end{description}
+
+
+\section{Ejercicios}
+
+\begin{exercise}
+
+Es una buena idea que lea este libro al frente de una computadora
+para que puedas intentar los ejemplos según avanzas. 
+
+Cuando experimentes con una característica nueva, 
+trata de cometer errores. Por ejemplo, en el programa ``Hello, world!'',
+qué pasa si no incluye una de las comillas inglesas? ?`Qué pasa si no
+deletreas {\tt say} correctamente?
+\index{error message}
+
+Este tipo de experimento te ayuda a recordar lo que lees; además
+te ayuda cuando está programando porque te acostumbras y aprendes
+lo que significan los mensajes de error. Es mejor cometer errores
+ahora a propósito que cometerlos después por accidente.
+
+Ten pendiente que la mayoría de los ejercicios en este libro
+tienen soluciones que se encuentran en el apéndice. No obstante, 
+la intención de los ejercicios en este capítulo y en el siguiente 
+no es para resolver un problema actual. Están diseñados para que 
+experimentes con el interpretador de Perl; no hay una solución correcta, 
+solo intenta lo que se propone en los ejercicios para 
+obtener un sentido de cómo funciona.
+
+\begin{enumerate}
+
+\item Si intentas imprimir una cadena de texto, qué pasa si no incluye 
+una de las comillas inglesas, o ambas?
+
+\item Puedes usar el signo de menos para hacer números negativos como 
+{\tt -2}. ?`Qué pasa si pones un signo de adición frente al número?
+?`Qué acerca de {\tt 2++2}?
+
+\item En notación matemática, ceros al principio son aceptables, como en 
+{\tt 02}. ?`Qué pasa si intentas esto en Perl?
+
+\item ?`Qué pasa si tienes dos valores sin ningún operador entre ellos,
+como en {\tt say 2 2;}?
+
+\end{enumerate}
+
+\end{exercise}
+
+
+
+\begin{exercise}
+
+Comienza con el interpretador REPL de Perl~6 y úsalo como una calculadora.
+
+\begin{enumerate}
+
+\item ?`Cuántos segundos hay en 42 minutos, 42 segundos?
+
+\item ?`Cuántas millas hay en 10  kilómetros? Pista: Hay 1.61
+  kilómetros en una millas.
+
+\item Si haces una corrida de 10 kilómetros en 42 minutos, 42 segundos,
+ cuál es tu rapidez promedia (tiempo por milla en minutos y segundos)? 
+ ?`Cuál es tu rapidez promedia en millas por horas?
+
+\index{calculator}
+\index{running pace}
+
+\end{enumerate}
+
+\end{exercise}
+
+
