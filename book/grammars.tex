@@ -1076,7 +1076,7 @@ grammar Gramática-JSON {
 	rule par         { <cadena>':' <valor> }
 	rule array       { '[' <listaValor> ']'}
 	rule listaValor  {  <valor> * % \, }
-	token cadena     { \" ( <[ \w \s \- ' ]>+ ) \" }
+	token cadena     { \"  <[ \w \s \- ' ]>+  \" }
 	token número     {
 		[\+|\-]?
 		[ \d+ [ \. \d+ ]? ] | [ \. \d+ ]
@@ -1228,8 +1228,15 @@ token valor { <val=objeto> | <val=array> | <val=cadena>
 }
 \end{verbatim}
 
-Ahora podemos llamar nuestra gramática con la
-siguiente sintaxis:
+También necesitamos añadir paréntesis de captura al token {\tt cadena}
+para que el método {\tt cadena} sea capaz de extraer la cadena de texto
+correspondiente:
+
+\begin{verbatim}
+token cadena   {  \" ( <[ \w \s \- ' ]>+ ) \"  }
+\end{verbatim}
+
+Ahora podemos llamar nuestra gramática con la siguiente sintaxis:
 
 \begin{verbatim}
 my $j-acciones = acciones-JSON.new();
@@ -1422,10 +1429,10 @@ programa. Puedes insertar una sentencia de impresión en
 una regla nombrada. Intentemos cambiar el token TOP a esto:
 
 \begin{verbatim}
-    token TOP { \s* <año> { say "año coincidido"; }
-                '-' <mes> { say "mes coincidido";}
-                '-' <día> { say "día coincidido";  }
-              }
+token TOP { \s* <año> { say "año coincidido"; }
+            '-' <mes> { say "mes coincidido";}
+            '-' <día> { say "día coincidido";  }
+}
 \end{verbatim}
 
 Esto muestra la siguiente salida:
