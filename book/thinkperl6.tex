@@ -91,7 +91,9 @@
 	showspaces=false,
     sensitive=true,
     extendedchars=true,
-    morecomment=[l];,
+    morecomment=[l],
+    morestring=[d]{'},
+    morestring=[d]{"},
     % Perl 6 Keywords
     morekeywords={BEGIN, CATCH, CHECK, CONTROL, END, ENTER, FIRST, INIT, KEEP, LAST, LEAVE,
         NEXT, POST, PRE, START, TEMP, UNDO, as, assoc, async, augment, binary,
@@ -234,7 +236,7 @@
 \frontmatter
 
 % insert cover page
-\includepdf{thinkperl6_cover.pdf} 
+\includepdf{figs/thinkperl6_cover.pdf} 
 
 % PLASTEX ONLY
 \ifplastex
@@ -404,7 +406,7 @@ con Allen B. Downey}
 
 \part{Comenzando con lo Básico}
 
-\input{intro_part_1}
+\input{intro_part_1.tex}
 
 \input{way_of_program}
 
@@ -455,3 +457,4 @@ con Allen B. Downey}
 
 
 \end{document}
+
