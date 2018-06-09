@@ -1,136 +1,134 @@
-\chapter{Functional Programming in Perl}
+\chapter{Programación Funcional en Perl}
 \label{functional programming}
 \index{functional programming}
 
-Functional programming is a programming paradigm that treats 
-computation as the evaluation of mathematical functions 
-and avoids changing-state and mutable data. It is a 
-declarative programming paradigm, which means programming 
-is done with expressions or declarations instead of 
-statements. In functional code, the output value of a function 
-depends only on the arguments that are input to the function, 
-so calling a function twice with the same argument will produce the 
-same result each time. Eliminating side effects, i.e., changes 
-in state that do not depend on the function inputs, can make 
-it much easier to understand and predict the behavior of a 
-program, which is one of the key motivations for the 
-development of functional programming.
+La programación funcional es un paradigma de programación que 
+trata una computación como la evaluación de funciones matemáticas
+y evita el cambio de estado y datos mutables. Es un paradigma de
+programación declarativo, lo cual significa que la programación
+se hace con expresiones o declaraciones en lugar de sentencias.
+En el código funcional, el valor de la salida de una función 
+depende solamente de los argumentos que son la entrada de la
+función, así que llamar una función dos veces con el mismo argumento
+producirá el mismo resultado cada vez. La eliminación de los efectos 
+secundarios, i.e., cambios en el estado que no dependen en las
+entradas de la función, hacen que entender y predecir el comportamiento
+de un programa sea más fácil, lo cual es una de las principales 
+motivaciones para el desarrollo de la programación funcional.
 
-Perl is not a functional language in the sense that it  
-also uses several other programming paradigms that we have seen 
-abundantly throughout this book. It does however 
-offer extensive functional programming features and 
-capabilities, some of which have been introduced in 
-various sections of this book and will be briefly 
-reviewed here before we get further.
+
+Perl no es un lenguaje funcional dado que también usa otros
+paradigmas de programación que hemos visto en abundancia en
+este libro. Sin embargo, Perl ofrece características y capacidades
+extensivas de la programación funcional, algunas de las cuales
+han sido introducidas en varias secciones de este libro y 
+que revisaremos brevemente antes de entrar en más detalles.
 \index{programming paradigm}
 
-\section{Higher-Order Functions}
+\section{Funciones de Orden Superior}
 \index{higher-order function}
 
-As early as Chapter~\ref{funcchap} on functions and 
-subroutines, in Section~\ref{first_class} 
-(p.~\pageref{first_class}), we have seen that functions,  
-subroutines, and other code objects are \emph{first-class 
-objects} or \emph{first-class citizens} in Perl, which 
-means that they can be passed around as values. A Perl~6 
-function is a value you can assign to a variable or pass 
-around as an argument to another function or a return value from 
-another function.
+Desde el capítulo~\ref{funcchap} sobre funciones y subrutinas,
+en la Sección~\ref{first_class} (p.~\pageref{first_class}),
+hemos observado que funciones,subrutinas, y otros objetos de
+código son \emph{objetos de primera clase} o 
+\emph{ciudadanos de primera clase} en Perl, lo cual significa que
+pueden pasarse como valores. Una función en Perl~6 es
+un valor que puedes asignar a una variable o pasar como
+un argumento a otra función o un valor de retorno desde otra
+función.
 \index{first-class object}
 \index{object, first-class}
 \index{first-class citizen}
 \index{citizen, first-class}
 
-\subsection{A Refresher on Functions as First-Class Objects}
+\subsection{Breve Actualización: Funciones como Objetos de Primera Clase}
 \label{fco-refresher}
 
-Our initial very simple example of a higher-order function 
-was something like this:
+Nuestro ejemplo inicial muy simple de una función de orden 
+superior fue algo así:
 
 \begin{verbatim}
-sub do-twice(&code) {
-    &code(); 
-    &code();
+sub do-twice($código) {
+	$código();
+	$código();
 }
-sub greet {
-    say "Hello World!";
+sub saludar {
+    say "¡Hola Mundo!";
 }
-do-twice &greet;
+do-twice &saludar;
 \end{verbatim}
 
-in which the {\tt greet} subroutine was passed as an 
-argument to the {\tt do-twice} subroutine, with the 
-effect of printing the greeting message twice. A 
-function that is passed as an argument to another function 
-is often called a \emph{callback function}.
+en el cual la subrutina {\tt saludar} se pasa como un 
+argumento a la subrutina {\tt do-twice}, con el efecto
+de imprimir el saludo dos veces. Una función que se pasa
+como un argumento a otra función es llamada usualmente
+una \emph{función retrollamada} (del inglés \emph{callback function}).
 \index{callback function}
 
 \index{sigil}
-The \verb"&" sigil placed before the {\tt greet} 
-subroutine name in the argument list (as well as before 
-the {\tt code} parameter in the signature and in the 
-body of the {\tt do-twice} subroutine) tells Perl 
-that you are passing around a subroutine or some 
-other callable code object.
+El sigilo \verb|&| colocado antes del nombre de la subrutina {\tt saludar}
+en la lista de argumentos (como también antes del parámetro 
+{\tt code} en la signatura y en el cuerpo de la subrutina {\tt do-twice})
+le dice a Perl que estás pasando una subrutina o otro
+objeto código que puede ser llamado.
 % TODO: get these entries working in plastex
 \ifplastex \else
 \index{\& sigil@\texttt{\&} sigil}
 \fi
 
-In computer science, a subroutine that can take 
-another subroutine as an argument is sometimes 
-called a \emph{higher-order function}.
+En la ciencia de la computación, una subrutina que puede tomar
+otra subrutina como un argumento es algunas veces llamada
+una \emph{función de orden superior}.
 \index{higher-order function}
 \index{function!higher-order}
 
-More interesting examples of higher-order function 
-are found with the {\tt reduce}, {\tt map}, and
-{\tt grep} functions studied in Section~\ref{map_filter} 
-(p.~\pageref{map_filter}), as well as the {\tt sort} 
-function (Section~\ref{sorting} and Section~\ref{advanced_sort}).
+Más ejemplos interesantes de funciones de orden superior
+pueden encontrarse con las funciones {\tt reduce}, {\tt map}, y
+{\tt grep} que estudiamos en la Sección~\ref{map_filter} 
+(p.~\pageref{map_filter}), al igual que la función {\tt sort}
+(Section~\ref{sorting} and Section~\ref{advanced_sort}).
 \index{map}
 \index{reduce}
 \index{grep}
 
-Let's consider for example the task of sorting by date 
-records consisting of an identifier followed by a date 
-in the DD-MM-YYYY format, such as ``id1;13-05-2015'' 
-or ``id2;17-04-2015.'' The records need quite a bit of 
-transformation before we can compare them for the sake 
-of finding the chronological order in which they should 
-be sorted, so we might write a separate comparison 
-function:
+Consideremos por ejemplo la tarea de ordenar registros por fechas,
+los cuales consisten de un identificador seguido por una fecha
+en el formato DD-MM-YYYY, tal como ``id1;13-05-2015'' o ``id2;17-04-2015''.
+Los registros necesitan un poco de transformación antes
+que podamos compararlos con el propósito de encontrar el orden
+cronológico en el cual deberían ser ordenados, así que podríamos
+una función separada para la comparación:
 \index{sort}
 
 \begin{verbatim}
-sub compare ($rec1, $rec2) {
-    my $cmp1 = join ",", reverse split /<[;-]>/, $rec1;
-    my $cmp2 = join ",", reverse split /<[;-]>/, $rec2;
+sub comparar ($reg1, $reg2) {
+    my $cmp1 = join ",", reverse split /<[;-]>/, $reg1;
+    my $cmp2 = join ",", reverse split /<[;-]>/, $reg2;
     return $cmp1 cmp $cmp2;
 }   
 \end{verbatim}
 
-Each modified record is constructed by chaining three 
-functions. These lines should be read from right to left: 
-first, the input value is split into four items; these 
-items are then reversed and then joined, so that the result 
-for ``id1;13-05-2015'' is ``2015,05,13,id1,'' which is 
-adapted for a comparison with the {\tt cmp} operator. We 
-will come back soon to this form of pipeline programming 
-and others ways of performing these operations. 
+Cada registro modificado se construye al encadenar tres funciones.
+Estas líneas deberían leerse de derecha a izquierda: primero, 
+el valor de entrada se separa en cuatro artículos; estos artículos
+son después invertidos y consecuentemente unidos. Así que el resultado
+para ``id1;13-05-2015'' es ``2015,05,13,id1'', el cual es adaptado
+para una comparación con el operador {\tt cmp}. Más tarde regresaremos
+a esta forma de programación de tubería y otras maneras de realizar 
+estas operaciones. 
 \index{cmp operator}
 \index{operator!cmp}
 \index{pipeline programming}
 
-We can now pass the {\tt compare} subroutine to the 
-{\tt sort} function:
+Ahora podemos pasar la subrutina {\tt comparar} a la función
+{\tt sort}:
 \begin{verbatim}
-.say for sort &compare, <id1;13-05-2015 id2;17-04-2015 
+.say for sort &comparar, <id1;13-05-2015 id2;17-04-2015 
                          id3;21-02-2016 id4;12-01-2015>;
 \end{verbatim}
 
-This displays:
+Esto muestra:
 \begin{verbatim}
 id4;12-01-2015
 id2;17-04-2015
@@ -138,10 +136,11 @@ id1;13-05-2015
 id3;21-02-2016
 \end{verbatim}
 
-Please note that this is provided as an example of callback 
-functions used with the {\tt sort} built-in function. We will 
-see at the end of the next subsection a simpler way to accomplish 
-the same type of sort using an anonymous subroutine. 
+Por favor nota que esto se provee como un ejemplo de funciones 
+retrollamadas usadas con la función integrada {\tt sort}.
+Veremos al final de la siguiente subsección una manera más simple
+de lograr el mismo tipo de ordenamiento usando una función 
+anónima.
 
 \subsection{Anonymous Subroutines and Lambdas}
 \index{lambda}
