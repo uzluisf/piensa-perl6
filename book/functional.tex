@@ -70,7 +70,7 @@ una \emph{función retrollamada} (del inglés \emph{callback function}).
 El sigilo \verb|&| colocado antes del nombre de la subrutina {\tt saludar}
 en la lista de argumentos (como también antes del parámetro 
 {\tt code} en la signatura y en el cuerpo de la subrutina {\tt do-twice})
-le dice a Perl que estás pasando una subrutina o otro
+le dice a Perl que estás pasando una subrutina u otro
 objeto código que puede ser llamado.
 % TODO: get these entries working in plastex
 \ifplastex \else
@@ -142,363 +142,368 @@ Veremos al final de la siguiente subsección una manera más simple
 de lograr el mismo tipo de ordenamiento usando una función 
 anónima.
 
-\subsection{Anonymous Subroutines and Lambdas}
+\subsection{Subrutinas Anónimas y Lambdas}
 \index{lambda}
 \index{anonymous subroutine}
 
-We have also seen that a subroutine does not need to 
-have a name and can be \emph{anonymous}. For example, 
-it may be stored directly in a scalar variable:
+Hemos visto que una subrutina no necesita tener un nombre
+y que puede ser \emph{anónima}. Por ejemplo, puede ser almacenada
+en una variable escalar directamente:
 \index{anonymous function}
 \index{function!anonymous}
 
 \begin{verbatim}
-my $greet = sub {
-    say "Hello World!";
+my $saludar = sub {
+    say "Hola Mundo!";
 };
-do-twice $greet;                 # prints "Hello World" twice
+do-twice $saludar;                 # imprime "Hola Mundo!" dos veces
 \end{verbatim}
 
-We don't even need to store the code of the anonymous function 
-in the \verb'$greet' variable; we can pass it directly as an 
-argument to the {\tt do-twice} subroutine:
+Ni siquiera necesitamos almacenar el código de la función
+anónima en la variable \verb|$saludar|; de hecho, podemos
+pasar dicho código directamente como un argumento a la 
+subrutina {\tt do-twice}:
 
 \begin{verbatim}
 
-do-twice(sub {say "Hello World!"} );
+do-twice( sub {say "Hola Mundo!"} );
 \end{verbatim}
 
-Since our anonymous subroutine does not take any argument 
-and does not return a useful value, we can simplify the 
-syntax further and pass a simple anonymous code block 
-to {\tt do-twice}:
+Dado que nuestra subrutina anónima no toma ningún argumento
+y tampoco devuelve un valor útil, podemos simplificar la
+sintaxis más aún y pasar un bloque de código anónimo simple
+a {\tt do-twice}:
 
 \begin{verbatim}
 
-do-twice {say "Hello World!"};   # prints "Hello World" twice
+do-twice {say "Hola Mundo!"};   # imprime "Hola Mundo!" dos veces
 \end{verbatim}
 
-You've already seen several useful examples of anonymous 
-subroutines in this book (see Section~\ref{map_filter} 
-for explanations or details):
+Ya has visto varios ejemplos útiles de subrutinas anónimas en este
+libro (ver Sección~\ref{map_filter} para más detalles):
 \begin{itemize}
-\item With the {\tt reduce} function to compute the sum of 
-the first 20 integers:
+\item Con la función {\tt reduce} para computar la suma de 
+los primeros 20 números enteros:
 \index{reduce function}
 \begin{verbatim}
 
-my $sum = reduce { $^a + $^b }, 1..20; # -> 210
+my $suma = reduce { $^a + $^b }, 1..20; # -> 210
 \end{verbatim}
-\item With the {\tt map} function to capitalize the first 
-letter of a list of cities (using the {\tt tc} built-in):
+\item Con la función {\tt map} para convertir la primera
+letra de una lista de ciudades en mayúscula (usando la función
+integrada {\tt tc}):
 \index{tc function}
 \index{map function}
 \begin{verbatim}
-> .say for map {.tc}, <london paris rome washington madrid>;
-London
-Paris
-Rome
+> .say for map {.tc}, <londres parís roma washington madrid>;
+Londres
+París
+Roma
 Washington
 Madrid
 \end{verbatim}
-\item With the {\tt grep} function to generate a list of even 
-numbers by filtering out odd numbers:
+\item Con la función {\tt grep} para generar una lista de números 
+pares al filtrar los números impares:
 \index{grep function}
 \begin{verbatim}
 
-my @evens = grep { $_ %% 2 }, 1..17; # -> [2 4 6 8 10 12 14 16]
+my @pares = grep { $_ %% 2 }, 1..17; # -> [2 4 6 8 10 12 14 16]
 \end{verbatim}
 \end{itemize} 
 
-The example with {\tt reduce} is of special interest. In 
-principle, contrary to a subroutine, you cannot easily pass 
-arguments to a code block (because it has no signature). 
-But the use of the self-declared positional parameters 
-(or placeholders) with the \verb'$^' twigil makes it 
-possible to use parameters within the block. 
+El ejemplo con {\tt reduce} es interesante. En principio, 
+contrario a una subrutina, no puedes pasar argumentos a un
+bloque de código tan fácilmente (porque no tiene una signatura).
+Pero el uso de los parámetros auto-declarados de posición (
+o parámetros marcadores) con el twigil \verb|$^| hace posible
+usar los parámetros dentro del bloque. 
 \index{placeholder}
 \index{placeholder!parameter}
 \index{twigil}
 \index{self-declared parameter}
 
-Because of this possibility, the anonymous code block becomes 
-what is commonly called a \emph{lambda} in computer science (and 
-in mathematics), i.e., a kind of nameless function. Lambda 
-calculus, a mathematical theory invented in the 1930s by 
-Alonzo Church, is the root of most of today's functional 
-programming languages.
+Debido a esta posibilidad, el bloque de código anónimo se convierte
+en lo que usualmente se conoce como una \emph{lambda} en la 
+ciencia de la computación (y en matemáticas), i.e., un tipo de
+función sin nombre. El cálculo lambda, una teoría matemática 
+inventada en la década del 1930 por Alonzo Church, es la esencia
+de la mayoría de los lenguajes de programación funcionales de
+hoy en día.
 \index{lambda}
 \index{lambda calculus}
 \index{Church, Alonzo}
 
-Actually, the two other examples above using the \verb'$_' 
-topical variable are also lambdas. Although we haven't 
-mentioned it at the time, some other constructs we saw 
-earlier are also lambdas. In particular, consider the 
-``pointy block'' syntax used twice in the following 
-{\tt for} loops displaying the multiplication tables:
+Actualmente, los dos otros ejemplos más arriba que usan
+la variable tópico \verb|$_| son también lambdas. Aunque 
+no lo mencionamos en aquellas ocasiones, otras construcciones
+que vimos anteriormente son también lambdas. En particular,
+considera la sintaxis del ``bloque puntiagudo`` usada dos
+en el siguiente bucle {\tt for} que muestra la tabla de 
+multiplicación:
 \index{pointy block}
 \index{for loop}
 \index{multiplication tables}
 
 \begin{verbatim}
 for 1..9 -> $mult {
-    say "Multiplication table for $mult";
+    say "Tabla de multiplicación del $mult";
     for 1..9 -> $val {
         say "$mult * $val = ", $mult * $val;
     }
 }
 \end{verbatim}
 
-This is another form of lambda where the ``function'' 
-parameter is defined by the pointy block loop variable.
+Esta es otra forma de lambda donde el parámetro de la ``función``
+es definido por la variable de bucle de un bloque puntiagudo.
 
-The sorting example presented in Subsection~(\ref{fco-refresher}) 
-just above may also be rewritten with an 
-anonymous code block (taking advantage of the {\tt sort} 
-syntax using a code block with a single argument described 
-in Section~\ref{advanced_sort}):
+El ejemplo de ordenamiento presentado en la Subsección~(\ref{fco-refresher})
+más arriba puede también escribirse con un bloque de código anónimo
+(tomando así ventaja de la sintaxis de {\tt sort}
+y usando un bloque de código con solo argumento descrito en la 
+Sección~\ref{advanced_sort}):
 \index{sort}
 \begin{verbatim}
 my @in = <id1;13-05-2015 id2;17-04-2015 id3;21-02-2016>;
 .say for sort { join ",", reverse split /<[;-]>/, $_ }, @in;
 \end{verbatim}
 
-Here again, the somewhat long code block passed as an 
-argument to the {\tt sort} function is a lambda.
+Aquí, el bloque de código algo largo pasado como un argumento
+a la función {\tt sort} es una lambda.
+
 \index{lambda}
 
-\subsection{Closures}
+\subsection{Clausuras}
 \index{closure}
 
-In computer programming, a \emph{closure} (or \emph{lexical 
-closure}) is a function that can access to variables that 
-are lexically available where the function is defined, even 
-if those variables are no longer in scope in the code section 
-where the function is called.
+En la programación de computadoras, una \emph{clausura} 
+(o \emph{clausura lexical}) es una función que puede acceder
+el contenido de variables que están lexicalmente disponibles
+donde la función es definida, aún si aquellas variables ya no
+se encuentran en ámbito en la sección de código donde la
+función es llamada.
 \index{counter}
 
-Consider the following example:
+Considera el siguiente ejemplo:
 
 \begin{verbatim}
-sub create-counter(Int $count) {
-    my $counter = $count;
-    sub increment-count {
-        return $counter++
+sub crear-contador(Int $cuenta) {
+    my $contador = $cuenta;
+    sub incrementar-cuenta {
+        return $contador++
     }
-    return &increment-count;
+    return &incrementar-cuenta;
 }
-my &count-from-five = create-counter(5);
-say &count-from-five() for 1..6; # prints numbers 5 to 10
+my &contar-desde-cinco = crear-contador(5);
+say &contar-desde-cinco() for 1..6; # imprime números del 5 al 10
 \end{verbatim}
 
-The {\tt create-counter} subroutine initializes the 
-\verb'$counter' variable to the value of the received 
-parameter, defines the {\tt increment-count} subroutine, 
-and returns this subroutine. The main code calls 
-{\tt create-counter} to dynamically create the 
-\verb'&count-from-five' code reference (and could 
-call it many times to create other counters counting 
-from 6, 7, and so on).  Then, \verb'&count-from-five' 
-is called six times and prints out numbers between 5 
-and 10, each on its own line.
+La subrutina {\tt crear-contador} inicializa la variable
+\verb|$contador| al valor del parámetro recibido, 
+define la subrutina {\tt incrementar-cuenta}, y 
+devuelve esta subrutina. El código principal llama a
+{\tt crear-contador} para dinámicamente crear la 
+referencia de código {\tt \&contar-desde-cinco} (
+y podría llamarla muchas veces para crear otros 
+contadores que cuentan desde 6, 7, etc.). Después,
+\verb|&contar-desde-cinco| es llamada seis veces
+e imprime los números entre 5 y 10, cada uno en su 
+propia línea.
 \index{lexical scope}
 \index{scope!lexical}
 
-The magical thing here is that the \verb'$counter' variable 
-is out of scope when \verb'&count-from-five' is called, 
-but \verb'&count-from-five' can access it, return its value, 
-and increment it because \verb'$counter' was within the 
-lexical scope at the time the {\tt increment-count} was 
-defined. It is commonly said that {\tt increment-count} 
-``closes over'' the \verb'$counter' variable. 
-The {\tt increment-count} subroutine is a closure.
+Lo mágico de esto es que la variable \verb|$contador| está fuera 
+de ámbito cuando la función \verb|&contar-desde-cinco| es llamada, 
+pero \verb|&contar-desde-cinco| puede aún acceder a su valor,
+devolver su valor, e incrementarlo porque \verb|$contador| estaba
+dentro del ámbito lexical al tiempo que {\tt incrementar-cuenta}
+fue definida. Se dices entonces que {\tt incrementar-cuenta} 
+contiene a la variable \verb|$contador|. Por lo tanto, 
+la subrutina {\tt incrementar-cuenta} es una clausura.
 
-The above example is a bit contrived and its syntax 
-somewhat awkward because I wanted to show an example 
-of a named closure ({\tt increment-count} is a named 
-subroutine). It is usually simpler and more idiomatic 
-to use anonymous closures and to rewrite the example 
-as follows:
+El ejemplo anterior es un poco artificial y su sintaxis algo rara porque
+yo quería mostrar un ejemplo de una clausura nombrada ({\tt incrementar-cuenta}
+es una subrutina nombrada). Es usualmente más simple e idiomático
+usar clausuras anónimas y escribir nuevamente el ejemplo
+de la siguiente manera:
+
 \index{idiomatic}
 
 \begin{verbatim}
-sub create-counter(Int $count) {
-    my $counter = $count;
+sub crear-contador(Int $cuenta) {
+    my $contador = $cuenta;
     return sub {
-        return $counter++
+        return $contador++
     }
 }
-my &count-from-five = create-counter(5);
-say &count-from-five() for 1..6; # prints numbers 5 to 10
+my &contar-desde-cinco = crear-contador(5);
+say &contar-desde-cinco() for 1..6; # imprime números del 5 al 10
 \end{verbatim}
 
-You could even simplify {\tt create-counter} further 
-with implicit {\tt return} statements:
+Podríamos simplificar {\tt crear-contador} aún más con el uso
+de sentencias {\tt return} implícitas:
 
 \begin{verbatim}
-sub create-counter(Int $count) {
-    my $counter = $count;
-    sub { $counter++ }
+sub crear-contador(Int $cuenta) {
+	my $contador = $cuenta;
+	sub { $contador++ }
 }
 \end{verbatim}
 
-but this is arguably less clear because the code's intent 
-is less explicit.
+pero esto es menos claro porque la intención del código es meno
+explícita.
 
-The last {\tt create-fifo} example in the solution to 
-the FIFO queue exercise (Subsection~\ref{functional_queue}) 
-is another example of the same mechanism:
+El último ejemplo {\tt crear-fifo} en la solución al ejercicio sobre
+la cola FIFO (Subsección~\ref{functional_queue}) es otro ejemplo
+que utiliza el mismo mecanismo:
 
 \begin{verbatim}
-sub create-fifo {
-    my @queue;
+sub crear-fifo {
+    my @cola;
     return (
-        sub {return shift @queue;}, 
-        sub ($item) {push @queue, $item;}
+        sub {return shift @cola;}, 
+        sub ($elem) {push @cola, $elem;}
         ) ;
 }
-my ($fifo-get, $fifo-put) = create-fifo();
-$fifo-put($_) for 1..10;
-print " ", $fifo-get() for 1..5; # ->  1 2 3 4 5
+my ($fifo-consigue, $fifo-pone) = crear-fifo();
+$fifo-pone($_) for 1..10;
+print " ", $fifo-consigue() for 1..5; # ->  1 2 3 4 5
 \end{verbatim}
 %
 \index{closure}
 \index{FIFO}
 \index{anonymous subroutine}
 
-In Perl~6, all subroutines are closures, which means that 
-all subroutines can access to lexical variable that 
-existed in the environment at the time of their definition, 
-but they don't necessarily act as closures.
+En Perl~6, todas las subrutinas son clausuras, lo cual significa que 
+todas las subrutinas tienen acceso a las variables lexicales que 
+existían en el entorno al momento de la definición de las subrutinas.
+Sin embargo, ellas no actúan necesariamente como clausuras.
 
-In fact, all code objects, even simple anonymous code 
-blocks, can act as closures, which means that they can 
-reference lexical variables from the outer scope, and this 
-is in effect what is going on with the loop variable of 
-a pointy block or in the following {\tt map} block:
+De hecho, todos los objetos de código, incluyendo simple bloques de código anónimos,
+pueden actuar como clausuras, lo cual significa que pueden 
+hacer referencia a variables lexicales desde el ámbito externo,
+y en efecto esto es lo que pasa con la variable de bucle de un
+bloque puntiagudo o en el siguiente bloque {\tt map}:
 
 \begin{verbatim}
-my $multiplier = 7;
-say  map {$multiplier * $_}, 3..6; # -> (21 28 35 42)
+my $multiplicador = 7;
+say  map {$multiplicador * $_}, 3..6; # -> (21 28 35 42)
 \end{verbatim}
 \index{map}
 
-Here the block passed to \verb'map' references the variable 
-\verb'$multiplier' from the outer scope, making the 
-block a closure.
+En este ejemplo, el bloque pasado a \verb|map| hace referencia a
+la variable \verb|$multiplicador| desde el ámbito externo, convirtiendo
+al bloque en una clausura.
 
-Languages without closures cannot easily provide 
-higher-order functions that are as easy to use and 
-powerful as {\tt map}.
+
+Los lenguajes sin clausuras no pueden proveer fácilmente
+funciones de orden superior que sean tan poderosas y fáciles de usar
+como {\tt map}.
 \index{map}
 \index{function!map}
 
-Here is yet another example of a block acting as a 
-closure for a counter implementation:
+Aquí presentamos otro ejemplo de un bloque que actúa como
+una clausura para la implementación de un contador:
 
 \begin{verbatim}
-my &count;
+my &cuenta;
 {
-    my $counter = 10;
-    &count = { say $counter++ };
+    my $contador = 10;
+    &cuenta = { say $contador++ };
 }
-&count() for 1..5;  
+&cuenta() for 1..5;  
 \end{verbatim}
 
-This closure saves a reference to the \verb'$counter' 
-variable when the closure is created. The call to the 
-\verb'&count' code block successfully displays and 
-updates \verb'$counter', even though that variable is no
-longer in lexical scope when the block is executed.
+Esta clausura guarda una referencia a la variable \verb|$contador|
+cuando la clausura es creada. La llamada al bloque de código 
+\verb|&cuenta| muestra y actualiza a \verb|$contador| exitosamente.
+Esto sucede aún cuando la variable ya no se encuentra en el ámbito lexical
+al momento que el bloque es ejecutado.
 \index{scope!lexical}
 \index{lexical scope}
 \index{closure}
 
-\section{List Processing and Pipeline Programming}
+\section{Procesamiento de Listas y Programación de Tuberías}
 \index{pipe-line programming}
 
-Quite often, a computation can be expressed as a 
-series of successive transformations on a list of 
-values. Perl provides functions able to work on 
-the items of a list and apply simple actions, 
-callback functions, or code blocks to these items. 
-We have already seen and used abundantly several 
-such functions:
+
+A menudo, una computación puede expresarse como una
+serie de transformaciones de una lista de valores. Perl
+provee funciones capaces de trabajar con los artículos de una
+lista y aplicar simples acciones, funciones retrollamadas, 
+o bloques de código a estos artículos. Ya hemos visto y usado
+abundantemente varias funciones de este tipo:
+
 \begin{itemize}
-\item {\tt map} applies a transformation to each item 
-of a list.
+\item {\tt map} aplica una transformación a cada artículo de una lista.
 \index{map} \index{function!map}
-\item {\tt grep} is a filter that keeps only the items 
-for which the function or code block associated with 
-{\tt grep} evaluates to true. 	
+\item {\tt grep} es un filtro que mantiene aquellos elementos para los cuales
+la función o el bloque de código asociado con {\tt grep} evalúa a verdadero.
 \index{grep} \index{function!grep}
-\item {\tt reduce} uses each item of a list to compute 
-a single scalar value.
+\item {\tt reduce} usa cada artículo de una lista para calcular un único 
+valor escalar.
 \index{reduce} \index{function!reduce}
-\item {\tt sort} sorts the elements of a list in accordance 
-to the rules defined in the passed code block or 
-subroutine. 
+\item {\tt sort} ordena los elementos de una lista de acuerdo a reglas
+definidas en el bloque de código o la subrutina que se pasa.
 \index{sort} \index{function!sort}
 \end{itemize}
 
-We have discussed several examples where these functions can 
-be used together in a sort of data pipeline in which 
-the data produced by each step of the pipeline is fed 
-to the next step. For example, earlier in this chapter 
-(Subsection~\ref{fco-refresher}), we used this:
+Hemos discutidos varios ejemplos donde estas funciones pueden
+usarse conjuntamente en un tipo de tubería de datos en la cual
+los datos producidos en cada paso de la tubería son suministrados
+al siguiente paso. Por ejemplo, anteriormente en este capítulo 
+(Subsección~\ref{fco-refresher}), usamos esto:
 
 \begin{verbatim}
-    my $cmp1 = join ",", reverse split /<[;-]>/, $rec1;
+    my $cmp1 = join ",", reverse split /<[;-]>/, $reg1;
 \end{verbatim}
 \index{reverse} \index{function!reverse}
 \index{split} \index{function!split}
 \index{join} \index{function!join}
 
-As we said, this type of code should be read from right 
-to left (and from bottom to top if written over several 
-code lines): \verb'$rec1' is fed to {\tt split}, which 
-splits the data item into four pieces; the pieces are then 
-reversed and fed to {\tt join} to reconstruct a single 
-data item where the pieces are now in reversed order.
+Como destacamos anteriormente, este tipo de código debería leerse
+de derecha a izquierda (y de abajo hacia arriba si está escrito 
+en varias líneas de código): \verb|$reg1| es suministrada a {\tt split}, 
+la cual divide el dato en cuatro piezas; las piezas son después 
+invertidas (por {\tt reverse}) y suministrada a {\tt join} para 
+crear un solo dato donde las piezas están ahora en orden inverso.
 
-Similarly, we could produce a list of pet animals belonging 
-to single women living in Kansas with the following code 
-chaining several methods:
+Similarmente, podríamos producir una lista de mascotas que pertenecen
+a mujeres solteras que viven en Kansas con el siguiente código que encadena
+varios métodos:
 
 \begin{verbatim}
-my @single-kansas-women-pets =
-    map  {  .pets },
-    grep { !.is-married },
-    grep {  .gender eq "Female" },
-    grep {  .state eq "Kansas" },
-         @citizens;
+my @mascotas-de-mujeres-solteras-de-kansas =
+    map  {  .mascotas },
+    grep { !.esta-casada },
+    grep {  .genero eq "Femenino" },
+    grep {  .estado eq "Kansas" },
+         @ciudadanos;
 \end{verbatim}
 \index{map} \index{function!map}
 \index{grep} \index{function!grep}
 
-This one should be read bottom to top. It takes a list 
-of all citizens, filters those from Kansas who are female, 
-filters those who are not married, and finally generates 
-the list of pets of such persons. Note that \verb'.pets' 
-may return one animal, a list of several animals, or an 
-empty list. \verb'map' ``flattens'' the lists thus produced, 
-so the final result going into the array is a flat list of 
-animals (and not a nested list of lists).
+Esta debería debería leerse de abajo hacia arriba. Toma una
+lista de todos los ciudadanos, filtra aquellos de Kansas que 
+son mujeres, filtra aquellas que no están casadas, y finalmente
+genera la lista de mascotas de dichas personas. Nota que \verb|.mascotas|
+puede devolver un animal, una lista de animales, o una lista 
+vacía. La función \verb|map| ``aplana`` las listas hasta ese entonces
+producidas, así que el resultado final que termina en el array es una
+lista plana de animales (y no una lista anidada de listas).
 
-These pipelines are very powerful and expressive, and 
-can get a lot done in a few code lines.
+Estas tuberías son muy poderosas y expresivas, y pueden hacer muchas
+cosas en pocas líneas de código.
 
-\subsection{Feed and Backward Feed Operators}
+\subsection{Los Operadores Feed y Backward Feed}
 
-In the previous examples, the pipeline steps were laid out in reverse 
-order; you may consider this inconvenient, although it is 
-easy to get used to.
+En los ejemplos anteriores, los pasos de la tubería se encontraban en 
+orden inverso; puedes considerar este hecho algo inconveniente, aunque
+es fácil de acostumbrarse.
 
-Perl~6 provides the \verb'==>' \emph{feed} operator 
-(sometimes called \emph{pipe} in other languages) 
-that makes it possible to write the various pipeline 
-steps in a ``more natural,'' left to right and top to bottom, order.
+Perl~6 provee el operador \emph{feed} (\emph{suministro}) \verb|==>|
+(algunas veces llamado \emph{pipe} en otros lenguajes)
+que hace posible escribir los múltiples pasos de la tubería en un orden
+``más natural``, de izquierda a derecha y de arriba hacia abajo.
 \index{feed operator}
 \index{operator!feed}
 % TODO: get these entries working in plastex
@@ -506,9 +511,9 @@ steps in a ``more natural,'' left to right and top to bottom, order.
 \index{==> feed operator@\texttt{==>} feed operator}
 \fi
 
-For example, reusing the example of sorting records 
-by dates from earlier in this chapter, you could rewrite 
-it like so:
+Por ejemplo, al reutilizar el ejemplo sobre el ordenamiento de
+los registros por fechas que vimos al inicio de este capítulo,
+podrías escribirlo nuevamente así:
 \index{sort}
 
 \begin{verbatim}
@@ -516,19 +521,18 @@ it like so:
     ==> split(/<[;-]>/) 
     ==> reverse() 
     ==> join(",") 
-    ==> my @out; # @out is an array containing one item: a string.
+    ==> my @out; # @out es una array que contiene una artículo: una cadena de texto.
 say @out.perl;   # ["2015,05,13,id1"]
 \end{verbatim}
 
-By the way, if you're using such pipeline operations on 
-a large input, and depending on your platform 
-architecture, Perl~6 may be able to run these 
-various operations in parallel on different CPUs or cores, 
-thereby improving significantly the performance 
-of the overall process.
+Por cierto, si estás usando tales operaciones de tubería con una
+entrada bien grande, dependiendo de la arquitectura de tu plataforma, 
+Perl~6 puede ser capaz de ejecuta estas múltiples operaciones en paralelo
+en diferentes CPUs o núcleos (cores), mejorando significativamente
+el rendimiento del proceso en su totalidad.
 
-There is also a backward feed operator, \verb'<==', 
-enabling to write the pipeline in reverse order:
+Existe también un operador backward feed (\emph{suministro inverso}), \verb|<==|,
+que posibilita la escritura de la tubería en orden inverso:
 \index{backward feed operator}
 \index{operator!backward feed}
 % TODO: get these entries working in plastex
@@ -544,25 +548,24 @@ my $out <== join(",")
 \end{verbatim}
 
 
-\subsection{The Reduction Metaoperator}
+\subsection{El Metaoperador de Reducción}
 
-We already met this metaoperator in Section~\ref{map_filter}. 
-A metaoperator acts on other operators. Given 
-a list and an operator, the [...] {\bf reduction metaoperator} 
-applies the operator iteratively to all the values of the
-list to produce a single value.
+Ya conocimos este metaoperador en la Sección~\ref{map_filter}. Un metaoperador
+actúa sobre otros operadores. Dada una lista y un operador, el {\bf operador de reducción}
+[...] aplica el operador iterativamente a todos los valores de la lista
+para producir un valor único.
 \index{metaoperator}
 \index{reduction}
 \index{reduction!metaoperator}
 
-For example, the following prints the sum of all the 
-elements of a list or a range:
+Por ejemplo, lo siguiente imprime la suma de todos los elementos
+de una lista o un rango:
 
 \begin{verbatim}
 say [+] 1..10;      # -> 55
 \end{verbatim}
 
-Similarly, we can write a factorial function as:
+Similarmente, podemos escribir una función factorial así:
 \index{factorial!using the reduction meta-operator}
 
 \begin{verbatim}
@@ -573,37 +576,36 @@ say fact 20;        # -> 2432902008176640000
 say fact 0;         # -> 1
 \end{verbatim}
 
-(Note that this yields the correct result even for the 
-edge case of factorial 0, which is defined mathematically 
-to be 1.)
+(Nota que esto produce el resultado correcto hasta para el caso 
+del factorial de 1, el cual es definido matemáticamente como 1.)
 
-\subsection{The Hyperoperator}
+\subsection{El Hiperoperador}
 
 \index{hyperoperator}
-A hyperoperator applies the specified operator to each 
-item of a list (or two lists in parallel) and returns a 
-modified list (somewhat similarly to the {\tt map} 
-function). It uses the so-called French or German 
-quote marks, \verb'« »' (Unicode codepoints U+00AB 
-and U+00BB), but you can use their ASCII-equivalent 
-double angle brackets, \verb'<< >>', if you prefer 
-(or don't know how to enter those Unicode characters 
-with your editor).
+Un hiperoperador aplica el operador especificado a cada
+artículo de una lista (o dos listas en paralelo) y devuelve
+una lista modificada (similar a la función {\tt map}).
+Dicho hiperoperador usa las comillas francesas o alemanas, 
+\verb|« »| (Unicode codepoints U+00AB y U+00BB), pero puedes
+usar las comillas angulares, \verb|<< >>|, si así lo deseas
+(o si no sabes como entrar estos caracteres Unicode con tu 
+editor).
 \index{map}
 \index{French quote marks}
 \index{German quote marks}
 
-Our first example will multiply each element of a list 
-by a given number (5):
+Nuestro primer ejemplo multiplicará cada elemento de una lista
+por un número dado (5):
 
 \begin{verbatim}
 my @b = 6..10;
-my @c = 5 «*» @b;
-say @c;             # prints 30 35 ... 50 (5*6, 5*7, ...)
+my @c = 5 <<*>> @b;
+say @c;             # imprime 30 35 ... 50 
+					# resultado (5*6, 5*7, ...)
 \end{verbatim}
 
-We can also combine two lists and, for example, add 
-respective values:
+Podemos también combinar dos listas y, por ejemplo, agregar
+valores respectivos:
 
 \begin{verbatim}
 my @a = 1..5;
@@ -612,35 +614,36 @@ my @d = @a >>+<< @b;
 say @d;             # -> [7 9 11 13 15]
 \end{verbatim}
 
-You can also use hyperoperators with a unary operator:
+Puedes también usar hiperoperadores con un operador unario:
 
 \begin{verbatim}
 my @a = 2, 4, 6;
-say -« @a;          # prints:  -2 -4 -6
+say -<< @a;          # imprime:  -2 -4 -6
 \end{verbatim}
 
-Hyperoperators with unary operators always return a 
-list the same size as the input list. Infixed 
-hyperoperators have a different behavior depending on 
-the size of their operands:
+Los hiperoperadores con operadores unarios siempre devuelven
+una lista con el mismo tamaño que la lista de entrada. 
+Los hiperoperadores infijos tienen un comportamiento diferente
+dependiendo del tamaño de sus operandos:
 
 \begin{verbatim}
-@a >>+<< @b;   # @a and @b must have the same size
-@a <<+<< @b;   # @a can be smaller
-@a >>+>> @b;   # @b can be smaller
-@a <<+>> @b;   # Either can be smaller, Perl will do 
-               # probably what you mean (DWIM principle)
+@a >>+<< @b;   # @a y @b deben tener el mismo tamaño
+@a <<+<< @b;   # @a puede ser más pequeño
+@a >>+>> @b;   # @b pueden ser más pequeño
+@a <<+>> @b;   # Cualquiera puede ser más pequeño, 
+               # Perl probablemente hará lo que quieres 
+               # (principio DWIM)
 \end{verbatim}
 
-Hyperoperators also work with modified assignment 
-operators:
+Los hiperoperadores también funcionan con operadores 
+modificadores de asignación:
 
 \begin{verbatim}
-@x >>+=<< @y   # Same as: @x = @x >>+<< @y
+@x >>+=<< @y   # Lo mismo que: @x = @x >>+<< @y
 \end{verbatim}
 \index{hyperoperator}
 
-\subsection{The Cross (X) and Zip (Z) Operators}
+\subsection{Los Operadores Cruz (X) y Zip (Z)}
 \index{cross operator X}
 \index{operator!cross}
 \index{operator!X (cross)}
@@ -648,10 +651,10 @@ operators:
 \index{operator!zip}
 \index{operator!Z (zip)}
 
-The cross operator uses the capital letter \verb"X".
-It takes two or more lists as arguments and returns a list 
-of all lists that can be constructed combining the elements 
-of each list (a form of ``Cartesian product''):
+El operador cruz usa la letra mayúscula \verb|X|. Dicho operador
+toma dos o  más listas como argumentos y devuelve una lista de
+todas las listas que puede construirse al combinar los elementos
+de cada lista (una forma de ``producto cartesiano''):
 \index{cross operator}
 \index{operator!cross}
 \index{X cross operator}
@@ -662,9 +665,9 @@ my @b = 3, 4;
 my @c = @a X @b;       # -> [(1,3), (1,4), (2,3), (2,4)]
 \end{verbatim}
 
-The cross operator may also be used as a metaoperator and 
-apply the operator that it modifies to each item combination 
-derived from its operands:
+El operador cruz puede también usarse como un metaoperador y 
+aplicar el operador que modifica a cada combinación de artículos
+derivada de sus operandos:
 \index{metaoperator}
 
 \begin{verbatim}
@@ -673,12 +676,11 @@ my @b = 6, 8;
 say @a X* @b;    # -> 18 24 24 32
 \end{verbatim}
 
-If no additional operator is supplied (as in the first 
-example above), \verb"X" acts as if a comma is 
-provided as default additional operator. 
+Si no se provee un operador adicional (como en el primer ejemplo), 
+\verb"X" actúa como si la coma es proveída como el operador adicional
+por defecto.
 
-The \verb"Z" zip operator interleaves the lists 
-like a zipper:
+El operador zip \verb|Z| intercala las listas como una cremallera:
 \index{zip operator}
 \index{operator!zip}
 \index{Z zip operator}
@@ -687,15 +689,13 @@ like a zipper:
 say 1, 2 Z <a b c > Z 9, 8;   # -> ((1 a 9) (2 b 8))
 \end{verbatim}
 
-The \verb'Z' operator also exists as a metaoperator, in 
-which case, instead of producing nested inner lists as 
-in the example above, the zip operator will apply the 
-supplied additional operator and replace these nested 
-list with the values thus generated. In the following 
-example, the ~ concatenate operator is used to merge 
-the inner lists produced by the zip operator into 
-strings:
-
+El operador \verb|Z| también existe como un metaoperador, y 
+en este caso, en lugar de producir listas anidadas internas
+como en el ejemplo más arriba, el operador zip aplicará el 
+operador adicional y reemplazará estas listas anidadas con
+los valores generados. En el siguiente ejemplo, el operador
+de concatenación ~ es usado para fusionar las listas internas 
+producidas por el operador zip y crear una cadenas de texto:
 \index{metaoperator}
 
 \begin{verbatim}
