@@ -702,137 +702,140 @@ producidas por el operador zip y crear una cadenas de texto:
 say 1, 2, 3 Z~ <a b c > Z~ 9, 8, 7; # -> (1a9 2b8 3c7)
 \end{verbatim}
 
-\subsection{List Operators, a Summary}
+\subsection{Un Resumen de Los Operadores de Listas}
 
-The list operators above are powerful 
-and can be combined together to produce incredibly 
-expressive constructs.
+Los operadores de listas anteriores son poderosos y pueden 
+combinarse para producir construcciones increíblemente expresivas.
 
-As an exercise, try to solve the following small 
-quizzes (please don't read on until you have tried 
-them, and try to do them with the operators we've 
-just seen):
+Como un ejercicio, intenta resolver las siguientes pequeñas pruebas 
+(por favor no prosigas con la lectura hasta que lo haya intentado):
 
 \begin{itemize}
-\item Given that the {\tt lcm} built-in function 
-returns the least common multiple of two numbers, 
-write a program which displays the smallest positive 
-number divisible by all numbers between 1 and 20.
+\item Dado que la función integrada {\tt lcm} devuelve el mínimo
+común múltiplo entre dos números, escribe un programa que muestre
+el número positivo más pequeño divisible por todos los números
+entre 1 y 20.
 \index{lcm function}
 
-\item Write a program that computes the sum of all 
-digits of factorial 100.
+\item Escribe un programa que calcule la suma de todos los dígitos del factorial
+de 100.
 
-\item Find the difference between the square of the sum 
-of the 100 first integers and the sum of the squares of 
-the 100 first integers.
+\item Encuentra la diferencia entre el cuadrado de la suma de los
+primeros 100 números enteros y la suma de los cuadrados de los
+primeros 100 números enteros.
 \end{itemize}
 
-Please, again, don't read further until you have tried 
-to solve these quizzes (and hopefully succeeded).
+Nuevamente, no prosigas con la lectura hasta que hayas 
+tratado de resolver estos pequeños problemas (y con suerte
+lo hayas logrado).
 
-The reduction operator makes it possible to apply an 
-operator to all elements of a list. Thus, using it 
-with the {\tt lcm} function gives the LCM of numbers 
-between 1 and 20:
+El operación de reducción facilita la aplicación de un 
+operador a todos los elementos de una lista. Así que si lo
+usamos con la función {\tt lcm} nos dará el mínimo común 
+múltiplo (MCM) entre 1 y 20:
 \index{reduction!metaoperator}
 
 \begin{verbatim}
 say [lcm] 1..20;                           # -> 232792560
 \end{verbatim}
 
-For the sum of the digits of factorial 100, we use 
-the \verb'[]' reduction metaoperator twice, once with 
-the multiplication operator to compute factorial 100, 
-and another time with the addition operator to sum 
-the digits of the result:
+Para la suma de los dígitos del factorial de 100, usamos 
+el metaoperador de reducción \verb|[]| dos veces, una con el
+operador de multiplicación para calcular el factorial de 100,
+y otra con el operador de adición para añadir los dígitos del 
+resultado:
 \index{reduction!metaoperator}
 
+% say [+] (1..100).comb;
 \begin{verbatim}
 say [+] split '', [*] 2..100;              # -> 648
 \end{verbatim}
 
-For the square of the sum minus the sum of the squares, 
-it is easy to compute the sum of the 100 first integers 
-with the reduction operator. The \verb'<<...>>' 
-hyperoperator easily supplies a list of the squares of 
-these integers, and another application of the reduction 
-operator reduces this list to a sum:
+Para el cuadrado de la suma menos la suma de los cuadrados, 
+es fácil calcular la suma de los 100 primeros números enteros
+con el operador de reducción. El hiperoperador \verb|<<...>>|
+fácilmente suministra una lista de los cuadrados de estos 
+enteros, y otra aplicación del operador de reducción reduce esta 
+lista a una suma:
 \index{hyperoperator}
 
 \begin{verbatim}
 say ([+] 1..100)**2 - [+] (1..100) «**» 2; # -> 25164150
 \end{verbatim}
 
-\subsection{Creating New Operators}
+\subsection{Creando Nuevos Operadores}
 
-We have briefly seen (Section~\ref{operator_construction}) 
-that you can build new operators or redefine existing ones 
-for new types.
+Hemos visto brevemente (Sección~\ref{operator_construction})
+que puedes construir nuevos operadores o redefinir aquellos existente
+con nuevos tipos.
 \index{creating new operators}
 \index{new operators!creating}
 
-The example we gave was to define the minus sign 
-as an infix operator between two hashes in order to 
-perform a kind of mathematical set subtraction, i.e., 
-to find all keys of the first hash that are not in the 
-second hash.
+El ejemplo que proveímos fue definir el signo menos
+como un operador infijo entre dos hashes para realizar un tipo
+de sustracción matemática de conjuntos, i.e., para encontrar las llaves
+del primer hash que no se encuentran en el segundo hash.
 \index{operator type!infix}
 
 \index{operator type!prefix}
-In the previous paragraph, the word \emph{infix} means 
-that this is a binary operator (two operands) that will 
-be placed between the two operands. 
+En el párrafo anterior, la palabra \emph{infijo} (\emph{infix} en inglés)
+significa que este es un operador binario (dos operandos) que 
+se colocará entre los colocará entre los dos operandos.
 
-There are other flavors of operators:
+Existen otros sabores de operadores:
 \begin{itemize}
-\item Prefix: a unary operator placed before the operand, 
-for example the minus sign in the expression $-1$
+\item Prefijo (\emph{prefix}): un operador unario colocado antes del
+operando, por ejemplo el signo de menos en la expresión $-1$
 \index{operator type!prefix}
 
-\item Postfix: a unary operator placed after the operand, 
-for example the exclamation mark used as a mathematical  
-symbol for the factorial: $5!$
+\item Sufijo (\emph{postfix}): un operador unario colocado después del 
+operando, por ejemplo el signo de exclamación usado como un símbolo
+matemático para el factorial: $5!$
 \index{operator type!postfix}
 
-\item Circumfix: an operator made of two symbols placed 
-around the operand(s), for example the parentheses $(...)$ 
-or the angle brackets $<...>$
+\item Circunfijo (\emph{circumfix}): un operador compuesto de dos símbolos
+alrededor del/de los operando(s), por ejemplo los paréntesis $(...)$ o los 
+paréntesis angulares $<...>$
 \index{operator type!circumfix}
 
-\item Postcircumfix: an operator made of two symbols placed 
-after an operand and around another one, for example the 
-square brackets in \verb'@a[1]'
+\item Poscircunfijo (\emph{postcircumfix}): un operador compuesto de dos símbolos
+colocados después de un operando y alrededor de otro operando, por ejemplo
+los corchetes en \verb'@a[1]'
 \index{operator type!postcircumfix}
 \end{itemize}
 
-To declare a new operator, you usually need to specify 
-its type (prefix, postfix, etc.), followed by a colon, 
-followed by the operator symbol or name between angle brackets, 
-followed by the function signature and body defining 
-the operator. For example, we could define a prefix \% 
-operator as follows:
+Para declarar un nuevo operador, usualmente necesitas especificar los siguientes
+elementos en el orden especificado:
+\begin{enumerate}
+\item El tipo (prefijo, sufijo, etc.) del operador
+\item Dos puntos (:)
+\item El símbolo o nombre del operador entre paréntesis angulares 
+\item La signatura y el cuerpo de la función que define el operador
+\end{enumerate}
+
+Por ejemplo, podríamos definir un operador prefijo \% de la siguiente 
+manera:
 
 \begin{verbatim}
-multi sub prefix:<%> (Int $x) {   # double operator
+multi sub prefix:<%> (Int $x) {   # operador doble
     2 *  $x;
 }
 say % 21;   # -> 42
 \end{verbatim}
 
-This is just an example to show how operator construction works; \% would 
-probably not be a good name for a double operator. The 
-interesting point, though, is that we have reused an existing 
-operator (the modulo operator), but the compiler does not 
-get confused because modulo is an infix operator and our 
-new operator is defined as a prefix operator.
+Esto es solamente un ejemplo para mostrar cómo la construcción de un 
+operador funciona; \% no es probablemente un buen nombre para un operador
+doble. Lo interesante aquí es que hemos reutilizado un operador existente
+(el operador de módulo), pero el compilador no se confunde porque el 
+módulo es un operador infijo y nuestro nuevo operador es definido como
+un operador prefijo.
 \index{modulo operator}
 \index{new operators!creating}
 \index{creating new operators}
 
-A better naming example might be to use an exclamation 
-mark (!) as a postfix factorial operator, just as in 
-mathematical notation:
+Un ejemplo con un mejor nombre sería usar un signo de exclamación(!) como
+un operador sufijo para el factorial de un número, al igual que en 
+notación matemática:
 \index{factorial!operator}
 
 \begin{verbatim}
@@ -842,47 +845,43 @@ multi sub postfix:<!> (Int $n where $n >= 0) {
 say 5!;                     # -> 120
 \end{verbatim}
 
-Note that the exclamation mark used as a prefix 
-operator (i.e., placed before its operand) is 
-a negation operator, but there is usually no possible 
-confusion between the two operators because one is a 
-prefix operator and our new operator is a postfix operator 
-(although you might have to be a bit careful on where 
-to put whitespace if your expression is somewhat 
-complicated). The {\tt multi} keyword isn't strictly 
-required here, but it is probably good practice to 
-put it anyway, just to cover the cases where it is 
-needed. 
+Observa que el signo de exclamación usado como un operador prefijo
+(i.e., colocado al frente de su operando) es el operador de negación,
+pero usualmente no es posible confundir los dos operadores
+porque uno es un operador prefijo y nuestro operador es un operador
+sufijo (aunque debes ser cuidadoso con la posición donde pones los 
+espacios en blanco si tu expresión es algo complicada). La palabra 
+{\tt multi} no es estrictamente requerida en este ejemplo, pero es 
+probablemente buena práctica colocarla, solo para cubrir los casos
+cuando es necesaria.
 
-As another example, you could define the $\Sigma$ (sum) 
-operator as follows:
+Al igual que el otro ejemplo, podríamos definir el operador $\Sigma$ (suma) 
+de la siguiente manera:
 
 \begin{verbatim}
-multi sub prefix:<Σ> (@*num-list) {
-    [+] @num-list;
+multi sub prefix:<Σ> (@*lista-num) {
+    [+] @lista-num;
 }
 say Σ (10, 20, 12);         # -> 42
 \end{verbatim}
 
-The benefit of using the $\Sigma$ operator over using 
-\verb'[+]' directly may not be very obvious, but it is 
-sometimes very useful to create a ``domain-specific 
-language''(DSL), i.e., a sublanguage specifically 
-adapted for a specific context or subject matter (e.g., math 
-or chemistry), which allows a particular type of problem 
-or solution to be expressed more clearly than the 
-existing core language would allow. In Perl~6, the 
-grammars and the ease of creating new operators make 
-this creation of DSL quite an easy task.
+El beneficio de usar el operador $\Sigma$ sobre \verb|+| puede no 
+ser directamente obvio, pero es algunas veces útil crear un ``lenguaje
+de dominio específico``(DSL), i.e., un sublenguaje específicamente adaptado
+para un contexto o área de estudio específica (por ejemplo, matemáticas o química),
+lo cual permite que un problema o solución en particular sea expresada más
+claramente que lo que el lenguaje principal existente permitiría. En Perl~6, 
+las gramáticas y la facilidad de crear nuevos operadores hace la 
+creación de un DSL una tarea sencilla.
 \index{domain-specific language (DSL)}
 \index{DSL (domain-specific language)}
 \index{new operators!creating}
 \index{creating new operators}
 
 
-The new operator does not have to be declared between 
-angle brackets. The following declarations could 
-all be used to define an addition operator:
+El nuevo operador no tiene que ser declarado entre los paréntesis angulares.
+Las siguientes declaraciones podrían usarse para definir un operador de
+adición:
 
 \begin{verbatim}
 infix:<+>
@@ -892,8 +891,8 @@ infix:('+')
 infix:("+")
 \end{verbatim}
 
-You can also specify the precedence of your new 
-operators (relative to existing ones). For example:
+También puedes especificar la precedencia de tus nuevos operadores
+(relativa a aquellos existentes). Por ejemplo:
 \index{precedence}
 \index{operator!precedence}
 
@@ -904,27 +903,27 @@ mutli sub infix:<zz> is tighter(&infix:<+>) { ... }
 mutli sub infix:<yy> is  looser(&infix:<+>) { ... }
 \end{verbatim}
 
-In one of his articles (``Structured Programming with 
-go to statements'', December 1974), Donald Knuth, a very famous 
-computer scientist, uses the \verb':=:' symbol as a 
-pseudocode operator to express the variable interchange 
-(or swap) of two values, i.e., the following operation:
+En uno de sus artículos (``Structured Programming with 
+go to statements'', Diciembre 1974), Donald Knuth, un científico
+de la computación muy famoso, usa el símbolo \verb|:=:| como un 
+operador de pseudocódigo para expresar el intercambio de dos valores
+en una variable, i.e, la siguiente operación:
 \index{Knuth, Donald}
 \index{swap}
 \index{variable interchange}
 
 \begin{verbatim}
-# Caution: this is pseudocode, not working code, at this point
+# Advertencia: esto es pseudocódigo, no código funcional, por el momento
 my $a = 1; my $b = 2;
 $a :=: $b; 
 say "$a $b";  # -> 2 1 
 \end{verbatim}
 \index{pseudo-code}
 
-In Knuth's paper, this is just a pseudocode shortcut 
-to discuss more easily Tony Hoare's quicksort algorithm 
-(described in exercise~\index{quicksort}), 
-but we can easily implement that symbol:
+En el artículo de Knuth, esto es solo un atajo falso para 
+discutir más fácilmente el algoritmo de ordenamiento rápido
+(\emph{quicksort} en inglés) (descrito en el ejercicio~\index{quicksort}),
+pero podemos implementa fácilmente ese símbolo:
 \index{swap operator}
 \index{sort!quick sort}
 \index{Hoare, Charles Antony Richard}
@@ -935,49 +934,49 @@ multi sub infix:<:=:> ($a is rw, $b is rw) {
 }
 \end{verbatim}
 
-Note that this can also be written this way:
+Nota que esto puede también escribirse de esta manera:
 
 \begin{verbatim}
 multi sub infix:<:=:> ($a is rw, $b is rw) {
-    ($a, $b) .= reverse;   # equivalent to: ($a, $b) = ($a, $b).reverse 
+    ($a, $b) .= reverse;   # equiavalente a: ($a, $b) = ($a, $b).reverse 
 }
 \end{verbatim}
 
-We can now test it for real on the following examples:
+Podemos ahora probarlo con los siguientes ejemplos:
 
 \begin{verbatim}
 my ($c, $d) = 2, 5;
 say $c :=: $d;             # -> (5 2)
-# using it to swap two array elements:
+# usándolo para intercambiar dos elementos del array
 my @e = 1, 2, 4, 3, 5;
 @e[2] :=: @e[3];
 say @e;                    # -> [1 2 3 4 5]
 \end{verbatim}
 
-Now, the pseudocode above now just works fine as real code. 
-A sort algorithm such as the one presented below 
-(Section~\ref{combsort}) may typically have code lines 
-like these to swap two elements of an array:
+Ahora, el pseudocódigo de más arriba funciona tan bien
+como código real. Un algoritmo de ordenamiento como el presentado
+más abajo(Sección~\ref{combsort}) puede típicamente tener líneas
+como estas para intercambiar dos elementos en un array:
 \index{swap}
 
 \begin{verbatim}
-if $some-condition {
+if $alguna-condicion {
     my ($x, $y) = @array[$i], @array[$i + gap];
     @array[$i], @array[$i + gap] = $y, $x;
 }
 \end{verbatim}
 
-If the above  \verb':=:' operator is defined, we 
-could just rewrite these lines as follows:
+Si el operador \verb|:=:| es definido, podríamos escribir
+estas líneas de la siguiente manera:
 
 \begin{verbatim}
-@array[$i] :=: @array[$i + gap] if $some-condition;
+@array[$i] :=: @array[$i + gap] if $alguna-condicion;
 \end{verbatim}
 
-A final interesting point. Suppose we want to use 
-the $\oplus$ operator for the mathematical set 
-union between two hashes. This could easily be 
-written as follows:
+Un punto final muy interesante. Supón que queremos usar
+el operador $\oplus$ para la unión matemática de conjuntos
+entre dos hashes. Esto podría escribirse fácilmente 
+como sigue:
 \index{$\oplus$ operator}
 \index{operator!$\oplus$}
 \index{hash merge operator}
@@ -990,7 +989,7 @@ multi sub infix:<⊕> (%a, %b) {
 }
 \end{verbatim}
 
-This works fine:
+Esto funciona bien:
 
 \begin{verbatim}
 my %q1 = jan => 1, feb => 2, mar => 3;
@@ -1000,10 +999,10 @@ say %first_half;
 # {apr => 4, feb => 2, jan => 1, jun => 6, mar => 3, may => 5}
 \end{verbatim}
 
-So far, so good, nothing really new. But the new 
-infix $\oplus$ operator has now become almost the same 
-as a Perl built-in operator, so that we can use it 
-together with the reduction metaoperator:
+Hasta ahora, todo bien, nada realmente nuevo. Pero el 
+nuevo operador infijo $\oplus$ se ha vuelto casi similar a
+un operador integrado de Perl, y por lo tanto podemos
+usarlo conjuntamente con el metaoperador de reducción:
 \index{reduction!metaoperator}
 
 \begin{verbatim}
@@ -1018,65 +1017,61 @@ say %year;
 # oct => 10, sep => 9}
 \end{verbatim}
 
-Everything works as if this new operator was part 
-of the Perl~6 grammar. And that's in effect what 
-has happened here: we have extended the 
-language with a new operator. This possibility of 
-extending the language is key to the ability of  
-Perl~6 to cope with future needs that we can't even 
-think of at present time.
+Todo funciona como si este nuevo operador fuera parte
+de la gramática de Perl~6. Y eso es lo que, en efecto, ha pasado
+aquí: hemos extendido el lenguaje con un nuevo operador.
+Esta posibilidad de extender el lenguaje es una parte clave de
+la habilidad de Perl~6 para afrontar futuras necesidades que
+ni siquiera pensamos en el momento presente.
 \index{extending the language}
 \index{new operators!creating}
 \index{creating new operators}
 
-\section{Creating Your Own Map-Like Functions}
+\section{Creando Tus Funciones Similares a Map}
 \index{map}
- 
-We have seen in this chapter and in 
-Section~\ref{map_filter} (p.~\pageref{map_filter}) 
-how higher-order functions such as the {\tt reduce}, 
-{\tt map}, {\tt grep}, and {\tt sort} functions 
-can be powerful and expressive. There are some 
-other such built-in functions in Perl, but we would 
-like to be able to create our own.
 
-\subsection{Custom Versions of map, grep, etc.}
+Hemos visto en este capítulo y en la Sección~\ref{map_filter} (p.~\pageref{map_filter}) 
+cómo la funciones de orden superior tales como las funciones
+{\tt reduce}, {\tt map}, {\tt grep}, y {\tt sort} pueden ser 
+poderosos y expresivas. También existen otros tipos de funciones
+integradas en Perl, pero nos gustaría también crear nuestras 
+propias funciones.
 
-Let's see how we could write our own custom versions 
-of such functions.
 
-\subsubsection{my-map, a pure Perl version of map}
+\subsection{Versiones Personalizadas de map, grep, etc.}
+
+Veamos cómo podríamos escribir nuestra propias versiones
+personalizadas de tales funciones.
+
+\subsubsection{mapa, Una Versión Pura de Perl de map}
 \index{my-map}
 
-Let's start by trying to rewrite in pure Perl the 
-{\tt map} function. It needs to take a subroutine 
-or a code block as its first argument, to apply it 
-to an array or a list, and to return the modified 
-list.
+Primeramente, intentemos escribir en puro Perl la función {\tt map}.
+Necesitamos tomar una subrutina o un bloque de código
+como su primer argumento, aplicarlo a un array o una lista,
+y devolver la lista modificada.
 
 \begin{verbatim}
-sub my-map (&code, @values) { 
+sub mapa (&codigo, @valores) { 
     my @temp;
-    push @temp, &code($_) for @values;
+    push @temp, &codigo($_) for @valores;
     return @temp;
 }
-my @result = my-map { $_ * 2 }, 1..5; 
+my @result = mapa { $_ * 2 }, 1..5; 
 say @result;                   # -> [2 4 6 8 10]
 \end{verbatim}
 
-This works exactly as expected on the first trial. 
-(I have attempted the same experiment with some other 
-languages in the past , including Perl~5; it took quite 
-a few tries before getting it right, especially 
-regarding the calling syntax. Here, everything 
-falls into place naturally.) To tell the truth, 
-the test in this code example is very limited and 
-there may very well be some edge cases when 
-{\tt my-map} does not work the same way as {\tt map}, 
-but our aim was not to clone {\tt map} exactly; 
-the point is that it is quite simple to build a 
-higher-order subroutine that behaves essentially the 
-same way as {\tt map}. 
+En el primer intento, esto funciona exactamente como se espera.
+(He intentado el mismo experimento con otros lenguajes de 
+programación en el pasado, incluyendo Perl 5; tomó
+varios intentos antes de conseguir el programa correcto, 
+especialmente lo concerniente a la sintaxis de la llamada.
+Aquí, todo cae en su lugar naturalmente.) Para ser honesto, 
+las condiciones en este ejemplo son muy limitadas y podrían
+haber casos donde {\tt mapa} no funciona de la misma forma
+exactamente que {\tt map}; la lección a tomar es que es bien
+fácil construir una subrutina de orden superior que se comporta 
+esencialmente en la misma manera que {\tt map}.
 \index{higher-order function}
 \index{map}
 
@@ -1224,7 +1219,7 @@ suggested by the authors of the original publications
 presenting the algorithm.
 \index{sort!bubble sort}
 
-	\subsection{An Iterator Version of map}
+\subsection{An Iterator Version of map}
 \index{iter!map}
 \index{map}
 
@@ -2670,166 +2665,181 @@ a ratio of the number of code lines written versus the estimate
 of the final number of code lines.
 \index{software metric}
 
-\section{Glossary}
+\section{Glosario}
 
 \begin{description}
 
-\item[First-class object:] An object that can be passed around 
-as an argument to or as a return value from a subroutine. 
-In Perl, subroutines are first-class objects (also called 
-first-class citizens). 
+\item[Objeto de primera clase] Un objeto que puede
+pasarse como un argumento a una subrutina o devolverse 
+como un valor de retorno de la misma. En Perl, las subrutinas
+son objetos de primera clase (también llamados ciudadanos de
+primera clase).. 
 \index{first-class object}
 \index{first-class citizen}
 
-\item[Callback function] A function or subroutine that is 
-passed as an argument to another function.
+\item[Función retrollamada] Una función o subrutina que se pasa
+como un argumento a otra función.
 \index{callback function}
 
-\item[higher-order function:] A function or subroutine that takes 
-another subroutine (or a simple code block) as an argument. The 
-{\tt map}, {\tt grep}, {\tt reduce}, and {\tt sort} built-in 
-functions are examples of higher-order functions.
+\item[Función de orden superior] Una función o subrutina que toma
+otra subrutina (o un simple bloque de código) como un 
+argumento. Las funciones integradas 
+{\tt map}, {\tt grep}, {\tt reduce}, y {\tt sort}
+son ejemplos de funciones de orden superior.
 \index{higher-order function}
 \index{function!higher-order}
 \index{map}
 \index{grep}
 \index{reduce}
 
-\item[Anonymous subroutine] A subroutine that has no name. Also 
-commonly called a \emph{lambda}. Although they are not exactly 
-the same thing, pointy blocks can also be assimilated to 
-anonymous subroutines.
+\item[Subrutina anónima] Una subrutina que carece de nombre. 
+También llamada comúnmente una \emph{lambda}. Aunque no
+son exactamente lo mismo, bloques puntiagudos pueden también
+ser asimilados en subrutinas anónimas.
 \index{anonymous subroutine}
 \index{lambda}
 
-\item[Closure] A function that can access to variables that 
-are lexically available where the function is defined, even 
-if those variables are no longer in scope where the function 
-is called.
+\item[Clausura] Una función que puede acceder variables que 
+están lexicalmente disponible donde la función es definida, 
+incluso aquellas variables que ya no se encuentran en el
+ámbito donde la función es llamada.
 \index{closure}
 
-\item[pipeline programming:] A programming model in which 
-pieces of data (usually lists) undergo successive 
-transformations as in a pipeline or an assembly line.
+\item[Programación de tubería] Un modelo de programación en el
+cual piezas de datos (usualmente listas) experimentan transformaciones
+sucesivas como en una tubería o línea de ensamblaje.
 \index{pipe-line programming}
 
-\item[Reduction] A process through which a list of values is 
-reduced to a single value. For example, a list of numbers 
-can be reduced, for example, to an average, a maximum value, 
-or a median. Some languages call this process \emph{folding}.
+\item[Reducción] Un proceso a través del cual una lista de valores
+es reducida a un valor único. Por ejemplo, una lista de números
+puede reducirse, por ejemplo, para encontrar el promedio, un valor
+máximo, o una mediana. Algunos lenguajes conocen este proceso como
+\emph{folding}.
 \index{reduction}
 
-\item[Metaoperator] An operator that acts on another operator 
-to provide new functionality.
+\item[Metaoperador] Un operador que actúa sobre otro operador para
+proveer nuevas funcionalidades.
 \index{metaoperator}
 
-\item[Algorithmic complexity] A rough measure of the number 
-of computing operations (and time) needed to perform some 
-computing on relatively large data sets, and, more precisely, 
-a measure of how an algorithm scales when the data set grows.
+\item[Complexidad algorítmica] Una medida aproximada del número de operaciones 
+de computación (y tiempo) necesarias para realizar una computación sobre
+un conjunto de datos relativamente grande, y, más precisamente, una 
+medida de cómo un algoritmo escala cuando el conjunto de datos 
+crece.
 \index{algorithmic complexity}
 
-\item[Laziness] A process of delayed evaluation whereby, for 
-example, one populates a list or processes the items of a list only 
-on demand, when required, to avoid unnecessary processing.
+\item[Evaluación peresoza] Un proceso de evaluación aplazada donde,
+por ejemplo, uno puebla una lista o procesa los artículos de una 
+lista solamente a petición, cuando es requerido, para evitar 
+procesamiento innecesario.
 \index{laziness}
 
-\item[Iterator] A piece of code that returns values on demand 
-and keeps track of where it has arrived, so as to be able 
-to know what the next value to be provided should be.
+\item[Iterador] Una pieza de código que devuelve valores a petición
+y mantiene un récord de donde ha llegado, para de este modo ser
+capaz de saber cuál valor debería ser proveído en la siguiente 
+iteración.
 \index{iterator}
 
-\item[Cache] To cache a value is to store it in memory (in a 
-variable, an array, a hash, etc.) in order to avoid the need to 
-compute it again, thereby hopefully saving some computation time.
+\item[Cache] El proceso de caché se refiere al almacenamiento de un valor 
+en la memoria (en una variable, un array, un hash, etc.) para de esta 
+forma evitar la necesidad de calcularlo nuevamente, y como 
+resultado ahorrar algún tiempo de computación.
 \index{cache}
 
-\item[Currying] Currying a function that takes several 
-arguments means to create another function that takes fewer 
-arguments (where the missing arguments are stored within 
-the new curried function).
+\item[Currying] La técnica de currying se refiere al hecho de 
+tomar una función que acepta varios argumentos y transformarla en 
+una serie de funciones que toman un menor número de argumentos.
+
+{\bfseries Nota del traductor:} Introducida por 
+\href{https://es.wikipedia.org/wiki/Gottlob_Frege}{Gottlob Frege} y desarrollada por 
+\href{https://es.wikipedia.org/wiki/Moses_Sch%C3%B6nfinkels}{Moses Schönfinkel}, esta 
+técnica de programación funcional fue nombrada en honor al matemático y lógico 
+\href{https://es.wikipedia.org/wiki/Haskell_Curry}{Haskell Curry}, 
+quien también ayudó en su desarrollo. Como resultado de esto, 
+me he refrenado de traducir o proveer una alternativa en español de dicho término.
 \index{curry}
 
-\item[test-driven development:] A development methodology 
-where the tests are written from the specifications before 
-the actual program, so that it becomes easier to check that 
-the program complies with the specifications.
+\item[Desarrollo guiado por pruebas] Una metodología de desarrollo donde las
+pruebas de software se escriben de las especificaciones antes que 
+el programa actual. Esto se hace para que sea más fácil chequear que 
+el programa cumple con las especificaciones.
 \index{test-driven development}
 
 \end{description}
 
-\section{Exercise: Quick Sort}
+\section{Ejercicio: Ordenamiento Rápido}
 \label{quicksort}
 \index{quick sort}
 \index{sort!quick sort}
 
 \begin{exercise}
-Quick sort is a ``divide and conquer'' sorting algorithm invented 
-by Tony Hoare in 1959. It relies on partitioning the array 
-to be sorted. To partition an array, an element called a pivot 
-is selected. All elements smaller than the pivot are moved before 
-it and all greater elements are moved after it. The lesser and 
-greater sublists are then recursively sorted through the same 
-process and finally reassembled together.
+Ordenamiento rápido es un algoritmo de ordenamiento ``divide y conquista``
+inventado por Tony Hoare en 1959. Se basa en la división del array
+a ser ordenado. Para dividir un array, un elemento conocido el pivote
+es seleccionado. Todos los elementos más pequeños que el pivote son
+en frente del mismo y todos aquellos que son más grandes son movidos
+después del mismo. Las sublistas compuestas de los elementos más pequeños
+y más grandes son entonces recursivamente ordenadas a través del mismo 
+procedimiento y finalmente reagrupadas.
 \index{Hoare, Charles Antony Richard}
 \index{divide and conquer algorithm}
 
-One of the difficulties is to select the right pivot. Ideally 
-it should be the median value of the array items, since this would 
-give partitions of approximately equal sizes, thereby making 
-the algorithm optimally efficient, but finding the 
-median for each partition would take some time and ultimately 
-penalize the performance. Various variants of the quick sort 
-have been tried, with different strategies to (usually 
-arbitrarily) select a pivot. Here, we select an element at or near 
-the middle of the partition.
+Una de las dificultades es seleccionar el pivote correcto. Idealmente
+debería ser el valor mediano de los artículos del array, dado que
+esto daría particiones de igual tamaño, por consiguiente haciendo el 
+algoritmo óptimamente eficiente, pero encontrar el valor mediano 
+para cada partición tomaría tiempo y últimamente penalizaría el
+dicho rendimiento. Varias variantes de ordenamiento rápido se han 
+intentado, con diferentes estrategias para seleccionar (usualmente de
+forma arbitraria) un pivote. Aquí, seleccionamos un elemento en o
+cerca del medio de la partición.
 \index{pivot!quick sort algorithm}
 
-The following is a typical nonfunctional implementation 
-of the quick sort algorithm.
+La siguiente es una implementación típica del algoritmo de 
+ordenamiento rápido que no usa la programación funcional.
 
 \begin{verbatim}[fontshape=up]
-sub quicksort(@input) {
-    sub swap ($x, $y) {
-        (@input[$x], @input[$y]) = @input[$y], @input[$x];
+sub ordrapido(@entrada) {
+    sub intercambiar ($x, $y) {
+        (@entrada[$x], @entrada[$y]) = @entrada[$y], @entrada[$x];
     }
-    sub qsort ($left, $right) {
-        my $pivot = @input[($left + $right) div 2];
-        my $i = $left;
-        my $j = $right;
+    sub rap_ord ($izq, $der) {
+        my $pivote = @entrada[($izq + $der) div 2];
+        my $i = $izq;
+        my $j = $der;
         while $i < $j {
-            $i++ while @input[$i] < $pivot;
-            $j-- while @input[$j] > $pivot;
+            $i++ while @entrada[$i] < $pivote;
+            $j-- while @entrada[$j] > $pivote;
             if $i <= $j {
-                swap $i, $j;
+                intercambiar $i, $j;
                 $i++;
                 $j--;
             }
         }
-        qsort($left, $j) if $left < $j;
-        qsort($i, $right) if $j < $right;
+        rap_ord($izq, $j) if $izq < $j;
+        rap_ord($i, $der) if $j < $der;
     }
-    qsort(0, @input.end)
+    rap_ord(0, @entrada.end)
 }
 my @array = pick 20, 1..100;
-quicksort @array;
+ordrapido @array;
 say @array;
 \end{verbatim}
 
-The array is modified in place (which has the advantage of 
-requiring limited memory), which means that the original array 
-is modified. 
+El array es modificado en lugar (lo cual tiene la ventaja de 
+requerir memoria limitada), lo cual significa que el array 
+original es modificado.
 
-For functional programming, internal data is immutable, so that 
-you're copying data fragments into new lists, rather than modifying 
-them ``in place.''
+Para la programación funcional, los datos internos son inmutables, 
+por lo tanto copias fragmentos de datos en nuevas listas, en lugar 
+de modificarlos ``en el lugar``.
 
-In the same spirit as what we've done in section~\ref{funcstyle} 
-for the merge sort algorithm, try to write a functional style 
-implementation of the quick sort algorithm. Hint: this can be 
-done in about half a dozen lines of code. 
+Con el mismo espíritu que lo hicimos en la sección\ref{funcstyle}
+para el algoritmo de ordenamiento de mezcla, trata de escribir una
+implementación del algoritmo de ordenamiento rápido. Pista: esto 
+se puede hacer la mitad de una docena de líneas de código. 
 
-Solution: \ref{sol_quicksort}.
+Solución: \ref{sol_quicksort}.
 \index{quick sort}
 
 \end{exercise}
