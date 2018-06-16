@@ -1,6 +1,8 @@
-# thinkperl6
+# Piensa Perl 6
 
-Archivo LATEX de la traducción en español de Think Perl 6.
+* [Inglés](./README-en.md)
+
+Archivo LaTeX de la traducción en español de Think Perl 6.
 
 ![book cover](book/figs/thinkperl6_cover.png)
 
@@ -11,7 +13,7 @@ ser encontrada en [Think Perl 6](http://greenteapress.com/wp/think-perl-6/).
 
 ### Cómo crear el PDF
 
-El directorio `book` contiene los archivos LATEX necesarios para
+El directorio `book` contiene los archivos LaTeX necesarios para
 compilar el libro. Para recompilar el libro, ejecuta el siguiente
 comando dentro de dicho directorio:
 ```
@@ -41,13 +43,13 @@ de ejecutar `make clean`.
 - [x] Capítulo 04: Bucles, Condicionales y Recursión
 - [x] Capítulo 05: Subrutinas Fructuosas
 - [x] Capítulo 06: Iteración
-- [x] Capítulo 07: Cadenas de texto
-- [ ] Capítulo 08: Caso Práctico: Juego de palabras
+- [x] Capítulo 07: Cadenas de Pexto
+- [ ] Capítulo 08: Caso Práctico: Juego de Palabras
 - [x] Capítulo 09: Arrays y Listas
 - [x] Capítulo 10: Hashes
-- [ ] Capítulo 11: Caso Práctico: Selección de una Estructura de Dato
+- [ ] Capítulo 11: Caso Práctico: Selección de una Estructuras de Dato
 - [x] Capítulo 12: Clases y Objetos
-- [x] Capítulo 13: Regexes y Grammars
+- [x] Capítulo 13: Regexes y Gramáticas
 - [ ] Capítulo 14: Programación Funcional en Perl **TEP**
 - [x] Capítulo 15: Algunos Últimos Consejos
 - [ ] Apéndice A:  Soluciones a los Ejercicios
