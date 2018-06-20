@@ -43,14 +43,14 @@ de ejecutar `make clean`.
 - [x] Capítulo 04: Bucles, Condicionales y Recursión
 - [x] Capítulo 05: Subrutinas Fructuosas
 - [x] Capítulo 06: Iteración
-- [x] Capítulo 07: Cadenas de Pexto
-- [ ] Capítulo 08: Caso Práctico: Juego de Palabras
+- [x] Capítulo 07: Cadenas de Texto
+- [ ] Capítulo 08: Caso Práctico: Juego de Palabras **TEP**
 - [x] Capítulo 09: Arrays y Listas
 - [x] Capítulo 10: Hashes
-- [ ] Capítulo 11: Caso Práctico: Selección de una Estructuras de Dato
+- [ ] Capítulo 11: Caso Práctico: Selección de una Estructura de Datos **TEP**
 - [x] Capítulo 12: Clases y Objetos
 - [x] Capítulo 13: Regexes y Gramáticas
-- [ ] Capítulo 14: Programación Funcional en Perl **TEP**
+- [x] Capítulo 14: Programación Funcional en Perl
 - [x] Capítulo 15: Algunos Últimos Consejos
 - [ ] Apéndice A:  Soluciones a los Ejercicios
 
