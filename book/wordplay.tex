@@ -1,44 +1,41 @@
 
-\chapter{Case Study: Word Play}
+\chapter{Caso Práctico: Juego de Palabras}
 \label{wordplay}
 
-This chapter is intended to let you practice and 
-consolidate the knowledge you have acquired so far, 
-rather than introducing new concepts. To help you gain 
-experience with programming, we will cover a 
-case study that involves solving word puzzles by 
-searching for words that have certain properties.  
-For example, we'll find the longest palindromes
-in English and search for words whose letters appear in
-alphabetical order.  And I will present another program 
-development plan: reduction to a previously solved problem.
+En lugar de introducir conceptos nuevos, el propósito de 
+este capítulo es dejarte practicar y consolidar el conocimiento
+que has adquirido hasta ahora. Para ayudarte a ganar experiencia
+con la programación, discutiremos un caso práctico que involucra
+la solución de sopas de palabras al buscar palabras que tienen
+ciertas propiedades. Por ejemplo, encontraremos los palíndromos
+más largos en inglés y buscaremos palabras cuyas letras aparecen
+en orden alfabético. Y presentaré otro plan de desarrollo de programa:
+reducción a un programa que se solucionó previamente.
 
+\section{Lectura de y Escritura a un Archivo}
 
-\section{Reading from and Writing to Files}
-
-For the exercises in this chapter, we will need our 
-programs to read text from files. In many programming 
-languages, this often means that we need a statement to 
-open a file, then a statement or group of statements to 
-read the file's content, and finally a statement to 
-close the file (although this last operation may 
-be performed automatically in some circumstances).
+Para los ejercicios en este capítulos, necesitaremos que nuestros
+programas lean texto desde los archivos. En muchos lenguajes 
+de programación, usualmente esto significa que necesitamos una sentencia
+que abra un archivo, después una sentencia o grupo de sentencias 
+para leer el contenido del archivo, y finalmente una sentencia para
+cerrar el archivo (aunque esta operación puede realizarse automáticamente
+en algunas circunstancias).
 \index{file!reading from}
 \index{file!writing to}
 \index{file!open statement}
 \index{file!close statement}
 
-We are interested here in text files that are usually 
-made of lines separated by logical new line characters; 
-depending on your operating system, such logical new line 
-characters consist of either one (Linux, Mac) or two (Windows) 
-physical characters (bytes). 
+Aquí estamos interesados en archivos de texto que están compuestos 
+por líneas separadas por lógicos caracteres de nueva línea; 
+dependiendo de tu sistema operativo, lógicos caracteres de nueva línea
+consisten de uno (Linux, Mac) o dos (Windows) caracteres físicos (bytes).
 \index{newline character}
 
-The Perl built-in function {\tt open} takes the path and 
-name of the file as a parameter and returns a {\bf file 
-handle} ({\tt IO::Handle object}) which you can use to read 
-the file (or to write to it):
+La función integrada de Perl {\tt open} toma la ruta la cual indica donde el 
+archivo se encuentra y el nombre del archivo. {\tt open} devuelve
+un {\bf descriptor de archivo} ({\tt IO::Handle object}) que puedes usar
+para leer (o para escribir en el mismo):
 \index{open function}
 \index{function!open}
 \index{plain text}
@@ -48,243 +45,246 @@ the file (or to write to it):
 \index{function!slurp-rest}
 
 \begin{verbatim}
-my $fh = open("path/to/myfile.txt", :r);
-my $data = $fh.slurp-rest;
+my $fh = open("ruta/a/mi_archivo.txt", :r);
+my $datos = $fh.slurp-rest;
 $fh.close;
 \end{verbatim}
 %
-The {\tt :r} option is the file mode ({\tt read}). {\tt \$fh} is a 
-common name for a file handle.  The \emph{file object} provides methods 
-for reading, such as {\tt slurp-rest} which returns the 
-full content of the file from the current position to the 
-end (and the entire content of the file if we've just 
-opened it).
+La opción {\tt :r}  ({\tt read}) es el modo de escritura. {\tt \$fh} es
+un nombre común para un descriptor de archivo ({\bf f}ile {\bf h}andle en inglés).
+El \emph{objeto de archivo} provee métodos para leer, tales como {\tt slurp-rest}
+el cual devuelve el contenido completo del archivo desde la posición actual hasta
+el final (y el contenido completo del archivo lo hemos abierto por primera vez).
 
-This is the traditional way of opening and reading files 
-in most languages.
+Esta es la manera tradicional de abrir y leer archivos en la mayoría de
+los lenguajes.
 \index{read mode}
 \index{file mode!read}
 
-However, Perl's {\tt IO} role (in simple terms, a role is 
-a collection of related methods) offers simpler methods which 
-can open a file and read it all in one single instruction (i.e., 
-without having to first open a file handle and then close it):
+No obstante, el rol {\tt IO} de Perl (en términos simples, un rol 
+es una colección de métodos relacionados) ofrece métodos más simples
+los cuales pueden abrir y leerlo en una sola instrucción (i.e., 
+sin tener que primero abrir un descriptor de archivo y después cerrarlo):
 \index{role}
 \index{IO role}
 
 \begin{verbatim}
-my $text = slurp "path/to/myfile.txt";
-# or:
-my $text = "path/to/myfile.txt".IO.slurp;
+my $texto = slurp "ruta/a/mi_archivo.txt";
+# alternativamente:
+my $texto = "ruta/a/mi_archivo.txt".IO.slurp;
 \end{verbatim}
 %
 
 \index{slurp function}
-{\tt slurp} takes care of opening and closing the file for you.
+{\tt slurp} toma la responsabilidad de abrir y cerrar el
+archivo por ti.
 
-We can also read the file line by line, which is very 
-practical if each line contains a logical entity such as 
-a record, and is especially useful for very large files 
-that might not fit into memory:
+Podemos también leer el archivo línea por línea, lo cual es 
+mu práctico si cada línea contiene una entidad lógica tal como
+un registro, y es especialmente útil para archivos muy grandes
+que podrían no caber en la memoria:
 
 \begin{verbatim}
-for 'path/to/hugefile.txt'.IO.lines -> $line {
-    # Do something with $line
+for 'ruta/a/mi_archivo.txt'.IO.lines -> $línea {
+    # Haz algo con la $línea
 }
 \end{verbatim}
 %
-By default, the {\tt .lines} method will remove the trailing 
-newline characters from each line, so that you don't have 
-to worry about them.
+Por defecto, el método {\tt .lines} removerá el caracteres de nueva línea
+colgantes de cada línea, para que no tengas que preocuparte sobre ellos.
 \index{IO.lines method}
 \index{IO.slurp method}
 \index{slurp function}
 %
 
-We haven't studied arrays yet, but you can also read all 
-lines of a file into an array, with each line of the file 
-becoming an array item. For example, you can load the 
-\emph{myfile.txt} file into the \verb'@lines' array:
+No hemos estudiados los arrays aún, pero puedes también leer
+todas las líneas de un archivo en un array, con cada línea del
+archivo volviéndose un artículo del array. Por ejemplo, puedes
+cargar el archivo {\em mi\_archivo.txt} en el array \verb|@líneas|:
 \index{array}
 
 \begin{verbatim}
-my @lines = "myfile.txt".IO.lines;
+my @líneas = "mi_archivo.txt".IO.lines;
 \end{verbatim}
 %
 
-Accessing any line can then be done with the bracket operator 
-and an index. For example, to print the first and the 
-seventh line:
+El acceso a cada línea puede entonces hacerse con el operador bracket
+y un índice. Por ejemplo, para imprimir la primera y séptima línea:
 
 \begin{verbatim}
-say @lines[0];
-say @lines[6];
+say @líneas[0];
+say @líneas[6];
 \end{verbatim}
 %
-To write data to a file, it is possible to {\tt open} a file just 
-as when wanting to read from it, except that the {\tt :w} (write) 
-option should be used:
+Para escribir datos en un archivo, es posible abrirlo al igual 
+que cuando queremos leer desde el mismo, excepto que la opción
+{\tt :w} (write) (\emph{escritura}) debe usarse:
 \index{write mode}
 \index{file mode!write}
 
 \begin{verbatim}
-my $fh = open("path/to/myfile.txt", :w);
-$fh.say("line to be written to the file");
+my $fh = open("ruta/a/mi_archivo.txt", :w);
+$fh.say("escribir esta línea en el archivo");
 $fh.close;
 \end{verbatim}
 
-Be careful with this. If the file already existed, any 
-existing content will be clobbered. So watch out when 
-you want to open a file in write mode.
+Sé cuidadoso con esto. Si el archivo ya existía, cualquier
+contenido será sobrescrito. Así que sé cauteloso al abrir un archivo
+en el modo de escritura, debido a que podrías borrar todo el 
+contenido de un archivo si no tienes cuidado. 
 
-It is also possible to open the file in append mode, using the 
-{\tt :a} option. New data will then be added after the existing 
-content.
+También es posible abrir el archivo en modo de concatenación, usando
+la opción {\tt :a} (append). Con esta opción, los datos nuevos serán 
+entonces agregados al contenido existente.
 \index{append mode}
 \index{file mode!append}
 
-Writing to a file can be simplified using the {\tt spurt} 
-function, which opens the file, writes the data to it, 
-and closes it:
+La escritura a un archivo puede simplificarse con el uso de la función
+{\tt spurt}, la cual abre el archivo, escribe los datos en el mismo, y
+consecuentemente cierra:
 \index{spurt function}
 
 \begin{verbatim}
-spurt "path/to/myfile.txt", "line to be written to the file\n";
+spurt "ruta/a/mi_archivo.txt", "escribir esta línea en el archivo\n";
 \end{verbatim}
 
-Used this way, {\tt spurt} will clobber any existing content in 
-the file. It may also be used in append mode with the {\tt :append} 
-option:
+Usado de esta manera, {\tt spurt} sobrescribirá cualquier contenido existente
+en el archivo. También puede usarse en el modo de concatenación con la 
+opción {\tt :append}:
 \index{spurt function!append mode}
 
 \begin{verbatim}
-spurt "path/to/myfile.txt", "line to be added\n", :append;
+spurt "ruta/a/mi_archivo.txt", "escribir esta línea en el archivo\n ", :append;
 \end{verbatim}
 
 
-\section{Reading Word Lists}
+\section{Lectura de Listas de Palabras}
 \label{wordlist}
 
-For the exercises in this chapter we need a list of English 
-words. There are lots of word lists available on the web, 
-but one of the most suitable for our purpose is one of the 
-word lists collected and contributed to the public domain 
-by Grady Ward as part of the Moby lexicon project (see 
-\url{http://wikipedia.org/wiki/Moby_Project}).  It is a 
-list of 113,809 official crosswords; that is, words that are
-considered valid in crossword puzzles and other word games.  
-In the Moby collection, the filename is \emph{113809of.fic}; 
-you can download a copy, with the simpler name \emph{words.txt}, 
-from \url{https://github.com/LaurentRosenfeld/thinkperl6/tree/master/Supplementary/words.txt}.
+Para los ejercicios en este capítulo necesitamos una lista de palabras
+en español. Hay muchas listas de palabras en la web, pero una de la
+más adecuada para nuestro propósito es una de las listas de palabras
+coleccionada y cedida al dominio público por Grady Ward como parte
+del proyecto léxico Moby (ver \url{http://wikipedia.org/wiki/Moby_Project}).
+Es una lista de 113,809 palabras oficiales de crucigramas; es decir, 
+palabras que son consideradas válidas en un crucigrama y otros juegos de
+palabras. En la colección Moby, el nombre del archivo es \emph{spanish.txt};
+puedes descargar una copia
+desde \url{https://www.gutenberg.org/files/3206/files/spanish.txt}.
 \index{Moby Project}
 \index{crosswords}
 \index{word list}
 
-This file is in plain text (with each word of the list on 
-its own line), so you can open it with a text
-editor, but you can also read it from Perl. Let's do so 
-in the interactive mode (with the REPL):
+\begin{description}
+\item {\bf Nota del traductor}: En lugar de utilizar la lista de palabras en \emph{spanish.txt}
+del proyecto Moby, he decidido utilizar la lista en \emph{lemario.txt} (\url{https://gitlab.com/uzluisf/piensaperl6/tree/master/suplementos/lemario.txt}) 
+que contiene aproximadamente 88,000 palabras\footnote{
+También puedes encontrar el lemario y más información sobre el mismo aquí: (\url{http://olea.org/proyectos/lemarios/index.html})}. La decisión se debe a que la lista de 
+palabras en español del proyecto Moby contiene muchas palabras que no están
+formateadas apropiadamente. 
+\end{description}
+
+Este archivo contiene texto simple (con cada palabra de la lista
+en su propia línea), así que puedes abrirlo con un editor de texto,
+pero también puedes leerlo con Perl. Hagamos esto en el modo
+interactivo (con el REPL):
 \index{interactive mode}
 \index{REPL}
 
 \begin{verbatim}
-> my $fh = open("words.txt", :r);
-IO::Handle<words.txt>(opened, at octet 0)
-> my $line = get $fh;
+> my $fh = open("lemario.txt", :r);
+IO::Handle<lemario.txt>(opened, at octet 0)
+> my $línea = get $fh;
 aa
-> say "<<$line>>";
+> say "<<$línea>>";
 <<aa>>
 \end{verbatim}
 
-The {\tt get} function reads one line from the file handle. 
+La función {\tt get} lee una línea del descriptor de archivo.
 \index{get function}
 
-The first word in this particular list is ``aa'' (a kind 
-of lava).
+La primera palabra en esta lista en particular es ``a``.
 
-Printing the \verb'$line' variable between angle brackets 
-within a string shows us that the {\tt get} function removed 
-implicitly the trailing newline characters, in this 
-case a \verb'\r\n' (carriage return and newline) character 
-combination, since this file was apparently prepared under 
-Windows.
+Imprimir la variable \verb|$línea| entre los paréntesis angulares
+dentro de una cadena de texto nos muestra que la función {\tt get}
+removió explícitamente los caracteres de nueva línea colgantes, en este
+caso una combinación de los caracteres \verb|\r\n| (un retorno de carro
+ y una nueva línea), dado que este archivo aparentemente fue preparado en Windows.
 
-The file handle keeps track of what has been read from the 
-file and what it should read next, so if you call {\tt get} 
-again, you obtain the next line:
+El descriptor de archivo mantiene un registro de lo que se ha leído
+desde el archivo y lo que debe leerse después, así que se llamas
+a {\tt get} otra vez, obtienes la siguiente línea:
 
 \begin{verbatim}
-> my $line = get $fh;
-aah
+> my $línea = get $fh;
+a-
 \end{verbatim}
 %
-The next word is ``aah,'' which is a perfectly legitimate
-word, so stop looking at me like that.
+La palabra siguiente es ``a-''. Si llamas a {\tt get} nuevamente,
+obtienes la palabra ``aarónico``. 
 
-This is good and fine if we want to explore the first few 
-lines of the {\tt words.txt} file, but we are not going to 
-read the 113 k-lines of the file this way.
+Esto es grandioso si queremos explorar las primeras líneas del
+archivo {\tt lemario.txt}, pero no vamos las 88-k líneas del 
+archivo de esta forma.
 
-We need a loop to do it for us. We could insert the above 
-{\tt get} instruction into a {\tt while} loop, but we have 
-seen above an easier and more efficient way of doing it 
-using a {\tt for} loop and the {\tt IO.lines} method, 
-without the hassle of having to open or close the file:
+Necesitamos que un bucle lo haga por nosotros. Podríamos insertar
+la nueva instrucción {\tt get} en un bucle {\tt while}, pero
+hemos visto una manera más fácil y más eficiente de hacerlo con
+un bucle {\tt for} y el método {\tt IO.lines}, sin la inconveniencia
+de abrir o cerrar el archivo:
 \index{for loop}
 \index{IO.lines method}
 
 \begin{verbatim}
-for 'words.txt'.IO.lines -> $line {
-    say $line;
+for 'lemario.txt'.IO.lines -> $línea {
+    say $línea;
 }
 \end{verbatim}
 %
-This code reads the file line by line, and prints each line 
-to the screen. We'll soon do more interesting things than 
-just displaying the lines on the screen.
+Este código lee el archivo línea por línea, e imprime cada línea
+en la pantalla. Pronto haremos cosas más interesantes que solo
+mostrar las líneas en la pantalla.
 
-\section{Exercises}
+\section{Ejercicios}
 
-This case study consists mainly of exercises and 
-solutions to them within the body of the chapter because solving the 
-exercises is the main teaching material of this chapter. Therefore, 
-solutions to these exercises are in the following sections of 
-this chapter, not in the appendix. You should at least 
-attempt each one before you read the solutions.
+Este caso práctico consiste principalmente de ejercicios y soluciones
+dentro del cuerpo del capítulo porque solucionar los ejercicios es la
+manera principal de enseñar el material de este capítulo. Por lo tanto, 
+las soluciones a estos ejercicios se encuentran en las siguientes 
+secciones de este capítulo, no en el apéndice. Por lo menos 
+deberías tratar de solucionar cada uno de ellos antes de leer las
+soluciones.
 
 \begin{exercise}
-Write a program that reads {\tt words.txt} and prints only the
-words with more than 20 characters.
+Escribe un programa que lee el archivo {\tt lemario.txt} e imprime
+solo las palabras con más de 20 caracteres.
 \index{whitespace}
 
 \end{exercise}
 
 \begin{exercise}
 
-In 1939 Ernest Vincent Wright published a 50,000-word novel 
-called {\em Gadsby} that does not contain the letter ``e''. 
-Since ``e'' is the most common letter in English, that's 
-not easy to do. In fact, it is difficult to construct a 
-solitary thought without using that most common letter. 
-Such a  writing in which one letter is avoided is sometimes 
-called a lipogram.
+En 1939, Ernest Vincent Wright publicó una novela con aproximadamente
+50,000 palabras llamada {\em Gadsby} que no contiene la letra ``e``. 
+Dado que ``e`` es la letra más común en inglés, eso no es fácil
+de hacer. De hecho, es difícil construir un solo pensamiento sin
+usar la letra más común. Tal escritos donde se omite alguna letra
+es algunas veces conocido como un lipograma.
 \index{Wright, Ernest Vincent}
 \index{Gadsby}
 \index{lipogram}
 
-Write a subroutine called \verb"has-no-e" that returns 
-{\tt True} if the given word doesn't have the letter ``e'' 
-in it.
+Escribe una subrutina llamada \verb|sin-e| que devuelve {\tt True}
+si la palabra dada no contiene la letra ``e``.
 \label{no_e}
 
-Modify your program from the previous exercise to print only 
-the words that have no ``e'' and compute the percentage of 
-the words in the list that have no ``e''.
+Modifica tu programa del ejercicio previo para imprimir solamente
+palabras que no tienen ``e`` y calcular el porcentaje de palabras
+en la lista que no tienen ``e``.
 
-(The word dictionary we are using, \emph{words.txt}, is 
-entirely in lower-case letters, so you don't need to 
-worry about any uppercase ``E.'')
-
+(El diccionario de palabras que estamos usando, \emph{lemario.txt}, 
+tiene completamente en letras minúsculas, así que no tienes que preocuparte
+acerca de la ``E`` mayúscula.)
 
 
 \end{exercise}
@@ -292,47 +292,47 @@ worry about any uppercase ``E.'')
 
 \begin{exercise} 
 
-Write a subroutine named {\tt avoids}
-that takes a word and a string of forbidden letters, and
-that returns {\tt True} if the word doesn't use any of 
-the forbidden letters.
+Escribe una subrutina llamada {\tt evitar} que toma una palabra
+y una cadena de texto de letras prohibidas, y devuelve {\tt True}
+si la palabra no contiene ninguna de las letras prohibidas.
 
-Next, modify your program to prompt the user to enter a string
-of forbidden letters and then print the number of words that
-don't contain any of them.
-Can you find a combination of five forbidden letters that
-excludes the smallest number of words?
-
+Después, modifica tu programa para encitar el usuario a entrar
+una cadena de texto de letras prohibidas y después imprimir el número
+de palabras que no contienen ningunas de ellas. ?`Puedes encontrar una
+combinación de cinco letras prohibidas que excluya  el menor número
+de palabras?
 \end{exercise}
 
 
 
 \begin{exercise}
 
-Write a subroutine named \verb"uses-only" that takes a word and a
-string of letters, and that returns {\tt True} if the word contains
-only letters in the list.  Can you make a sentence using only the
-letters {\tt acefhlo}?  Other than ``Hoe alfalfa?''
+Escribe una subrutina llamada \verb|usa-solamente| que toma una palabra
+y una cadena de letras, y devuelve {\tt True} si la palabra contiene
+solo las letras en la lista. ?`Puedes construir una oración usando solo
+las letras {\tt acefhlo}?  
+%Other than ``Hoe alfalfa?''
 
 \end{exercise}
 
 
 \begin{exercise} 
 
-Write a subroutine named \verb"uses-all" that takes a word and a
-string of required letters, and returns {\tt True} if the word
-uses all the required letters at least once.  How many words are there
-that use all the vowels {\tt aeiou}?  How about {\tt aeiouy}?
+Escribe una subrutina llamada \verb|usa-todas| que toma una palabra
+y una cadena de letras requeridas, y devuelve {\tt True} si la palabra
+usa todas las letras requeridas por lo menos una vez. ?`Cuántas 
+palabras se encuentran ahí que usan todas las vocales {\tt aeiou}? 
+?`Y cuántas usan {\tt aeiouy}?
 
 \end{exercise}
 
 
 \begin{exercise}
 
-Write a function called \verb"is_abecedarian" that returns
-{\tt True} if the letters in a word appear in alphabetical order
-(double letters are ok).  
-How many abecedarian words are there?
+Escribe una función llamada \verb|es_abecedaria| que devuelve
+{\tt True} si las letras en una palabra aparecen en orden 
+alfabético (letras dobles son aceptables). ?`Cuántas palabras
+son abecedarias?
 
 \index{abecedarian}
 
@@ -340,178 +340,181 @@ How many abecedarian words are there?
 
 
 
-\section{Search}
+\section{Búsqueda}
 \label{search}
 \index{search!pattern}
 \index{pattern!search}
 \index{regex}
 
-Most of the exercises in the previous section have something
-in common; they can be solved with the search pattern (and 
-the {\tt index} function we saw in Section~\ref{find} 
-(p.~\pageref{find}). Most can also be solved using regexes.
+La mayoría de los ejercicios en la sección previa tiene algo en
+común; pueden solucionarse con el patrón de búsqueda (y la función
+{\tt index} que vimos en la Sección~\ref{find} 
+(p.~\pageref{find}). Muchos de ellos también pueden solucionarse
+con regexes.
 
-\subsection{Words Longer Than 20 Characters (Solution)}
+\subsection{Palabras con Más de 20 Caracteres (Solución)}
 
-The solution to the simplest exercise ---printing all the 
-words of {\tt words.txt} that are longer than 
-20~characters--- is:
+La solución al ejercicio más simple ---imprimir todas las palabras
+de {\tt lemario.txt} que tienen más de 20 caracteres--- es:
 
 \begin{verbatim}
-for 'words.txt'.IO.lines -> $line {
-    say $line if $line.chars > 20
+for 'lemario.txt'.IO.lines -> $línea {
+    say $línea if $línea.chars > 20
 }
 \end{verbatim}
 %
 
-Because the code is so simple, this is a typical example 
-of a possible and useful one-liner (as described in 
-Section~\ref{one-liner mode}). Assuming you want to know the words 
-that are longer than 20~characters, you don't even need to 
-write a script, save it, and run it. You can simply type this at 
-your operating system prompt:
+Dado que el código es tan simple, esto es un ejemplo típico
+de un one-liner útil (como se describió en la 
+Sección~\ref{one-liner mode}). Asumiendo que quieras saber las
+palabras con más de 20 caracteres, no necesitas ni siquiera escribir
+un script, guardarlo y ejecutarlo. Simplemente puedes teclear esto
+en la prompt de tu sistema operativo:
 \label{one-liner-example}
 \index{one-liner mode}
 
 \begin{verbatim}
-$ perl6 -n -e '$_.say if $_.chars > 20;' words.txt
+$ perl6 -n -e '$_.say if $_.chars > 20;' lemario.txt
 \end{verbatim} 
 %
-The ``-e'' option tells Perl that the script to be run 
-comes next on the command line between quotation marks. The 
-``-n'' asks Perl to read line by line the file after the 
-end of the command line, to store each line in the \verb'$_' 
-topical variable, and to apply the content of the script to 
-each line. And the one-liner script is just printing the 
-content of \verb'$_' if its length is greater than 20.
+La opción ``-e`` le dice a Perl que el script a ser ejecutado
+viene en la línea de comando entre comillas. La ``-n`` le indica
+a Perl que lea el archivo línea por línea después de la línea
+de comando, almacene cada línea en la variable tópico \verb|$_|,
+y aplique el contenido del script a cada línea. Y el script en modo
+one-liner solo imprime el contenido de \verb|$_| si su longitud
+es mayor que 20.
 \index{topical variable}
 
-To simplify a bit, the two options \verb'-n' and \verb'-e' 
-may be grouped together as \verb"perl6 -ne". In addition, 
-the \verb'$_' topical variable can be omitted in method calls 
-(in other words, if a method has no invocant, the invocant 
-will be defaulted to \verb'$_'). Finally, the trailing 
-semi-colon may also be removed. The one-liner above can 
-thus be made somewhat simpler and shorter:
+Para simplificarlo un poco, las dos opciones \verb|-n| y \verb|-e|
+pueden agruparse como \verb|perl6 -ne|. En adición, la variable tópico
+\verb|$_| puede omitirse en las llamadas de método (en otras palabras,
+si un método no tiene invocante, el invocante será \verb|$_| por defecto).
+Finalmente, el punto y coma colgante puede igualmente removerse.
+El script en modo one-liner más arriba puede entonces simplificarse
+aún más:
 \index{invocant}
 
 \begin{verbatim}
-$ perl6 -ne '.say if .chars > 20' words.txt
+$ perl6 -ne '.say if .chars > 20' lemario.txt
 \end{verbatim} 
 %
-Remember that, if you're trying this under Windows, you need to 
-replace the single quotes with double quotes (and vice-versa if 
-the scripts itself contains double quotes):
+Recuerda que, si está intentando esto en Windows, necesita reemplazar las 
+comillas simples con las comillas dobles (y viceversa si el script
+contiene comillas dobles):
 
 \begin{verbatim}
-C:\Users\Laurent>perl6 -ne ".say if .chars > 20" words.txt
+C:\Users\Laurent>perl6 -ne ".say if .chars > 20" lemario.txt
 \end{verbatim} 
 %
 
-\subsection{Words with No ``e'' (Solution)}
+\subsection{Palabras con No ``e'' (Solución)}
 
-A subroutine that returns {\tt True} for words that have 
-no ``e'' (Exercise~\ref{no_e}) is also quite straight forward:
+Una subrutina que devuelve {\tt True} para palabras que no tienen ``e''
+(Ejercicio~\ref{no_e}) es también simple:
 
 \begin{verbatim}
-sub has-no-e (Str $word) {
-    return True unless defined index $word, "e";
+sub sin-e (Str $palabra) {
+    return True unless defined index $palabra, "e";
     return False;
 }
 \end{verbatim}
 %
 
-The subroutine simply returns {\tt True} if the {\tt index} 
-function did not find any ``e'' in the word received as 
-a parameter and {\tt False} otherwise. 
+La subrutina simplemente devuelve {\tt True} si la función {\tt index} 
+no encontró una ``e`` en la palabra recibida como un parámetro y
+por lo contrario, devuelve {\tt False}.
 
-Note that this works correctly because the word list used 
-\emph{words.txt}) is entirely in lowercase letters. The 
-above subroutine would need to be modified if it might 
-be called with words containing uppercase letters. 
+Nota que esto funciona correctamente porque la lista de palabras usada
+(\emph{lemario.txt}) está completamente en letras minúsculas. La subrutina
+más arriba necesitaría ser modificada si fuera a ser llamada con palabras
+que contienen letras mayúsculas.
 
-Since the {\tt defined} function returns a Boolean value, we 
-could shorten our subroutine to this::
+Dado que la función {\tt defined} devuelve un valor Booleano, podríamos 
+simplificar nuestra subrutina:
 \begin{verbatim}
-sub has-no-e (Str $word) {
-    not defined index $word, "e";
+sub sin-e (Str $palabra) {
+    not defined index $palabra, "e";
 }
 \end{verbatim}
 %
 
-We could also have used a regex for testing the presence of a 
-``e'' on the second line of this subroutine:
+Podríamos también haber usado un regex para comprobar la 
+presencia de una ``e`` en la segunda línea de esta subrutina:
 
 \begin{verbatim}
-    return True unless $word ~~ /e/;
+    return True unless $palabra ~~ /e/;
 \end{verbatim}
 %
 
-This fairly concise syntax is appealing, but when 
-looking for an exact literal match, the {\tt index} function 
-is likely to be slightly more efficient (faster) than a 
-regex.
+Esta sintaxis bastante concisa es atractiva, pero cuando se
+busca por una coincidencia literal exacta, la función {\tt index}
+es probablemente más eficiente (más rápida) que un regex.
 
-Looking for the words without ``e'' in our word list and 
-counting them is not very difficult:
+Buscar y contar las palabras sin ``e`` en nuestra lista de palabras 
+no es muy difícil:
 
 \begin{verbatim}
-sub has-no-e (Str $word) {
-    not defined index $word, "e";
+sub sin-e (Str $palabra) {
+    not defined index $palabra, "e";
 }
 
-my $total-count = 0;
-my $count-no-e = 0;
-for 'words.txt'.IO.lines -> $line { 
-    $total-count++;
-    if has-no-e $line {
-        $count-no-e++;
-        say $line;
+my $cuenta-total = 0;
+my $cuenta-sin-e = 0;
+for 'lemario.txt'.IO.lines -> $línea { 
+    $cuenta-total++;
+    if sin-e $línea {
+        $cuenta-sin-e++;
+        say $línea;
     }
 }
 say "=" x 24;
-say "Total word count: $total-count";
-say "Words without 'e': $count-no-e";
-printf "Percentage of words without 'e': %.2f %%\n", 
-        100 * $count-no-e / $total-count;
+say "Cuenta total de palabras: $cuenta-total";
+say "Palabras sin 'e': $cuenta-sin-e";
+printf "Porcentaje de palabras sin 'e': %.2f %%\n", 
+        100 * $cuenta-sin-e / $cuenta-total;
 \end{verbatim}
 
-The above program will display the following at the end 
-of its output:
+El programa anterior mostrará lo siguiente al final de 
+su salida:
 
 \begin{verbatim}
 ========================
-Total word count: 113809
-Words without 'e': 37641
-Percentage of words without 'e': 33.07 %
+Cuenta total de palabras: 87899
+Palabras sin 'e': 36671
+Porcentaje de palabras sin 'e': 41.72 %
 \end{verbatim}
 
-So, less than one third of the words of 
-our list have no ``e.''
+Así que más de un tercio de las palabras en nuestra lista no
+tienen ``e``.
 
-\subsection{Avoiding Other Letters (Solution)}
+\subsection{Evitar Otras Letras (Solución)}
 
 \index{generalization}
-The {\tt avoids} subroutine is a more general version of 
-\verb"has_no_e", but it has the same structure:
+La subrutina {\tt evitar} es una versión más general de 
+\verb|sin-e|, pero tiene la misma estructura:
 
 \begin{verbatim}
-sub avoids (Str $word, Str $forbidden) {
-    for 0..$forbidden.chars - 1 -> $idx {
-        my $letter = substr $forbidden, $idx, 1;
-        return False if defined index $word, $letter;
+sub evitar (Str $palabra, Str $prohibida) {
+    for 0..$prohibida.chars - 1 -> $idx {
+        my $letra = substr $prohibida, $idx, 1;
+        return False if defined index $palabra, $letra;
     }
     True;
 }
+
 \end{verbatim}
 %
-We can return {\tt False} as soon as we find a forbidden letter;
-if we get to the end of the loop, we return {\tt True}. Since 
-a subroutine returns the last evaluated expression, we don't 
-need to explicitly use a {\tt return True} statement in the last 
-code line above. I used this feature here as an example; you might 
-find it clearer to explicitly {\tt return} values, except 
-perhaps for very simple one-line subroutines.
+Podemos devolver {\tt False} tan pronto encontremos una letra
+prohibida; si llegamos al final del bucle, devolvemos {\tt True}.
+Debido a que una subrutina devuelve la última expresión evaluada,
+no necesitamos usa la sentencia {\tt return True} explícitamente
+en la última línea de código más arriba. He usado esta característica
+como un ejemplo; podrías encontrarlo más claro {\tt devolver} los valores 
+explícitamente, excepto quizás con subrutinas de una línea muy simples.
+
+Nota que tenemos dos bucles anidados implícitamente. Podríamos 
+
 
 Note that we have here implicitly two nested loops. We could 
 reverse the outer and the inner loops:
@@ -549,7 +552,7 @@ printf "Percentage of words with no forbidden letter: %.2f %%\n",
 %
   
 
-\subsection{Using Only Some Letters (Solution)}
+\subsection{Using Only Some Letters (Solución)}
 
 \verb"uses-only" is similar to our {\tt avoids} subroutine 
 except that the sense of the condition is reversed:
@@ -569,7 +572,7 @@ of available letters.  If we find a letter in {\tt word} that
 is not in {\tt available}, we can return {\tt False}. And 
 we return {\tt True} if we reach the loop end.
 
-\subsection{Using All Letters of a List (Solution)}
+\subsection{Using All Letters of a List (Solución)}
 
 \verb"uses-all" is similar to the previous two subroutines, 
 except that we reverse the role of the word and the string 
@@ -609,7 +612,7 @@ problem and apply an existing solution.
 \index{reduction to a previously solved problem} 
 \index{development plan!reduction}
 
-\subsection{Alphabetic Order (Solution)}
+\subsection{Alphabetic Order (Solución)}
 
 For \verb"is_abecedarian" we have to compare adjacent letters. 
 Each time in our {\tt for} loop, we define one letter as our 
@@ -664,29 +667,31 @@ If we get to the end of the loop without finding a fault, then the
 word passes the test.  To convince yourself that the loop ends
 correctly, consider an example like \verb"'flossy'".  The
 length of the word is 6, so
-the last time the loop runs is when \verb'$i' is 4, which is the
+the last time the loop runs is when \verb|$i| is 4, which is the
 index of the second-to-last character.  On the last iteration,
 it compares the second-to-last character (the second ``s'') to 
 the last (the ``y''), which is what we want.
 
-\subsection{Another Example of Reduction to a Previously Solved Problem}
+\subsection{Otro Ejemplo de Reducción a un Problema Previamente Solucionado}
 
 \index{palindrome}
 \label{palindrome_2}
-Here is a version of \verb"is_palindrome" (see
-Exercise~\ref{palindrome}) that uses two indices; one starts at the
-beginning and goes up, while the other starts at the end and goes down:		
+
+Aquí tenemos una versión de \verb|es_palindromo|(ver Ejercicio~\ref{palindrome})
+que usa dos índices; uno comienza al inicio e incrementa, mientra que el
+otro comienza al final y disminuye:
 
 \begin{verbatim}
-sub one-char (Str $string, $idx) {
-    return substr $string, $idx, 1;
+sub un-car (Str $cadena, $idx) {
+    return substr $cadena, $idx, 1;
 }
-sub is-palindrome (Str $word) {
+sub es-palindromo (Str $palabra) {
     my $i = 0;
-    my $j = $word.chars - 1;
+    my $j = $palabra.chars - 1;
 
     while $i < $j {
-        return False if one-char($word, $i) ne one-char($word, $j);
+        return False if un-car($palabra, $i) ne 
+                        un-car($palabra, $j);
         $i++;
         $j--;
     }
@@ -694,87 +699,92 @@ sub is-palindrome (Str $word) {
 }
 \end{verbatim}
 
-Or we could reduce to a previously solved
-problem and write:
+O podríamos reducirlo a un problema previamente solucionado
+y escribir:
 \index{reduction to a previously solved problem}
 \index{development plan!reduction}
 
 \begin{verbatim}
-sub is-palindrome (Str $word) {
-    return is-reverse($word, $word)
+sub es-palindromo (Str $palabra) {
+    return es-inversa($palabra, $palabra)
 }
 \end{verbatim}
 %
-using \verb"is-reverse" from Section~\ref{isreverse} (but
-you should probably choose the corrected version of the 
-{\tt is-reversed} subroutine given in the appendix: 
-see Subsection~\ref{sol_isreverse}).
+usando \verb|es-inversa| de la Sección~\ref{isreverse} (
+pero deberías probablemente elegir la versión corregida de la
+subrutina \verb|es-inversa| dada en el apéndice: 
+ver Subsección~\ref{sol_isreverse}).
 
 
-\section{Debugging}
+\section{Depuración de Programas}
 \index{debugging}
 \index{testing!is hard}
 \index{program!testing}
 
-Testing programs is hard.  The functions in this chapter are
-relatively easy to test because you can check the results by hand.
-Even so, it is somewhere between difficult and impossible to choose a
-set of words that test for all possible errors.
+Hacer pruebas manuales de los programas es difícil. Las funciones en este
+capítulo son relativamente fáciles para probar porque puedes chequear 
+el resultado manualmente. Aún así, es algo entre difícil e imposible elegir
+un conjunto de palabras que prueben para todos los errores posibles.
 
-Taking \verb"has_no_e" as an example, there are two obvious
-cases to check: words that have an ``e'' should return {\tt False}, and
-words that don't should return {\tt True}.  You should have no
-trouble coming up with one of each.
+Por ejemplo, tomemos el caso de la subrutina \verb|sin-e|. En esta función, hay dos casos
+que debemos chequera: palabras que tienen una ``e`` debería devolver {\tt False},
+y palabras que no tienen ninguna ``e`` deberían devolver {\tt True}. Esto
+no representa problema alguno debido a que es fácil encontrar palabras
+que representan cada caso.
 
-Within each case, there are some less obvious subcases.  Among the
-words that have an ``e'', you should test words with an ``e'' at the
-beginning, the end, and somewhere in the middle.  You should test long
-words, short words, and very short words, like an empty string.  The
-empty string is an example of a {\bf special case}, which is one of
-the nonobvious cases where errors often lurk.
+Dentro de cada caso, existen casos que son menos obvios. Entre las palabras
+que tienen una ```e``, deberías probar palabras con una ``e`` al inicio, 
+al final, y en el medio. Deberías probar con palabras largas, palabras cortas
+y con palabras muy cortas, como una cadena de texto vacía. La cadena de texto 
+vacía es un ejemplo de un {\bf caso especial}, el cual es uno de los 
+casos que no son obvios donde los errores usualmente merodean.
 \index{special case}
 
-In addition to the test cases you generate, you can also test
-your program with a word list like \emph{words.txt}.  By scanning
-the output, you might be able to catch errors, but be careful:
-you might catch one kind of error (words that should not be
-included, but are) and not another (words that should be included,
-but aren't).
+Además de las pruebas de casos que generes, puedes también someter
+tu programa a una prueba con una lista de palabras como \emph{lemario.txt}.
+Al escanear la salida, podrías atrapar errores, pero debes ser cuidadoso:
+podrías atrapar un tipo de error (palabras que no deberían ser incluidas,
+pero son incluidas) y dejar pasar otros errores (palabras que deberían ser
+incluidas pero no son incluidas).
 
-In general, testing can help you find bugs, but it is not easy to
-generate a good set of test cases, and even if you do, you can't
-be sure your program is correct.
+En general, las pruebas pueden ayudar a encontrar errores, pero no es fácil
+generar un buen conjunto de pruebas de casos, y aún si lo haces, no puedes
+estar seguro que tu programa es correcto.
 
-According to a legendary computer scientist:
+Según un legendario científico de la computación:
 \index{testing!and absence of bugs}
 
 \begin{quote}
-Program testing can be used to show the presence of bugs, 
-but never to show their absence!
+	
+La depuración de programas puede usarse para mostrar la presencia
+de errores, pero jamás para mostrar la ausencia de los mismos\footnote{
+"Program testing can be used to show the presence of bugs, 
+but never to show their absence!" --- Edsger W. Dijkstra
+}.
 
 --- Edsger W. Dijkstra
 \end{quote}
 \index{Dijkstra, Edsger}
 
 
-\section{Glossary}
+\section{Glosario}
 
 \begin{description}
 
-\item[File object] A value that represents an open file.
+\item[Objeto de archivo] Un valor que representa un archivo abierto.
 \index{file object}
 \index{object!file}
 
-\item[Reduction to a previously solved problem] A way of solving a
-  problem by expressing it as an instance of a previously solved
-  problem.
-  \index{reduction to a previously solved problem}
-  \index{development plan!reduction}
+\item[Reducción a un problema previamente solucionado] Una manera de 
+solucionar un problema al expresarlo como una instancia de un problema
+que fue solucionado previamente.
+\index{reduction to a previously solved problem}
+\index{development plan!reduction}
 
-\item[Special case] A test case that is atypical or nonobvious
-(and less likely to be handled correctly). The expressions   
-\emph{edge case} and \emph{corner case} convey more or less 
-the same idea.
+\item[Caso especial] Un caso de prueba que es atípico o que no es evidente
+(y con pocas posibilidades de ser manejado correctamente). Los términos
+\emph{edge case} and \emph{corner case} expresan más o menos la misma
+idea.
 \index{special case}
 \index{edge case}
 \index{corner case}
@@ -879,4 +889,3 @@ Hint: you might find the string formatting method
 Solution: \ref{sol_cartalk3}.
 
 \end{exercise}
-
