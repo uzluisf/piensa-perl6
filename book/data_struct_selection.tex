@@ -1400,92 +1400,96 @@ para el análisis y después convertirla a otra para la generación. Esto sería
 una gran ventaja si el tiempo ahorrado durante la generación excede el tiempo
 que se emplea en la conversión.
 
-\section{Building Your Own Data Structures}
+\section{Construyendo Tus Propia Estructuras de Datos}
 
-Perl has a number of compound types such as arrays and hashes 
-that you can combine to construct arrays of arrays, arrays of 
-hashes, hashes of arrays, hashes of hashes, arrays of arrays of 
-arrays or hashes, and so on, and this is usually sufficient for 
-most needs. Sometimes, however, you need something very specific 
-that is not built in.
+Perl tiene un número de tipos compuestos tales como arrays
+y hashes que puedes combinar para construir arrays de arrays,
+arrays de hashes, hashes de arrays, hashes de hashes, arrays
+de arrays de arrays o hashes, etc., y esto es usualmente 
+suficiente para la mayoría de las necesidades.  Sin embargo,
+algunas veces necesitas algo muy específico que no está
+integrado en el lenguaje.
 
-Over the years, computer science has studied and used scores of 
-specific data structures such as linked lists, stacks, queues, 
-circular lists, trees of numerous kinds, etc. We will briefly 
-study a couple of them.
+A través de los años, la ciencia de la computación ha estudiado
+y usado montones de estructuras de datos como listas enlazadas,
+pilas, colas, listas circulares, árboles de diferentes tipos, 
+etc. Estudiaremos brevemente algunos de ellos.
 
-\subsection{Linked Lists}
+
+\subsection{Listas Enlazadas}
 \label{linked_list}
 \index{linked list}
 
-A linked list is a collection of items in which each item holds 
-a value (or several values) and a link to the next item of the 
-collection. In many programming languages, arrays have a fixed 
-size (contrary to Perl in which arrays can usually grow according to 
-your needs). In those programming languages, a linked list 
-is often used to represent a variable-size collection of items.
+Una lista enlazada es una colección de artículos en la cual
+cada artículo almacena un valor (o varios valores) y un enlace
+al siguiente artículo de la colección. En muchos lenguajes de
+programación, los arrays tiene un tamaño fijo (por el contrario,
+en Perl los array pueden usualmente crecer en tamaño de acuerdo
+a tus necesidades). En esos lenguajes de programación, una lista
+enlazada es usualmente usada para representar una colección
+de artículos con tamaño variable.
 
-We saw in Section~\ref{stacks_queues} how to use arrays 
-to build stacks and queues. It was fairly easy. In some 
-lower-level programming languages, you would need linked 
-lists for that.
+Vimos en la Sección~\ref{stacks_queues} cómo usar los arrays
+para construir pilas y colas. Fue relativamente fácil. En algunos
+lenguajes de programación de bajo nivel, necesitaría crear listas
+enlazadas para hacer eso.
 \index{stack}
 \index{queue}
 
-In Perl, a linked list item may be represented by a pair 
-(an object of type \verb'Pair'). The 
-following code is a very simple example showing how 
-we could implement a stack using a linked list in Perl:
+En Perl, un artículo de una lista enlazada puede representarse por 
+un par (un objeto del tipo \verb|Pair|). El siguiente código es un 
+ejemplo muy simple que muestra cómo podríamos implementar una pila 
+usando una lista enlazada en Perl:
 \index{pair}
 
 \begin{verbatim}
-sub add-to-stack (Pair $stack-top, $item) {
-    my $new-pair = $item => $stack-top;
-    return $new-pair;
+sub agregar-a-pila( Pair $pila-superior, $artículo ) {
+    my $nuevo-par = $artículo => $pila-superior;
+    return $nuevo-par;
 }
 
-sub take-from-stack (Pair $stack-top) {
-    my $new-top = $stack-top.value;
-    return $stack-top.key, $new-top;
+sub tomar-desde-pila( Pair $pila-superior ) {
+    my $nuevo-superior = $pila-superior.value;
+    return $pila-superior.key, $nuevo-superior;
 }
 
-sub create-stack ($item) {
-    return $item => Nil;
+sub crear-pila( $artículo ) {
+    return $artículo => Nil;
 }
 
-my $stack = create-stack (0);
+my $pila = crear-pila(0);
 
-for 1..5 -> $item {
-    $stack = add-to-stack($stack, $item);
+for 1..5 -> $artículo {
+    $pila = agregar-a-pila($pila, $artículo);
 }
-say "The stack is: ", $stack.perl;
+say "La pila es: ", $pila.perl;
 
 for 1..5 {
-    my $value;
-    ($value, $stack) = take-from-stack($stack);
-    say "$value -- ", $stack;    
+    my $valor;
+    ($valor, $pila) = tomar-desde-pila($pila);
+    say "$valor -- ", $pila;    
 }
 \end{verbatim}
 
-Once populated, the resulting stack looks like this:
+Una vez que poblada, la pila resultante luce así:
 \index{stack}
 
 \begin{verbatim}
 5 => 4 => 3 => 2 => 1 => 0 => Nil
 \end{verbatim}
 
-This is just given as an example for the construction of a 
-linked list. There is usually no need to use anything like 
-this in Perl, since it is much easier to implement 
-a stack using an array, as seen in Section~\ref{stacks_queues}, 
-although the same principle can be used for building more 
-advanced data structures.
+Esto se provee solo como un ejemplo para la construcción de una
+lista enlazada. Usualmente no hay necesidad de usar algo como
+esto en Perl, dado que es mucho más fácil implementar una pila
+usando un array, como se puede observar en la Sección~\ref{stacks_queues}, 
+aunque el mismo principio puede ser usado para construir 
+estructuras de datos más avanzadas.
 \index{linked list}
 
-You might still want, as an exercise, to implement a queue 
-(see section~Section~\ref{stacks_queues}) using a linked list. 
+Podrías aún querer, como un ejercicio, implementar una cola 
+(ver Sección~\ref{stacks_queues}) usando una lista enlazada. 
 
-\subsection{Trees}
+\subsection{Árboles}
 \label{tree}
 \index{tree}
 \index{node (tree)}
@@ -1498,178 +1502,191 @@ You might still want, as an exercise, to implement a queue
 \index{child node (tree)}
 \index{parent node (tree)}
 
-A tree is usually a collection of items in which each 
-item (or \emph{node}) holds a value (or possibly 
-several values) and two or several 
-links to other items of the collection, the children. Think 
-of a family tree or a tree of directories on a hard disk 
-drive to get the general idea. The ultimate 
-nodes that don't have their own children are often called 
-the leaves. There is usually only one ultimate grandparent 
-node, sometimes called the root (if there is more than one 
-ultimate grandparent, then it is not really a tree but 
-several trees or a ``forest'').
+Un árbol es usualmente una colección de artículos en la
+cual cada artículo (o \emph{nodo}) almacena un valor (o
+posiblemente varios valores) y dos o varios enlaces 
+a otros artículos de la colección, los hijos. Piensa
+sobre un árbol familiar o un árbol de directorios en un
+disco duro para tener una idea general. Los últimos
+nodos que no tienen sus propios hijos son usualmente llamados
+las hojas. Usualmente solo hay un nodo abuelo, llamado
+la raíz (si hay un más de un abuelo, entonces no es realmente
+un árbol pero varios árboles o un ``bosque``).
 
-Dozens of different types of trees have been invented and 
-their descriptions have filled entire books about computer 
-science algorithms. Some are designed 
-to keep the data sorted, others to maintain balance between 
-the tree branches, and so on. The data structure is often 
-not very complicated, but the algorithms needed to maintain the 
-required properties sometimes can be a bit hairy.
+Docenas de diferentes tipos de árboles han sido inventados
+y sus descripciones han cubierto libros completos sobre algoritmos
+en la ciencia de la computación. Algunos son diseñados para mantener
+tus datos ordenados, otros para mantener balance entre las ramas
+de los árboles, etc. La estructura de datos es frecuentemente 
+no tan complicado, pero los algoritmos necesarios para mantener
+las propiedades requeridas son algunas veces bien complicados.
 
-For example, a 
-typical tree might hold one value and two links, one to 
-the left child and one to the right child. You 
-might implement such a \emph{binary tree} in a similar way as the 
-linked list described above, except that the value 
-would no longer be a link to the next element, but an 
-array of two elements, the links to the two children. 
-Or you could follow more closely the linked list model 
-above and have nested pairs. For example, a binary tree 
-might look like this:
+Por ejemplo, un árbol típico podría retener un valor y dos enlaces,
+uno para el hijo izquierdo y uno para el hijo derecho. Podrías 
+implementar tal {\tt árbol binario} en una manera similar como las
+lista enlazada que describimos más arriba, excepto que el valor
+no sería ya un enlace al siguiente elemento sino que un
+array de dos elementos, los enlaces a los dos hijos. O podrías
+seguir el modelo de lista enlazada de más arriba y tener pares
+anidados. Por ejemplo, un árbol binario podría lucir de la 
+siguiente manera:
 \index{binary tree}
 
 \begin{verbatim}
-my $tree = 1 => (( 2 => 3 ) => (4 => (5 => ((6 => 7) => 8))));
+my $árbol = 1 => (( 2 => 3 ) => (4 => (5 => ((6 => 7) => 8))));
 \end{verbatim}
 
-The implementation is left as an exercise to the reader. 
+La implementación se deja como un ejercicio al lector. 
 
-Quite often, though, a tree may be implemented in Perl 
-as a simpler data structure such as a nested array or hash. 
-The next section examines such an example.
+Muy a menudo un árbol puede implementarse en Perl como una
+estructura de datos más simple tal como un array o hash anidado.
+La siguiente sección examina un ejemplo así.
 
-\subsection{Binary Heaps}
+\subsection{Montículos Binarios}
 \label{heap}
 \index{heap}
 \index{binary heap}
 
-A binary heap is a binary tree that keeps a partial order: each 
-node has a value larger that its parent and less than 
-either of its two children; there is no specific order imposed 
-between siblings. (You could also do it the other way 
-around: you could design heaps in which any node has a value 
-less than its parent.)
+Un montículo binario (\emph{binary heap} en inglés) es un árbol binario
+que mantiene un orden parcial: cada nodo tiene un valor mayor
+que su padres y menor que sus dos hijos; no hay orden específico
+impuesto entre los hermanos. (Podrías también hacerlo de la
+otra forma: podrías diseñar montículos en los cuales
+cualquier nodo tiene un valor menor que su padre.) 
 
-Because there is no order between siblings, it is not possible 
-to find a particular element without potentially searching the 
-whole heap. Therefore, a heap is not very good if you need 
-random access to specific nodes. But if you're interested 
-in always finding the smallest item, then a heap is a 
-very efficient data structure.
 
-Heaps are used for solving a number of CS problems, and serve 
-as the basis for an efficient and very popular sorting technique 
-called heap sort.
+Debido a que no hay un orden entre los hermanos, no es posible
+encontrar un elemento particular sin potencialmente escanear el
+montículo completo. Por lo tanto, un montículo no es muy bueno
+si necesitas acceso aleatorio a nodos específicos. Pero si estás
+interesado en siempre ser capaz de encontrar el artículo más
+pequeño, entonces un montículo es una estructura de datos 
+muy eficiente.
+
+Los montículos son usados para resolver un montón de problemas
+en la ciencia de la computación, y sirven como la base para una 
+técnica de ordenamiento eficiente y muy popular llamada
+ordenamiento por montículo (\emph{heap sort} en inglés).
 \index{heap sort}
 
-For a human, it is useful to represent a heap in a tree-like 
-form. But a computer can store a heap as a simple array (not 
-even a nested array). For this, the index of an element is 
-used to compute the index of its parent or its two children.
-The children of an element are the two locations where the 
-indices are about double its index; conversely, the parent 
-of a node is located at about half its index. If the heap 
-starts at index 0, the exact formulas for a node with index 
-\verb'$n' are commonly as follows:
-\begin{itemize}
-\item parent: \verb'int( ($n-1)/2 )'
-\item left child: \verb'2*$n + 1'
-\item right child: \verb'2*$n + 2'
-\end{itemize}
-The root node is at index 0. Its children are at positions 
-1 and 2. The children of 1 are 3 and 4 and the children of 
-2 are 5 and 6. The children of 3 are 7 and 8, and so on.
+Para un humano, es útil representar un montículo en forma
+de árbol. Pero una computadora puede almacenar un montículo
+como un array simple (ni siquiera como un array anidado).
+Para esto, el índice de un elemento es usado para calcular
+el índice de sus padres o sus dos hijos. Los hijos de un
+elemento son las dos localidades donde los índices son 
+dos veces el índice del elemento padre. De forma inversa,
+el padre de un nodo está localizado a la mitad del índice
+del elemento nodo. Si el montículo inicia en el índice 0, las
+formulas exactas para un nodo con un índice \verb|$n| son
+comúnmente como se describen a continuación:
 
-Thus, if interpreted as a binary heap, the array:
+\begin{itemize}
+\item padre: \verb|int( ($n-1)/2 )|
+\item hijo izquierdo: \verb|2*$n + 1|
+\item hijo derecho: \verb|2*$n + 2|
+\end{itemize}
+
+El nodo raíz comienza en el índice 0. Sus hijos se encuentran
+en las posiciones 1 y 2. Los hijos de 1 se encuentran en 3 y 4.
+Los hijos de 2 se encuentran en las posiciones 5 y 6. Los
+hijos de 3 se encuentran en 7 y 8, etc.
+
+Si se interpreta como un montículo binario, el array:
 \begin{verbatim}
 [0, 1, 2, 3, 4, 5, 6, 7, 8]
 \end{verbatim}
 
-is associated with the tree displayed in Figure~\ref{fig.heap}.
+está asociado con el árbol mostrado en la Figura~\ref{fig.heap}.
 
 \begin{figure}
 \centerline
 {\includegraphics[scale=1]{figs/figure_heap.pdf}}
-\caption{The heap corresponding to an array containing the digits 0 to 8}
+\caption{El montículo correspondiente al array que contiene los
+dígitos del 0 al 8}
 \label{fig.heap}
 \end{figure}
 
-Here is one way to build a heap (in partial alphabetic order) 
-from a list of unordered letters:
+Aquí presentamos una manera de construir un montículo (en 
+orden alfabético parcial) desde una lista desordenada 
+de letras:
 
 \begin{verbatim}
-sub build-heap (@array, $index is copy) {
-    my $index-val = @array[$index];
-    while ($index) {
-        my $parent = Int( ($index - 1) / 2);
-        my $parent-val = @array[$parent];
-        last if $parent-val lt $index-val;
-        @array[$index] = $parent-val;
-        $index = $parent;
+sub construir-mont( @array, $indice is copy ) {
+    my $valor-indice = @array[$indice];
+    while ($indice) {
+        my $padre = Int( ($indice - 1) / 2);
+        my $valor-padre = @array[$padre];
+        last if $valor-padre lt $valor-indice;
+        @array[$indice] = $valor-padre;
+        $indice = $padre;
     }
-    @array[$index] = $index-val;
+    @array[$indice] = $valor-indice;
 }
 
-sub heapify (@array) {
+sub heapify( @array ) {
     for @array.keys -> $i {
-        build-heap @array, $i;
+    	construir-mont @array, $i;
     }
 }
 
-my @input =  <m t f l s j p o b h v k n q g r i a d u e c>; 
-heapify @input;
-say @input;
+my @entrada =  <m t f l s j p o b h v k n q g r i a d u e c>; 
+heapify @entrada;
+say @entrada;
 \end{verbatim}
 
-Note that the heap is built in place (there is no 
-need for a second array). The resulting array is 
-displayed as follows:
+Nota que el montículo se construye en lugar (no hay
+un necesidad para un segundo array). El array resultante
+se muestra así:
+
 \begin{verbatim}
 [a b g d c k j l f h e m n q p t r o i u s v]
 \end{verbatim}
 
-Is this a correct heap? It's difficult to say at first 
-glance and checking it manually is somewhat tedious. When 
-writing a program for building such a data structure, 
-it is often useful to write some subroutines to display 
-the content in a way that makes it easier to understand 
-the result and check its correctness. The following 
-code shows two examples of such possible subroutines:
+¿Es este montículo correcto? Es muy difícil de saber
+a primera vista y chequearlo manualmente es algo tedioso.
+Al escribir un programa para construir una estructura de
+datos como esta, es usualmente útil escribir algunas 
+subrutinas para mostrar el contenido en un forma que 
+facilite el entendimiento del resultado y el chequeo de
+exactitud. El código siguiente muestras dos ejemplos
+de tales subrutinas:
+
 \begin{verbatim}
-sub print-heap (@array) {
-    my $start = 0;
-    my $end = 0;
-    my $last = @array.end;
-    my $step = 1;
+sub imprimir-mont( @array ) {
+    my $inicio = 0;
+    my $final = 0;
+    my $último = @array.end;
+    my $paso = 1;
+    
     loop {
-        say @array[$start..$end];
-        last if $end == $last;
-        $start += $step;
-        $step *= 2;
-        $end += $step;
-        $end = $last if $end > $last;
+        say @array[$inicio..$final];
+        last if $final == $último;
+        $inicio += $paso;
+        $paso *= 2;
+        $final += $paso;
+        $final = $último if $final > $último;
     } 
 }
 
-sub print-heap2 (@array) {
-    my $step = 0;
-    for @array.keys -> $current {
-        my $left_child = @array[2 * $current + 1];
-        say "$current\tNode = @array[$current];\tNo child" 
-             and next unless defined $left_child;
-        my $right_child = @array[2 * $current + 2] // "' '";
-        
-        say "$current\tNode = @array[$current];\tChildren: " . 
-             " $left_child and $right_child";
-        $step++;
+sub imprimir-mont2( @array ) {
+    my $paso = 0;
+	for @array.keys -> $actual {
+	    my $h_izquierdo = @array[2 * $actual + 1];
+        say "$actual\tNodo = @array[$actual];\tNo hijos" 
+            and next unless defined $h_izquierdo;
+        my $h_derecho = @array[2 * $actual + 2] // "' '";
+
+        say "$actual\tNodo = @array[$actual];\tHijos: " ~ 
+            " $h_izquierdo y $h_derecho";
+        $paso++;
     }
 }
 
 \end{verbatim}
 
-The first one displays the related tree level by level:
+La primera subrutina muestra el árbol relacionado
+nivel por nivel:
 
 \begin{verbatim}
 (a)
@@ -1679,37 +1696,36 @@ The first one displays the related tree level by level:
 (t r o i u s v)
 \end{verbatim}
 
-which makes it easy to draw the tree (see Figure~\ref{fig.heap2}).
+lo cual hace fácil dibujar el árbol (ver Figura~\ref{fig.heap2}).
 
 \begin{figure}
 \centerline
 {\includegraphics[scale=0.8]{figs/figure_heap2.pdf}}
-\caption{The heap corresponding to the array of letters}
+\caption{El montículo correspondiente al array de letras}
 \label{fig.heap2}
 \end{figure}
 
 
-The second one shows the children for each node and makes it 
-possible to easily check that the partial alphabetic order 
-constraint is satisfied (i.e., each node is smaller than its 
-children):
+La segunda subrutina muestra los hijos de cada nodo y hace
+posible chequear fácilmente que el orden alfabético parcial
+se satisface (i.e., cada nodo es menor que sus hijos):
 
 \begin{verbatim}
-0       Node = a;       Children:  b and g
-1       Node = b;       Children:  d and c
-2       Node = g;       Children:  k and j
-3       Node = d;       Children:  l and f
-4       Node = c;       Children:  h and e
-5       Node = k;       Children:  m and n
-6       Node = j;       Children:  q and p
-7       Node = l;       Children:  t and r
-8       Node = f;       Children:  o and i
-9       Node = h;       Children:  u and s
-10      Node = e;       Children:  v and ' '
-11      Node = m;       No child
-12      Node = n;       No child
+0	Nodo = a;	Hijos:  b y g
+1	Nodo = b;	Hijos:  d y c
+2	Nodo = g;	Hijos:  k y j
+3	Nodo = d;	Hijos:  l y f
+4	Nodo = c;	Hijos:  h y e
+5	Nodo = k;	Hijos:  m y n
+6	Nodo = j;	Hijos:  q y p
+7	Nodo = l;	Hijos:  t y r
+8	Nodo = f;	Hijos:  o y i
+9	Nodo = h;	Hijos:  u y s
+10       Nodo = e;	Hijos:  v y ' '
+11       Nodo = m;	No hijos
+12       Nodo = n;	No hijos
 (...)
-21      Node = v;       No child
+21       Nodo = v;	No hijos
 \end{verbatim}
 
 
@@ -1723,44 +1739,51 @@ algunas sugerencias que podrías intentar:
 
 \begin{description}
 
-\item[Reading] Examine your code, read it back to yourself, and
-check that it says what you meant to say.
+\item[Leer] Examina tu código, léelo, y chequea que 
+diga lo que quieres decir.
 
-\item[Running] Experiment by making changes and running different
-versions.  Often if you display the right thing at the right place
-in the program, the problem becomes obvious, but sometimes you have to
-build scaffolding.
+\item[Ejecutar] Experimenta al hacer cambios y ejecutar las
+diferentes versiones. Usualmente si muestra la cosa correcta
+en el lugar correcto en el programa, el problema se vuelve 
+obvio, pero algunas veces tienes que construir andamiaje para
+que esto ocurra.
 
-\item[Running under a debugger] A {\bf debugger} is a utility 
-program that enables you to run a program step by step, 
-so you can follow the execution path and check the content of important 
-variables at crucial points in the program execution, to set 
-break points, etc. Perl~6 provides a debugger, called 
-{\tt perl6-debug}, that makes all these things possible. With the 
-advent of modern high-level languages, many people balk at 
-using a debugger. This is a mistake. A debugger will not help 
-solve every kind of problem, but it can be immensely 
-useful. See Section~\ref{perl-debugger} for more information
-on the Perl debugger.
+\item[Ejecutar con el depurador] Un {\bf depurador} es una
+utilidad que te permite ejecutar un programa paso a paso,
+para que puedas así seguir la ruta de ejecución y chequear
+el contenido de variables importantes a puntos cruciales en
+la ejecución del programa, para configurar puntos de 
+interrupción, etc. Perl~6 provee un depurador, llamado 
+{\tt perl6-debug}, que hace todas estas cosas posible.
+Con la venida de lenguajes modernos de alto nivel, muchas
+personas se resisten al uso de un depurador. Esto es un
+error grave. Un depurador no te ayudará a solucionar cada 
+tipo de problema, pero puede ser una utilidad inmensamente
+útil. Ver la Sección~\ref{perl-debugger} para información 
+adicional acerca del depurador de Perl.
 \index{debugger}
 
-\item[Ruminating] Take some time to think!  What kind of error
-is it: syntax, runtime, or semantic?  What information can you get from
-the error messages, or from the output of the program?  What kind of
-error could cause the problem you're seeing?  What did you change
-last, before the problem appeared?
+\item[Reflexionar] ¡Toma tiempo para pensar! ¿Qúe tipo de error
+es? ¿Sintáctico? ¿Al tiempo de ejecución? ¿Semántico?
+¿Qué información puedes obtener de los mensajes de error, o desde
+la salida del programa? ¿Qué tipo de error podría causar el problema
+que estás observando? ¿Cuál fue el último cambio que hiciste, antes
+que el problema apareciera?
 
-\item[Rubber ducking] If you explain the problem to someone else, you
-sometimes find the answer before you finish asking the question.
-Often you don't need the other person; you could just talk to a rubber
-duck.  That's the origin of the well-known strategy called {\bf
-rubber duck debugging}.  I am not making this up; see 
-\url{https://en.wikipedia.org/wiki/Rubber_duck_debugging}.
+\item[Depurar con el patito de goma] Si explicas el programa 
+a alguien más, algunas veces encuentras la solución antes
+de finalizar con la pregunta. Muy a menudo ni siquiera
+necesitas la otra persona; podrías conversar con un patito
+de goma. Ese es el origen de la muy conocida estrategia
+conocida como la {\bf depuración del patito de goma}. 
+¡Y no estoy bromeando! Lee sobre la estrategia aquí
+\url{https://es.wikipedia.org/wiki/M%C3%A9todo_de_depuraci%C3%B3n_del_patito_de_goma}.
 \index{rubber duck debugging}
 
-\item[Retreating] At some point, the best thing to do is back
-off, undoing recent changes, until you get back to a program that
-works and that you understand.  Then you can start rebuilding.
+\item[Retroceder] Algunas veces, lo mejor que puedes hacer es
+retroceder, deshacer los cambios recientes, hasta que puedas
+obtener un programa que funciona y que entiendas. Después puedes
+comenzar la reconstrucción.
 
 \end{description}
 
@@ -1867,7 +1890,7 @@ muestra el resto de los códigos.
 \begin{figure}
 \centerline
 {\includegraphics[scale=0.6]{figs/International_Morse_Code.pdf}}
-\caption{International Morse code (public domain)}
+\caption{Código Morse Internacional (dominio público)}
 \label{fig.morse}
 \end{figure}
 
@@ -1949,31 +1972,29 @@ y analiza la frecuencia de las letras.
 Solución: ver Sección~\ref{sol_letter_frequency}
 \end{exercise}
 
-\subsection{Building the Huffman Code}
+\subsection{Construyendo el Código Huffman}
 \index{Huffman!code}
 
 Para nuestro propósito, el código morse tiene un defecto: 
-no 
-
-For our purposes, Morse code has one defect: it does not 
-use just two symbols as you might think, but actually three: 
-in addition to the dots and dashes, it it also implicitly 
-using the space between two symbols, as well as a longer space 
-between two letters.
+no solamente usa dos símbolos como podrías pensar, sino
+que actualmente usa tres: además de los puntos y las rayas,
+también usa el espacio entre los dos símbolos implícitamente,
+como también espacios más largos entre dos letras.
 \index{Morse code}
 
-The reason why some space is needed is quite simple. Refer to the Morse 
-code table above and suppose you receive three dots (\verb'...'). 
-This could be interpreted as the letter ``e'' three times , or as 
-``ie'' or ``ei,'' or as ``s'', or as the beginning of ``h,'' ``v,'' 
-``3,'' ``4,'' or ``5''. Added spaces make it possible to disambiguate 
-between those various possibilities. But they also make code 
-transmission much slower.
+La razón por la cual algunos espacios son necesarios es muy simple.
+Usa la tabla de código morse anterior y supón que recibes 
+tres puntos (\verb'...'). Esto podría ser interpretado como la letra
+``e`` tres veces, o como ``ie`` o ``ei`` o como ``s``, o como el
+inicio de ``h``, ``v``, ``3``, ``4``, o ``5``. Los espacios agregados 
+hacen posible distinguir entre las varias posibilidades. Pero
+también hacen la transmisión de código mucho más lenta.
 
-In 1951, David A. Huffman invented a code-building technique avoiding 
-this problem: provided that you know where a given letter starts, 
-it is totally unambiguous. For example, we will meet later a Huffman 
-code for a small subset of the alphabet that looks like this:
+En 1951, David A. Huffman inventó una técnica de construcción de código
+que evita este problema: provisto que sepas donde una letra dada 
+comienza, no existe ninguna ambigüedad. Por ejemplo, trabajaremos 
+más tarde con un código Huffman para un subconjunto pequeño
+del alfabeto que luce así:
 \index{Huffman, David A.}
 \index{Huffman!code}
 
@@ -1987,21 +2008,23 @@ d => ---.
 r => ----
 \end{verbatim}
 
-If you start reading a sequence of dots and dashes representing a 
-valid text composed with these seven letters, you can always decode 
-it without any ambiguity. If the first symbol is a dot, then the letter 
-is either an ``a'' or a ``e'' depending on the next symbol. If the 
-first symbol is a dash and the next one a dot, then the letter must 
-be either a ``s'' or an ``n'' depending on the third symbol. If the 
-two first symbols are dashes, you can similarly determine that the 
-current letter is a ``t'' (if the third symbol is a dot), or a ``d'' 
-or a ``r,'' which you can find out by looking at the fourth symbol. 
-In brief, you don't need spaces between the symbols, it is always 
-possible to unambiguously decode a letter.
+Si comienzas a leer una secuencia de puntos y rayas que representan
+un texto válido compuesto con estas sietes letras, siempre puedes
+decodificarlo sin ninguna ambigüedad. Si el primer símbolo es 
+un punto, entonces la letra es una ``a`` o un ``e`` dependiendo 
+en el símbolo siguiente. Si el primer símbolo es una raya y 
+el siguiente es un punto, entonces la letra deber ser una ``s`` o
+una ``n`` dependiendo del tercer símbolo. Si los primeros símbolos
+son rayas, puedes similarmente determinar que la letra actual es una
+``t`` (si el tercer símbolo es un punto), o una ``d`` o una ``r``. 
+la cual puedes encontrar al revisar el cuarto símbolo. En resumen, 
+no necesitas espacios entre los símbolos, siempre es posible
+decodificar una letra sin ambigüedad.
 
-How can we build such a Huffman code? Let's do it by hand with a 
-very simple alphabet: the four letters of the nucleo-bases of DNA: A, 
-C, T, and G. Suppose we want to encode the following input string:
+¿Cómo podemos construir un código Huffman? Hagámoslo manualmente con
+un alfabeto bien simple: las cuatros letras de las bases nitrogenadas
+del ADN: A, C, T y G. Supón que queremos codificar la siguiente
+cadena de texto de entrada:
 \index{DNA (deoxyribonucleic acid)}
 \index{alphabet}
 
@@ -2009,7 +2032,7 @@ C, T, and G. Suppose we want to encode the following input string:
 CCTATCCTCGACTCCAGTCCA
 \end{verbatim}
 
-This gives the following frequency table:
+Esto resulta en la tabla de frecuencia siguiente:
 \index{frequency!table}
 
 \begin{verbatim}
@@ -2019,29 +2042,29 @@ A :     4       19.05
 G :     2        9.52
 \end{verbatim}
 
-To build the Huffman code, we start with the two less frequent 
-letters and merge them into one new temporary symbol, \verb"[GA]", 
-which we pretend is a new composite letter with a 
-frequency of 6. At this point, we decide that, between two letters, 
-the less frequent one will have an appended dot and the other 
-an appended dash (this is an arbitrary choice, it could be done 
-the other way around). So we say that the symbol for the least 
-common of the two letters (``G'') will be \verb'[GA].' and the 
-symbol for ``A'' will be \verb'[GA]-'. 
+Para construir el código Huffman, comenzamos con las dos letras
+menos frecuentes y las mezclamos en un símbolo nuevo temporario, 
+\verb|[GA]|, el cual pretendemos es una letra compuesta nueva con una
+frecuencia  de 6. En este punto, decidimos que, entre dos letras,
+a la menos frecuente se le adjuntará un punto y a la otra se le
+adjuntará una raya (este es una decisión arbitraria, podría
+hacerse de la manera inversa). Así que decimos que el símbolo 
+para la letra menos común de las dos letras (``G``) será \verb|[GA].|
+y \verb|[GA]-| será el símbolo para la ``A``. 
 
-We are now left with three letters, C, T, and [GA]. We merge the 
-two least frequent letters, ``T'' and ``[GA],'' and can now tell 
-that the symbol for ``T'' will be \verb'[TGA].' and the symbol for 
-\verb'[GA]' will be \verb'[TGA]-'. There are only two letters left, 
-``C'' and ``TGA``, with ``C'' the least frequent one; so ``C'' will 
-be a dot and ``TGA`` a dash. 
+Ahora tenemos tres letras, C, T, and [GA]. Mezclamos las dos letras
+menos frecuente, ``T'' y ``[GA],'' y podemos ahora decir que el
+símbolo para la ``T'' será \verb|[TGA].| y el símbolo para \verb|[GA]|
+será \verb|[TGA]-|. Ahora tenemos solo dos letras restantes, 
+``C'' and ``TGA``, con ``C'' siendo la menos frecuente; así que 
+``C'' será un punto y ``TGA`` será una raya.
 
-We can now unroll our dummy letters: ``T'' is \verb'[TGA].', so, 
-replacing \verb'[TGA]' with its symbol, i.e., a dash, the 
-final code for ``T'' will be \verb'-.'; similarly, \verb'[GA].' 
-now translates into \verb'--'. By the same substitution process, 
-we can now determine that ``A'' is \verb'---' and ``G'' 
-\verb'--.'. So our final Huffman code table is:
+We can now unroll our dummy letters: ``T'' es \verb|[TGA].|, 
+así que, reemplazando \verb|[TGA]| con su símbolo, i.e., una raya,
+el código final para ``T`` será \verb|-.|; similarmente, \verb|[GA].|
+ahora puede traducirse como \verb|--|. Por el mismo proceso de
+sustitución, podemos ahora determinar que ``A`` es \verb|---| y ``G``
+es \verb|--.|. Así que nuestra tabla final de código Huffman:
 \index{Huffman!table}
 
 \begin{verbatim}
@@ -2051,73 +2074,85 @@ G => --.
 A => ---
 \end{verbatim}
 
-Notice that, by construction, the most frequent letter (C) 
-has the shortest code and the least common letters (G and A) 
-the longest codes.
+Nota que, debido a la construcción, la letra más frecuente (C)
+tiene el código más corto mientras que las letras menos
+comunes (G y A) tienen los códigos más largos.
 
-Manually encoding the \verb'CCTATCCTCGACTCCAGTCCA' input string 
-with this code yields the following pseudo-Morse code:
+La codificación manual de cadena de texto de entrada 
+\verb|CCTATCCTCGACTCCAGTCCA| con este código rinde el 
+código pseudo-Morse siguiente:
 \index{pseudo-Morse}
 
 \begin{verbatim}
 ..-.----...-..--.---.-...-----.-...---
 \end{verbatim}
 
-Note that our Huffman code is not ambiguous: the first dot can 
-only be a ``C,'' and the second one also. The next symbol is a 
-dash, which can be the beginning of the three other letters, but 
-only ``T'' can have a dot afterwards. The next sequence of 
-symbols is four dashes; this can only be the three dashes of a 
-``A'', with the last dash being the beginning of the next letter; 
-and \verb'-.' can only be a ``T,'' and so on.
+Nota que nuestro código Huffman no tiene ambigüedad:
+el primer punto puede solo ser una ``C``, y el segundo también.
+El símbolo siguiente es una raya, que puede ser el inicio de 
+las otras tres letras, pero solo la	 ``T`` puede tener un punto 
+posterior. La secuencia siguiente de símbolos tiene cuatro 
+rayas; esto puede solamente tres rayas de una ``A``, con la 
+última raya siendo el inicio de la letra siguiente; y \verb|-.|
+solo puede ser una ``T``, etc.
 \index{Huffman!code}
 
-In a real-life Huffman encoding for text file compression, 
-we would not use dots and dashes, but 0 and 1 bits; however,  
-dots and dashes are just another nice way of representing 
-those binary values. So, let's just pretend that dots and dashes 
-are really 0 and 1 binary numbers.
+En una codificación de Huffman real para la compresión de
+archivos de texto, no usaríamos puntos y rayas, pero los 
+bits 0 y 1; sin embargo, los punto y las rayas son solo
+otra manera conveniente de representar esos valores
+binarios. Por lo tanto, pretendamos que los puntos y las
+rayas son realmente los números binarios 0 y 1.
 \index{binary number}
 \index{bit}
 
 \index{data compression}
-Did we really achieve data compression? Our pseudo-Morse string has 
-38~binary symbols. The original input string had 21 characters 
-or bytes, that is 168 bits. The data has been compressed by a 
-factor of about 4.4. 
+¿Realmente logramos la compresión de datos? Nuestra cadena
+de pseudo-Morse tiene 38~símbolos binarios. La cadena de 
+texto de entrada original tenía 21 caracteres o bytes, eso 
+son 168~bits. Los datos han sido comprimidos por un factor
+de 4.4. 
 \index{byte}
 
-Is Huffman coding better than a fixed-length code? A string 
-representation where each letter would be represented by two 
-bits (two bits can represent four letters) would require 
-42~symbols. So, yes, we did obtain a better data compression 
-than a fixed-length encoding (by about 10\%). This may seem 
-to be a small achievement, but this is actually quite good with 
-such a small alphabet. With real text data, Huffman coding can 
-achieve significant data compression.
+¿Es la codificación de Huffman mejor que la codificación de 
+longitud fija? Una representación de una cadena de texto donde
+cada letra sería representada por dos bits (dos bits pueden
+representar cuatros letras) requiere 42~símbolos. Por lo tanto,
+sí, obtuvimos una mejor compresión de datos que una codificación
+de longitud fija (alrededor de 10\%). Este puede parecer un logro
+minúsculo, pero es actualmente un gran logro con un alfabeto tan
+pequeño. Con datos textuales actuales, la codificación de Huffman
+puede lograr una significante compresión de datos.
 
 
 \begin{exercise}
 \label{huffman_code_2}
 \begin{enumerate}
-\item Write a program that performs Huffman encoding of a simple string 
-of characters. You may start with the DNA example above. Don't 
-worry, though, if you don't get the same Huffman table as the one 
-above: there can be more than one Huffman code for a given input 
-string; but check that you obtain an unambiguous code. 
+
+\item Escribe un programa que realiza codificación de Huffman
+de una cadena de texto de caracteres simple. Puedes comenzar con
+el ejemplo de ADN más arriba. No te preocupes si no obtienes la
+misma tabla de Huffman de más arriba: pueden haber más código
+de Huffman para una cadena de texto dada; pero chequea que obtengas
+un código que no sea ambiguo.
 \index{Huffman!code}
-\item Try it with strings having a larger alphabet (you'll probably 
-want to start with a relatively small alphabet, because it can 
-otherwise be tedious to check the result by hand).
-\item Write a subroutine to encode an input string into 
-pseudo-Morse using the generated Huffman table.
+
+\item Haz una prueba con cadenas de texto que tienen un alfabeto
+más grande (probablemente querrás comenzar con un alfabeto
+relativamente pequeño porque, por lo contrario,
+puede ser tedioso chequear el resultado manualmente).
+ 
+\item Escribe una subrutina que codifique una cadena de texto
+de entrada en pseudo-Morse usando la tabla de Huffman generada
+anteriormente.
 \index{pseudo-Morse}
 \index{alphabet}
-\item Write a subroutine to decode the pseudo-Morse output 
-you've just generated for the previous question.
+
+\item Escribe una subrutina que decodifique la salida pseudo-Morse
+que has generado para la pregunta anterior.
 \end{enumerate}
 %
-Solution: see Section~\ref{sol_huffman_code_2}.
+Solución: ver Sección~\ref{sol_huffman_code_2}.
 \index{Huffman!code}
 \end{exercise}
 

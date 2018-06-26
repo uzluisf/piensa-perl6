@@ -10,7 +10,7 @@ la solución de sopas de palabras al buscar palabras que tienen
 ciertas propiedades. Por ejemplo, encontraremos los palíndromos
 más largos en inglés y buscaremos palabras cuyas letras aparecen
 en orden alfabético. Y presentaré otro plan de desarrollo de programa:
-reducción a un programa que se solucionó previamente.
+reducción a un programa previamente solucionado.
 
 \section{Lectura de y Escritura a un Archivo}
 
@@ -27,15 +27,15 @@ en algunas circunstancias).
 \index{file!close statement}
 
 Aquí estamos interesados en archivos de texto que están compuestos 
-por líneas separadas por lógicos caracteres de nueva línea; 
+por líneas separadas por caracteres lógicos de nueva línea; 
 dependiendo de tu sistema operativo, lógicos caracteres de nueva línea
 consisten de uno (Linux, Mac) o dos (Windows) caracteres físicos (bytes).
 \index{newline character}
 
-La función integrada de Perl {\tt open} toma la ruta la cual indica donde el 
+La función integrada de Perl {\tt open} toma la ruta (\emph{path} en inglés) la cual indica donde el 
 archivo se encuentra y el nombre del archivo. {\tt open} devuelve
 un {\bf descriptor de archivo} ({\tt IO::Handle object}) que puedes usar
-para leer (o para escribir en el mismo):
+para leer (o para escribir) del mismo):
 \index{open function}
 \index{function!open}
 \index{plain text}
@@ -224,8 +224,8 @@ La palabra siguiente es ``a-''. Si llamas a {\tt get} nuevamente,
 obtienes la palabra ``aarónico``. 
 
 Esto es grandioso si queremos explorar las primeras líneas del
-archivo {\tt lemario.txt}, pero no vamos las 88-k líneas del 
-archivo de esta forma.
+archivo {\tt lemario.txt}, pero no vamos a explorar las casi 
+88,000 líneas del archivo de esta forma.
 
 Necesitamos que un bucle lo haga por nosotros. Podríamos insertar
 la nueva instrucción {\tt get} en un bucle {\tt while}, pero
@@ -408,10 +408,10 @@ C:\Users\Laurent>perl6 -ne ".say if .chars > 20" lemario.txt
 \end{verbatim} 
 %
 
-\subsection{Palabras con No ``e'' (Solución)}
+\subsection{Palabras Sin ``e'' (Solución)}
 
 Una subrutina que devuelve {\tt True} para palabras que no tienen ``e''
-(Ejercicio~\ref{no_e}) es también simple:
+(Ejercicio~\ref{no_e}) es igualmente simple:
 
 \begin{verbatim}
 sub sin-e (Str $palabra) {
@@ -517,10 +517,10 @@ Nota que tenemos dos bucles anidados implícitamente. Podríamos
 invertir los bucles externo e interno:
 
 \begin{verbatim}
-sub evitar(Str $word, Str $forbidden) {
-    for 0..$words.chars - 1 -> $idx {
-        my $letter = substr $words, $idx, 1;
-        return False if defined index $forbidden, $letter;
+sub evitar(Str $palabra, Str $prohibida) {
+    for 0..$palabra.chars - 1 -> $idx {
+        my $letra = substr $palabra, $idx, 1;
+        return False if defined index $prohibida, $letra;
     }
     True;
 }
@@ -564,11 +564,11 @@ sub usa-solamente(Str $palabra, Str $disponible) {
 \end{verbatim}
 %
 En lugar de una lista de letras prohibidas, tenemos una lista
-de letras disponibles. Si encontramos una letra en {\tt palabra}
-que no está en {\tt disponible}, podemos devolver {\tt False}. 
+de letras disponibles. Si encontramos una letra en {\tt \$palabra}
+que no está en {\tt \$disponible}, podemos devolver {\tt False}. 
 Y devolvemos {\tt True} si llegamos al final del bucle.
 
-\subsection{Using All Letters of a List (Solución)}
+\subsection{Usando Todas las Letras de una Lista (Solución)}
 
 \verb"usa-todas" es similar a las subrutinas previas,
 excepto que invertimos el rol de la palabra y la cadena 
@@ -584,17 +584,17 @@ sub usa-todas(Str $palabra, Str $requerida) {
 }
 \end{verbatim}
 %
-En lugar de tranversar 
-Instead of traversing the letters in {\tt \$word}, the loop
-traverses the required letters.  If any of the required letters
-do not appear in the word, we can return {\tt False}.
+En lugar de recorrer las letras en {\tt \$palabra}, el bucle
+recorre las letras requeridas. Si cualquiera de las letras
+requeridas no aparece en la palabra, podemos devolver {\tt False}.
 \index{traversal}
 
-If you were really thinking like a computer scientist, you would
-have recognized that \verb"uses-all" was an instance of a
-previously solved problem in reverse: if word~A uses all 
-letters of word~B, then word~B uses only letters of word~A. So, 
-we can call the {\tt uses-only} subroutine and write:
+Si estabas realmente pensando como un científico de la computación, 
+habrías reconocido que \verb|usa-todas| era una instancia de un
+problema previamente resuelto en inverso: si la palabra~A usas todas
+las letras de la palabra~B,  entonces la palabra~B usa solo las letras
+de la palabra~A. Así que podemos llamar la subrutina {\tt usa-solamente}
+y escribir:
 
 \begin{verbatim}
 sub usa-toda ($palabra, $requerida) {
@@ -602,10 +602,11 @@ sub usa-toda ($palabra, $requerida) {
 }
 \end{verbatim}
 %
-This is an example of a program development plan called 
-{\bf reduction to a previously solved problem}, which means that you
-recognize the problem you are working on as an instance of a solved
-problem and apply an existing solution. 
+Este es un ejemplo de un plan de desarrollo de programa conocido como
+{\bf reducción a un problema previamente solucionado}, lo cual 
+significa que reconoces el problema con el cual estás trabajando
+como una instancia de un problema ya solucionado y aplica una
+solución ya existente. 
 \index{reduction to a previously solved problem} 
 \index{development plan!reduction}
 
