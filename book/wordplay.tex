@@ -514,13 +514,10 @@ como un ejemplo; podrías encontrarlo más claro {\tt devolver} los valores
 explícitamente, excepto quizás con subrutinas de una línea muy simples.
 
 Nota que tenemos dos bucles anidados implícitamente. Podríamos 
-
-
-Note that we have here implicitly two nested loops. We could 
-reverse the outer and the inner loops:
+invertir los bucles externo e interno:
 
 \begin{verbatim}
-sub avoids (Str $word, Str $forbidden) {
+sub evitar(Str $word, Str $forbidden) {
     for 0..$words.chars - 1 -> $idx {
         my $letter = substr $words, $idx, 1;
         return False if defined index $forbidden, $letter;
@@ -530,64 +527,64 @@ sub avoids (Str $word, Str $forbidden) {
 \end{verbatim}
 %
 
-The main code calling the above subroutine is similar to 
-the code calling {\tt has-no-e} and might look like 
-this:
+El código principal que llama la subrutina más arriba es similar
+al código que llama a {\tt sin-e} y podría lucir así:
 
 \begin{verbatim}
-my $total-count = 0;
-my $count-no-forbidden = 0;
+my $cuenta-total = 0;
+my $cuenta-no-prohibidas = 0;
 
-for 'words.txt'.IO.lines -> $line { 
-    $total-count++;
-    $count-no-forbidden++ if avoids $line, "eiou";
+for 'lemario.txt'.IO.lines -> $línea { 
+    $cuenta-total++;
+    $cuenta-no-prohibidas++ if evitar $línea, "eiou";
 }
 
 say "=" x 24;
-say "Total word count: $total-count";
-say "Words without forbidden: $count-no-forbidden";
-printf "Percentage of words with no forbidden letter: %.2f %%\n", 
-        100 * $count-no-forbidden / $total-count;
+say "Cuenta total de palabras: $cuenta-total";
+say "Palabras sin letras prohibidas: $cuenta-no-prohibidas";
+printf "Percentaje de palabras sin letras prohibidas: %.2f %%\n", 
+        100 * $cuenta-no-prohibidas / $cuenta-total;
 \end{verbatim}    
 %
   
 
-\subsection{Using Only Some Letters (Solución)}
+\subsection{Usando Solo Algunas Letras (Solución)}
 
-\verb"uses-only" is similar to our {\tt avoids} subroutine 
-except that the sense of the condition is reversed:
+\verb"usa-solamente" es similar a nuestra subrutina {\tt evitar} 
+excepto que el sentido de la condición está invertido:
 
 \begin{verbatim}
-sub uses-only (Str $word, Str $available) {
-    for 0..$word.chars - 1 -> $idx {
-        my $letter = substr $word, $idx, 1;
-        return False unless defined index $available, $letter;
+sub usa-solamente(Str $palabra, Str $disponible) {
+    for 0..$palabra.chars - 1 -> $idx {
+        my $letra = substr $palabra, $idx, 1;
+        return False unless defined index $disponible, $letra;
     }
     True;
 }
 \end{verbatim}
 %
-Instead of a list of forbidden letters, we have a list 
-of available letters.  If we find a letter in {\tt word} that 
-is not in {\tt available}, we can return {\tt False}. And 
-we return {\tt True} if we reach the loop end.
+En lugar de una lista de letras prohibidas, tenemos una lista
+de letras disponibles. Si encontramos una letra en {\tt palabra}
+que no está en {\tt disponible}, podemos devolver {\tt False}. 
+Y devolvemos {\tt True} si llegamos al final del bucle.
 
 \subsection{Using All Letters of a List (Solución)}
 
-\verb"uses-all" is similar to the previous two subroutines, 
-except that we reverse the role of the word and the string 
-of letters:
+\verb"usa-todas" es similar a las subrutinas previas,
+excepto que invertimos el rol de la palabra y la cadena 
+de letras:
 
 \begin{verbatim}
-sub uses-all(Str $word, Str $required) {
-    for 0..$required.chars - 1 -> $idx {
-        my $letter = substr $word, $idx, 1;
-        return False unless defined index $word, $letter;
+sub usa-todas(Str $palabra, Str $requerida) {
+    for 0..$requerida.chars - 1 -> $idx {
+        my $letra = substr $palabra, $idx, 1;
+        return False unless defined index $palabra, $letra;
     }
     return True;
 }
 \end{verbatim}
 %
+En lugar de tranversar 
 Instead of traversing the letters in {\tt \$word}, the loop
 traverses the required letters.  If any of the required letters
 do not appear in the word, we can return {\tt False}.
@@ -600,8 +597,8 @@ letters of word~B, then word~B uses only letters of word~A. So,
 we can call the {\tt uses-only} subroutine and write:
 
 \begin{verbatim}
-sub uses-all ($word, $required) {
-    return uses-only $required, $word;
+sub usa-toda ($palabra, $requerida) {
+    return usa-solamente $requerida, $palabra;
 }
 \end{verbatim}
 %
@@ -612,40 +609,40 @@ problem and apply an existing solution.
 \index{reduction to a previously solved problem} 
 \index{development plan!reduction}
 
-\subsection{Alphabetic Order (Solución)}
+\subsection{Orden Alfabético (Solución)}
 
-For \verb"is_abecedarian" we have to compare adjacent letters. 
-Each time in our {\tt for} loop, we define one letter as our 
-current letter and compare it with the previous one:
+Para \verb|es_abecedaria| tenemos que comparar las letras adyacentes.
+Cada vez en nuestro bucle {\tt for}, definimos una letra como nuestra
+letra actual y la comparamos con la anterior:
 
 \begin{verbatim}
-sub is_abecedarian ($word) {
-    for 1..$word.chars - 1 -> $idx {    
-        my $curr-letter = substr $word, $idx, 1;
-        return False if $curr-letter lt substr $word, $idx - 1, 1;  
+sub es_abecedaria ($palabra) {
+    for 1..$palabra.chars - 1 -> $idx {    
+        my $letra-actual = substr $palabra, $idx, 1;
+        return False if $letra-actual lt substr $palabra, $idx - 1, 1;  
     }     
     return True
 }
 \end{verbatim}
 
-An alternative is to use recursion:
+Una alternativa es usar recursión:
 \index{recursion}
 
 \begin{verbatim}
-sub is-abecedarian (Str $word) {
-    return True if $word.chars <= 1;
-    return False if substr($word, 0, 1) gt substr($word, 1, 1);
-    return is-abecedarian substr $word, 1;
+sub es-abecedaria (Str $palabra) {
+    return True if $palabra.chars <= 1;
+    return False if substr($palabra, 0, 1) gt substr($palabra, 1, 1);
+    return es-abecedaria substr $palabra, 1;
 }
 \end{verbatim}
 
-Another option is to use a {\tt while} loop:
+Otra opción es usar bucle {\tt while}:
 
 \begin{verbatim}
-sub is_abecedarian (Str $word):
+sub palabra(Str $palabra):
     my $i = 0;
-    while $i < $word.chars -1 {
-        if substr($word, $i, 1) gt substr ($word, $i+1, 1) {
+    while $i < $palabra.chars -1 {
+        if substr($palabra, $i, 1) gt substr ($palabra, $i+1, 1) {
             return False;
         }
         $i++;
@@ -654,24 +651,23 @@ sub is_abecedarian (Str $word):
 }
 \end{verbatim}
 %
-The loop starts at {\tt \$i=0} and ends when {\tt i=\$word.chars -1}.  Each
-time through the loop, it compares the $i$th character (which you can
-think of as the current character) to the $i+1$th character (which you
-can think of as the next).
+El bucle comienza con {\tt \$i=0} y termina con {\tt i=\$palabra.chars -1}.
+Cada vez a través del bucle, se compara el carácter $i$th (el cual puedes
+considerar como el carácter actual) al carácter $i+1$th (el cual puedes
+considerar como el carácter siguiente).
 
-If the next character is less than (alphabetically before) the current
-one, then we have discovered a break in the abecedarian trend, and
-we return {\tt False}.
+Si el carácter siguiente es menor (alfabéticamente posterior) que el 
+carácter actual, entonces hemos descubierto una falla en la tendencia
+del abecedario, y devolvemos {\tt False}.
 
-If we get to the end of the loop without finding a fault, then the
-word passes the test.  To convince yourself that the loop ends
-correctly, consider an example like \verb"'flossy'".  The
-length of the word is 6, so
-the last time the loop runs is when \verb|$i| is 4, which is the
-index of the second-to-last character.  On the last iteration,
-it compares the second-to-last character (the second ``s'') to 
-the last (the ``y''), which is what we want.
-
+Si llegamos al final del bucle sin encontrar una falla, entonces
+la palabra pasa la prueba. Para convencerte que el bucle finaliza
+correctamente, considera un ejemplo como \verb|'flossy'|. La
+longitud de la palabra es 6, así que la última vez que el bucle 
+se ejecuta es cuando \verb|$i| es 4, el cual es el índice del
+penúltimo carácter. En la última iteración, se compara el penúltimo
+carácter (la segunda ``s'') al último (la ``y''), que es lo
+deseamos.
 \subsection{Otro Ejemplo de Reducción a un Problema Previamente Solucionado}
 
 \index{palindrome}
@@ -792,7 +788,7 @@ idea.
 \end{description}
 
 
-\section{Exercises}
+\section{Ejercicios}
 
 \begin{exercise}
 \index{Car Talk}
@@ -800,31 +796,32 @@ idea.
 \index{double letters}
 \label{cartalk}
 
-This question is based on a Puzzler that was broadcast on the radio
-program {\em Car Talk} 
+Este pregunta está basada en un Puzzler (acertijo) que fue transmitido en
+el programa radial {\em Car Talk} 
 (\url{http://www.cartalk.com/content/puzzlers}):
 
 \begin{quote}
-Give me a word with three consecutive double letters. I'll give you a
-couple of words that almost qualify, but don't. For example, the word
-committee, c-o-m-m-i-t-t-e-e. It would be great except for the ``i'' that
-sneaks in there. Or Mississippi: M-i-s-s-i-s-s-i-p-p-i. If you could
-take out those i's it would work. But there is a word that has three
-consecutive pairs of letters and to the best of my knowledge this may
-be the only word. Of course there are probably 500 more but I can only
-think of one. What is the word?
+Dame una palabra con tres letras dobles consecutivas. Te daré unas
+cuantas palabras que casi cualifican, pero no completamente.Por ejemplo,
+la palabra committee, c-o-m-m-i-t-t-e-e. Sería un gran ejemplo excepto
+por la ``i`` que se escabulle ahí. O Mississippi: M-i-s-s-i-s-s-i-p-p-i.
+Si pudieras sacar esas i, sería otro gran ejemplo. No obstante, existe
+una palabra que tiene tres pares de letras consecutivas y a mi saber,
+esta puede ser la única palabra que satisface dicha condición. 
+¡Solo bromeo! Existen probablemente alrededor de 500 de estas palabras pero
+solo puede pensar sobre una. ¿Cuál es la palabra?
 \end{quote}
 
-Write a program to find it.
+Escribe un programa para encontrarla.
 
-Solution: \ref{sol_cartalk}.
+Solución: \ref{sol_cartalk}.
 
 \end{exercise}
 
 
 \begin{exercise}
-Here's another {\em Car Talk}
-Puzzler (\url{http://www.cartalk.com/content/puzzlers}):
+Aquí presentamos otro Puzzler de{\em Car Talk}
+(\url{http://www.cartalk.com/content/puzzlers}):
 \label{cartalk2}
 \index{Car Talk}
 \index{Puzzler}
@@ -832,60 +829,63 @@ Puzzler (\url{http://www.cartalk.com/content/puzzlers}):
 \index{palindrome}
 
 \begin{quote}
-``I was driving on the highway the other day and I happened to
-notice my odometer. Like most odometers, it shows six digits,
-in whole miles only. So, if my car had 300,000
-miles, for example, I'd see 3-0-0-0-0-0.
+``Estaba conduciendo en la autopista el otro día y sucede que
+noto mi odómetro. Como la mayoría de odómetros, este
+muestra seis dígitos, en millas en números enteros solamente. 
+Así que, si mi carro tenía 300,000 millas, por ejemplo, yo 
+vería 3-0-0-0-0-0.
 
-``Now, what I saw that day was very interesting. I noticed that the
-last 4 digits were palindromic; that is, they read the same forward as
-backward. For example, 5-4-4-5 is a palindrome, so my odometer
-could have read 3-1-5-4-4-5.
+Ahora bien, lo que ví ese día fue algo muy interesante. Noté que 
+los últimos cuatro dígitos eran palíndromos; es decir, se
+pueden leer igual de atrás hacia adelante. Por ejemplo, 5-4-4-5 
+es un palíndromo, así que mi odómetro podría leerse 3-1-5-4-4-5.
 
-``One mile later, the last 5 numbers were palindromic. For example, it
-could have read 3-6-5-4-5-6.  One mile after that, the middle 4 out of
-6 numbers were palindromic.  And you ready for this? One mile later,
-all 6 were palindromic!
+Una milla más tarde, los últimos 5 números eran palíndromos. Por ejemplo,
+podría leerse 3-6-5-4-5-6.  Una milla después de esa, los 4 números
+del medio eran palíndromos. ¿Y estás listo para esto? ¡Otra milla más
+tarde, todos los 6 números eran palíndromos!``
 
-``The question is, what was on the odometer when I first looked?''
+``La pregunta es, qué había en el odómetro la primera vez que lo miré?''
 \end{quote}
 
-Write a program that tests all the six-digit numbers and prints
-any numbers that satisfy these requirements.
+Escribe un programa que cheque todos los números de seis dígitos
+e imprime cualquier que satisface estos requerimientos.
   
-Solution: \ref{sol_cartalk2}.
+Solución: \ref{sol_cartalk2}.
 
 \end{exercise}
 
 
 \begin{exercise}
-Here's another {\em Car Talk} Puzzler you can solve with a
-search (\url{http://www.cartalk.com/content/puzzlers}):
+Otro Puzzler de {\em Car Talk} que puedes solucionar con una
+búsqueda (\url{http://www.cartalk.com/content/puzzlers}):
 \index{Car Talk}
 \index{Puzzler}
 \index{palindrome}
 \label{cartalk3}
 
 \begin{quote}
-Recently I had a visit with my mom and we realized that
-the two digits that make up my age when reversed resulted in her
-age. For example, if she's 73, I'm 37. We wondered how often this has
-happened over the years but we got sidetracked with other topics and
-we never came up with an answer.
 
-When I got home I figured out that the digits of our ages have been
-reversible six times so far. I also figured out that if we're lucky it
-would happen again in a few years, and if we're really lucky it would
-happen one more time after that. In other words, it would have
-happened 8 times over all. So the question is, how old am I now?
+Recientemente visité a mi madre y me dí cuenta que los dos dígitos
+que componen mi edad al ser invertidos resultan en su edad. Por 
+ejemplo, si ella tiene 73 años, entonces yo tengo 37. Nos preguntamos
+que tan a menudo esto había ocurrido a través de los años pero nos
+distraímos con otros temas y jamás obtuvimos una respuesta.
+
+Cuando llegué a la casa fui capaz de deducir que los dígitos de
+nuestras edades habían sido reversibles seis veces hasta ahora.
+También deducí que si tenemos suerte pasaría nuevamente dentro de
+algunos años, y si somos bien suertudos ocurriría una vez más después
+de eso. En otras palabras, pasaría 8 veces en total. Así que la pregunta
+es, cuál es mi edad ahora?
 
 \end{quote}
 
-Write a Perl program that searches for solutions to this Puzzler.
-Hint: you might find the string formatting method 
-{\tt sprintf} useful.
+Escribe un programa de Perl que busca las soluciones para este Puzzler.
+Pista: podrías encontrar el método para el formateo de cadenas de texto
+{\tt sprintf} muy útil.
 \index{sprintf function}
 
-Solution: \ref{sol_cartalk3}.
+Solución: \ref{sol_cartalk3}.
 
 \end{exercise}

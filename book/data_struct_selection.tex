@@ -1316,92 +1316,89 @@ Deberías intentar solucionar este ejercicio antes de proceder.
 Después puedes estudiar nuestra solución en la Subsección\ref{sol_markov_analysis}.
 
 
-\section{Data Structures}
+\section{Estructuras de Datos}
 \index{data structure}
 
-Using Markov analysis to generate random text is fun, but there is
-also a point to this exercise: data structure selection.  In your
-solution to the previous exercises, you had to choose:
+El uso del análisis de Markov para generar texto aleatorio es divertido,
+pero hay un propósito detrás de este ejercicio: la selección de estructura
+de datos. En tu solución al ejercicio previo, tenías que elegir:
 \index{fun}
 \index{data structure selection}
 
 \begin{itemize}
 
-\item How to represent the prefixes.
+\item Cómo representar los prefijos.
 
-\item How to represent the collection of possible suffixes.
+\item Cómo representar la colección de sufijos posibles.
 
-\item How to represent the mapping from each prefix to
-the collection of possible suffixes.
+\item Cómo representar el mapeo desde cada prefijo a la colección de
+de los sufijos posibles.
 
 \end{itemize}
 
-The last one is easy: a hash is the obvious choice
-for a mapping from keys to corresponding values.
+El último es fácil: un hash es la selección obvia para 
+el mapeo desde las claves a los valores correspondientes.
 \index{hash}
 
-For the prefixes, the most obvious options are a string or
-a list of strings.
+Para los prefijos, las opciones obvias son un cadena de texto
+o una lista de cadenas de texto.
 \index{string}
 
-For the suffixes,
-one option is a list; another is a histogram (hash).
+Para los sufijos, una opción es una lista; otra es un histograma (hash).
 \index{implementation}
 
-How should you choose?  The first step is to think about
-the operations you will need to implement for each data structure.
-For the prefixes, we need to be able to remove words from
-the beginning and add words to the end.  For example, if the current
-prefix is ``draw me,'' and the next word is ``a,'' you need
-to be able to form the next prefix, ``me a'' in order to find 
-the next suffix, ``sheep.''
+¿Cómo debes hacer la elección? El primer pasos es pensar sobre las operaciones
+que necesitarás implementar para cada estructura de datos. Para los prefijos,
+necesitamos ser capaz de remover palabras desde el inicio y agregar palabras
+al final. Por ejemplo, si el prefijo actual es ``píntame``, y la siguiente
+palabra es ``un``, necesitas ser capaz de formar el prefijo siguiente, 
+``píntame un`` para así encontrar el siguiente sufijo ``cordero.``  
 
-Your first choice might be an array, since it is easy to add
-and remove elements, but we also need to be able to use the
-prefixes as keys in a hash, so that sort of rules out arrays.
+Tu primera opción sería un array, dado que es fácil añadir y remover elementos,
+pero también necesitamos usar los prefijos como claves en un hash, 
+así que este requerimiento elimina los arrays.
 
-For the collection of suffixes, the operations we need to
-perform include adding a new suffix (or increasing the frequency
-of an existing one), and choosing a random suffix.
+Para la colección de sufijos, las operaciones que necesitamos realizar  
+incluyen agregar un sufijo nuevo (o incrementar la frecuencia de uno ya existente),
+y elegir un sufijo aleatorio.
 
-Adding a new suffix is equally easy for the list implementation
-or the hash.  Choosing a random element from a list
-is easy; choosing from a hash is harder to do
-efficiently (see Exercise~\ref{randhist}).
+Agregar un sufijo es igualmente fácil para la implementación de una lista
+o un hash. Elegir un elemento aleatorio desde una lista es fácil; elegirlo
+desde un hash es más difícil de hacer eficientemente (ver Ejercicio~\ref{randhist}).
 
-So far we have been talking mostly about ease of implementation,
-but there are other factors to consider in choosing data structures.
-One is run time.  Sometimes there is a theoretical reason to expect
-one data structure to be faster than other; for example, we mentioned
-that a lookup operation is faster for hashes than for arrays,
-especially when the number of elements is large.
+Hasta ahora hemos estado discutiendo acerca de la facilidad de la implementación,
+pero hay otros factores a considerar en la elección de estructuras de datos.
+Uno de ellos es el tiempo de ejecución. Algunas veces existe una razón teórica 
+al esperar que una estructura de datos sea más veloz que otra; por ejemplo,
+mencionamos que la operación de búsqueda es más rápida con los hashes que con los
+arrays, especialmente cuando el números de elementos es grande.
 
-But often you don't know ahead of time which implementation will
-be faster.  One option is to implement both of them and see which
-is better.  This approach is called {\bf benchmarking}.  A practical
-alternative is to choose the data structure that is
-easiest to implement, and then see if it is fast enough for the
-intended application.  If so, there is no need to go on.  If not,
-there are tools, like {\tt profile} modules, that can identify
-the places in a program that take the most time.
+Pero usualmente no sabes con anticipación cual implementación será más rápida.
+Una opción es implementarlas a ambas y observar cual es mejor. Esta técnica se
+conoce como {\bf benchmarking}. Una alternativa práctica es elegir la estructura 
+de datos que es más fácil de implementar, y después ver si es lo suficientemente
+rápida para la aplicación a mano. Si lo es, no hay razón para proceder con
+la búsqueda. Si no es suficientemente rápida, existen herramientas, como módulos
+de {\tt perfil} (\emph{profile} en inglés), que pueden identificar los lugares
+en un programa que tardan más.
 \index{benchmarking}
 \index{profile module}
 \index{module!profile}
 
-The other factor to consider is storage space.  For example, using a
-histogram for the collection of suffixes might take less space because
-you only have to store each word once, no matter how many times it
-appears in the text.  In some cases, saving space can also make your
-program run faster, and in the extreme, your program might not run at
-all if you run out of memory.  But for many applications, space is a
-secondary consideration after run time.
+El otro factor a considera es el espacio de almacenamiento. Por ejemplo,  
+usar un histograma para la colección de sufijos podría tomar menos espacio
+porque tienes que almacenar cada palabra solamente una vez, sin importar 
+cuantas veces aparezca. En algunos casos, ahorrar espacio puede hacer
+que tu programa se ejecute más rápido, y en el caso extremo, tu programa
+podría no ejecutarse si tu memoria se agota. Pero para muchas aplicaciones,
+espacio es una consideración secundaria después del tiempo de ejecución.
 
-One final thought: in this discussion, we have implied that
-we should use one data structure for both analysis and generation.  But
-since these are separate phases, it would also be possible to use one
-structure for analysis and then convert to another structure for
-generation.  This would be a net win if the time saved during
-generation exceeded the time spent in conversion.
+Una reflexión final: en esta discusión, hemos insinuado que deberíamos utilizar
+una sola estructura de datos para el análisis y la generación. Pero debido a que
+estas son fases separadas, sería igualmente posibles usar una estrcutura de datos
+para el análisis y después convertirla a otra para la generación. Esto sería
+una gran ventaja si el tiempo ahorrado durante la generación excede el tiempo
+que se emplea en la conversión.
 
 \section{Building Your Own Data Structures}
 
@@ -1849,22 +1846,22 @@ de goma no sabe Perl.
 
 \end{description}
 
-\section{Exercises: Huffman Coding}
+\section{Ejercicio: Codificación Huffman}
 \label{huffman_exercise}
 
-Huffman coding is a technique used for data compression, i.e., 
-to reduce the size of a piece of data (such as, for example, 
-compressing a file).
+La codificación Huffman es una técnica usada para la compresión de
+datos, i.e., para reducir el tamaño de una pieza de datos (tal
+como, por ejemplo, comprimir un archivo).
 
-\subsection{Variable-Length Codes}
+\subsection{Código de Longitud Variable}
 \index{variable-length code}
 
-If you are familiar with Morse code, you know that it is a 
-system for encoding the letters of the alphabet as a series 
-of dots and dashes. For example, the famous signal {\tt ...---...} 
-represents the letters SOS, which comprise an 
-internationally recognized call for help. The table 
-in Figure~\ref{fig.morse} shows the rest of the codes.
+Si eres familiar con el código morse, ya sabes que es un sistema
+para codificar las letras del alfabeto en una serie de puntos
+y rayas. Por ejemplo, la famosa señal {\tt ...---...} representa
+las letras SOS, la cual constituye una llamada de ayuda reconocida
+internacionalmente. La tabla en la Figura~\ref{fig.morse} 
+muestra el resto de los códigos.
 \index{Morse code}
 
 \begin{figure}
@@ -1874,50 +1871,50 @@ in Figure~\ref{fig.morse} shows the rest of the codes.
 \label{fig.morse}
 \end{figure}
 
-Morse code (invented between 1836 and 1844) was one of the 
-very first attempts at digital encoding of the alphabet of a 
-plain text. The only known earlier attempt is the braille 
-alphabet (1824-1837).
+El código morse (inventado entre 1836 y 1844) fue uno de los
+primeros atentos de la codificación digital del alfabeto de 
+un texto sencillo. El único otro atento conocido es el 
+alfabeto braille (1824-1837).
 \index{Morse, Samuel}
 \index{braille alphabet}
 
-Notice that some codes are longer than others. By design, the 
-most common letters have the shortest codes. Since there are a 
-limited number of short codes, that means that less common letters 
-and symbols have longer codes. A typical message will have more 
-short codes than long ones, which minimizes the average 
-transmission time per letter.
+Nota que algunos de los códigos son más largos que otros. Por
+diseño, las letras más comunes poseen códigos más cortos. Dado
+que hay un número ilimitado de códigos cortos, eso significa que
+las letras y símbolos menos comunes poseen códigos más largos.
+Un mensaje típico tendrás más códigos cortos que largos, lo cual
+minimiza la el tiempo promedio de transmisión por letra.
 
-Codes like this are called variable-length codes. In this exercise, 
-we will look at an algorithm for generating a variable-length code 
-called a Huffman code. It is an interesting algorithm in its own 
-right, but it also makes a useful exercise because its implementation 
-uses a variety of data structures.
+Este tipo de código se conoce como códigos de longitud variable. 
+En este ejercicio, estudiaremos un algoritmo para generar código
+de longitud variable llamado codificación Huffman. Es un algoritmo
+interesante en sí mismo, pero también hace de un ejercicio interesante
+porque su implementación usa una variedad de estructuras de datos.
 \index{Huffman!code}
 
-Here is an outline of what we will do until the end of this 
-chapter:
+Aquí presentamos un esquema de lo que haremos hasta al final de este capítulo:
 
 \begin{enumerate}
 
-\item First, we will use a sample of English text to generate 
-a table of characters and their frequencies.
+\item Primeramente, usaremos una muestra de texto en inglés para generar
+un tabla de los caracteres y sus frecuencias.
 
-\item Then we will use this frequency table to generate a code 
-table.
+\item Después usaremos esta tabla de frecuencia para generar una tabla
+de código.
 
-\item Finally, we will encode a message with this code table 
-and then decode it.
+\item Finalmente, codificaremos un mensaje con esta tabla de código y 
+consiguientemente lo decodificaremos.
 
 \end{enumerate}
 
-\subsection{The Frequency Table}
+\subsection{La Tabla de Frecuencias}
 \index{frequency!table}
 
-Since the goal is to give short codes to common letters, we 
-have to know how often each letter occurs. In Edgar Allan Poe’s 
-short story ``The Gold Bug,'' one of the characters, William~Legrand, 
-uses letter frequencies to crack a cypher. He explains:
+Dado que la meta es proveer las letras comunes con códigos
+cortos, necesitamos saber la frecuencia con la cual cada letra
+ocurre. En la historia ``The Gold Bug``\footnote{El Escarabajo de Oro} 
+de Edgar Allan Poe, uno de los personajes, William~Legrand, 
+usa la frecuencia de las letras para descifrar un criptograma. Él explica: 
 \index{Poe, Edgar Allan}
 \index{The Gold-Bug (Edgar Allan Poe)}
 \index{cypher}
@@ -1928,26 +1925,35 @@ is e. Afterwards, the succession runs thus: a o i d h n r s
 t u y c f g l m w b k p q x z. E however predominates so 
 remarkably that an individual sentence of any length is 
 rarely seen, in which it is not the prevailing character.''
+\footnote{
+``
+Ahora bien: la letra que se encuentra con mayor frecuencia en inglés es la 
+e. Después, la serie es la  siguiente: a o y d h n r s t u y c f g l m w b k p q x z. 
+La e predomina de un modo tan notable, que es raro encontrar una frase sola de
+cierta longitud de la que no sea el carácter principal.``}
 \end{quote}
 
-So our first mission is to see whether Poe got it right. 
-To check, let's use as a sample the text of ``The Gold Bug'' 
-itself, which can be downloaded from Project Gutenberg 
-(\url{http://www.gutenberg.org/files/2147/2147-0.txt}) and 
-a variety of other websites. 
+Nuestra misión es chequear si Poe estaba en lo cierto. Para chequearlo,
+usaremos una muestra del texto del ``The Gold Bug``, el cual
+puede descargarse desde le Proyecto Gutenberg
+(\url{http://www.gutenberg.org/files/2147/2147-0.txt}) 
+y una variedad de otros sitios web.
 \index{Project Gutenberg}
 
 \begin{exercise}
 \label{letter_frequency}
-Write a program that counts the number of times each letter 
-appears in a sample text. Download the text of ``The Gold Bug'' 
-and analyze the frequency of the letters.
+Escribe un programa que cuenta el número de veces que cada letra 
+aparece en una muestra de texto. Descarga el texto de ``The Gold Bug'' 
+y analiza la frecuencia de las letras.
 
-Solution: see Section~\ref{sol_letter_frequency}
+Solución: ver Sección~\ref{sol_letter_frequency}
 \end{exercise}
 
 \subsection{Building the Huffman Code}
 \index{Huffman!code}
+
+Para nuestro propósito, el código morse tiene un defecto: 
+no 
 
 For our purposes, Morse code has one defect: it does not 
 use just two symbols as you might think, but actually three: 
