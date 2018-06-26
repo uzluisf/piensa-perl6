@@ -1,3 +1,13 @@
+
+La traducción del libro casi está completa. Este repositorio ha sido 
+archivado y partir de ahora, las futuras revisiones (y la traducción del apéndice)
+del libro serán llevadas a cabo en el repositorio de Gitlab
+
+https://gitlab.com/uzluisf/piensaperl6/
+
+¡Nos vemos allá!
+
+---
 # Piensa Perl 6
 
 * [Inglés](./README-en.md)
@@ -44,10 +54,10 @@ de ejecutar `make clean`.
 - [x] Capítulo 05: Subrutinas Fructuosas
 - [x] Capítulo 06: Iteración
 - [x] Capítulo 07: Cadenas de Texto
-- [ ] Capítulo 08: Caso Práctico: Juego de Palabras **TEP**
+- [x] Capítulo 08: Caso Práctico: Juego de Palabras
 - [x] Capítulo 09: Arrays y Listas
 - [x] Capítulo 10: Hashes
-- [ ] Capítulo 11: Caso Práctico: Selección de una Estructura de Datos **TEP**
+- [x] Capítulo 11: Caso Práctico: Selección de una Estructura de Datos
 - [x] Capítulo 12: Clases y Objetos
 - [x] Capítulo 13: Regexes y Gramáticas
 - [x] Capítulo 14: Programación Funcional en Perl

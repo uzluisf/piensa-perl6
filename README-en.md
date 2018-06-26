@@ -1,3 +1,12 @@
+This repo has been archived. Future revisions
+can be found at
+
+https://gitlab.com/uzluisf/piensaperl6/
+
+See you there!
+
+---
+
 # Piensa Perl 6
 
 * [Spanish](./README.md)
