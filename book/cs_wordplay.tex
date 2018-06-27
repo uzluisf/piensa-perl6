@@ -1,0 +1,892 @@
+
+\chapter{Caso Práctico: Juego de Palabras}
+\label{wordplay}
+
+En lugar de introducir conceptos nuevos, el propósito de 
+este capítulo es dejarte practicar y consolidar el conocimiento
+que has adquirido hasta ahora. Para ayudarte a ganar experiencia
+con la programación, discutiremos un caso práctico que involucra
+la solución de sopas de palabras al buscar palabras que tienen
+ciertas propiedades. Por ejemplo, encontraremos los palíndromos
+más largos en inglés y buscaremos palabras cuyas letras aparecen
+en orden alfabético. Y presentaré otro plan de desarrollo de programa:
+reducción a un programa previamente solucionado.
+
+\section{Lectura de y Escritura a un Archivo}
+
+Para los ejercicios en este capítulos, necesitaremos que nuestros
+programas lean texto desde los archivos. En muchos lenguajes 
+de programación, usualmente esto significa que necesitamos una sentencia
+que abra un archivo, después una sentencia o grupo de sentencias 
+para leer el contenido del archivo, y finalmente una sentencia para
+cerrar el archivo (aunque esta operación puede realizarse automáticamente
+en algunas circunstancias).
+\index{file!reading from}
+\index{file!writing to}
+\index{file!open statement}
+\index{file!close statement}
+
+Aquí estamos interesados en archivos de texto que están compuestos 
+por líneas separadas por caracteres lógicos de nueva línea; 
+dependiendo de tu sistema operativo, lógicos caracteres de nueva línea
+consisten de uno (Linux, Mac) o dos (Windows) caracteres físicos (bytes).
+\index{newline character}
+
+La función integrada de Perl {\tt open} toma la ruta (\emph{path} en inglés) la cual indica donde el 
+archivo se encuentra y el nombre del archivo. {\tt open} devuelve
+un {\bf descriptor de archivo} ({\tt IO::Handle object}) que puedes usar
+para leer (o para escribir) del mismo):
+\index{open function}
+\index{function!open}
+\index{plain text}
+\index{text!plain}
+\index{object!file}
+\index{file handle}
+\index{function!slurp-rest}
+
+\begin{verbatim}
+my $fh = open("ruta/a/mi_archivo.txt", :r);
+my $datos = $fh.slurp-rest;
+$fh.close;
+\end{verbatim}
+%
+La opción {\tt :r}  ({\tt read}) es el modo de escritura. {\tt \$fh} es
+un nombre común para un descriptor de archivo ({\bf f}ile {\bf h}andle en inglés).
+El \emph{objeto de archivo} provee métodos para leer, tales como {\tt slurp-rest}
+el cual devuelve el contenido completo del archivo desde la posición actual hasta
+el final (y el contenido completo del archivo lo hemos abierto por primera vez).
+
+Esta es la manera tradicional de abrir y leer archivos en la mayoría de
+los lenguajes.
+\index{read mode}
+\index{file mode!read}
+
+No obstante, el rol {\tt IO} de Perl (en términos simples, un rol 
+es una colección de métodos relacionados) ofrece métodos más simples
+los cuales pueden abrir y leerlo en una sola instrucción (i.e., 
+sin tener que primero abrir un descriptor de archivo y después cerrarlo):
+\index{role}
+\index{IO role}
+
+\begin{verbatim}
+my $texto = slurp "ruta/a/mi_archivo.txt";
+# alternativamente:
+my $texto = "ruta/a/mi_archivo.txt".IO.slurp;
+\end{verbatim}
+%
+
+\index{slurp function}
+{\tt slurp} toma la responsabilidad de abrir y cerrar el
+archivo por ti.
+
+Podemos también leer el archivo línea por línea, lo cual es 
+mu práctico si cada línea contiene una entidad lógica tal como
+un registro, y es especialmente útil para archivos muy grandes
+que podrían no caber en la memoria:
+
+\begin{verbatim}
+for 'ruta/a/mi_archivo.txt'.IO.lines -> $línea {
+    # Haz algo con la $línea
+}
+\end{verbatim}
+%
+Por defecto, el método {\tt .lines} removerá el caracteres de nueva línea
+colgantes de cada línea, para que no tengas que preocuparte sobre ellos.
+\index{IO.lines method}
+\index{IO.slurp method}
+\index{slurp function}
+%
+
+No hemos estudiados los arrays aún, pero puedes también leer
+todas las líneas de un archivo en un array, con cada línea del
+archivo volviéndose un artículo del array. Por ejemplo, puedes
+cargar el archivo {\em mi\_archivo.txt} en el array \verb|@líneas|:
+\index{array}
+
+\begin{verbatim}
+my @líneas = "mi_archivo.txt".IO.lines;
+\end{verbatim}
+%
+
+El acceso a cada línea puede entonces hacerse con el operador bracket
+y un índice. Por ejemplo, para imprimir la primera y séptima línea:
+
+\begin{verbatim}
+say @líneas[0];
+say @líneas[6];
+\end{verbatim}
+%
+Para escribir datos en un archivo, es posible abrirlo al igual 
+que cuando queremos leer desde el mismo, excepto que la opción
+{\tt :w} (write) (\emph{escritura}) debe usarse:
+\index{write mode}
+\index{file mode!write}
+
+\begin{verbatim}
+my $fh = open("ruta/a/mi_archivo.txt", :w);
+$fh.say("escribir esta línea en el archivo");
+$fh.close;
+\end{verbatim}
+
+Sé cuidadoso con esto. Si el archivo ya existía, cualquier
+contenido será sobrescrito. Así que sé cauteloso al abrir un archivo
+en el modo de escritura, debido a que podrías borrar todo el 
+contenido de un archivo si no tienes cuidado. 
+
+También es posible abrir el archivo en modo de concatenación, usando
+la opción {\tt :a} (append). Con esta opción, los datos nuevos serán 
+entonces agregados al contenido existente.
+\index{append mode}
+\index{file mode!append}
+
+La escritura a un archivo puede simplificarse con el uso de la función
+{\tt spurt}, la cual abre el archivo, escribe los datos en el mismo, y
+consecuentemente cierra:
+\index{spurt function}
+
+\begin{verbatim}
+spurt "ruta/a/mi_archivo.txt", "escribir esta línea en el archivo\n";
+\end{verbatim}
+
+Usado de esta manera, {\tt spurt} sobrescribirá cualquier contenido existente
+en el archivo. También puede usarse en el modo de concatenación con la 
+opción {\tt :append}:
+\index{spurt function!append mode}
+
+\begin{verbatim}
+spurt "ruta/a/mi_archivo.txt", "escribir esta línea en el archivo\n ", :append;
+\end{verbatim}
+
+
+\section{Lectura de Listas de Palabras}
+\label{wordlist}
+
+Para los ejercicios en este capítulo necesitamos una lista de palabras
+en español. Hay muchas listas de palabras en la web, pero una de la
+más adecuada para nuestro propósito es una de las listas de palabras
+coleccionada y cedida al dominio público por Grady Ward como parte
+del proyecto léxico Moby (ver \url{http://wikipedia.org/wiki/Moby_Project}).
+Es una lista de 113,809 palabras oficiales de crucigramas; es decir, 
+palabras que son consideradas válidas en un crucigrama y otros juegos de
+palabras. En la colección Moby, el nombre del archivo es \emph{spanish.txt};
+puedes descargar una copia
+desde \url{https://www.gutenberg.org/files/3206/files/spanish.txt}.
+\index{Moby Project}
+\index{crosswords}
+\index{word list}
+
+\begin{description}
+\item {\bf Nota del traductor}: En lugar de utilizar la lista de palabras en \emph{spanish.txt}
+del proyecto Moby, he decidido utilizar la lista en \emph{lemario.txt} (\url{https://gitlab.com/uzluisf/piensaperl6/tree/master/suplementos/lemario.txt}) 
+que contiene aproximadamente 88,000 palabras\footnote{
+También puedes encontrar el lemario y más información sobre el mismo aquí: (\url{http://olea.org/proyectos/lemarios/index.html})}. La decisión se debe a que la lista de 
+palabras en español del proyecto Moby contiene muchas palabras que no están
+formateadas apropiadamente. 
+\end{description}
+
+Este archivo contiene texto simple (con cada palabra de la lista
+en su propia línea), así que puedes abrirlo con un editor de texto,
+pero también puedes leerlo con Perl. Hagamos esto en el modo
+interactivo (con el REPL):
+\index{interactive mode}
+\index{REPL}
+
+\begin{verbatim}
+> my $fh = open("lemario.txt", :r);
+IO::Handle<lemario.txt>(opened, at octet 0)
+> my $línea = get $fh;
+aa
+> say "<<$línea>>";
+<<aa>>
+\end{verbatim}
+
+La función {\tt get} lee una línea del descriptor de archivo.
+\index{get function}
+
+La primera palabra en esta lista en particular es ``a``.
+
+Imprimir la variable \verb|$línea| entre los paréntesis angulares
+dentro de una cadena de texto nos muestra que la función {\tt get}
+removió explícitamente los caracteres de nueva línea colgantes, en este
+caso una combinación de los caracteres \verb|\r\n| (un retorno de carro
+ y una nueva línea), dado que este archivo aparentemente fue preparado en Windows.
+
+El descriptor de archivo mantiene un registro de lo que se ha leído
+desde el archivo y lo que debe leerse después, así que se llamas
+a {\tt get} otra vez, obtienes la siguiente línea:
+
+\begin{verbatim}
+> my $línea = get $fh;
+a-
+\end{verbatim}
+%
+La palabra siguiente es ``a-''. Si llamas a {\tt get} nuevamente,
+obtienes la palabra ``aarónico``. 
+
+Esto es grandioso si queremos explorar las primeras líneas del
+archivo {\tt lemario.txt}, pero no vamos a explorar las casi 
+88,000 líneas del archivo de esta forma.
+
+Necesitamos que un bucle lo haga por nosotros. Podríamos insertar
+la nueva instrucción {\tt get} en un bucle {\tt while}, pero
+hemos visto una manera más fácil y más eficiente de hacerlo con
+un bucle {\tt for} y el método {\tt IO.lines}, sin la inconveniencia
+de abrir o cerrar el archivo:
+\index{for loop}
+\index{IO.lines method}
+
+\begin{verbatim}
+for 'lemario.txt'.IO.lines -> $línea {
+    say $línea;
+}
+\end{verbatim}
+%
+Este código lee el archivo línea por línea, e imprime cada línea
+en la pantalla. Pronto haremos cosas más interesantes que solo
+mostrar las líneas en la pantalla.
+
+\section{Ejercicios}
+
+Este caso práctico consiste principalmente de ejercicios y soluciones
+dentro del cuerpo del capítulo porque solucionar los ejercicios es la
+manera principal de enseñar el material de este capítulo. Por lo tanto, 
+las soluciones a estos ejercicios se encuentran en las siguientes 
+secciones de este capítulo, no en el apéndice. Por lo menos 
+deberías tratar de solucionar cada uno de ellos antes de leer las
+soluciones.
+
+\begin{exercise}
+Escribe un programa que lee el archivo {\tt lemario.txt} e imprime
+solo las palabras con más de 20 caracteres.
+\index{whitespace}
+
+\end{exercise}
+
+\begin{exercise}
+
+En 1939, Ernest Vincent Wright publicó una novela con aproximadamente
+50,000 palabras llamada {\em Gadsby} que no contiene la letra ``e``. 
+Dado que ``e`` es la letra más común en inglés, eso no es fácil
+de hacer. De hecho, es difícil construir un solo pensamiento sin
+usar la letra más común. Tal escritos donde se omite alguna letra
+es algunas veces conocido como un lipograma.
+\index{Wright, Ernest Vincent}
+\index{Gadsby}
+\index{lipogram}
+
+Escribe una subrutina llamada \verb|sin-e| que devuelve {\tt True}
+si la palabra dada no contiene la letra ``e``.
+\label{no_e}
+
+Modifica tu programa del ejercicio previo para imprimir solamente
+palabras que no tienen ``e`` y calcular el porcentaje de palabras
+en la lista que no tienen ``e``.
+
+(El diccionario de palabras que estamos usando, \emph{lemario.txt}, 
+tiene completamente en letras minúsculas, así que no tienes que preocuparte
+acerca de la ``E`` mayúscula.)
+
+
+\end{exercise}
+
+
+\begin{exercise} 
+
+Escribe una subrutina llamada {\tt evitar} que toma una palabra
+y una cadena de texto de letras prohibidas, y devuelve {\tt True}
+si la palabra no contiene ninguna de las letras prohibidas.
+
+Después, modifica tu programa para encitar el usuario a entrar
+una cadena de texto de letras prohibidas y después imprimir el número
+de palabras que no contienen ningunas de ellas. ?`Puedes encontrar una
+combinación de cinco letras prohibidas que excluya  el menor número
+de palabras?
+\end{exercise}
+
+
+
+\begin{exercise}
+
+Escribe una subrutina llamada \verb|usa-solamente| que toma una palabra
+y una cadena de letras, y devuelve {\tt True} si la palabra contiene
+solo las letras en la lista. ?`Puedes construir una oración usando solo
+las letras {\tt acefhlo}?  
+%Other than ``Hoe alfalfa?''
+
+\end{exercise}
+
+
+\begin{exercise} 
+
+Escribe una subrutina llamada \verb|usa-todas| que toma una palabra
+y una cadena de letras requeridas, y devuelve {\tt True} si la palabra
+usa todas las letras requeridas por lo menos una vez. ?`Cuántas 
+palabras se encuentran ahí que usan todas las vocales {\tt aeiou}? 
+?`Y cuántas usan {\tt aeiouy}?
+
+\end{exercise}
+
+
+\begin{exercise}
+
+Escribe una función llamada \verb|es_abecedaria| que devuelve
+{\tt True} si las letras en una palabra aparecen en orden 
+alfabético (letras dobles son aceptables). ?`Cuántas palabras
+son abecedarias?
+
+\index{abecedarian}
+
+\end{exercise}
+
+
+
+\section{Búsqueda}
+\label{search}
+\index{search!pattern}
+\index{pattern!search}
+\index{regex}
+
+La mayoría de los ejercicios en la sección previa tiene algo en
+común; pueden solucionarse con el patrón de búsqueda (y la función
+{\tt index} que vimos en la Sección~\ref{find} 
+(p.~\pageref{find}). Muchos de ellos también pueden solucionarse
+con regexes.
+
+\subsection{Palabras con Más de 20 Caracteres (Solución)}
+
+La solución al ejercicio más simple ---imprimir todas las palabras
+de {\tt lemario.txt} que tienen más de 20 caracteres--- es:
+
+\begin{verbatim}
+for 'lemario.txt'.IO.lines -> $línea {
+    say $línea if $línea.chars > 20
+}
+\end{verbatim}
+%
+
+Dado que el código es tan simple, esto es un ejemplo típico
+de un one-liner útil (como se describió en la 
+Sección~\ref{one-liner mode}). Asumiendo que quieras saber las
+palabras con más de 20 caracteres, no necesitas ni siquiera escribir
+un script, guardarlo y ejecutarlo. Simplemente puedes teclear esto
+en la prompt de tu sistema operativo:
+\label{one-liner-example}
+\index{one-liner mode}
+
+\begin{verbatim}
+$ perl6 -n -e '$_.say if $_.chars > 20;' lemario.txt
+\end{verbatim} 
+%
+La opción ``-e`` le dice a Perl que el script a ser ejecutado
+viene en la línea de comando entre comillas. La ``-n`` le indica
+a Perl que lea el archivo línea por línea después de la línea
+de comando, almacene cada línea en la variable tópico \verb|$_|,
+y aplique el contenido del script a cada línea. Y el script en modo
+one-liner solo imprime el contenido de \verb|$_| si su longitud
+es mayor que 20.
+\index{topical variable}
+
+Para simplificarlo un poco, las dos opciones \verb|-n| y \verb|-e|
+pueden agruparse como \verb|perl6 -ne|. En adición, la variable tópico
+\verb|$_| puede omitirse en las llamadas de método (en otras palabras,
+si un método no tiene invocante, el invocante será \verb|$_| por defecto).
+Finalmente, el punto y coma colgante puede igualmente removerse.
+El script en modo one-liner más arriba puede entonces simplificarse
+aún más:
+\index{invocant}
+
+\begin{verbatim}
+$ perl6 -ne '.say if .chars > 20' lemario.txt
+\end{verbatim} 
+%
+Recuerda que, si está intentando esto en Windows, necesita reemplazar las 
+comillas simples con las comillas dobles (y viceversa si el script
+contiene comillas dobles):
+
+\begin{verbatim}
+C:\Users\Laurent>perl6 -ne ".say if .chars > 20" lemario.txt
+\end{verbatim} 
+%
+
+\subsection{Palabras Sin ``e'' (Solución)}
+
+Una subrutina que devuelve {\tt True} para palabras que no tienen ``e''
+(Ejercicio~\ref{no_e}) es igualmente simple:
+
+\begin{verbatim}
+sub sin-e (Str $palabra) {
+    return True unless defined index $palabra, "e";
+    return False;
+}
+\end{verbatim}
+%
+
+La subrutina simplemente devuelve {\tt True} si la función {\tt index} 
+no encontró una ``e`` en la palabra recibida como un parámetro y
+por lo contrario, devuelve {\tt False}.
+
+Nota que esto funciona correctamente porque la lista de palabras usada
+(\emph{lemario.txt}) está completamente en letras minúsculas. La subrutina
+más arriba necesitaría ser modificada si fuera a ser llamada con palabras
+que contienen letras mayúsculas.
+
+Dado que la función {\tt defined} devuelve un valor Booleano, podríamos 
+simplificar nuestra subrutina:
+\begin{verbatim}
+sub sin-e (Str $palabra) {
+    not defined index $palabra, "e";
+}
+\end{verbatim}
+%
+
+Podríamos también haber usado un regex para comprobar la 
+presencia de una ``e`` en la segunda línea de esta subrutina:
+
+\begin{verbatim}
+    return True unless $palabra ~~ /e/;
+\end{verbatim}
+%
+
+Esta sintaxis bastante concisa es atractiva, pero cuando se
+busca por una coincidencia literal exacta, la función {\tt index}
+es probablemente más eficiente (más rápida) que un regex.
+
+Buscar y contar las palabras sin ``e`` en nuestra lista de palabras 
+no es muy difícil:
+
+\begin{verbatim}
+sub sin-e (Str $palabra) {
+    not defined index $palabra, "e";
+}
+
+my $cuenta-total = 0;
+my $cuenta-sin-e = 0;
+for 'lemario.txt'.IO.lines -> $línea { 
+    $cuenta-total++;
+    if sin-e $línea {
+        $cuenta-sin-e++;
+        say $línea;
+    }
+}
+say "=" x 24;
+say "Cuenta total de palabras: $cuenta-total";
+say "Palabras sin 'e': $cuenta-sin-e";
+printf "Porcentaje de palabras sin 'e': %.2f %%\n", 
+        100 * $cuenta-sin-e / $cuenta-total;
+\end{verbatim}
+
+El programa anterior mostrará lo siguiente al final de 
+su salida:
+
+\begin{verbatim}
+========================
+Cuenta total de palabras: 87899
+Palabras sin 'e': 36671
+Porcentaje de palabras sin 'e': 41.72 %
+\end{verbatim}
+
+Así que más de un tercio de las palabras en nuestra lista no
+tienen ``e``.
+
+\subsection{Evitar Otras Letras (Solución)}
+
+\index{generalization}
+La subrutina {\tt evitar} es una versión más general de 
+\verb|sin-e|, pero tiene la misma estructura:
+
+\begin{verbatim}
+sub evitar (Str $palabra, Str $prohibida) {
+    for 0..$prohibida.chars - 1 -> $idx {
+        my $letra = substr $prohibida, $idx, 1;
+        return False if defined index $palabra, $letra;
+    }
+    True;
+}
+
+\end{verbatim}
+%
+Podemos devolver {\tt False} tan pronto encontremos una letra
+prohibida; si llegamos al final del bucle, devolvemos {\tt True}.
+Debido a que una subrutina devuelve la última expresión evaluada,
+no necesitamos usa la sentencia {\tt return True} explícitamente
+en la última línea de código más arriba. He usado esta característica
+como un ejemplo; podrías encontrarlo más claro {\tt devolver} los valores 
+explícitamente, excepto quizás con subrutinas de una línea muy simples.
+
+Nota que tenemos dos bucles anidados implícitamente. Podríamos 
+invertir los bucles externo e interno:
+
+\begin{verbatim}
+sub evitar(Str $palabra, Str $prohibida) {
+    for 0..$palabra.chars - 1 -> $idx {
+        my $letra = substr $palabra, $idx, 1;
+        return False if defined index $prohibida, $letra;
+    }
+    True;
+}
+\end{verbatim}
+%
+
+El código principal que llama la subrutina más arriba es similar
+al código que llama a {\tt sin-e} y podría lucir así:
+
+\begin{verbatim}
+my $cuenta-total = 0;
+my $cuenta-no-prohibidas = 0;
+
+for 'lemario.txt'.IO.lines -> $línea { 
+    $cuenta-total++;
+    $cuenta-no-prohibidas++ if evitar $línea, "eiou";
+}
+
+say "=" x 24;
+say "Cuenta total de palabras: $cuenta-total";
+say "Palabras sin letras prohibidas: $cuenta-no-prohibidas";
+printf "Percentaje de palabras sin letras prohibidas: %.2f %%\n", 
+        100 * $cuenta-no-prohibidas / $cuenta-total;
+\end{verbatim}    
+%
+  
+
+\subsection{Usando Solo Algunas Letras (Solución)}
+
+\verb"usa-solamente" es similar a nuestra subrutina {\tt evitar} 
+excepto que el sentido de la condición está invertido:
+
+\begin{verbatim}
+sub usa-solamente(Str $palabra, Str $disponible) {
+    for 0..$palabra.chars - 1 -> $idx {
+        my $letra = substr $palabra, $idx, 1;
+        return False unless defined index $disponible, $letra;
+    }
+    True;
+}
+\end{verbatim}
+%
+En lugar de una lista de letras prohibidas, tenemos una lista
+de letras disponibles. Si encontramos una letra en {\tt \$palabra}
+que no está en {\tt \$disponible}, podemos devolver {\tt False}. 
+Y devolvemos {\tt True} si llegamos al final del bucle.
+
+\subsection{Usando Todas las Letras de una Lista (Solución)}
+
+\verb"usa-todas" es similar a las subrutinas previas,
+excepto que invertimos el rol de la palabra y la cadena 
+de letras:
+
+\begin{verbatim}
+sub usa-todas(Str $palabra, Str $requerida) {
+    for 0..$requerida.chars - 1 -> $idx {
+        my $letra = substr $palabra, $idx, 1;
+        return False unless defined index $palabra, $letra;
+    }
+    return True;
+}
+\end{verbatim}
+%
+En lugar de recorrer las letras en {\tt \$palabra}, el bucle
+recorre las letras requeridas. Si cualquiera de las letras
+requeridas no aparece en la palabra, podemos devolver {\tt False}.
+\index{traversal}
+
+Si estabas realmente pensando como un científico de la computación, 
+habrías reconocido que \verb|usa-todas| era una instancia de un
+problema previamente resuelto en inverso: si la palabra~A usas todas
+las letras de la palabra~B,  entonces la palabra~B usa solo las letras
+de la palabra~A. Así que podemos llamar la subrutina {\tt usa-solamente}
+y escribir:
+
+\begin{verbatim}
+sub usa-toda ($palabra, $requerida) {
+    return usa-solamente $requerida, $palabra;
+}
+\end{verbatim}
+%
+Este es un ejemplo de un plan de desarrollo de programa conocido como
+{\bf reducción a un problema previamente solucionado}, lo cual 
+significa que reconoces el problema con el cual estás trabajando
+como una instancia de un problema ya solucionado y aplica una
+solución ya existente. 
+\index{reduction to a previously solved problem} 
+\index{development plan!reduction}
+
+\subsection{Orden Alfabético (Solución)}
+
+Para \verb|es_abecedaria| tenemos que comparar las letras adyacentes.
+Cada vez en nuestro bucle {\tt for}, definimos una letra como nuestra
+letra actual y la comparamos con la anterior:
+
+\begin{verbatim}
+sub es_abecedaria ($palabra) {
+    for 1..$palabra.chars - 1 -> $idx {    
+        my $letra-actual = substr $palabra, $idx, 1;
+        return False if $letra-actual lt substr $palabra, $idx - 1, 1;  
+    }     
+    return True
+}
+\end{verbatim}
+
+Una alternativa es usar recursión:
+\index{recursion}
+
+\begin{verbatim}
+sub es-abecedaria (Str $palabra) {
+    return True if $palabra.chars <= 1;
+    return False if substr($palabra, 0, 1) gt substr($palabra, 1, 1);
+    return es-abecedaria substr $palabra, 1;
+}
+\end{verbatim}
+
+Otra opción es usar bucle {\tt while}:
+
+\begin{verbatim}
+sub palabra(Str $palabra):
+    my $i = 0;
+    while $i < $palabra.chars -1 {
+        if substr($palabra, $i, 1) gt substr ($palabra, $i+1, 1) {
+            return False;
+        }
+        $i++;
+    }
+    return True;
+}
+\end{verbatim}
+%
+El bucle comienza con {\tt \$i=0} y termina con {\tt i=\$palabra.chars -1}.
+Cada vez a través del bucle, se compara el carácter $i$th (el cual puedes
+considerar como el carácter actual) al carácter $i+1$th (el cual puedes
+considerar como el carácter siguiente).
+
+Si el carácter siguiente es menor (alfabéticamente posterior) que el 
+carácter actual, entonces hemos descubierto una falla en la tendencia
+del abecedario, y devolvemos {\tt False}.
+
+Si llegamos al final del bucle sin encontrar una falla, entonces
+la palabra pasa la prueba. Para convencerte que el bucle finaliza
+correctamente, considera un ejemplo como \verb|'flossy'|. La
+longitud de la palabra es 6, así que la última vez que el bucle 
+se ejecuta es cuando \verb|$i| es 4, el cual es el índice del
+penúltimo carácter. En la última iteración, se compara el penúltimo
+carácter (la segunda ``s'') al último (la ``y''), que es lo
+deseamos.
+\subsection{Otro Ejemplo de Reducción a un Problema Previamente Solucionado}
+
+\index{palindrome}
+\label{palindrome_2}
+
+Aquí tenemos una versión de \verb|es_palindromo|(ver Ejercicio~\ref{palindrome})
+que usa dos índices; uno comienza al inicio e incrementa, mientra que el
+otro comienza al final y disminuye:
+
+\begin{verbatim}
+sub un-car (Str $cadena, $idx) {
+    return substr $cadena, $idx, 1;
+}
+sub es-palindromo (Str $palabra) {
+    my $i = 0;
+    my $j = $palabra.chars - 1;
+
+    while $i < $j {
+        return False if un-car($palabra, $i) ne 
+                        un-car($palabra, $j);
+        $i++;
+        $j--;
+    }
+    return True;
+}
+\end{verbatim}
+
+O podríamos reducirlo a un problema previamente solucionado
+y escribir:
+\index{reduction to a previously solved problem}
+\index{development plan!reduction}
+
+\begin{verbatim}
+sub es-palindromo (Str $palabra) {
+    return es-inversa($palabra, $palabra)
+}
+\end{verbatim}
+%
+usando \verb|es-inversa| de la Sección~\ref{isreverse} (
+pero deberías probablemente elegir la versión corregida de la
+subrutina \verb|es-inversa| dada en el apéndice: 
+ver Subsección~\ref{sol_isreverse}).
+
+
+\section{Depuración de Programas}
+\index{debugging}
+\index{testing!is hard}
+\index{program!testing}
+
+Hacer pruebas manuales de los programas es difícil. Las funciones en este
+capítulo son relativamente fáciles para probar porque puedes chequear 
+el resultado manualmente. Aún así, es algo entre difícil e imposible elegir
+un conjunto de palabras que prueben para todos los errores posibles.
+
+Por ejemplo, tomemos el caso de la subrutina \verb|sin-e|. En esta función, hay dos casos
+que debemos chequera: palabras que tienen una ``e`` debería devolver {\tt False},
+y palabras que no tienen ninguna ``e`` deberían devolver {\tt True}. Esto
+no representa problema alguno debido a que es fácil encontrar palabras
+que representan cada caso.
+
+Dentro de cada caso, existen casos que son menos obvios. Entre las palabras
+que tienen una ```e``, deberías probar palabras con una ``e`` al inicio, 
+al final, y en el medio. Deberías probar con palabras largas, palabras cortas
+y con palabras muy cortas, como una cadena de texto vacía. La cadena de texto 
+vacía es un ejemplo de un {\bf caso especial}, el cual es uno de los 
+casos que no son obvios donde los errores usualmente merodean.
+\index{special case}
+
+Además de las pruebas de casos que generes, puedes también someter
+tu programa a una prueba con una lista de palabras como \emph{lemario.txt}.
+Al escanear la salida, podrías atrapar errores, pero debes ser cuidadoso:
+podrías atrapar un tipo de error (palabras que no deberían ser incluidas,
+pero son incluidas) y dejar pasar otros errores (palabras que deberían ser
+incluidas pero no son incluidas).
+
+En general, las pruebas pueden ayudar a encontrar errores, pero no es fácil
+generar un buen conjunto de pruebas de casos, y aún si lo haces, no puedes
+estar seguro que tu programa es correcto.
+
+Según un legendario científico de la computación:
+\index{testing!and absence of bugs}
+
+\begin{quote}
+	
+La depuración de programas puede usarse para mostrar la presencia
+de errores, pero jamás para mostrar la ausencia de los mismos\footnote{
+"Program testing can be used to show the presence of bugs, 
+but never to show their absence!" --- Edsger W. Dijkstra
+}.
+
+--- Edsger W. Dijkstra
+\end{quote}
+\index{Dijkstra, Edsger}
+
+
+\section{Glosario}
+
+\begin{description}
+
+\item[Objeto de archivo] Un valor que representa un archivo abierto.
+\index{file object}
+\index{object!file}
+
+\item[Reducción a un problema previamente solucionado] Una manera de 
+solucionar un problema al expresarlo como una instancia de un problema
+que fue solucionado previamente.
+\index{reduction to a previously solved problem}
+\index{development plan!reduction}
+
+\item[Caso especial] Un caso de prueba que es atípico o que no es evidente
+(y con pocas posibilidades de ser manejado correctamente). Los términos
+\emph{edge case} and \emph{corner case} expresan más o menos la misma
+idea.
+\index{special case}
+\index{edge case}
+\index{corner case}
+
+\end{description}
+
+
+\section{Ejercicios}
+
+\begin{exercise}
+\index{Car Talk}
+\index{Puzzler}
+\index{double letters}
+\label{cartalk}
+
+Este pregunta está basada en un Puzzler (acertijo) que fue transmitido en
+el programa radial {\em Car Talk} 
+(\url{http://www.cartalk.com/content/puzzlers}):
+
+\begin{quote}
+Dame una palabra con tres letras dobles consecutivas. Te daré unas
+cuantas palabras que casi cualifican, pero no completamente.Por ejemplo,
+la palabra committee, c-o-m-m-i-t-t-e-e. Sería un gran ejemplo excepto
+por la ``i`` que se escabulle ahí. O Mississippi: M-i-s-s-i-s-s-i-p-p-i.
+Si pudieras sacar esas i, sería otro gran ejemplo. No obstante, existe
+una palabra que tiene tres pares de letras consecutivas y a mi saber,
+esta puede ser la única palabra que satisface dicha condición. 
+¡Solo bromeo! Existen probablemente alrededor de 500 de estas palabras pero
+solo puede pensar sobre una. ¿Cuál es la palabra?
+\end{quote}
+
+Escribe un programa para encontrarla.
+
+Solución: \ref{sol_cartalk}.
+
+\end{exercise}
+
+
+\begin{exercise}
+Aquí presentamos otro Puzzler de{\em Car Talk}
+(\url{http://www.cartalk.com/content/puzzlers}):
+\label{cartalk2}
+\index{Car Talk}
+\index{Puzzler}
+\index{odometer}
+\index{palindrome}
+
+\begin{quote}
+``Estaba conduciendo en la autopista el otro día y sucede que
+noto mi odómetro. Como la mayoría de odómetros, este
+muestra seis dígitos, en millas en números enteros solamente. 
+Así que, si mi carro tenía 300,000 millas, por ejemplo, yo 
+vería 3-0-0-0-0-0.
+
+Ahora bien, lo que ví ese día fue algo muy interesante. Noté que 
+los últimos cuatro dígitos eran palíndromos; es decir, se
+pueden leer igual de atrás hacia adelante. Por ejemplo, 5-4-4-5 
+es un palíndromo, así que mi odómetro podría leerse 3-1-5-4-4-5.
+
+Una milla más tarde, los últimos 5 números eran palíndromos. Por ejemplo,
+podría leerse 3-6-5-4-5-6.  Una milla después de esa, los 4 números
+del medio eran palíndromos. ¿Y estás listo para esto? ¡Otra milla más
+tarde, todos los 6 números eran palíndromos!``
+
+``La pregunta es, qué había en el odómetro la primera vez que lo miré?''
+\end{quote}
+
+Escribe un programa que cheque todos los números de seis dígitos
+e imprime cualquier que satisface estos requerimientos.
+  
+Solución: \ref{sol_cartalk2}.
+
+\end{exercise}
+
+
+\begin{exercise}
+Otro Puzzler de {\em Car Talk} que puedes solucionar con una
+búsqueda (\url{http://www.cartalk.com/content/puzzlers}):
+\index{Car Talk}
+\index{Puzzler}
+\index{palindrome}
+\label{cartalk3}
+
+\begin{quote}
+
+Recientemente visité a mi madre y me dí cuenta que los dos dígitos
+que componen mi edad al ser invertidos resultan en su edad. Por 
+ejemplo, si ella tiene 73 años, entonces yo tengo 37. Nos preguntamos
+que tan a menudo esto había ocurrido a través de los años pero nos
+distraímos con otros temas y jamás obtuvimos una respuesta.
+
+Cuando llegué a la casa fui capaz de deducir que los dígitos de
+nuestras edades habían sido reversibles seis veces hasta ahora.
+También deducí que si tenemos suerte pasaría nuevamente dentro de
+algunos años, y si somos bien suertudos ocurriría una vez más después
+de eso. En otras palabras, pasaría 8 veces en total. Así que la pregunta
+es, cuál es mi edad ahora?
+
+\end{quote}
+
+Escribe un programa de Perl que busca las soluciones para este Puzzler.
+Pista: podrías encontrar el método para el formateo de cadenas de texto
+{\tt sprintf} muy útil.
+\index{sprintf function}
+
+Solución: \ref{sol_cartalk3}.
+
+\end{exercise}

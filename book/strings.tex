@@ -31,7 +31,7 @@ Esto no es directamente posible en Perl, pero todavía puedes
 los caracteres uno a la vez usando el método integrado {\tt comb} 
 y el operador corchete:
 
-\begin{lstlisting}
+\begin{verbatim}
 > my $cadena = "banana";
 banana
 > my $cad = $cadena.comb;
@@ -40,7 +40,7 @@ banana
 a
 > say $cad[2];
 n
-\end{lstlisting}
+\end{verbatim}
 %
 El método {\tt comb} en la segunda sentencia divide la cadena de texto
 en una lista de caracteres que puedes acceder individualmente con
@@ -70,10 +70,10 @@ de una sola vez al usar el operador de rango dentro de los
 corchetes:
 \index{slice}
 
-\begin{lstlisting}
+\begin{verbatim}
 > say $cad[2..5]
 (n a n a)
-\end{lstlisting}
+\end{verbatim}
 %
 \index{substring}
 De nuevo, la subcadena ``nana`` comienza en la tercera letra
@@ -110,12 +110,12 @@ usarse con una sintaxis de método o función:
 \index{invocation!method}
 \index{method invocation}
 
-\begin{lstlisting}
+\begin{verbatim}
 > say "banana".chars;   # sintaxis de invocación de método
 6
 > say chars "banana";   # sintaxis de llamada de función
 6
-\end{lstlisting}
+\end{verbatim}
 %
 
 \index{Unicode}
@@ -145,12 +145,12 @@ la ``paja`` y la ``aguja``), busca la subcadena en la cadena de texto,
 y devuelve la posición donde se encuentra la subcadena. Si la subcadena
 no se encuentra en la cadena, la función devuelve un valor indefinido:
 
-\begin{lstlisting}
+\begin{verbatim}
 > say index "naranja", "ra";
 2
 > say index "naranja", "je";
 Nil
-\end{lstlisting}
+\end{verbatim}
 %
 
 \index{offset}
@@ -160,10 +160,10 @@ y el índice de la segunda ``a`` es 3, no 4.
 \index{index!starting at zero}
 
 También puedes invocar a {\tt index} con una sintaxis de método:
-\begin{lstlisting}
+\begin{verbatim}
 > say "naranja".index("ra");
 2
-\end{lstlisting}
+\end{verbatim}
 %
 
 La función {\tt index} puede tomar un tercer argumento opcional,
@@ -171,10 +171,10 @@ un entero que indica donde comenzar la \emph{búsqueda} (y por lo
 tanto ignorando en la búsqueda cualquier carácter posterior a
 la posición de inicio):
 
-\begin{lstlisting}
+\begin{verbatim}
 > say index "naranja", "a", 2;
 3
-\end{lstlisting}
+\end{verbatim}
 %
 Aquí la función {\tt index} comenzó la búsqueda en la ``r`` y encontró 
 la posición de la segunda ocurrencia de la subcadena ``a``.
@@ -186,10 +186,10 @@ También existe una función {\tt rindex}, la cual realiza la búsqueda
 de la subcadena de atrás hacia adelante y devuelve la última posición de 
 la subcadena dentro de la cadena de texto:
 
-\begin{lstlisting}
+\begin{verbatim}
 > say rindex "naranja", "a";
 6
-\end{lstlisting}
+\end{verbatim}
 %
 
 Nota que aunque {\tt rindex} inspecciona la cadena de texto
@@ -205,12 +205,12 @@ La función opuesta a {\tt index} es la función (o método) {\tt substr},
 la cual, dada una posición inicial y una longitud, extrae una subcadena
 de una cadena de texto:
 
-\begin{lstlisting}
+\begin{verbatim}
 > say substr "Hacer es la mejor manera de decir.", 0, 5;
 Hacer
 > say "Hacer es la mejor manera de decir.".substr(12, 5)
 mejor
-\end{lstlisting}
+\end{verbatim}
 %
 
 \index{chars function}
@@ -224,20 +224,20 @@ como caracteres. El argumento de la longitud es opcional;
 si no se provee, la función {\tt substr} devuelve la subcadena
 comenzando en la posición de inicio al final de la cadena de texto:
 
-\begin{lstlisting}
+\begin{verbatim}
 > say "Hacer es la mejor manera de decir.".substr(9)
 la mejor manera de decir.
-\end{lstlisting}
+\end{verbatim}
 
 Similamente, si el valor de la longitud es muy largo para que 
 la subcadena comience en la posición inicial, la función
 {\tt substr} devolverá la subcadena comenzando en la posición
 inicial hasta el final de la cadena:
 
-\begin{lstlisting}
+\begin{verbatim}
 > say substr "banana", 2, 10;
 nana
-\end{lstlisting}
+\end{verbatim}
 
 Por supuesto, los parámetros de la posición inicial y la longitud 
 no necesitan números literales como en los ejemplos anteriores; puedes
@@ -252,12 +252,12 @@ cadena de texto con antelación.
 También puedes comenzar a contar de atrás hacia adelante con la
 siguiente sintaxis:
 
-\begin{lstlisting}
+\begin{verbatim}
 > say "I have a dream".substr(*-5)
 dream
 > say substr "I have a dream", *-5;
 dream
-\end{lstlisting}
+\end{verbatim}
 %
 Aquí, el asterisco * puede considerarse como una representación de la
 longitud total de la cadena de texto; \verb|*-5| es por lo tanto la posición
@@ -273,7 +273,7 @@ texto.
 
 Esto puede no ser obvio todavía, pero prontamente veremos
 que la combinación de las funciones de cadenas de texto que discutimos
-más arriab nos dan ya mucho poder para manipular cadenas de texto
+más arriba nos dan ya mucho poder para manipular cadenas de texto
 más allá de lo que piensas posible en este punto.
 
 Déjanos mencionar brevemente varias funciones adicionales
@@ -285,10 +285,10 @@ que pueden ser útiles de vez en cuando.
 \index{function!flip}
 La función (o método) {\tt flip} invierte una cadena de texto:
 
-\begin{lstlisting}
+\begin{verbatim}
 > say flip "mango";
 ognam
-\end{lstlisting}
+\end{verbatim}
 %
 
 \subsubsection{split}
@@ -299,7 +299,7 @@ La función (o método) {\tt split} divide una cadena de texto
 en subcadenas de texto, basado en los delimitadores en l
 cadena de texto:
 
-\begin{lstlisting}
+\begin{verbatim}
 > say $_ for split "-", "25-12-2016";
 > #                 ^ delimitador
 25
@@ -309,19 +309,19 @@ cadena de texto:
 25
 12
 2016
-\end{lstlisting}
+\end{verbatim}
 
 El delimitador puede ser un solo carácter con comillas como
 en el ejemplo más arriba o una cadena de varios caracteres, 
 tales como una coma y un espacio en el ejemplo más abajo:
 
-\begin{lstlisting}
+\begin{verbatim}
 > .say for split  ", ", "Jan, Feb, Mar";
 > #                ^^ delimitador
 Jan
 Feb
 Mar
-\end{lstlisting}
+\end{verbatim}
 
 Recuerda que \verb|.say| es un atajo para \verb|$_.say|.
 
@@ -334,14 +334,14 @@ le dice a {\tt split} que también devuelva el valor del delimitador:
 \index{adverb}
 \index{:v adverb}
 
-\begin{lstlisting}
+\begin{verbatim}
 > .perl.say for split  ', ', "Jan, Feb, Mar", :v;
 "Jan"
 ", "
 "Feb"
 ", "
 "Mar"
-\end{lstlisting}
+\end{verbatim}
 
 Los otros adverbios que pueden usarse en este contexto son {\tt :k} (claves), 
 {\tt :kv} (claves y valores), y {\tt :p} (pares). Su significados detallados pueden
@@ -364,19 +364,19 @@ en este capítulo.
 
 El operador \verb|~| concatena dos cadenas de texto y forma una:
 
-\begin{lstlisting}
+\begin{verbatim}
 > say "ban" ~ "ana";
 banana
-\end{lstlisting}
+\end{verbatim}
 %
 
 Puedes tener cadenas de varias ocurrencias de este operador
 para concatenar más de dos cadenas:
 
-\begin{lstlisting}
+\begin{verbatim}
 > say "ba" ~ "na" ~ "na";
 banana
-\end{lstlisting}
+\end{verbatim}
 %
 
 Si se usa como un operador prefijo unario,
@@ -384,10 +384,10 @@ Si se usa como un operador prefijo unario,
 \index{stringify operator}
 \index{stringification}
 
-\begin{lstlisting}
+\begin{verbatim}
 > say (~42).WHAT;
 (Str)
-\end{lstlisting}
+\end{verbatim}
 %
 
 \subsubsection{Separando en Palabras}
@@ -396,7 +396,7 @@ Si se usa como un operador prefijo unario,
 La función {\tt words} devuelve una lista de palabras
 que componen la cadena de texto:
 
-\begin{lstlisting}
+\begin{verbatim}
 > say "I have a dream".words.perl;
 ("I", "have", "a", "dream").Seq
 > .say for "I have a dream".words;
@@ -404,7 +404,7 @@ I
 have
 a
 dream
-\end{lstlisting}
+\end{verbatim}
 %
 
 \subsubsection{join}
@@ -419,10 +419,10 @@ devuelve la cadena de texto resultante.
 Este ejemplo ilustra el uso de las funciones (o métodos) 
 {\tt words} y {\tt join}:
 
-\begin{lstlisting}
+\begin{verbatim}
 say 'I have a dream'.words.join('|');    # -> I|have|a|dream
 say join ";", words "I have a dream";    # -> I;have;a;dream
-\end{lstlisting}
+\end{verbatim}
 %
 
 \index{words function or method}
@@ -448,12 +448,12 @@ una versión en minúscula y una versión mayúscula de sus
 argumentos. También está la función {\tt tc} la cual devuelve
 su argumento con la primera letra en mayúscula:
 
-\begin{lstlisting}
+\begin{verbatim}
 say lc "Abril";    # -> april
 say "Abril".lc;    # -> april
 say uc "abril";    # -> APRIL
 say tc "abril";    # -> April
-\end{lstlisting}
+\end{verbatim}
 
 \index{eq, string equality operator}
 Recuerda que el operador {\tt eq} chequea la igualdad de dos 
@@ -479,7 +479,7 @@ y la función {\tt index}:
 \index{while loop}
 \index{index}
 
-\begin{lstlisting}
+\begin{verbatim}
 my $indice = 0;
 my $fruta = "banana";
 while $indice < $fruta.chars { 
@@ -487,18 +487,18 @@ while $indice < $fruta.chars {
     say $letra; 
     $indice++;
 }
-\end{lstlisting}
+\end{verbatim}
 %
 
 Esto imprimirá cada letra, una a la vez:
-\begin{lstlisting}
+\begin{verbatim}
 b
 a
 n
 a
 n
 a
-\end{lstlisting}
+\end{verbatim}
 %
 Este bucle recorre la cadena de texto y muestra cada letra
 en un línea por si misma. La condición del bucle es 
@@ -519,12 +519,12 @@ Otra forma de escribir un recorrido es con un bucle {\tt for}:
 \index{for loop}
 \index{comb function and method}
 
-\begin{lstlisting}
+\begin{verbatim}
 my $fruta = "banana";
 for $fruta.comb -> $letra {
     say $letra
 }
-\end{lstlisting}
+\end{verbatim}
 %
 
 Cada vez a través del bucle, el siguiente carácter en la
@@ -534,11 +534,11 @@ El bucle continúa hasta que no hayan más caracteres.
 El bucle podría también usar la función {\tt substr}:
 \index{index function}
 
-\begin{lstlisting}
+\begin{verbatim}
 for 0..$fruta.chars - 1 -> $indice {
     say substr $fruta, $indice, 1;
 }
-\end{lstlisting}
+\end{verbatim}
 %
 
 \index{concatenation}
@@ -553,16 +553,16 @@ es decir, en orden alfabético). En el libro
 patitos son Jack, Kack, Lack, Mack, Nack, Ouack, Pack, y Quack. 
 Este bucle podría muestra estos nombres en orden:
 
-\begin{lstlisting}
+\begin{verbatim}
 my $sufijo = 'ack';
 for 'J'..'Q' -> $letra {
     say $letra ~ $sufijo;
 }
-\end{lstlisting}
+\end{verbatim}
 %
 La salida es:
 
-\begin{lstlisting}
+\begin{verbatim}
 Jack
 Kack
 Lack
@@ -571,7 +571,7 @@ Nack
 Oack
 Pack
 Qack
-\end{lstlisting}
+\end{verbatim}
 %
 Por supuesto, esto no es del todo correcto dado que ``Ouack'' y 
 ``Quack'' están mal escritos. Como ejercicio, modifica el programa
@@ -589,14 +589,14 @@ El siguiente programa cuenta el número de veces que
 la letra ``a`` aparece en una cadena de texto:
 \index{comb function and method}
 
-\begin{lstlisting}
+\begin{verbatim}
 my $palabra = 'banana';
 my $conteo = 0;
 for $palabra.comb -> $letra {
     $conteo++ if $letra eq 'a';
 }
 say $conteo;              # -> 3
-\end{lstlisting}
+\end{verbatim}
 %
 
 \index{counter}
@@ -645,12 +645,12 @@ y expresiva. La siguiente es una manera de extraer letras usando
 el criterio descrito anteriormente: 
 
 
-\begin{lstlisting}
+\begin{verbatim}
 > my $cadena = "yellow submarine";
 yellow submarine
 > say ~$0 if $cadena ~~ / l (.) w .*? rin /;
 o
-\end{lstlisting}
+\end{verbatim}
 
 No te preocupes si no entiendes este ejemplo;
 afortunadamente todo se aclarará muy pronto.
@@ -670,7 +670,7 @@ La parte \verb|/ l (.) w .*? rin /| se llama un patrón de regex y puede
 describirse así: la letra ``l``, seguida por cualquier otro carácter (el
 punto) para ser capturado (gracias a los paréntesis), seguida por la
 letra ``w``, seguida por un número no específico de caracteres,
-seguida por la subcadena ``rin``. !`Uff! !`Todo esto en una sola línea
+seguida por la subcadena ``rin``. ¡Uff! ¡Todo esto en una sola línea
 de código! Bien poderoso, no lo crees? Si la cadena de texto coincide 
 con el patrón, entonces la coincidencia devolverá un valor verdadero y 
 la variable \verb|$0| será poblada con el carácter a ser capturado---
@@ -731,9 +731,9 @@ de coincidencia inteligente \verb|~~|:
 \index{smart match operator}
 \index{operator!smart match}
 
-\begin{lstlisting}
+\begin{verbatim}
 say "Coincidió" if "abcdef" ~~ / bc.e /;     # -> Coincidió
-\end{lstlisting}
+\end{verbatim}
 %
 
 Aquí, el operador de coincidencia inteligente compara la 
@@ -752,9 +752,9 @@ podemos convertir en una cadena de texto con el operador \verb|~|.
 Podemos hacer un buen uso de esto para visualizar la parte de la
 cadena que coincidió con el patrón de regex:
 
-\begin{lstlisting}
+\begin{verbatim}
 say ~$/ if "abcdef" ~~ / bc.e /;           # -> bcde
-\end{lstlisting}
+\end{verbatim}
 %
 
 
@@ -780,9 +780,9 @@ coincidencia. En este caso, el regex falla.
 \end{itemize}
 
 Examinemos un ejemplo de vuelta atrás:
-\begin{lstlisting}
+\begin{verbatim}
 say "Coincidió" if "abcabcdef" ~~ / bc.e /;  # -> Coincidió
-\end{lstlisting}
+\end{verbatim}
 %
 % abcabcdef
 %  bc.e 
@@ -806,11 +806,11 @@ variable tópico \verb|$_|, entonces el operador de coincidencia
 inteligente es implícito y la sintaxis es aún más simple:
 \index{topical variable}
 
-\begin{lstlisting}
+\begin{verbatim}
 for 'abcdef' {                                # $_ ahora contiene a 'abcdef'
     say "Coincidió" if / cd.f /;              # -> Coincidió
 }
-\end{lstlisting}
+\end{verbatim}
 %
 
 También puedes usar una sintaxis de invocación de método:
@@ -818,9 +818,9 @@ También puedes usar una sintaxis de invocación de método:
 \index{method!match}
 \index{invocation!method}
 \index{method invocation}
-\begin{lstlisting}
+\begin{verbatim}
 say "Coincidió" if "abcdef".match(/ b.d.f /); # -> Coincidió
-\end{lstlisting}
+\end{verbatim}
 %
 
 En todos los casos que hemos visto hasta ahora, usamos 
@@ -829,15 +829,15 @@ oblicua $/$. Podemos utilizar otros delimitadores si precedemos
 nuestro patrón con la letra ``m``:
 \index{regex!pattern delimiter}
 
-\begin{lstlisting}
+\begin{verbatim}
 say "Coincidió" if "abcdef" ~~ m{ bc.e };     # -> Coincidió
-\end{lstlisting}
+\end{verbatim}
 %
 
 o:
-\begin{lstlisting}
+\begin{verbatim}
 say "Coincidió" if "abcdef" ~~ m! bc.e !;     # -> Coincidió
-\end{lstlisting}
+\end{verbatim}
 %
 
 El operador ``m`` no altera la manera en que un regex funciona;
@@ -854,10 +854,10 @@ Un patrón puede también almacenarse en una variable (o, más
 precisamente, en un objeto regex), usando el operador $rx//$:
 \index{rx regex operator}
 
-\begin{lstlisting}
+\begin{verbatim}
 my $regex = rx/c..f/;
 say "Coincidió" if 'abcdef' ~~ $regex;        # -> Coincidió
-\end{lstlisting}
+\end{verbatim}
 %
 
 
@@ -878,11 +878,11 @@ equivalente a una búsqueda de esa cadena con la función
 {\tt index}:
 \index{index function}
 
-\begin{lstlisting}
+\begin{verbatim}
 my $cadena = "superlative";
 say "$cadena contiene 'perl'." if $cadena ~~ /perl/;
                                # -> superlative contiene 'perl'.
-\end{lstlisting}
+\end{verbatim}
 %
 
 \index{index}
@@ -900,12 +900,12 @@ literales. Todos los otros caracteres deben escaparse con una barra
 invertida (por ejemplo \verb|\?| para coincidir con un signo de interrogación
 derecho) o incluirse dentro de comillas:
 
-\begin{lstlisting}
+\begin{verbatim}
 say "Éxito" if 'nombre@org.uk' ~~ / nombre@or /;      # Falla en la compilación
 say "Éxito" if 'nombre@org.uk' ~~ / 'nombre@or' /;    # -> Éxito
 say "Éxito" if 'nombre@org.uk' ~~ / nombre\@or/ ;     # -> Éxito
 say "Éxito" if 'nombre@org.uk' ~~ / nombre '@' org /; # -> Éxito
-\end{lstlisting}
+\end{verbatim}
 %
 
 
@@ -926,11 +926,11 @@ coincide con un solo carácter de la cadena de texto a
 coincidir:
 \index{wildcard character}
 
-\begin{lstlisting}
+\begin{verbatim}
 my $cadena = "superlative";
 say "$cadena contiene 'pe.l'." if $cadena ~~ / pe . l /;
                        # -> superlative contiene 'pe.l'.
-\end{lstlisting}
+\end{verbatim}
 %
 
 El ejemplo más arriba ilustra otra característica
@@ -949,9 +949,9 @@ que no sea un carácter de palabra. Nota, sin embargo, que Perl
 es compatible con Unicode y que, por ejemplo, letras del alfabeto
 griego o cirílico o dígitos tailandenses coincidirán con \verb|\w|:
 
-\begin{lstlisting}
+\begin{verbatim}
 say "Coincidió" if 'abcδ' ~~ / ab\w\w /;  # -> Coincidió
-\end{lstlisting}
+\end{verbatim}
 %
 
 En este ejemplo, las cadenas de texto coincidieron porque, de 
@@ -966,9 +966,9 @@ Otras categorías de clase incluyen:
 \item \verb|\n| (línea nueva) y \verb|\N| (cualquier carácter menos una línea nueva).
 \end{itemize}
 
-\begin{lstlisting}
+\begin{verbatim}
 say ~$/ if 'Bond 007' ~~ /\w\D\s\d\d\d/;  # -> "nd 007"
-\end{lstlisting}
+\end{verbatim}
 %
 
 Aquí, coincidimos con ''nd 007'', porque encontramos un
@@ -982,9 +982,9 @@ individuales y rangos de caracteres (expresado con dos puntos
 entre los puntos extremos), con o sin espacio en blanco. Por 
 ejemplo, una categoría de caracteres para dígitos hexadecimales
 podría lucir así:
-\begin{lstlisting}
+\begin{verbatim}
 <[0..9 a..f A..F]>
-\end{lstlisting}
+\end{verbatim}
 
 Puedes negar cualquier categoría de caracteres al insertar un 
 ``-`` después de la comilla angular izquierda. Por ejemplo,
@@ -994,17 +994,17 @@ cualquier carácter que coincide con la categoría de caracteres
 de hexadecimales negada:
 \index{negated character class}
 
-\begin{lstlisting}
+\begin{verbatim}
 say "No un número hex" if $cadena ~~ /<-[0..9 a..f A..F]>/;
-\end{lstlisting}
+\end{verbatim}
 
 Por favor nota que generalmente no tienes que escapar
 caracteres que no son alfanuméricos en tus categorías de 
 caracteres:
 
-\begin{lstlisting}
+\begin{verbatim}
 say ~$/  if "-17.5" ~~ /(<[\d.-]>+)/; # -> -17.5
-\end{lstlisting}
+\end{verbatim}
 
 En este ejemplo, usamos el cuantificador ''+'' que discutiremos
 en la siguiente sección, pero el punto aquí es que no necesitas
@@ -1024,9 +1024,9 @@ veces. Por ejemplo, \verb|a+| coincide una o más
 caracteres ''a''. En el siguiente código, \verb|\d+| 
 coincide con uno o más dígitos (tres dígitos en este caso):
 
-\begin{lstlisting}
+\begin{verbatim}
 say ~$/ if 'Bond 007' ~~ /\w\D\s\d+/;  # -> "nd 007"
-\end{lstlisting}
+\end{verbatim}
 %
 
 Los cuantificadores predefinidos incluyen:
@@ -1042,9 +1042,9 @@ Los cuantificadores $+$ and $*$ se dice que son \emph{voraces}
 (o \emph{greedy} en inglés), lo que significa que ellos
 coinciden con tantos caracteres como sea posible. Por ejemplo:
 
-\begin{lstlisting}
+\begin{verbatim}
 say ~$/ if 'aabaababa' ~~ / .+ b /;     # -> aabaabab
-\end{lstlisting}
+\end{verbatim}
 %
 
 Aquí, \verb|.+| coincide con tanto de la cadena de texto
@@ -1061,9 +1061,9 @@ usar:
 \index{frugal quantifier}
 \index{quantifier!frugal}
 
-\begin{lstlisting}
+\begin{verbatim}
 say ~$/ if 'aabaababa' ~~ / .+? b /;     # -> aab
-\end{lstlisting}
+\end{verbatim}
 %
 
 También podrías especificar un rango ({\tt min..max}) para el 
@@ -1072,9 +1072,9 @@ coincidir con un entero menor que 1,000:
 \index{range quantifier}
 \index{quantifier!range}
 
-\begin{lstlisting}
+\begin{verbatim}
 say 'Es un número < 1,000' if $cadena ~~ / ^ \d ** 1..3 $ /;
-\end{lstlisting}
+\end{verbatim}
 %
 
 Esto coincide con uno a tres dígitos. Los caracteres \verb|^|
@@ -1086,9 +1086,9 @@ Para coincidir un número exacto de veces, solo reemplaza el
 rango con un número individual:
 \index{quantifier!exact number of times}
 
-\begin{lstlisting}
+\begin{verbatim}
 say 'Es un número de 3 dígitos' if $num ~~ / ^ \d ** 3 $ /;
-\end{lstlisting}
+\end{verbatim}
 %
 
 \subsection{Anclas y Aserciones}
@@ -1115,12 +1115,12 @@ coincidencia ocurre.
 Las anclas más usadas comúnmente son \verb|^| (inicio de la
 cadena de texto) y \verb|$| (final de la cadena de texto):
 
-\begin{lstlisting}
+\begin{verbatim}
 my $cadena = "superlative";
 say "$cadena comienza con 'perl'" if $cadena ~~ /^perl/; # (No salida)
 say "$cadena termina con 'perl'" if $cadena ~~ /perl$/;  # (No salida)
 say "$cadena es igual a 'perl'" if $cadena ~~ /^perl$/;  # (No salida)
-\end{lstlisting}
+\end{verbatim}
 
 Los tres regexes más arriba fallan porque, aunque 
 la \verb|$cadena| contiene la subcadena ``perl``, la
@@ -1155,11 +1155,11 @@ Las \emph{aserciones look-around} (o "miral alrededor") hacen posible especifica
 reglas más complejas: por ejemplo,  coincidir ``foo`` pero solo
 si es precedida (o seguida) por ``bar`` (o ni precedida ni
 seguida por ``bar``):
-\begin{lstlisting}
+\begin{verbatim}
 say "foobar" ~~ /foo <?before bar>/; # -> foo (aserción lookahead)
 say "foobaz" ~~ /foo <?before bar>/; # -> Nil (regex fallido)
 say "foobar" ~~ /<?after foo> bar/;  # -> bar (aserción lookbehind)
-\end{lstlisting}
+\end{verbatim}
 %
 \index{negative look-around assertion}
 \index{assertion!negative look around}
@@ -1167,11 +1167,11 @@ Al usar un signo de exclamación derecho en lugar de un signo de
 interrogación derecho transforma estas aserciones look-around 
 en aserciones negativas. Por ejemplo:
 
-\begin{lstlisting}
+\begin{verbatim}
 say "foobar" ~~ /foo <!before baz>/; # -> foo 
 say "foobaz" ~~ /foo <!before baz>/; # -> Nil (regex fallido)
 say "foobar" ~~ /<!after foo> bar/;  # -> Nil (regex fallido)
-\end{lstlisting}
+\end{verbatim}
 %
 Asume que los ejemplos anteriores demostraron el concepto 
 claramente. Si quieres saber, dirígete a la documentación
@@ -1186,21 +1186,21 @@ verdadero:
 \index{code assertion}
 \index{assertion!code}
 
-\begin{lstlisting}
+\begin{verbatim}
 > say ~$/ if /\d\d <?{$/ == 42}>/ for <A12 B34 C42 D50>;
 42
-\end{lstlisting}
+\end{verbatim}
 
 \index{assertion!negative code}
 Una aserción de código negativa \verb|<!{...}>| 
 coincidirá siempre y cuando el bloque no devuelve
 un valor verdadero:
-\begin{lstlisting}
+\begin{verbatim}
 > say ~$/ if /\d\d <!{$/ == 42}>/ for <A12 B34 C42 D50>
 12
 34
 50
-\end{lstlisting}
+\end{verbatim}
 
 Las aserciones de código son útiles para especificar 
 condiciones que no pueden expresarse fácilmente como
@@ -1210,13 +1210,13 @@ De igual manera, pueden usarse para mostrar algo, por ejemplo
 para el propósito de depurar un regex al imprimir información
 sobre las coincidencias parciales:
 
-\begin{lstlisting}
+\begin{verbatim}
 > say "Coincidió $/" if "A12B34D50" ~~ /(\D) <?{ say ~$0}> \d\d$/;
 A
 B
 D
 Coincidió D50
-\end{lstlisting}
+\end{verbatim}
 
 La salida muestra los múltiples atentos de coincidencia
 que fallaron (``A'' y ``B'') antes que el proceso de vuelta atrás 
@@ -1226,9 +1226,9 @@ No obstante, las aserciones de código son raramente necesarias
 para casos simples, porque siempre puedes añadir un bloque simple de
 código con el mismo propósito:
 %
-\begin{lstlisting}
+\begin{verbatim}
 > say "Coincidió $/" if "A12B34D50" ~~ /(\D) { say ~$0} \d\d$/;
-\end{lstlisting}
+\end{verbatim}
 Este código produce la misma salida, sin preocuparnos si el 
 bloque devuelve un valor verdadero.
 
@@ -1241,9 +1241,9 @@ Por ejemplo, para chequear sin una cadena de texto representa uno
 de los tres colores básicos de un una imagen (en JPEG y algunos otros
 formatos), podrías usar:
 
-\begin{lstlisting}
+\begin{verbatim}
 say 'Es un color JPEG' if $cadena ~~ /^ [ rojo | verde | azul ] $/;
-\end{lstlisting}
+\end{verbatim}
 %
 
 \index{first-match alternation}
@@ -1251,9 +1251,9 @@ Existen dos formas de alternancias. La alternancia de primera
 coincidencia (\emph{first-match}) usa el operador \verb|||| y para en la primera
 alternativa que coincide con el patrón:
 
-\begin{lstlisting}
+\begin{verbatim}
 say ~$/ if "abcdef" ~~ /ab || abcde/;       # -> ab
-\end{lstlisting}
+\end{verbatim}
 %
 
 En este ejemplo, el patrón coincide con ``ab`` sin tener que
@@ -1268,18 +1268,18 @@ La alternancia de coincidencia más larga (\emph{longest-match}) usa
 el operador \verb||| e intentará con todas las alternativas y 
 coincidirá con la más larga:
 
-\begin{lstlisting}
+\begin{verbatim}
 say ~$/ if "abcdef" ~~ /ab | abcde/;        # -> abcde
-\end{lstlisting}
+\end{verbatim}
 %
 
 Sin embargo, ten presente que esto funcionará como se explicó
 más arriba solo si la coincidencias alternativas comienzan 
 en la misma posición dentro de la cadena de texto:
 
-\begin{lstlisting}
+\begin{verbatim}
 say ~$/ if "abcdef" ~~ /ab |  bcde/;        # -> ab
-\end{lstlisting}
+\end{verbatim}
 %
 
 Aquí, la coincidencia con la posición más a la izquierda 
@@ -1298,7 +1298,7 @@ triunfa (esta es una regla general con los regexes).
 Los paréntesis y los corchetes pueden usarse para agrupar
 cosas o para anular la precedencia:
 
-\begin{lstlisting}
+\begin{verbatim}
 / a || bc /      # Coincide con 'a' o 'bc'
 / ( a || b ) c / # Coincide con 'ac' o 'bc'
 / [ a || b ] c / # Igual: coincide con 'ac' o 'bc', grupo sin captura
@@ -1306,7 +1306,7 @@ cosas o para anular la precedencia:
 / (a b)+ /       # Coincide con una o más secuencias de 'ab'
 / [a b]+ /       # Coincide con una o más secuencias 'ab', sin captura
 / (a || b)+ /    # Coincide con una secuencia de 'a' y 'b's (al menos una)
-\end{lstlisting}
+\end{verbatim}
 %
 
 \index{capture}
@@ -1318,10 +1318,10 @@ variable especial (y también como un elemento del objeto
 de coincidencia resultante): 
 
 
-\begin{lstlisting}
+\begin{verbatim}
 my $cad =  'número 42';
 say "El número es $0" if $cad ~~ /número\s+ (\d+) /;  # -> El número es 42
-\end{lstlisting}
+\end{verbatim}
 %
 
 \index{numbered capture}
@@ -1333,10 +1333,10 @@ Donde hay varios grupos con paréntesis, las capturas se
 encuentran en las variables \verb|$0|, \verb|$1|, \verb|$2|, etc.
 (contando los paréntesis abiertos de la izquierda a derecha)
 
-\begin{lstlisting}
+\begin{verbatim}
 say "$0 $1 $2" if "abcde" ~~ /(a) b (c) d (e)/;       # -> a c e
 # o: say "$/[0..2]" if "abcde" ~~ /(a) b (c) d (e)/; # -> a c e
-\end{lstlisting}
+\end{verbatim}
 %
 
 Las variables \verb|$0|, \verb|$1|, etc. son actualmente atajos
@@ -1350,9 +1350,9 @@ con el subregex dentro de los paréntesis. Si solo deseas el
 comportamiento de agrupamiento, usa los corchetes
 \verb|[ ... ]|:
 
-\begin{lstlisting}
+\begin{verbatim}
 say ~$0 if 'cacbcd' ~~ / [a||b] (c.) /;   # -> cb
-\end{lstlisting}
+\end{verbatim}
 %
 
 El uso de los corchetes cuando la captura de texto no
@@ -1379,12 +1379,12 @@ mayúsculas y letras minúsculas:
 \index{lower case}
 \index{upper case}
 
-\begin{lstlisting}
+\begin{verbatim}
 > say so 'AB' ~~ /ab/;
 False
 > say so 'AB' ~~ /:i ab/;
 True
-\end{lstlisting}
+\end{verbatim}
 %
 
 \index{so function}
@@ -1396,21 +1396,21 @@ a un valor Booleano.
 Si se coloca en frente del patrón, el adverbio aplica al patrón
 entero:
 
-\begin{lstlisting}
+\begin{verbatim}
 > say so 'AB' ~~ m:i/ ab/;
 True
-\end{lstlisting}
+\end{verbatim}
 %
 
 El adverbio también puede colocarse después en el patrón y afectar
 en este caso solo la parte del regex posterior al mismo:
 
-\begin{lstlisting}
+\begin{verbatim}
 > say so 'AB' ~~ /a :i b/;
 False
 > say so 'aB' ~~ /a :i b/;
 True
-\end{lstlisting}
+\end{verbatim}
 %
 
 \index{adverb!:sigspace}
@@ -1420,14 +1420,14 @@ significativos en los patrones de regex. El adverbio \verb|:sigspace|
 o \verb|:s| hace que los espacios en blanco sean significativos en 
 un regex:
 
-\begin{lstlisting}
+\begin{verbatim}
 > say so 'ab' ~~ /a+ b/;
 True
 > say so 'ab' ~~ /:s a+ b/;
 False
 > say so 'ab' ~~ /:s a+b/;
 True
-\end{lstlisting}
+\end{verbatim}
 %
 
 En lugar de buscar por solo una coincidencia y devolver
@@ -1436,12 +1436,12 @@ o \verb|:g| le dice al compilador que busque cada
 coincidencia que no esté superpuesta y las devuelva
 en una lista:
 
-\begin{lstlisting}
+\begin{verbatim}
 > say "Conteo de palabras = ", $/.elems if "I have a dream" ~~ m:g/ \w+/;
 Conteo de palabras = 4
 > say ~$/[3];
 dream
-\end{lstlisting}
+\end{verbatim}
 %
 
 \index{adverb!:ratchet}
@@ -1494,9 +1494,9 @@ visto para resolver problemas prácticos.
 Asume que tenemos una cadena de texto que contiene en
 alguna parte una fecha en el formato YYYY-MM-DD:
 
-\begin{lstlisting}
+\begin{verbatim}
 my $cadena = "Christmas : 2016-12-25.";
-\end{lstlisting}
+\end{verbatim}
 %
 
 \index{TIMTOWTDI}
@@ -1510,39 +1510,39 @@ en la cadena:
 
 \item Uso de una categoría de caracteres (dígitos y guión):
 
-\begin{lstlisting}
+\begin{verbatim}
 say ~$0 if $cadena ~~ /(<[\d-]>+)/;        # -> 2016-12-25
-\end{lstlisting}
+\end{verbatim}
 %
 
 \item Uso de una categoría de caracteres y un cuantificador
 para evitar coincidir con algunos números pequeños 
 en otra parte de la cadena si existen:
 
-\begin{lstlisting}
+\begin{verbatim}
 say ~$0 if $cadena ~~ /(<[\d-]> ** 10)/;   # -> 2016-12-25
-\end{lstlisting}
+\end{verbatim}
 %
 
 \item Uso de una descripción más detallada del formato de la fecha:
-\begin{lstlisting}
+\begin{verbatim}
 say ~$/ if $cadena ~~ /(\d ** 4 \- \d\d \- \d\d)/;
-\end{lstlisting}
+\end{verbatim}
 %
 
 \item El mismo regex, pero usando un agrupamiento adicional 
 para evitar la repetición del subpatrón \verb|\- \d\d|:
 
-\begin{lstlisting}
+\begin{verbatim}
 say ~$/[0] if $cadena ~~ /(\d ** 4 [\- \d\d] ** 2 )/; 
-\end{lstlisting}
+\end{verbatim}
 %
 
 \item Captura de elementos individuales de la fecha:
-\begin{lstlisting}
+\begin{verbatim}
 $cadena ~~ /(\d ** 4) \- (\d\d) \- (\d\d)/;
 my ($año, $mes, $día) = ~$0, ~$1, ~$2;
-\end{lstlisting}
+\end{verbatim}
 %
 \index{stringification}
 \index{tilde}
@@ -1553,21 +1553,21 @@ que estas variables contengan números enteros, podrías
 usar coacción para convertirlas a valores numéricos usando el operador
 prefijo +:
 \index{nummification}
-\begin{lstlisting}
+\begin{verbatim}
 $cadena ~~ /(\d ** 4) \- (\d\d) \- (\d\d)/;
 my ($año, $mes, $día) = +$0, +$1, +$2;
-\end{lstlisting}
+\end{verbatim}
 %
  
 
 \item Uso de subpatrones como componentes básicos:
-\begin{lstlisting}
+\begin{verbatim}
 my $a = rx/\d ** 4/;
 my $m = rx/\d ** 2/;
 my $d = rx/\d ** 2/;
 $cadena ~~ /(<$y>) \- (<$m>) \- (<$d>)/;
 my ($año, $mes, $día) = ~$0, ~$1, ~$2;
-\end{lstlisting}
+\end{verbatim}
 %
 
 El uso de subpatrones como componentes básicos es una manera
@@ -1581,11 +1581,11 @@ para que coincida solo con ``01`` al ``12`` y así
 verificar que solo coincida con un número de mes válido:
 \index{month number validation}
 
-\begin{lstlisting}
+\begin{verbatim}
 my $m = rx {   1 <[0..2]>    # 10 a 12
             || 0 <[1..9]>    # 01 a 09
            };
-\end{lstlisting}
+\end{verbatim}
 %
 
 Como puedes ver, el uso de comentarios y espacios en blanco
@@ -1596,9 +1596,9 @@ código para chequear que el valor se encuentre numéricamente
 entre 1 y 12:
 \index{code assertion}
 
-\begin{lstlisting}
+\begin{verbatim}
 my $m = rx /\d ** 2 <?{ 1 <= $/ <= 12 }> /;
-\end{lstlisting}
+\end{verbatim}
 
 \index{day number validation}
 Como un ejercicio, podrías intentar validar que el 
@@ -1615,11 +1615,11 @@ cadena de texto:
 \index{prematch}
 \index{postmatch}
 
-\begin{lstlisting}
+\begin{verbatim}
 $cadena ~~ /(\d ** 4) \- (\d\d) \- (\d\d)/;
 say $/.prematch;                   # -> "Christmas : "
 say $/.postmatch;                  # -> "."
-\end{lstlisting}
+\end{verbatim}
 %
 
 Como un ejercicio, intenta adaptar los regexes anteriores
@@ -1649,9 +1649,9 @@ por ejemplo {\tt 17.125.246.28}.
 Para el propósito de estos ejemplos, nuestra muestra de
 cadena de texto será la siguiente:
 
-\begin{lstlisting}
+\begin{verbatim}
 my $cadena = "IP address: 17.125.246.28;";
-\end{lstlisting}
+\end{verbatim}
 %
 
 Ahora intentemos diferentes maneras de capturar la dirección
@@ -1663,9 +1663,9 @@ s
 \item Uso de una categoría de caracteres:
 \index{character class}
 
-\begin{lstlisting}
+\begin{verbatim}
 say ~$0 if $cadena ~~ /(<[\d.]>+)/;        # -> 17.125.246.28
-\end{lstlisting}
+\end{verbatim}
 %
 
 \item Uso de una categoría de caracteres y un cuantificador (
@@ -1673,32 +1673,32 @@ nota que cada octeto puede tener de uno a tres dígitos, así que
 el total de números de caracteres puede variar de 7 a 15):
 \index{quantifier}
 
-\begin{lstlisting}
+\begin{verbatim}
 say ~$0 if $cadena ~~ /(<[\d.]> ** 7..15)/;  
-\end{lstlisting}
+\end{verbatim}
 %
 
 \item Uso de una descripción más detallada del formato IP:
-\begin{lstlisting}
+\begin{verbatim}
 say ~$/ if $cadena ~~ /([\d ** 1..3 \.] ** 3 \d ** 1..3 )/;
-\end{lstlisting}
+\end{verbatim}
 %
 
 \item Uso de subpatrones como componentes básicos:
 \index{octet}
 \index{subpattern}
-\begin{lstlisting}
+\begin{verbatim}
 my $octeto = rx/\d ** 1..3/;
 say ~$/ if $cadena ~~ /([<$octeto> \.] ** 3 <$octeto>)/;
-\end{lstlisting}
+\end{verbatim}
 %
 
 \item El valor máximo de un octeto es 255. Podemos definir
 nuevamente la definición del subpatrón \verb|$octeto|:
-\begin{lstlisting}
+\begin{verbatim}
 my $octeto = rx/<[1..2]>? \d ** 1..2/;
 say ~$/ if $cadena ~~ /([<$octeto> \.] ** 3 <$octeto>)/;
-\end{lstlisting}
+\end{verbatim}
 %
 Con esta definición del subpatrón \verb|$octeto|,
 el regex podría coincidir con cualquier número de uno 
@@ -1713,7 +1713,7 @@ del subpatrón \verb|$octeto| puede ser redefinida más
 exhaustivamente para coincidir solo con valores
 autorizados: 
 
-\begin{lstlisting}
+\begin{verbatim}
 my $octeto = rx { (   25 <[0..5]>       # 250 a 255
                    || 2  <[0..4]> \d     # 200 a 249
                    || 1  \d ** 2         # 100 a 199
@@ -1721,7 +1721,7 @@ my $octeto = rx { (   25 <[0..5]>       # 250 a 255
                  )
                };
 say ~$/ if $cadena ~~ /([<$octeto> \.] ** 3 <$octeto>)/;
-\end{lstlisting}
+\end{verbatim}
 %
 
 Esta definición de \verb|$octeto| ilustra una vez más cómo
@@ -1733,10 +1733,10 @@ valor de un \verb|$octeto| al rango \verb|0..255|:
 \index{assertion!code}
 \index{code assertion}
 
-\begin{lstlisting}
+\begin{verbatim}
 my $octeto = = rx{(\d ** 1..3) <?{0 <= $0 <= 255 }> };
 say ~$/ if $cadena ~~ /([<$octeto> \.] ** 3 <$octeto>)/;
-\end{lstlisting}
+\end{verbatim}
 %
 
 \end{itemize}
@@ -1758,19 +1758,19 @@ remoción de información personal de los datos, etc.
 Perl tiene un método {\tt substr} el cual reemplaza algún
 texto con otro texto:
 
-\begin{lstlisting}
+\begin{verbatim}
 my $cadena = "abcdefg";
 $cadena = $cadena.subst("cd", "DC");          # -> abDCefg
-\end{lstlisting}
+\end{verbatim}
 
 El primer argumento de este método es la parte de búsqueda, 
 y puede ser una cadena de texto literal, como en el ejemplo
 más arriba, o un regex:
 
-\begin{lstlisting}
+\begin{verbatim}
 my $cadena = "abcdefg";
 $cadena = $cadena.subst(/c \w+ f/, "SUBST");  # -> abSUBSTg
-\end{lstlisting}
+\end{verbatim}
 
 \subsection{La construcción {\tt s/búsqueda/reemplazo/}}
 \index{s/// operator}
@@ -1784,10 +1784,10 @@ y tiene la ventaja de habilitar la substitución \emph{in situ}.
 Esto es un ejemplo de la sintaxis estándar para este tipo de
 substitución:
 
-\begin{lstlisting}
+\begin{verbatim}
 my $cadena = "salviavodas";
 $cadena ~~ s/ v \w+ o /VAVI/;                # -> salVAVIdas
-\end{lstlisting}
+\end{verbatim}
 
 Aquí, la parte de búsqueda es un patrón de regex y el reemplazo
 es una simple cadena de texto (las comillas no son necesarias).
@@ -1796,22 +1796,22 @@ Si la cadena de texto de entrada se encuentra en la variable tópica
 \verb|$_|, no necesitas usar el operador de coincidencia inteligente:
 \index{smart match operator}
 
-\begin{lstlisting}
+\begin{verbatim}
 $_ = "salviavodas";
 s/ v \w+ o /VAVI/;                             # -> salVAVIdas
-\end{lstlisting}
+\end{verbatim}
 %
 
 Los delimitadores no tienen que ser barras oblicuas (y esto puede 
 bastante útil si la búsqueda o el reemplazo contiene barras oblicuas):
 \index{delimiter}
 
-\begin{lstlisting}
+\begin{verbatim}
 my $cad = "<h2>Tema</h2> <h1>Subtema</h1>";
 $cad ~~ s!'<h1>Subtema</h1>'!<h3>Subtema</h3>! 
 
 # $cad es ahora: <h2>Tema</h2> <h3>Subtema</h3>
-\end{lstlisting}
+\end{verbatim}
 %
 
 
@@ -1819,11 +1819,11 @@ A menos que se especifique lo contrario (con un adverbio), la
 substitución se realiza una sola vez, lo cual ayuda a prevenir
 resultados inesperados:
 
-\begin{lstlisting}
+\begin{verbatim}
 $_ = 'Hay caince casas.';
 s/ca/qu/;                     # Reemplaza 'ca' con 'qu' una sola vez
 .say;                         # Hay quince casas.
-\end{lstlisting}
+\end{verbatim}
 %
 Si la substitución se hubiese hecho en la cadena de texto completa,
 ''casas'' se hubiese reemplazado con ''qusas'', que claramente
@@ -1838,11 +1838,11 @@ reemplazo en el lado derecho puede usar las variables
 insertar subcadenas capturadas en el texto de reemplazo. Un 
 ejemplo típico de eso es el reformateo de fechas:
 
-\begin{lstlisting}
+\begin{verbatim}
 my $cadena = "Xmas = 2016-12-25";
 $cadena ~~ s/(\d ** 4) \- (\d\d) \- (\d\d)/$2-$1-$0/;
                     # $cadena es ahora: Xmas = 25-12-2016
-\end{lstlisting}
+\end{verbatim}
 %
 
 \subsection{Adverbios}
@@ -1863,7 +1863,7 @@ El punto que quiero hacer aquí es que las substituciones se hacen
 usualmente solo una vez. Pero con el adverbio 
 {\tt :global} (o {\tt :g}), se harán en toda la cadena de texto:
 
-\begin{lstlisting}
+\begin{verbatim}
 # Sin substitución global:
 my $cad = "...y tan a su gusto, a su caballo...";
 $cad ~~ s/su/mi/;  # $cad es ahora: "...y tan a mi gusto, a su caballo..."
@@ -1872,7 +1872,7 @@ $cad ~~ s/su/mi/;  # $cad es ahora: "...y tan a mi gusto, a su caballo..."
 my $cad = "...y tan a su gusto, a su caballo...";
 $cad ~~ s:g/su/mi/;  # $cad es ahora: "...y tan a mi gusto, a mi caballo..."
                     
-\end{lstlisting}
+\end{verbatim}
 %
 \index{substitution}
 
@@ -1888,7 +1888,7 @@ correctamente. Aquí tenemos una subrutina que está supuesta a
 comparar dos palabras y devolver {\tt True} si una de las palabras
 es la inversa de la otras, pero contiene dos errores:
 
-\begin{lstlisting}
+\begin{verbatim}
 # ADVERTENCIA, ten cuidado: código con errores
 sub es-inversa(Str $palabra1, Str $palabra2) {
     return False if $palabra1.chars != $palabra2.chars;
@@ -1906,7 +1906,7 @@ sub es-inversa(Str $palabra1, Str $palabra2) {
 say es-inversa "pots", "stop";
 
 
-\end{lstlisting}
+\end{verbatim}
 %
 La primera sentencia sufijo {\tt if} chequea si las palabras
 tienen la misma longitud. Si no, podemos devolver {\tt False}
@@ -1938,7 +1938,7 @@ impresión de los valores de los índices inmediatamente
 antes de las línea donde se usan:
 \index{off-by-one error}
 
-\begin{lstlisting}
+\begin{verbatim}
 sub es-inversa(Str $palabra1, Str $palabra2) {
 	return False if $palabra1.chars != $palabra2.chars;
 
@@ -1952,15 +1952,15 @@ sub es-inversa(Str $palabra1, Str $palabra2) {
 	}
 	return True;
 }
-\end{lstlisting}
+\end{verbatim}
 %
 Ahora cuando ejecutemos el programa nuevamente, obtenemos
 más información:
 
-\begin{lstlisting}
+\begin{verbatim}
 $i = 0 $j = 4
 False
-\end{lstlisting}
+\end{verbatim}
 %
 La primera vez a través del bucle, el valor de {\tt \$j} es 4,
 el cual está fuera de rango para la cadena de texto \verb|'pots'|.
@@ -1976,12 +1976,12 @@ obteníamos la última letra de la segunda palabra.
 Si arreglamos el error y ejecutamos el programa nuevamente,
 obtenemos:
 
-\begin{lstlisting}
+\begin{verbatim}
 $i = 0 $j = 3
 $i = 1 $j = 2
 $i = 2 $j = 1
 True
-\end{lstlisting}
+\end{verbatim}
 %
 Esta vez obtenemos la repuesta correcta, pero parece ser
 que el bucle solo se ejecutó tres veces, lo cual es sospechoso:
@@ -1992,12 +1992,12 @@ la segunda palabra (indexada {\tt \$j = 0}).
 Podemos confirmar esto al ejecutar la subrutina con los siguientes
 argumentos: ``stop'' y ``lots'', lo cual muestra:
 
-\begin{lstlisting}
+\begin{verbatim}
 $i = 0 $j = 3
 $i = 1 $j = 2
 $i = 2 $j = 1
 True
-\end{lstlisting}
+\end{verbatim}
 %
 
 Esto es obviamente incorrecto, dado que ``lots`` no es la inversa de
@@ -2131,11 +2131,11 @@ La categoría de caracteres \verb|<[a..z]>| coinciden con cualquier
 carácter en minúscula (solo caracteres ASCII en minúscula, no caracteres
 Unicode). La siguiente subrutina:
 
-\begin{lstlisting}
+\begin{verbatim}[fontshape=up]
 sub es-minúscula (Str $char) { 
     return so $char ~~ /^<[a..z]>$/
 }
-\end{lstlisting}
+\end{verbatim}
 
 debería devolver {\tt True} si su argumento es una letra ASCII
 en minúscula y de lo contrario, {\tt False}. Asegúrate de que 
@@ -2152,7 +2152,7 @@ hace (puedes asumir que el parámetro es una cadena de texto).
 Después, pruébalas todas con varias cadenas de texto para chequear
 si tu análisis estaba en lo cierto.
 
-\begin{lstlisting}
+\begin{verbatim}[fontshape=up]
 # ADVERTENCIA: algunas de las siguientes subrutinas
 #              no funcionan correctamente.
 
@@ -2233,7 +2233,7 @@ sub cualquier_minúscula9(Str $cadena){
     return True;
     }
 }
-\end{lstlisting}
+\end{verbatim}
 
 Solución: \ref{sol_islower}.
 
@@ -2274,22 +2274,22 @@ caracteres:
 \index{function!ord}
 \index{function!chr}
 
-\begin{lstlisting}
+\begin{verbatim}[fontshape=up]
 > say 'c'.ord;
 99
 > say chr 99
 c
-\end{lstlisting}
+\end{verbatim}
 %
 
 Las letras del alfabeto están codificadas en orden 
 alfabético, así que por ejemplo:
 \index{alphabetic order}
 
-\begin{lstlisting}
+\begin{verbatim}[fontshape=up]
 > ord('c') - ord('a')
 2
-\end{lstlisting}
+\end{verbatim}
 
 dado que \verb|'c'| es la segunda letra después de \verb|'a'|
 en el alfabeto. Pero ten pendiente: los códigos numéricos para
