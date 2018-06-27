@@ -1,3 +1,14 @@
+
+La traducción del libro casi está completa. Este repositorio ha sido archivado
+y partir de ahora, las futuras revisiones 
+(y la traducción del apéndice) del libro serán llevadas a cabo en el 
+repositorio de Gitlab
+
+https://gitlab.com/uzluisf/piensaperl6/
+
+¡Nos vemos allá!
+
+---
 # Piensa en Perl 6
 
 Archivo LATEX de la traducción en español de Think Perl 6.
