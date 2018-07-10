@@ -62,7 +62,7 @@ de ejecutar `make clean`.
 - [x] Capítulo 13: Regexes y Gramáticas
 - [x] Capítulo 14: Programación Funcional en Perl
 - [x] Capítulo 15: Algunos Últimos Consejos
-- [ ] Apéndice A:  Soluciones a los Ejercicios
+- [x] Apéndice A:  Soluciones a los Ejercicios
 
 * **Revisado y Corregido**
 

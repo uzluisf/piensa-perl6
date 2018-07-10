@@ -23,6 +23,8 @@ tmpDir/$(FILENAME).aux: tmpDir/
 
 tmpDir/$(FILENAME).pdf: tmpDir/$(FILENAME).aux
 	pdflatex $(PDFLATEX_FLAGS) $(FILENAME)
+	makeindex tmpDir/$(FILENAME).idx
+	pdflatex $(PDFLATEX_FLAGS) $(FILENAME)
 
 ### Clean
 # Clean temporary files (including created PDF file) by removing
